@@ -1,6 +1,6 @@
 ![RQM logo](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/9/2013/07/rmq_logo.png)
 
-RMQ (RubyMotion Query). A small, light, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
+RubyMotionQuery - RMQ - A small, light, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
 
 #### The [RMQ Introductory Guide and other info][1] is a great place to start.
 
@@ -50,12 +50,12 @@ Tested only on iOS, not OS X (nor is there any OS X specific code)
 
 RMQ **requires no other gems**. If you use stuff like **scale** and certain animations it will require some frameworks (like QuartzCore or CoreGraphics)
 
-- `gem install rmq`
-- `require 'rmq'`
+- `gem install ruby_motion_query`
+- `require 'ruby_motion_query'`
 
 or add it to your `Gemfile`:
 
-- `gem 'rmq'`
+- `gem 'ruby_motion_query'`
 
 
 
@@ -960,6 +960,5 @@ RMQ is available under the MIT license. See the LICENSE file for more info.
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request	
-
 
   [1]: http://infinitered.com/rmq
