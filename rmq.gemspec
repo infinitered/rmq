@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
 
-Version = "0.1"
+Version = "0.1.0"
 
 Gem::Specification.new do |spec|
-  spec.name = 'rmq'
+  spec.name = 'RMQ'
   spec.summary = 'RubyMotion Query - A small, light, nonpolluting, jQuery-like library for RubyMotion'
   spec.description = 'RubyMotion Query - A small, light, nonpolluting, jQuery-like library for RubyMotion' 
-  spec.authors = ["InfiniteRed", "Todd Werth"]
+  spec.authors = ["Todd Werth", "InfiniteRed"]
   spec.email = 'todd@infinitered.com'
-  spec.homepage    = "https://github.com/infinitered/rmq"
+  spec.homepage    = "http://infinitered.com/rmq"
   spec.version = Version
 
   #spec.add_dependency "none", "~> 1.0.0"
