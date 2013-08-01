@@ -2,8 +2,10 @@
 
 RubyMotionQuery - RMQ - A small, light, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
 
-#### The [RMQ Introductory Guide and other info][1] is a great place to start.
+[![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
+[![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
 
+#### The [RMQ Introductory Guide and other info][1] is a great place to start.
 
 ----------
 
