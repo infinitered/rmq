@@ -6,6 +6,7 @@ require "bundler/setup"
 
 Motion::Project::App.setup do |app|
   app.name = 'rmq'
+  app.identifier = 'com.infinitered.rmq'
   app.device_family = [:iphone, :ipad]
   app.prerendered_icon = true
   app.interface_orientations = [:portrait, :landscape_left, :landscape_right, :portrait_upside_down]
