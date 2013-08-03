@@ -7,16 +7,6 @@ module RubyMotionQuery
     def self.app
       App
     end
-
-    # TODO This is a bit wierd and may not work, need to think on this
-    # It's also confusing use of rmq which assumes a controller and subviews
-    #def window_rmq
-      #RMQ.create_with_selectors([App.window], self.context)
-    #end
-
-    #def self.window_rmq
-      #RMQ.create_with_selectors([App.window], App.window)
-    #end
   end
 
   class App

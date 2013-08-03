@@ -2,13 +2,14 @@
 
 RubyMotionQuery - RMQ - A small, light, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
 
-[![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
-[![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
-
 #### The [RMQ Introductory Guide and other info][1] is a great place to start.
 
 ----------
 
+[![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
+[![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
+
+----------
 
 #### Some of the very cool features:
  - **selecting** (*querying*) views
@@ -40,9 +41,7 @@ This is in the **alpha** stage right now, it works well and we've used some of R
 
 RDocs are not done. I'd appreciate help on these. This readme isn't up to the quality I'd like either. I figure it's better to get it out to the community sooner rather than wait for it to be more finished. My ideal is jQuery quality docs in addition to basic RDoc reference.
 
-Nothing is optimized for speed yet. Well, that isn't true, somethings are.
-
-Memory leaks may exist. 
+Somethings still need to be optimized for speed
 
 Tested only on iOS, not OS X (nor is there any OS X specific code)
 

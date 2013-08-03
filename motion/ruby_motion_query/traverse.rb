@@ -47,10 +47,6 @@ module RubyMotionQuery
       end
     end
 
-    # Return any selected that has a child that matches the selectors
-    #def has
-    #end
-
     def and_self
       if @parent_rmq
         out = @parent_rmq.selected.dup

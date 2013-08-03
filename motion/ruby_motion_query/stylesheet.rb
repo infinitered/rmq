@@ -41,7 +41,6 @@ module RubyMotionQuery
       # memoize this, however if you do that, make sure the dev doesn't retain them in a var
       custom_stylers(view) || begin
         case view
-        # TODO, rename all the stylers to Styler::UILabel, etc
         when UILabel              then Stylers::UILabelStyler.new(view)
         when UIButton             then Stylers::UIButtonStyler.new(view)
         when UIImageView          then Stylers::UIImageViewStyler.new(view)
