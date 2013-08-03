@@ -248,13 +248,41 @@ describe 'transversing' do
   end
 
   it 'should return next sibling of a view' do
-    # TODO when implementing
-    1.should == 1
+    test_view = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_1][:view]
+    @vc.rmq(test_view).next.get.should == @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_2][:view]
   end
 
   it 'should return previous sibling of a view' do
-    # TODO when implementing
-    1.should == 1
+    test_view = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_1][:view]
+    @vc.rmq(test_view).prev.get.should == @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_0][:view]
+  end
+
+  it 'next should return empty rmq if it is at the end of the subviews' do
+    @vc.rmq(@v3_v2_v0).next.length.should == 0
+
+    test_view = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_2][:view]
+    @vc.rmq(test_view).next.length.should == 0
+  end
+
+  it 'next should return empty rmq if it is at the end of the subviews' do
+    @vc.rmq(@v3_v2_v0).prev.length.should == 0
+
+    test_view = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_0][:view]
+    @vc.rmq(test_view).prev.length.should == 0
+  end
+
+  it 'should return next sibling of a multiple views' do
+    test_view_0 = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_0][:view]
+    test_view_1 = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_1][:view]
+    test_view_2 = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_2][:view]
+    @vc.rmq(test_view_0, test_view_1).next.get.should == [test_view_1, test_view_2]
+  end
+
+  it 'should return next sibling of a multiple views' do
+    test_view_0 = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_0][:view]
+    test_view_1 = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_1][:view]
+    test_view_2 = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_2][:view]
+    @vc.rmq(test_view_1, test_view_2).prev.get.should == [test_view_0, test_view_1]
   end
 
 end

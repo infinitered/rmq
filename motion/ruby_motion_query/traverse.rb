@@ -131,12 +131,29 @@ module RubyMotionQuery
       self.parent.children.not(selected)
     end
 
-    # TODO
-    #def next(*working_selectors)
-    #end
-    #def prev(*working_selectors)
-    #end
-    #
+    def next(*working_selectors)
+      normalize_selectors(working_selectors)
+
+      filter do |view|
+        subs = view.superview.subviews
+        location = subs.index(view)
+        if location < subs.length - 1
+          subs[location + 1]
+        end
+      end
+    end
+
+    def prev(*working_selectors)
+      normalize_selectors(working_selectors)
+
+      filter do |view|
+        subs = view.superview.subviews
+        location = subs.index(view)
+        if location > 0
+          subs[location - 1]
+        end
+      end
+    end
 
     def closest(*working_selectors)
       normalize_selectors(working_selectors)
