@@ -7,8 +7,9 @@ module RubyMotionQuery
       self
     end
 
-    def append(view_or_constant, style = nil)
+    def add_subview(view_or_constant, opts={})
       subviews_added = []
+      style = opts[:style]
       selected.each do |selected_view|
         if view_or_constant.is_a?(UIView)
           new_view = view_or_constant
@@ -17,7 +18,13 @@ module RubyMotionQuery
         end
 
         subviews_added << new_view
-        selected_view.addSubview(new_view)
+        if at_index = opts[:at_index]
+          selected_view.insertSubview(new_view, atIndex: at_index)
+        elsif below_view = opts[:below_view]
+          selected_view.insertSubview(new_view, belowSubview: below_view)
+        else
+          selected_view.addSubview(new_view)
+        end
 
         if self.stylesheet
           apply_style_to_view(new_view, style) if style
@@ -26,10 +33,14 @@ module RubyMotionQuery
 
       RMQ.create_with_array_and_selectors(subviews_added, selectors, @context)
     end
-    alias :add_subview :append
+    alias :insert :add_subview
 
-    def insert(view, at_index, style = nil)
-       # TODO
+    def append(view_or_constant, style=nil)
+      add_subview(view_or_constant, style: style)
+    end
+
+    def unshift(view_or_constant, style = nil)
+      add_subview view_or_constant, style: style, at_index: 0
     end
 
     protected

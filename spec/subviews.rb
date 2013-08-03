@@ -9,6 +9,11 @@ describe 'subviews' do
     @vc.view.subviews.first.should == view
   end
 
+  it 'should addend to the end of the subviews' do
+    view = @vc.rmq.append(UIView).get
+    @vc.view.subviews[@vc.view.subviews.length - 1].should == view
+  end
+
   it 'should append view to another view' do
     view = @vc.rmq.append(UIView).get
     label = @vc.rmq(view).append(UILabel).get
@@ -33,6 +38,58 @@ describe 'subviews' do
     view2 = @vc.rmq.append(UIButton).get
     view.rmq_data.style_name.should == :my_style
     view2.rmq_data.style_name.nil?.should == true
+  end
+
+  it 'should unshift a view to the front of the subviews' do
+    orig_length = @vc.view.subviews.length
+    view = @vc.rmq.unshift(UIView).get
+    @vc.view.subviews.length.should == orig_length + 1
+    @vc.view.subviews[0].should == view
+  end
+
+  it 'should unshift a view and apply a style' do
+    @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+    view = @vc.rmq.unshift(UIView, :my_style).get
+    @vc.view.subviews[0].should == view
+    view.rmq_data.style_name.should == :my_style
+  end
+
+  it 'should add a subview at a specific index' do
+    view = @vc.rmq.append(UIView).get
+    view2 = @vc.rmq.append(UIView).get
+    view3 = @vc.rmq.append(UIView).get
+    view4 = @vc.rmq.insert(UIView, at_index: 1).get
+    @vc.view.subviews[1].should == view4
+  end
+
+  it 'should add a subview at a specific index and apply a style' do
+    @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+    view = @vc.rmq.append(UIView).get
+    view2 = @vc.rmq.append(UIView).get
+    view3 = @vc.rmq.append(UIView).get
+    view4 = @vc.rmq.insert(UIView, style: :my_style, at_index: 1).get
+
+    view4.rmq_data.style_name.should == :my_style
+    @vc.view.subviews[1].should == view4
+  end
+
+  it 'should add a subview below another view' do
+    view = @vc.rmq.append(UIView).get
+    view2 = @vc.rmq.append(UIView).get
+    view3 = @vc.rmq.append(UIView).get
+    view4 = @vc.rmq.insert(UIView, below_view: view3).tag(:view4).get
+    @vc.view.subviews[2].should == view4
+    @vc.view.subviews[3].should == view3
+  end
+
+  it 'should add a subview below another view and apply a style' do
+    @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+    view = @vc.rmq.append(UIView).get
+    view2 = @vc.rmq.append(UIView).get
+    view4 = @vc.rmq.insert(UIView, style: :my_style, below_view: view2).tag(:view4).get
+    view4.rmq_data.style_name.should == :my_style
+    @vc.view.subviews[1].should == view4
+    @vc.view.subviews[2].should == view2
   end
 
   it 'should remove view from controller' do

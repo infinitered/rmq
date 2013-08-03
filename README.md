@@ -313,10 +313,19 @@ rmq(my_view).toggle_enabled
 rmq.append(UILabel) # Creates a UILabel in the current controller
 rmq.append(UILabel, :my_label_style)
 rmq.append(UILabel.alloc.initWithFrame([[0,0],[10,10]]), :my_label_style)
-rmq(my_view).append(UIButton) # A custom button
+
+rmq(my_view).append(UIButton)
 rmq(my_view).remove
 rmq(my_vuew).children.remove
-rmq(UIView).append(UIButton, :delete_me)
+
+rmq(UIView).append(UIButton, :delete_me) # A custom button for all views
+
+rmq.unshift(UILabel) # Adds to index 0 of the subviews
+rmq.unshift(UILabel, :my_style)
+rmq.insert(UILabel, at_index: 2)
+rmq.insert(UILabel, at_index: 2, style: :my_style)
+rmq.insert(UILabel, below_view: some_view_of_mine)
+rmq.insert(UILabel, below_view: some_view_of_mine, style: :my_style)
 
 rmq(my_view).parent  # .superview works too
 rmq(my_view).parents # all parents up the tree, up to the root
