@@ -1,7 +1,13 @@
 module RubyMotionQuery 
   class RMQ
 
-    # Most everthing uses filter to do its work
+    # Most everything uses filter to do its work. This is mostly used internally
+    # but you can use it too. Just pass a block that returns views, it will be
+    # called for every view that is *selected*
+    #
+    # @param return_array returns array not rmq: return_array: true 
+    # @param uniq removes duplicate views: uniq: true 
+    # @param limit limits the number of views *per selected view*: limit: true 
     def filter(opts = {}, &block)
       out = []
       limit = opts[:limit]
@@ -25,10 +31,14 @@ module RubyMotionQuery
       end
     end
 
+    # @return all selected views
     def all
       self.view_controller.rmq.find
     end
 
+    # @return a new rmq instance reducing selected views to those that match selectors provided
+    #
+    # @param selectors
     def and(*working_selectors)
       return self unless working_selectors
       normalize_selectors(working_selectors)
@@ -38,6 +48,9 @@ module RubyMotionQuery
       end
     end
 
+    # @return a new rmq instance removing selected views that match selectors provided
+    #
+    # @param selectors
     def not(*working_selectors)
       return self unless working_selectors
       normalize_selectors(working_selectors)
@@ -47,6 +60,7 @@ module RubyMotionQuery
       end
     end
 
+    # @return a new rmq instance adding the context to the selected views
     def and_self
       if @parent_rmq
         out = @parent_rmq.selected.dup
@@ -59,15 +73,23 @@ module RubyMotionQuery
     end
     alias :add_self :and_self
     
+    # @return the parent rmq instance 
+    #
+    # @example
+    #   rmq(test_view).find(UIImageView).tag(:foo).end.find(UILabel).tag(:bar)
     def end
       @parent_rmq || self
     end
 
+    # @return rmq instance selecting the parent of the selected view(s)
     def parent
       closest(UIView)
     end
     alias :superview :parent
 
+    # @return rmq instance selecting the parents, grandparents, etc of the selected view(s)
+    #
+    # @param selectors
     def parents(*working_selectors)
       normalize_selectors(working_selectors)
 
@@ -86,6 +108,11 @@ module RubyMotionQuery
     end
     alias :superviews :parents
 
+    # Get the descendants of each view in the current set of selected views, filtered by a selector(s)
+    #
+    # @return rmq instance selecting the children, grandchildren, etc of the selected view(s)
+    #
+    # @param selectors
     def find(*working_selectors)
       normalize_selectors(working_selectors)
 
@@ -103,6 +130,9 @@ module RubyMotionQuery
       end
     end
 
+    # @return rmq instance selecting the children of the selected view(s)
+    #
+    # @param selectors
     def children(*working_selectors)
       normalize_selectors(working_selectors)
 
@@ -121,12 +151,20 @@ module RubyMotionQuery
     end
     alias :subviews :children
 
+
+    # @return rmq instance selecting the siblings of the selected view(s)
+    #
+    # @param selectors
     def siblings(*working_selectors)
       normalize_selectors(working_selectors)
 
       self.parent.children.not(selected)
     end
 
+
+    # @return rmq instance selecting the sibling above to the selected view(s)
+    #
+    # @param selectors
     def next(*working_selectors)
       normalize_selectors(working_selectors)
 
@@ -139,6 +177,9 @@ module RubyMotionQuery
       end
     end
 
+    # @return rmq instance selecting the sibling below to the selected view(s)
+    #
+    # @param selectors
     def prev(*working_selectors)
       normalize_selectors(working_selectors)
 
@@ -151,6 +192,12 @@ module RubyMotionQuery
       end
     end
 
+    # For each view in the set, get the first view that matches the selector by testing the view itself and 
+    # traversing up through its ancestors in the tree
+    #
+    # @return rmq instance selecting the first parent or grandparent or ancestor up the tree of the selected view(s)
+    #
+    # @param selectors
     def closest(*working_selectors)
       normalize_selectors(working_selectors)
 
@@ -159,6 +206,7 @@ module RubyMotionQuery
       end
     end
 
+    # @return UIViewController of this rmq instance
     def view_controller
       @_view_controller ||= begin
         if @context.is_a?(UIViewController)
@@ -169,6 +217,7 @@ module RubyMotionQuery
       end
     end
 
+    # @return UIView of this rmq instance's controller
     def root_view
       vc = self.view_controller
       if RMQ.is_blank?(vc)

@@ -9,6 +9,32 @@ module RubyMotionQuery
     end
   end
 
+  # @example
+  #   # Standard colors:
+  #
+  #   color.clear      
+  #   color.white      
+  #   color.light_gray 
+  #   color.gray       
+  #   color.dark_gray  
+  #   color.black      
+  #               
+  #   color.red        
+  #   color.green      
+  #   color.blue       
+  #   color.yellow     
+  #   color.orange     
+  #   color.purple     
+  #   color.brown      
+  #   color.cyan       
+  #   color.magenta    
+  #               
+  #   color.table_view 
+  #   color.scroll_view
+  #   color.flipside   
+  #   color.under_page 
+  #   color.light_text 
+  #   color.dark_text  
   class Color < UIColor
 
     class << self
@@ -36,6 +62,7 @@ module RubyMotionQuery
       alias :light_text    :lightTextColor                       
       alias :dark_text     :darkTextColor                        
 
+      # Add your own standard color
       def add_named(key, hex_or_color)
         color = if hex_or_color.is_a?(String)
           Color.from_hex(hex_or_color)
@@ -49,6 +76,12 @@ module RubyMotionQuery
       end
 
       # Thanks bubblewrap for this method
+      #
+      # @param hex with or without the #
+      # @return UIColor
+      # @example
+      #   color.from_hex('#ffffff')
+      #   color.from_hex('ffffff')
       def from_hex(hex_color)
         hex_color.gsub!("#", "")   
         case hex_color.size 

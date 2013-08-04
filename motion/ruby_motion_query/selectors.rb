@@ -1,14 +1,23 @@
 module RubyMotionQuery
   class RMQ
 
+    # Do not use
     def selectors=(value)
       @selected_dirty = true
       normalize_selectors(value)
       @_selectors = value
     end
+
+    # @return the selectors, which is what you used for the query
+    # @example
+    #  (main)> rmq(UILabel, UIImageView).selectors
+    #  => [UILabel, UIImageView] 
     def selectors
       @_selectors
     end
+
+
+    protected 
 
     def match_context(new_selectors)
       match(context_or_context_view, new_selectors)

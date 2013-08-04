@@ -37,7 +37,7 @@ module RubyMotionQuery
         image.resizableImageWithCapInsets([opts[:top], opts[:left], opts[:bottom], opts[:right]], resizingMode: UIImageResizingModeStretch) 
       end
 
-      # [FROM Sugarcube, thanks Sugarcube]
+      # Note: FROM Sugarcube, thanks Sugarcube
       #
       # Easily take a snapshot of a `UIView`.
       #

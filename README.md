@@ -1,17 +1,17 @@
 ![RQM logo](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/9/2013/07/rmq_logo.png)
 
-RubyMotionQuery - RMQ - A small, light, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
+# RubyMotionQuery - RMQ
+A light, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
 
-#### The [RMQ Introductory Guide and other info][1] is a great place to start.
-
-----------
+**The [RMQ Introductory Guide and other info][1] is a great place to start.**
 
 [![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
 [![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
 
-----------
 
-#### Some of the very cool features:
+## General
+
+### Some of the very cool features:
  - **selecting** (*querying*) views
  - **traversal** through view hierarchy (moving around the tree)
  - tagging
@@ -24,7 +24,13 @@ RubyMotionQuery - RMQ - A small, light, muggle, nonpolluting, jQuery-like librar
  - app
  - device
 
-#### Other wrapper libraries
+----------
+
+**Tested only on iOS only, not OS X (nor is there any OS X specific code)**
+
+----------
+
+### Other wrapper libraries
 There are a lot of great wrappers out there such as Teacup and Sugarcube. I've used these and I enjoy them. However, many of the wrappers heavily pollute the standard classes, which is great if you like that sort of thing. RMQ is designed to have minimal pollution, to be very simple and high performance (it will be when it's done). RMQ shouldn't conflict with anything.
 
 RMQ **doesn't require any** other wrapper or gem. 
@@ -33,19 +39,6 @@ RMQ **doesn't require any** other wrapper or gem.
 
 Some of the code in RMQ came from BubbleWrap and Sugarcube. Not too much but some did. I thank you BubbleWrap and Sugarcube teams for your work.
 
-----------
-
-### * Alpha * Warning *
-
-This is in the **alpha** stage right now, it works well and we've used some of RMQ in production apps, but it **needs** more **testing**, **performance** optimizations, **documentation**, and the **TODOs** to be finished. 
-
-RDocs are not done. I'd appreciate help on these. This readme isn't up to the quality I'd like either. I figure it's better to get it out to the community sooner rather than wait for it to be more finished. My ideal is jQuery quality docs in addition to basic RDoc reference.
-
-Somethings still need to be optimized for speed
-
-Tested only on iOS, not OS X (nor is there any OS X specific code)
-
-----------
 
 ## Installation
 
@@ -57,7 +50,6 @@ RMQ **requires no other gems**. If you use stuff like **scale** and certain anim
 or add it to your `Gemfile`:
 
 - `gem 'ruby_motion_query'`
-
 
 
 ## Usage

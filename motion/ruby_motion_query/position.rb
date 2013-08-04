@@ -20,11 +20,11 @@ module RubyMotionQuery
     end
     alias :resize :move
 
-    def align(direction)
-      # TODO
-      # rmq(UILabel).align(:left)
-      # rmq(UILabel).align(:left, :top)
-    end
+    #def align(direction)
+      ## TODO
+      ## rmq(UILabel).align(:left)
+      ## rmq(UILabel).align(:left, :top)
+    #end
 
     def nudge(opts) 
       left = opts[:left] || opts[:l] || 0

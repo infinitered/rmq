@@ -20,9 +20,8 @@ module RubyMotionQuery
         end
       end
 
- 
-      # Given a UIView, returns the UIViewController it is sitting in, or nil if it's not
-      # sitting anywhere in particular 
+      # @param view
+      # @returns the UIViewController it is sitting in, or nil if it's not sitting anywhere in particular 
       def controller_for_view(view)
         # Non-recursive for speed
         while view
