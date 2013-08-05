@@ -298,6 +298,7 @@ rmq(my_view).hide
 rmq(my_view).show
 rmq(my_view).toggle
 rmq(my_view).toggle_enabled
+rmq(my_text_field).focus # or .become_first_responder
 ```
 
 ### Subviews

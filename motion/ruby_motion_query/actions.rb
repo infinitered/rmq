@@ -20,6 +20,18 @@ module RubyMotionQuery
       self
     end
 
+    # Sets the last selected view as the first responder
+    #
+    # @example
+    #   rmq(my_view).next(UITextField).focus
+    def focus
+      unless RMQ.is_blank?(selected)
+        selected.last.becomeFirstResponder
+      end
+      self
+    end
+    alias :become_first_responder :focus
+
     def hide
       selected.each { |view| view.hidden = true }
       self
