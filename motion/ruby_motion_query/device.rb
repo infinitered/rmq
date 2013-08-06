@@ -1,8 +1,11 @@
 module RubyMotionQuery
   class RMQ
+    # @return [Device]
     def device
       Device
     end
+
+    # @return [Device]
     def self.device
       Device
     end
@@ -10,14 +13,17 @@ module RubyMotionQuery
 
   class Device
     class << self
+      # @return [UIScreen]
       def screen
         UIScreen.mainScreen
       end
 
+      # @return [Numeric]
       def width
         @_width ||= Device.screen.bounds.size.width
       end
 
+      # @return [Numeric]
       def height
         @_height ||= Device.screen.bounds.size.height
       end
@@ -46,6 +52,7 @@ module RubyMotionQuery
         @_retina
       end
 
+      # @return :unknown or from ORIENTATIONS
       def orientation
         ORIENTATIONS[UIDevice.currentDevice.orientation] || :unknown
       end

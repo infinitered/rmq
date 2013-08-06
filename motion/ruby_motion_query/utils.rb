@@ -2,6 +2,7 @@ module RubyMotionQuery
   class RMQ
 
     class << self
+      # @return [Boolean]
       def is_class?(o)
         # This line fails in spec, causes exit without message. It works fine in production
         #(o.class == Class) && (defined?(o) == 'constant')
@@ -12,6 +13,8 @@ module RubyMotionQuery
 
       # This is purposely not blank? as to not conflict with many libraries that
       # add .blank? to Object
+      #
+      # @return [Boolean]
       def is_blank?(o)
         if o.is_a?(RubyMotionQuery::RMQ)
           RubyMotionQuery::RMQ.is_blank?(o.to_a)
@@ -21,7 +24,7 @@ module RubyMotionQuery
       end
 
       # @param view
-      # @returns the UIViewController it is sitting in, or nil if it's not sitting anywhere in particular 
+      # @return [UIViewController] The controller the view it is sitting in, or nil if it's not sitting anywhere in particular 
       def controller_for_view(view)
         # Non-recursive for speed
         while view
@@ -37,6 +40,8 @@ module RubyMotionQuery
       end
 
       # Mainly used for console and logging
+      #
+      # @return [String]
       def view_to_s(view)
         out = "\n"
         out << "  VIEW  class:o #{view.class.name}  object_id: #{view.object_id}\n"

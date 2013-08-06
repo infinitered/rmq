@@ -2,14 +2,19 @@ module RubyMotionQuery
   class ViewData
     attr_accessor :events, :style_name
 
+    # @return [Hash] Array of tag names assigned to to this view
     def tags
       @_tags ||= {}
     end
 
+    # @return [Array] Array of tag names assigned to to this view
     def tag_names
       tags.keys
     end
 
+    # *Do not* use this, use {RMQ#tag} instead: 
+    # @example
+    #   rmq(my_view).tag(:foo)
     def tag(*tag_or_tags)
       tag_or_tags.flatten!
       tag_or_tags.each do |tag_name|
@@ -17,6 +22,10 @@ module RubyMotionQuery
       end
     end
 
+    # Check if this view contains a specific tag
+    #
+    # @param tag_name name of tag to check
+    # @return [Boolean] true if this view has the tag provided
     def has_tag?(tag_name = nil)
       if tag_name
         tags.include?(tag_name)

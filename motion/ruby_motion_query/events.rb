@@ -1,5 +1,6 @@
 module RubyMotionQuery
   class RMQ
+    # @return [RMQ]
     def on(event, args = {}, &block)
       selected.each do |view|
         events(view).on(view, event, args, &block) 
@@ -8,6 +9,7 @@ module RubyMotionQuery
       self
     end
 
+    # @return [RMQ]
     def off(*events)
       selected.each do |view|
         events(view).off(events)

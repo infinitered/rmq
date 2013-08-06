@@ -1,9 +1,11 @@
 module RubyMotionQuery
   class RMQ
+    # @return [Color]
     def self.color
       Color
     end
 
+    # @return [Color]
     def color 
       Color
     end
@@ -11,6 +13,9 @@ module RubyMotionQuery
 
   # @example
   #   # Standard colors:
+  #
+  #   # In a stylesheet, you can just use color. Anywhere else these would be
+  #   # rmq.color.clear, etc
   #
   #   color.clear      
   #   color.white      
@@ -63,6 +68,12 @@ module RubyMotionQuery
       alias :dark_text     :darkTextColor                        
 
       # Add your own standard color
+      #
+      # @return [UIColor]
+      #
+      # @example
+      #   rmq.color.add_named(:foo, '#ffffff')
+      #   my_label.color = rmq.color.foo # or just color.foo in a stylesheet
       def add_named(key, hex_or_color)
         color = if hex_or_color.is_a?(String)
           Color.from_hex(hex_or_color)
@@ -75,10 +86,12 @@ module RubyMotionQuery
         end
       end
 
+      # Creates a color from a hex triplet
+      #
       # Thanks bubblewrap for this method
       #
       # @param hex with or without the #
-      # @return UIColor
+      # @return [UIColor]
       # @example
       #   color.from_hex('#ffffff')
       #   color.from_hex('ffffff')
@@ -99,10 +112,18 @@ module RubyMotionQuery
         end 
       end 
 
+      # @return [UIColor]
+      #
+      # @example
+      #   rmq.color.from_rgba(255,255,255,0.5)
       def from_rgba(r,g,b,a)
         UIColor.colorWithRed((r/255.0), green: (g/255.0), blue: (b/255.0), alpha: a)
       end
 
+      # @return [UIColor]
+      #
+      # @example
+      #   rmq.color.from_hsva(100,140,80,1.0)
       def from_hsva(h,s,v,a)
         UIColor.alloc.initWithHue(h, saturation: s, brightness: v, alpha: a)
       end

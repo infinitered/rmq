@@ -1,5 +1,7 @@
 module RubyMotionQuery
   class RMQ
+
+    # @return [RMQ]
     def stylesheet=(value)
       controller = view_controller
       unless value.is_a?(RubyMotionQuery::Stylesheet)
@@ -8,12 +10,15 @@ module RubyMotionQuery
       controller.rmq_data.stylesheet = value
       self
     end
+
+    # @return [String]
     def stylesheet
       @_stylesheet ||= begin
         self.view_controller.rmq_data.stylesheet if self.view_controller
       end
     end
 
+    # @return [RMQ]
     def apply_style(style_name)
       selected.each do |selected_view|
         apply_style_to_view selected_view, style_name
@@ -21,6 +26,7 @@ module RubyMotionQuery
       self
     end
 
+    # @return [RMQ]
     def style()
       selected.each do |view|
         yield(styler_for(view))
@@ -28,12 +34,14 @@ module RubyMotionQuery
       self
     end
 
+    # @return [RMQ]
     def reapply_styles
       selected.each do |selected_view|
         if style_name = selected_view.rmq_data.style_name
         apply_style_to_view selected_view, style_name
         end
       end
+      self
     end
 
     def styler_for(view)

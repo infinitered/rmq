@@ -2,11 +2,13 @@
 module RubyMotionQuery
   class RMQ
 
+    # @return [RMQ]
     def remove
       selected.each { |view| view.removeFromSuperview }
       self
     end
 
+    # @return [RMQ]
     def add_subview(view_or_constant, opts={})
       subviews_added = []
       style = opts[:style]
@@ -35,10 +37,12 @@ module RubyMotionQuery
     end
     alias :insert :add_subview
 
+    # @return [RMQ]
     def append(view_or_constant, style=nil)
       add_subview(view_or_constant, style: style)
     end
 
+    # @return [RMQ]
     def unshift(view_or_constant, style = nil)
       add_subview view_or_constant, style: style, at_index: 0
     end

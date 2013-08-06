@@ -1,9 +1,11 @@
 module RubyMotionQuery
   class RMQ
+    # @return [ImageUtils]
     def self.image
       ImageUtils
     end
 
+    # @return [ImageUtils]
     def image
       ImageUtils
     end
@@ -12,10 +14,13 @@ module RubyMotionQuery
   class ImageUtils
     class << self
       DEFAULT_IMAGE_EXT = 'png'
+
+      # @return [UIImage]
       def resource_for_device(file_base_name, opts = {})
         resource( RMQ.device.four_inch? ? "#{file_base_name}-568h" : file_base_name, opts)
       end
 
+      # @return [UIImage]
       def resource(file_base_name, opts = {})
         ext = opts[:ext] || DEFAULT_IMAGE_EXT
         cached = opts[:cached]
@@ -30,6 +35,7 @@ module RubyMotionQuery
         end
       end
 
+      # @return [UIImage]
       def resource_resizable(file_base_name, opts)
         # TODO, also alloow short syntax, t: instead of top: etc
         ext = opts[:ext] || DEFAULT_IMAGE_EXT
@@ -53,6 +59,8 @@ module RubyMotionQuery
       # It is guaranteed that `true` and `:all` will always have this behavior.  In
       # the future, if this argument becomes something that accepts multiple values,
       # those two are sacred.
+      #
+      # @return [UIImage]
       def from_view(view, use_content_size = false)
         scale = UIScreen.mainScreen.scale
         if use_content_size

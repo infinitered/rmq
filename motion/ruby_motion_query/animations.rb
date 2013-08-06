@@ -1,5 +1,7 @@
 module RubyMotionQuery
   class RMQ
+
+    # @return [RMQ]
     def animate(opts = {})
       working_selected = self.selected
       @_rmq = self # @ for rm bug
@@ -35,6 +37,7 @@ module RubyMotionQuery
       self
     end
 
+    # @return [Animations]
     def animations
       @_animations ||= Animations.new(self)
     end
@@ -45,6 +48,7 @@ module RubyMotionQuery
       @rmq = rmq
     end
 
+    # @return [RMQ]
     def fade_in(opts = {})
       @rmq.each do |view|
         view.layer.opacity = 0.0
@@ -58,6 +62,7 @@ module RubyMotionQuery
       @rmq.animate(opts)
     end
 
+    # @return [RMQ]
     def fade_out(opts = {})
       opts[:animations] = lambda do |rmq|
         rmq.get.layer.opacity = 0.0
@@ -77,6 +82,7 @@ module RubyMotionQuery
       @rmq.animate(opts)
     end
 
+    # @return [RMQ]
     def throb
       @rmq.animate(
         duration: 0.1,
@@ -94,21 +100,26 @@ module RubyMotionQuery
       )
     end
 
+    # @return [RMQ]
     def blink
       self.fade_out(duration: 0.2, after: lambda {|did_finish, rmq| rmq.animations.fade_in(duration: 0.2)})
     end
 
+    # @return [RMQ]
     def start_spinner(style = UIActivityIndicatorViewStyleGray)
       spinner = Animations.window_spinner(style)
       spinner.startAnimating
       @rmq.create_rmq_in_context(spinner)
     end
 
+    # @return [RMQ]
     def stop_spinner
       spinner = Animations.window_spinner
       spinner.stopAnimating
       @rmq.create_rmq_in_context(spinner)
     end
+
+    protected 
 
     def self.window_spinner(style = UIActivityIndicatorViewStyleGray)
       @_window_spinner ||= begin

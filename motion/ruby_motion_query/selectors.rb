@@ -8,7 +8,7 @@ module RubyMotionQuery
       @_selectors = value
     end
 
-    # @return the selectors, which is what you used for the query
+    # @return [Array] The selectors, which is what you used for the query
     # @example
     #  (main)> rmq(UILabel, UIImageView).selectors
     #  => [UILabel, UIImageView] 

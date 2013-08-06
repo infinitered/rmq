@@ -1,6 +1,7 @@
 module RubyMotionQuery
   class RMQ
 
+    # @return [RMQ]
     def move(opts) 
       # TODO, add centered and from_bottom and from_top, and bottom and top
       # TODO, add animate option
@@ -20,12 +21,7 @@ module RubyMotionQuery
     end
     alias :resize :move
 
-    #def align(direction)
-      ## TODO
-      ## rmq(UILabel).align(:left)
-      ## rmq(UILabel).align(:left, :top)
-    #end
-
+    # @return [RMQ]
     def nudge(opts) 
       left = opts[:left] || opts[:l] || 0
       right = opts[:right] || opts[:r] || 0

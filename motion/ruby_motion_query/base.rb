@@ -29,7 +29,10 @@ module RubyMotionQuery
     end
 
     # The UIViews currently selected
+    #
     # Use {#get} instead to get the actual UIView objects
+    #
+    # @return [Array]
     def selected
       if @selected_dirty
         @_selected = []
@@ -59,6 +62,8 @@ module RubyMotionQuery
     end
 
     # The view(s) this rmq was derived from
+    #
+    # @return [Array]
     def origin_views
       if @parent_rmq
         @parent_rmq.selected
@@ -78,6 +83,8 @@ module RubyMotionQuery
     #   rmq(UILabel).get
     #
     #   rmq(foo).parent.get.some_method_on_parent
+    #
+    # @return [UIView or Array]
     def get
       sel = self.selected
       if sel.length == 1
@@ -87,7 +94,9 @@ module RubyMotionQuery
       end
     end
 
-    # Is this rmq a root instance? Which means it only has 1 selected view, and that view
+    # Is this rmq a root instance? 
+    #
+    # Which means it only has 1 selected view, and that view
     # is the view you called rmq in. Which is a tad confusing, but if you call *just* rmq inside a 
     # view, then only that view will be *selected* and this rmq will be *root*. If you call rmq
     # inside a controller, only controller.view will be selected and the rma instance will be a root.
@@ -96,8 +105,10 @@ module RubyMotionQuery
     end
 
     # The context is where rmq was created (not the selectors). 
+    #
     # Normally you are inside a controller or a UIView when you execute the rmq method. 
-    # @return the controller's view or the view you are in when calling rmq
+    #
+    # @return [UIView] the controller's view or the view you are in when calling rmq
     def context_or_context_view
       if @context.is_a?(UIViewController)
         @context.view
@@ -107,6 +118,9 @@ module RubyMotionQuery
     end
 
     # Changed inspect to be useful
+    #
+    # @return [String]
+    #
     # @example
     #   (main)> rmq.all
     #   => RMQ 172658240. 26 selected. selectors: []. .log for more info
@@ -117,7 +131,11 @@ module RubyMotionQuery
     end
 
     # Super useful in the console. log outputs to the console a table of the selected views
+    #
     # @param :wide outputs wide format (really wide, but awesome: rmq.all.log :wide)
+    #
+    # @return [String]
+    #
     # @example
     #    (main)> rmq(UIImageView).log
     #

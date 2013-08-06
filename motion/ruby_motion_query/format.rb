@@ -1,8 +1,11 @@
 module RubyMotionQuery
   class RMQ
+    # @return [Format]
     def format
       Format
     end
+
+    # @return [Format]
     def self.format
       Format
     end
