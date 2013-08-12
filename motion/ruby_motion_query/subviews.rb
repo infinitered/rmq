@@ -46,6 +46,7 @@ module RubyMotionQuery
     def unshift(view_or_constant, style = nil)
       add_subview view_or_constant, style: style, at_index: 0
     end
+    alias :prepend :unshift
 
     protected
 
