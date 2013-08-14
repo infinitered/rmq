@@ -3,6 +3,7 @@ $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require "bundler/gem_tasks"
 require "bundler/setup"
+Bundler.require
 
 Motion::Project::App.setup do |app|
   app.name = 'rmq'
@@ -12,4 +13,3 @@ Motion::Project::App.setup do |app|
   app.interface_orientations = [:portrait, :landscape_left, :landscape_right, :portrait_upside_down]
 end
 
-require 'ruby_motion_query'

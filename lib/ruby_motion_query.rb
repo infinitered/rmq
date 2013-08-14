@@ -4,5 +4,9 @@ end
 
 Motion::Project::App.setup do |app|
   parent = File.join(File.dirname(__FILE__), '..')
-  app.files.unshift(Dir.glob(File.join(parent, "motion/**/*.rb")))
+  files = [File.join(parent, 'motion/ruby_motion_query/stylers/ui_view_styler.rb')]
+  files << File.join(parent, 'motion/ruby_motion_query/stylers/ui_control_styler.rb')
+  files << Dir.glob(File.join(parent, "motion/**/*.rb"))
+  files.flatten!.uniq!
+  app.files.unshift files
 end
