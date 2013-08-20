@@ -162,7 +162,9 @@ rmq(UILabel).get
  - parents
  - filter
  - view_controller
- - root_view
+ - root_view # View of the view_controller
+ - window # Window of the root_view
+
 
 ### Enumerablish
 A rmq object is like an enumerable, but each method returns a rmq object instead of a enumerable. For example, these methods:

@@ -285,4 +285,8 @@ describe 'transversing' do
     @vc.rmq(test_view_1, test_view_2).prev.get.should == [test_view_0, test_view_1]
   end
 
+  it 'should return the window that the controller is sitting in' do
+    @vc.rmq.window.should == @vc.view.window
+  end
+
 end

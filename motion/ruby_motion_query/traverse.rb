@@ -273,6 +273,14 @@ module RubyMotionQuery
       end
     end
 
+    # @return [UIWindow] Window of the root_view
+    #
+    # @example
+    #   rmq.window
+    def window
+      self.root_view.window
+    end
+
     protected 
 
     def closest_view(view, working_selectors)
