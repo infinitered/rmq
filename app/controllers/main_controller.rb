@@ -18,8 +18,9 @@ class MainController < UIViewController
       rmq(UIButton).not(sender).animations.throb
     end
 
+    rmq.append(Section, :section)
+
     init_animation_button
-    init_section
     init_benchmark_section
   end
 
@@ -70,28 +71,6 @@ class MainController < UIViewController
     
   end
 
-  def init_section
-
-    rmq.append(UIView, :section).tap do |section|
-      section.append(UILabel, :section_title)
-
-      section.append(UILabel, :section_enabled_title)
-
-      section.append(UISwitch, :section_enabled).on(:change) do |sender|
-        style = sender.isOn ? :section_button_enabled : :section_button_disabled
-        buttons = rmq(sender).parent.find(UIButton).apply_style(style)
-      end
-
-      section.append(UIButton, :start_spinner).on(:tap) do |sender|
-        rmq.animations.start_spinner
-      end
-
-      section.append(UIButton, :stop_spinner).on(:tap) do |sender|
-        rmq.animations.stop_spinner
-      end
-    end
-    
-  end
 
   def init_benchmark_section
     

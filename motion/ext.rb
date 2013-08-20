@@ -3,10 +3,34 @@ class UIView
     @_rmq_data ||= RubyMotionQuery::ViewData.new
   end
 
+  # Override in your view if you want to setup subviews after your view has 
+  # been created by rmq, usually through an #append
+  #
+  # In your view
+  # @example
+  #   def rmq_did_create
+  #     rmq(self).tap do |q|
+  #       q.append(UILabel, :section_title)
+  #       q.append(UIButton, :buy_button).on(:tap) do |sender|
+  #         # do  something
+  #       end
+  #     end
+  #   end
+  #
+  # In your controller
+  # @example
+  #   rmq.append(YourView, :your_style)
+  #
+  # In this example an instance of YourView is created, :your_style is applied
+  # then rmq_did_create is called on the instance that was just created. In that
+  # order.
+  def rmq_did_create
+  end
+
   protected
 
   def rmq(*selectors)
-    RubyMotionQuery::RMQ.create_with_selectors(selectors, RubyMotionQuery::RMQ.controller_for_view(self))
+    RubyMotionQuery::RMQ.create_with_selectors(selectors, self)
   end
 end
 

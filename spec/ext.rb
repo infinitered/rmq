@@ -23,4 +23,33 @@ describe 'ext' do
     vc.rmq_data.class.should == RubyMotionQuery::ControllerData
     vc.rmq_data.should == vc.rmq_data # should be same object
   end
+
+  it 'should set context to controller if rmq is called from within a controller' do
+    view_controller = UIViewController.alloc.init
+    view_controller.rmq.context.should == view_controller
+  end
+
+  it 'should set context to the view if rmq is called from within a view' do
+    vc = UIViewController.alloc.init
+    view = vc.rmq.append(ExtTestView).get
+
+    view.get_context.should == view
+  end
+
+  it 'should call rmq_did_create after appending to view' do
+    vc = UIViewController.alloc.init
+    view = vc.rmq.append(ExtTestView).get
+    view.controller.should == vc
+  end
+end
+
+class ExtTestView < UIView
+  attr_accessor :controller
+  def rmq_did_create
+    @controller = rmq.view_controller
+  end
+
+  def get_context
+    rmq.context
+  end
 end

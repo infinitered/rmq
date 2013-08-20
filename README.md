@@ -51,6 +51,9 @@ or add it to your `Gemfile`:
 
 - `gem 'ruby_motion_query'`
 
+for **bleeding edge**, add this to your `Gemfile`:
+
+- `gem 'ruby_motion_query', :git => 'git@github.com:infinitered/rmq.git'`
 
 ## Usage
 
@@ -567,7 +570,10 @@ class MainController < UIViewController
     view.rmq.apply_style :root_view
 
     @title_label = rmq.append(UILabel, :title_label).get
-    rmq.append UIImageView, :logo
+
+    image_view = rmq.append(UIImageView).get
+    # Apply style anywhere
+    image_view.apply_style(:logo)
 
     rmq.append(UIButton, :make_labels_blink).on(:tap) do |sender|
       rmq(UILabel).animations.blink
@@ -938,6 +944,36 @@ end
 ```
 
 You can also include all of your custom stylers in one file, which works well if you don't have a lot.
+
+
+### Creating your own views
+
+If you use RMQ's stylesheets and you create your own views, you should add your subviews and such in this method:
+```ruby
+def rmq_did_create
+end
+```
+
+In the following example an instance of YourView is created, :your_style is applied
+then rmq_did_create is called on the instance that was just created. In that
+order.
+
+```ruby
+# Your view
+class YourView < UIView
+  def rmq_did_create
+    rmq(self).tap do |q|
+      q.append(UILabel, :section_title)
+      q.append(UIButton, :buy_button).on(:tap) do |sender|
+        # do  something
+      end
+    end
+  end
+end
+  
+# In your controller
+rmq.append(YourView, :your_style)
+```
 
 
 ## Contact
