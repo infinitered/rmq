@@ -17,8 +17,18 @@ module RubyMotionQuery
     #   rmq(my_view).tag(:foo)
     def tag(*tag_or_tags)
       tag_or_tags.flatten!
-      tag_or_tags.each do |tag_name|
-        tags[tag_name] = 1
+      tag_or_tags = tag_or_tags.first if tag_or_tags.length == 1
+
+      if tag_or_tags.is_a?(Array)
+        tag_or_tags.each do |tag_name|
+          tags[tag_name] = 1
+        end
+      elsif tag_or_tags.is_a?(Hash)
+        tag_or_tags.each do |tag_name, tag_value|
+          tags[tag_name] = tag_value 
+        end
+      elsif tag_or_tags.is_a?(Symbol)
+        tags[tag_or_tags] = 1
       end
     end
 

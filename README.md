@@ -291,6 +291,11 @@ rmq(my_view).clear_tags.tag(:your_new_tag)
 
 rmq(my_view).find(UILabel).tag(:selected, :customer)
 
+# You can optionally store a value in the tag, which can be super useful in some rare situations
+rmq(my_view).tag(your_tag: 22)
+rmq(my_view).tag(your_tag: 22, your_other_tag: 'Hello world')
+
+
 # You can use a tag or tags as selecors
 rmq(:selected).hide
 rmq(:your_tag).and(:selected).hide

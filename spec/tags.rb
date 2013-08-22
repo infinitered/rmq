@@ -37,4 +37,18 @@ describe 'tags' do
     end
   end
 
+  it 'should allow a hash to be sent to tag, assignign the values' do
+    @vc.rmq.append(UIView).tap do |q|
+      q.tag(one: 2)
+      q.get.rmq_data.tags.should.include :one
+      q.get.rmq_data.tags.length.should == 1
+      q.tag(foo: 66, bar: 'Hello')
+      q.get.rmq_data.tags.length.should == 3
+      q.get.rmq_data.tags.should.include :foo
+      q.get.rmq_data.tags.should.include :bar
+      q.get.rmq_data.tags[:foo].should == 66
+      q.get.rmq_data.tags[:bar].should == 'Hello'
+    end
+  end
+
 end
