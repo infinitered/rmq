@@ -287,6 +287,7 @@ The internal store of events in a UIView. It's rmq.events, you won't use it too 
 ```ruby
 # Add tags
 rmq(my_view).tag(:your_tag)
+rmq(my_view).clear_tags.tag(:your_new_tag)
 
 rmq(my_view).find(UILabel).tag(:selected, :customer)
 

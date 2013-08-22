@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby_motion_query (0.2.0)
+    ruby_motion_query (0.3.0)
 
 GEM
   remote: https://rubygems.org/

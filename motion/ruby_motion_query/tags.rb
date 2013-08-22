@@ -9,7 +9,15 @@ module RubyMotionQuery
       self
     end
 
-    # See /lib/data.rb for the rest of the tag stuff
+    # @return [RMQ]
+    def clear_tags
+      selected.each do |view|
+        view.rmq_data.tags.clear
+      end
+      self
+    end
+
+    # See /motion/data.rb for the rest of the tag stuff
 
   end
 end

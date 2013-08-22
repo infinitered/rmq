@@ -28,4 +28,13 @@ describe 'tags' do
     end
   end
 
+  it 'should clear all tags' do
+    @vc.rmq.append(UIView).tap do |q|
+      q.tag(:foo, :bar)
+      q.get.rmq_data.tag_names.sort.should == [:bar, :foo]
+      q.clear_tags.is_a?(RubyMotionQuery::RMQ).should == true
+      q.get.rmq_data.tag_names.should == []
+    end
+  end
+
 end
