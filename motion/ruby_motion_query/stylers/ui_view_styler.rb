@@ -34,12 +34,13 @@ module RubyMotionQuery
         elsif value.is_a?(Hash)
           f = @view.frame
           h = value
-          h[:l] ||= (h[:left] || f.origin.x)
-          h[:t] ||= (h[:top] || f.origin.y)
-          h[:w] ||= (h[:width] || f.size.width)
-          h[:h] ||= (h[:height] || f.size.width)
 
-          @view.frame = [[h[:l], h[:t]], [h[:w], h[:h]]]
+          f.origin.x = h[:l] || h[:left] || f.origin.x
+          f.origin.y = h[:t] || h[:top] || f.origin.y
+          f.size.width = h[:w] || h[:width] || f.size.width
+          f.size.height =h[:h] || h[:height] || f.size.height
+
+          @view.frame = f
         end
       end
       def frame
@@ -47,8 +48,6 @@ module RubyMotionQuery
       end
 
       def padded=(value)
-        #st.padded = {l: 10, t: 10, b:10, r: 10}
-
         if value.is_a?(Hash)
           h = value
           h[:l] ||= (h[:left] || 0)
@@ -67,7 +66,6 @@ module RubyMotionQuery
 
           @view.frame = value
         end
-
       end
 
       def left=(value)

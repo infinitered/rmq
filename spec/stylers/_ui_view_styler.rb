@@ -5,6 +5,18 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.background_color = color.red
   end
 
+  def complete_frame(st)
+    st.frame = {l: 5, top: 10, w: 20, height: 30}
+  end
+
+  def partial_frame_size(st)
+    st.frame = {width: 20, h: 30}
+  end
+
+  def partial_frame_location(st)
+    st.frame = {left: 5, t: 10}
+  end
+
   def ui_view_kitchen_sink(st)
     st.frame = {l: 1, t: 2, w: 3, h: 4}
     st.frame = {left: 1, top: 2, width: 3, height: 4}
@@ -35,6 +47,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
     st.scale = 1.5
   end
+
 end
 
 shared 'styler' do
@@ -88,6 +101,8 @@ shared 'styler' do
     view.backgroundColor.should == UIColor.blueColor
   end
 
+
+
   it 'should apply a style with every UIViewStyler wrapper method' do
     view = @vc.rmq.append(@view_klass, :ui_view_kitchen_sink).get
 
@@ -106,4 +121,31 @@ describe 'ui_view_styler' do
   end
 
   behaves_like "styler"
+
+  it 'should set frame' do
+    view = @vc.rmq.append(@view_klass, :complete_frame).get
+    view.frame.origin.x.should == 5
+    view.frame.origin.y.should == 10
+    view.frame.size.width.should == 20
+    view.frame.size.height.should == 30
+  end
+
+  it 'should keep existing frame values if not an entire frame is specified' do
+    view = @vc.rmq.append(@view_klass).get
+    view.frame = [[1,2],[3,4]]
+    view.frame.size.width.should == 3
+
+    @vc.rmq(view).apply_style(:partial_frame_size)
+    view.frame.origin.x.should == 1
+    view.frame.origin.y.should == 2
+    view.frame.size.width.should == 20
+    view.frame.size.height.should == 30
+
+    view.frame = [[1,2],[3,4]]
+    @vc.rmq(view).apply_style(:partial_frame_location)
+    view.frame.origin.x.should == 5 
+    view.frame.origin.y.should == 10 
+    view.frame.size.width.should == 3 
+    view.frame.size.height.should == 4 
+  end
 end
