@@ -30,18 +30,17 @@ module RubyMotionQuery
 
       def frame=(value)
         if value == :full # Thanks teacup for the name
-          value = self.superview.bounds
+          @view.frame = self.superview.bounds
         elsif value.is_a?(Hash)
+          f = @view.frame
           h = value
-          h[:l] ||= (h[:left] || 0)
-          h[:t] ||= (h[:top] || 0)
-          h[:w] ||= (h[:width] || 0)
-          h[:h] ||= (h[:height] || 0)
+          h[:l] ||= (h[:left] || f.origin.x)
+          h[:t] ||= (h[:top] || f.origin.y)
+          h[:w] ||= (h[:width] || f.size.width)
+          h[:h] ||= (h[:height] || f.size.width)
 
-          value = [[h[:l], h[:t]], [h[:w], h[:h]]]
+          @view.frame = [[h[:l], h[:t]], [h[:w], h[:h]]]
         end
-
-        @view.frame = value
       end
       def frame
         @view.frame
