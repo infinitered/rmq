@@ -126,6 +126,16 @@ describe 'events' do
     end
   end
 
+  it 'should not fail if you remove an event that isnt\'t there' do
+    @events.on(@view, :touch_down) {|o|;}
+    event_set = @events.instance_variable_get(:@event_set)
+    event_set.length.should == 1
+    @events.off(:all_editing)
+    event_set.length.should == 1
+    @events.off(:touch_down, :tap, :editing_did_endonexit)
+    event_set.length.should == 0
+  end
+
   it 'should remove all events from event set' do
     @events.on(@view, :tap) {|o|;}
     @events.on(@view, :touch_down) {|o|;}

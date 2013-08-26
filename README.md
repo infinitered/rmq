@@ -361,8 +361,6 @@ class StoreCell < UITableViewCell
 end
 ```
 
-The example app has an 'example' of create.
-
 ### Animate
 
 ```ruby

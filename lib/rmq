@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if [[ $1 == 'create' ]]; then
+  echo "RMQ - Creating project: $2"
+  motion create --template=git@github.com:infinitered/rmq-template.git $2
+fi

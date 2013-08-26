@@ -18,6 +18,8 @@ Gem::Specification.new do |spec|
   files.concat(Dir.glob('lib/**/*.rb'))
   files.concat(Dir.glob('motion/**/*.rb'))
   spec.files = files
+  
+  s.executables << 'lib/rmq'
 
   spec.test_files = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
