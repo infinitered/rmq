@@ -1,6 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 
-if [[ $1 == 'create' ]]; then
-  echo "RMQ - Creating project: $2"
-  motion create "--template=git@github.com:infinitered/rmq-template.git" $2
-fi
+unless ARGV.length == 2
+  puts 'RMQ - Invalid command, do something like this: rmq create my_new_app'
+  exit
+end
+
+
+action = ARGV[0]
+value = ARGV[1]
+
+case action
+when 'create'
+  `motion create --template=git@github.com:infinitered/rmq-template.git #{value}`
+else
+  puts 'RMQ - Invalid action'
+end
