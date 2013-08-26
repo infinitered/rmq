@@ -96,7 +96,7 @@ module RubyMotionQuery
       #   color.from_hex('#ffffff')
       #   color.from_hex('ffffff')
       def from_hex(hex_color)
-        hex_color.gsub!("#", "")   
+        hex_color = hex_color.gsub("#", "")   
         case hex_color.size 
           when 3
             colors = hex_color.scan(%r{[0-9A-Fa-f]}).map{ |el| (el * 2).to_i(16) }
