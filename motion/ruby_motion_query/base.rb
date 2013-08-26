@@ -61,6 +61,27 @@ module RubyMotionQuery
       @_selected
     end
 
+    # Wraps 1 or more views in an rmq instance.
+    #
+    # Normally you select a view or views using rmq(my_view). Which doesn't 
+    # work if you have an instance of a RMQ, in which case it isn't a method.
+    # In some cases you want to save an instance of rmq and use it like the rmq
+    # method, for this you'd use #wrap
+    #
+    # @example
+    #   q = RubyMotionQuery::RMQ.new
+    #
+    #   # Bad
+    #   q(my_view).view_controller 
+    #
+    #   # Good
+    #   q.wrap(my_view).view_controller
+    def wrap(*views)
+      views.flatten!
+      views.select!{ |v| v.is_a?(UIView) }
+      RMQ.create_with_array_and_selectors(views, views, views.first)
+    end
+
     # The view(s) this rmq was derived from
     #
     # @return [Array]

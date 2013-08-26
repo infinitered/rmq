@@ -200,5 +200,49 @@ describe 'base' do
     a[1].is_a?(UILabel).should == true
   end
 
+  describe 'should wrap' do
+    before do
+      @vc = UIViewController.alloc.init
+      @my_view = @vc.rmq.append(UIView).get
+      @my_view_2 = @vc.rmq.append(UIView).get
+    end
+
+    it 'a view(s) in an existing view tree with a new rmq instance' do
+      q = RubyMotionQuery::RMQ.new
+      q.wrap(UIView).length.should == 0
+      q.wrap(@my_view).length.should == 1
+      q.wrap(@my_view, @my_view_2).length.should == 2
+      q.wrap(@my_view).siblings.get.should == @my_view_2
+      q.wrap(@my_view).view_controller.should == @vc
+    end
+
+    it 'a view with its vc\'s rmq' do
+      @vc.rmq.wrap(UIView).length.should == 0
+      @vc.rmq.wrap(@my_view).length.should == 1
+      @vc.rmq.wrap(@my_view, @my_view_2).length.should == 2
+      @vc.rmq.wrap(@my_view).siblings.get.should == @my_view_2
+      @vc.rmq.wrap(@my_view).view_controller.should == @vc
+
+      # Identical to this:
+      @vc.rmq(@my_view).length.should == 1
+      @vc.rmq(@my_view, @my_view_2).length.should == 2
+      @vc.rmq(@my_view).siblings.get.should == @my_view_2
+      @vc.rmq(@my_view).view_controller.should == @vc
+
+      # But this will be different because it selects all UIViews
+      @vc.rmq(UIView).length.should != 0
+    end
+
+    it 'a view not in a view tree with a new rmq instance' do
+      q = RubyMotionQuery::RMQ.new
+      my_view_3 = UIView.alloc.initWithFrame(CGRectZero)
+      q.wrap(UIView).length.should == 0
+      q.wrap(my_view_3).length.should == 1
+      q.wrap(my_view_3).siblings.length.should == 0
+      q.wrap(my_view_3).view_controller.nil?.should == true
+    end
+
+  end
+
 end
 
