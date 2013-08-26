@@ -15,18 +15,20 @@ module RubyMotionQuery
     class << self
 
       # @return [RMQ]
-      def create_with_selectors(selectors, context)
+      def create_with_selectors(selectors, context, parent_rmq = nil)
         RMQ.new.tap do |o|
           o.context = context
+          o.parent_rmq = parent_rmq
           o.selectors = selectors
         end
       end
 
       # @return [RMQ]
-      def create_with_array_and_selectors(array, selectors, context)
+      def create_with_array_and_selectors(array, selectors, context, parent_rmq = nil) # TODO, convert to opts
         RMQ.new.tap do |o|
           o.context = context
           o.selectors = selectors
+          o.parent_rmq = parent_rmq
           o.selected = array # Must be last
         end
       end

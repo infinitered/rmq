@@ -45,7 +45,7 @@ end
 
 class ExtTestView < UIView
   attr_accessor :controller
-  def rmq_did_create
+  def rmq_did_create(rmq)
     @controller = rmq.view_controller
   end
 

@@ -312,7 +312,7 @@ rmq(my_view).toggle_enabled
 rmq(my_text_field).focus # or .become_first_responder
 ```
 
-### Subviews
+### Subviews - appending, creating, etc
 
 ```ruby
 rmq.append(UILabel) # Creates a UILabel in the current controller
@@ -339,6 +339,29 @@ rmq(my_view).find # children, grandchildren, etc
 rmq.root_view
 rmq.view_controller
 ```
+
+#### Create a view
+If you want to create a view but not add it to the subviews of any other view, you can
+use #create. It's basically #append without the actual appending. 
+This is very handy for stuff like table cells:
+
+```ruby
+# In your controller that is a delegate for a UITableView
+def tableView(table_view, cellForRowAtIndexPath: index_path)
+  cell = tableView.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin 
+    rmq.create(StoreCell, :store_cell)
+  end
+end
+
+# Your cell
+class StoreCell < UITableViewCell 
+  def rmq_did_create(self_in_rmq)
+    self_in_rmq.append(UILabel, :title_label) # <- this works even though this object isn't in a controller
+  end
+end
+```
+
+The example app has an 'example' of create.
 
 ### Animate
 

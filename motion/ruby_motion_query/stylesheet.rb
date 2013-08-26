@@ -7,14 +7,20 @@ module RubyMotionQuery
       unless value.is_a?(RubyMotionQuery::Stylesheet)
         value = value.new(controller)
       end
+      @_stylesheet = value
       controller.rmq_data.stylesheet = value
       self
     end
 
-    # @return [String]
+    # @return [RubyMotionQuery::Stylesheet]
     def stylesheet
       @_stylesheet ||= begin
-        self.view_controller.rmq_data.stylesheet if self.view_controller
+
+        if self.view_controller && (ss = self.view_controller.rmq_data.stylesheet)
+          ss
+        elsif (prmq = self.parent_rmq) && prmq.stylesheet
+          prmq.stylesheet
+        end
       end
     end
 

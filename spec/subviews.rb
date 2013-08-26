@@ -119,9 +119,78 @@ describe 'subviews' do
     1.should == 1
     #TODO
   end
+
+  describe 'create' do
+    it 'should allow you to create a view using rmq, without appending it to the view tree' do
+      test_view_wrapped = @vc.rmq.create(SubviewTestView)
+      test_view = test_view_wrapped.get
+
+      # test_view should have no controller
+      test_view.superview.nil?.should == true
+      test_view.controller.nil?.should == true
+      test_view.get_context.should == test_view
+      RubyMotionQuery::RMQ.controller_for_view(test_view).nil?.should == true
+    end
+
+    it 'should allow you to create a view with a style, and it to use stylesheet of view_controller from rmq creating view' do
+      @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+      test_view = @vc.rmq.create(UILabel, :create_view_style).get
+      test_view.backgroundColor.should == RubyMotionQuery::Color.blue
+    end
+
+    it 'should allow you to create a view outside any view tree, then append subviews and those should use the stylesheet from the rmq that created the parent view' do
+      rmq = @vc.rmq
+      rmq.stylesheet = SyleSheetForSubviewsTests
+      test_view_wrapped = rmq.create(SubviewTestView)
+      test_view = test_view_wrapped.get
+
+      test_view.passed_in_rmq.parent_rmq.should == rmq
+      test_view_wrapped.parent_rmq.should == rmq
+
+      test_view.passed_in_rmq.wrap(test_view).view_controller.nil?.should == true
+      test_view.passed_in_rmq.wrap(test_view).parent_rmq.parent_rmq.should == rmq
+
+      sv = test_view.subview
+      test_view_wrapped.children.first.get.should == sv
+      test_view.subviews.first.should == sv
+
+      test_view.subview.rmq_data.style_name.should == :create_sub_view_style
+      test_view.subview.backgroundColor.should == RubyMotionQuery::Color.orange
+    end
+  end
 end
 
 class SyleSheetForSubviewsTests < RubyMotionQuery::Stylesheet
   def my_style(st)
   end
+
+  def create_view_style(st)
+    st.background_color = color.blue
+  end
+
+  def create_sub_view_style(st)
+    st.background_color = color.orange
+  end
 end
+
+class SubviewTestView < UIView
+  attr_accessor :controller, :subview, :passed_in_rmq
+
+  def rmq_did_create(self_in_rmq)
+    @passed_in_rmq = self_in_rmq
+
+    # Just so we can test it
+    @controller = rmq.view_controller
+
+    self_in_rmq.tap do |q|
+      # This will work whether this view was appended to a view tree or just created outside a view tree
+      @subview = q.append(UIView, :create_sub_view_style).get
+    end
+  end
+
+  def get_context
+    rmq.context
+  end
+end
+
+

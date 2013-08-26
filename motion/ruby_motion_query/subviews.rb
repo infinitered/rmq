@@ -24,22 +24,25 @@ module RubyMotionQuery
         end
 
         subviews_added << new_view
-        if at_index = opts[:at_index]
-          selected_view.insertSubview(new_view, atIndex: at_index)
-        elsif below_view = opts[:below_view]
-          selected_view.insertSubview(new_view, belowSubview: below_view)
-        else
-          selected_view.addSubview(new_view)
+
+        unless opts[:do_not_add]
+          if at_index = opts[:at_index]
+            selected_view.insertSubview(new_view, atIndex: at_index)
+          elsif below_view = opts[:below_view]
+            selected_view.insertSubview(new_view, belowSubview: below_view)
+          else
+            selected_view.addSubview(new_view)
+          end
         end
 
         if self.stylesheet
           apply_style_to_view(new_view, style) if style
         end
 
-        new_view.rmq_did_create if created
+        new_view.rmq_did_create(self.wrap(new_view)) if created
       end
 
-      RMQ.create_with_array_and_selectors(subviews_added, selectors, @context)
+      RMQ.create_with_array_and_selectors(subviews_added, selectors, @context, self)
     end
     alias :insert :add_subview
 
@@ -53,6 +56,30 @@ module RubyMotionQuery
       add_subview view_or_constant, style: style, at_index: 0
     end
     alias :prepend :unshift
+
+    # Creates a view then returns an rmq with that view in it. It does not add that 
+    # view to the view tree. This is useful for stuff like creating table cells. You
+    # can use the rmq_did_create method, just like you do when you append a subview
+    #
+    # @return [RMQ] wrapping the view that was just create
+    #
+    # @example
+    #   def tableView(table_view, cellForRowAtIndexPath: index_path)
+    #     cell = tableView.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin 
+    #       rmq.create(StoreCell, :store_cell)
+    #     end
+    #   end
+    #
+    #   class StoreCell < UITableViewCell 
+    #     def rmq_did_create(self_in_rmq)
+    #       self_in_rmq.append(UILabel, :title_label)
+    #     end
+    #   end
+    #
+    def create(view_or_constant, style = nil)
+      # TODO, refactor so that add_subview uses create, not backwards like it is now
+      add_subview view_or_constant, style: style, do_not_add: true
+    end
 
     protected
 

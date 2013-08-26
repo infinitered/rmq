@@ -4,12 +4,14 @@ class UIView
   end
 
   # Override in your view if you want to setup subviews after your view has 
-  # been created by rmq, usually through an #append
+  # been created by rmq, usually through an #append or #create
+  #
+  # @param [RMQ] rmq that created your view
   #
   # In your view
   # @example
-  #   def rmq_did_create
-  #     rmq(self).tap do |q|
+  #   def rmq_did_create(self_in_rmq)
+  #     self_in_rmq.tap do |q|
   #       q.append(UILabel, :section_title)
   #       q.append(UIButton, :buy_button).on(:tap) do |sender|
   #         # do  something
@@ -24,7 +26,7 @@ class UIView
   # In this example an instance of YourView is created, :your_style is applied
   # then rmq_did_create is called on the instance that was just created. In that
   # order.
-  def rmq_did_create
+  def rmq_did_create(self_in_rmq)
   end
 
   protected
@@ -39,7 +41,7 @@ class UIViewController
     if RubyMotionQuery::RMQ.cache_controller_rmqs && selectors.length == 0
       rmq_data.rmq ||= RubyMotionQuery::RMQ.create_with_selectors(selectors, self)
     else
-      RubyMotionQuery::RMQ.create_with_selectors(selectors, self)
+      RubyMotionQuery::RMQ.create_with_selectors(selectors, self, rmq_data.rmq)
     end
   end
 

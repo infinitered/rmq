@@ -27,9 +27,7 @@ module RubyMotionQuery
       if opts[:return_array]
         out
       else
-        rmq = RMQ.create_with_array_and_selectors(out, selectors, @context)
-        rmq.parent_rmq = self
-        rmq
+        RMQ.create_with_array_and_selectors(out, selectors, @context, self)
       end
     end
 
@@ -77,11 +75,11 @@ module RubyMotionQuery
     # @example
     #   rmq(my_view).children.and_self
     def and_self
-      if @parent_rmq
-        out = @parent_rmq.selected.dup
+      if self.parent_rmq
+        out = self.parent_rmq.selected.dup
         out << selected
         out.flatten!
-        RMQ.create_with_array_and_selectors(out, selectors, @context)
+        RMQ.create_with_array_and_selectors(out, selectors, @context, self)
       else
         self
       end
@@ -93,7 +91,7 @@ module RubyMotionQuery
     # @example
     #   rmq(test_view).find(UIImageView).tag(:foo).end.find(UILabel).tag(:bar)
     def end
-      @parent_rmq || self
+      self.parent_rmq || self
     end
 
     # @return [RMQ] rmq instance selecting the parent of the selected view(s)
@@ -253,9 +251,11 @@ module RubyMotionQuery
     def view_controller
       @_view_controller ||= begin
         if @context.is_a?(UIViewController)
-          @context
+          WeakRef.new(@context)
         else
-          RMQ.controller_for_view(@context)
+          if vc = RMQ.controller_for_view(@context)
+            WeakRef.new(vc)
+          end
         end
       end
     end

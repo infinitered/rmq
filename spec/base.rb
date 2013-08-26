@@ -74,7 +74,7 @@ describe 'base' do
     view_controller.rmq.origin_views.should == [view_controller.view]
   end
 
-  # TODO test origin views when transversing is working
+  # TODO test parent_rmq and origin views when transversing is working
 
   it 'select context if context is UIView and there are no selectors' do
     view_controller = UIViewController.alloc.init

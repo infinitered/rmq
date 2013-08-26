@@ -16,7 +16,7 @@ module RubyMotionQuery
   #   controller that the view is currently in or to the current screen's
   #   controller
   class RMQ
-    attr_accessor :context, :parent_rmq
+    attr_accessor :context
 
     def initialize
       @selected_dirty = true
@@ -79,15 +79,26 @@ module RubyMotionQuery
     def wrap(*views)
       views.flatten!
       views.select!{ |v| v.is_a?(UIView) }
-      RMQ.create_with_array_and_selectors(views, views, views.first)
+      RMQ.create_with_array_and_selectors(views, views, views.first, self)
+    end
+
+
+    # Untested and I don' think it's getting set right in some situations 
+    #
+    # @return [RMQ] rmq that created this rmq, if any
+    def parent_rmq
+      @_parent_rmq
+    end
+    def parent_rmq=(value)
+      @_parent_rmq = value
     end
 
     # The view(s) this rmq was derived from
     #
     # @return [Array]
     def origin_views
-      if @parent_rmq
-        @parent_rmq.selected
+      if pq = self.parent_rmq
+        pq.selected
       else
         [self.view_controller.view]
       end

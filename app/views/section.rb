@@ -1,8 +1,8 @@
 class Section < UIView
 
-  def rmq_did_create
+  def rmq_did_create(self_in_rmq)
 
-    rmq(self).tap do |q|
+    self_in_rmq.tap do |q|
       q.append(UILabel, :section_title)
 
       q.append(UILabel, :section_enabled_title)
