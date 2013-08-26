@@ -19,12 +19,27 @@ module RubyMotionQuery
         @view.titleColor
       end
 
+      def background_color=(value)
+        @view.tintColor = value
+      end
+      def tint_color=(value)
+        @view.tintColor = value
+      end
+
       def image_normal=(value)
         @view.setImage value, forState: UIControlStateNormal
       end
 
       def image_highlighted=(value)
         @view.setImage value, forState: UIControlStateHighlighted
+      end
+
+      def background_image_normal=(value)
+        @view.setBackgroundImage value, forState: UIControlStateNormal
+      end
+
+      def background_image_highlighted=(value)
+        @view.setBackgroundImage value, forState: UIControlStateHighlighted
       end
 
     end
