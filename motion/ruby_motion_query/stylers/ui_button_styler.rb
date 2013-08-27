@@ -19,12 +19,6 @@ module RubyMotionQuery
         @view.titleColor
       end
 
-      def background_color=(value)
-        @view.tintColor = value
-      end
-      def background_color
-        @view.tintColor
-      end
       def tint_color=(value)
         @view.tintColor = value
       end

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-unless ARGV.length == 2
+unless ARGV.length > 0
   puts 'RMQ - Invalid command, do something like this: rmq create my_new_app'
   exit
 end
@@ -12,6 +12,26 @@ value = ARGV[1]
 case action
 when 'create'
   `motion create --template=git@github.com:infinitered/rmq-template.git #{value}`
+
+  puts %{
+Complete. Things you should do:
+> cd #{value}
+> bundle
+> rake spec
+> rake
+(main)> exit
+
+Then try these:
+> rake retina=3.5
+> rake retina=4 
+> rake device_family=ipad 
+> rake device }
+
+when 'api'
+  `open http://rdoc.info/github/infinitered/rmq`
+when 'docs'
+  `open http://infinitered.com/rmq`
 else
   puts 'RMQ - Invalid action'
+
 end
