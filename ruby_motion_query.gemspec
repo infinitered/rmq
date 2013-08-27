@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 
-Version = "0.3.0"
+Version = "0.3.5"
 
 Gem::Specification.new do |spec|
   spec.name = 'ruby_motion_query'
   spec.summary = 'RubyMotionQuery - RMQ'
-  spec.description = 'RubyMotionQuery - RMQ - A light, nonpolluting, jQuery-like library for RubyMotion' 
+  spec.description = 'RubyMotionQuery - RMQ - A fast, non-magical, non-polluting, jQuery-like library for RubyMotion' 
   spec.authors = ["Todd Werth", "InfiniteRed"]
   spec.email = 'todd@infinitered.com'
   spec.homepage = "http://infinitered.com/rmq"

@@ -22,8 +22,14 @@ module RubyMotionQuery
       def background_color=(value)
         @view.tintColor = value
       end
+      def background_color
+        @view.tintColor
+      end
       def tint_color=(value)
         @view.tintColor = value
+      end
+      def tint_color
+        @view.tintColor
       end
 
       def image_normal=(value)

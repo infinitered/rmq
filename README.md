@@ -39,6 +39,11 @@ RMQ **doesn't require any** other wrapper or gem.
 
 Some of the code in RMQ came from BubbleWrap and Sugarcube. Not too much but some did. I thank you BubbleWrap and Sugarcube teams for your work.
 
+## Quick Start
+- `gem install ruby_motion_query`
+- `rmq create my_app`
+- `cd my_app`
+- `rake retina=4`
 
 ## Installation
 

@@ -56,7 +56,6 @@ shared 'styler' do
     view = @vc.rmq.append(@view_klass, :my_style).get
     view.origin.x.should == 1
     view.origin.y.should == 2
-    view.backgroundColor.should == UIColor.redColor
   end
   
   it 'should return the view from the styler' do
@@ -83,7 +82,6 @@ shared 'styler' do
     @vc.rmq(view).apply_style(:my_style)
     view.origin.x.should == 1
     view.origin.y.should == 2
-    view.backgroundColor.should == UIColor.redColor
   end
 
   it 'should allow styling by passing a block to the style method' do
@@ -98,7 +96,6 @@ shared 'styler' do
     view.origin.x.should == 4
     view.origin.y.should == 5
     view.layer.zPosition.should == 99
-    view.backgroundColor.should == UIColor.blueColor
   end
 
 
