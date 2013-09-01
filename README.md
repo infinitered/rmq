@@ -43,6 +43,7 @@ Some of the code in RMQ came from BubbleWrap and Sugarcube. Not too much but som
 - `gem install ruby_motion_query`
 - `rmq create my_app`
 - `cd my_app`
+- `bundle`
 - `rake retina=4`
 
 ## Installation
