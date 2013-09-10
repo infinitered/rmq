@@ -130,10 +130,10 @@ module RubyMotionQuery
 
     # Convenience methods -------------------
     def rmq
-      if @controller
-        @controller.rmq
+      if @controller.nil?
+        RMQ.new
       else
-        RMQ 
+        @controller.rmq
       end
     end
 
