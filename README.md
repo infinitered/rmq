@@ -102,7 +102,7 @@ rmq(:a_tag, :a_style_name, UIImageView).hide
 rmq(hidden: true).show
 
 # If you use a set of selectors, they are an "or", to do an "and" use .and
-rmq(:UIImageView).and(hidden: true).show
+rmq(UIImageView).and(hidden: true).show
 ```
 
 **rmq by itself is the rmq instance of the current UIViewController if you're inside a UIViewController**.

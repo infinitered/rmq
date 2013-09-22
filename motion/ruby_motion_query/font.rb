@@ -64,6 +64,7 @@ module RubyMotionQuery
       def family_list
         UIFont.familyNames.sort
       end
+      alias :family_names :family_list
 
       # @return [Array]
       def for_family(family)

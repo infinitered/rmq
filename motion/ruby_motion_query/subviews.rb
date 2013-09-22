@@ -20,7 +20,7 @@ module RubyMotionQuery
           new_view = view_or_constant
         else
           created = true
-          new_view = create_view(view_or_constant)
+          new_view = create_view(view_or_constant, opts)
         end
 
         subviews_added << new_view
@@ -83,9 +83,14 @@ module RubyMotionQuery
 
     protected
 
-    def create_view(klass)
+    def create_view(klass, opts)
       if klass == UIButton
         klass.buttonWithType(UIButtonTypeCustom).tap do |o|
+          o.hidden = false
+          o.opaque = true
+        end
+      elsif reuse_identifier = opts[:reuse_identifier]
+        klass.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: reuse_identifier).tap do |o|
           o.hidden = false
           o.opaque = true
         end
