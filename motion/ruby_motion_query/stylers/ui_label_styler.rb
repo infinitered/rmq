@@ -11,6 +11,18 @@ module RubyMotionQuery
       def color=(value) ; @view.textColor = value ; end
       def color ; @view.textColor ; end
 
+      def number_of_lines=(value) 
+        value = 0 if value == :unlimited
+        @view.numberOfLines = value
+      end
+      def number_of_lines 
+        if @view.numberOfLines == 0
+          :unlimited
+        else
+          @view.numberOfLines
+        end
+      end
+
       def text_alignment=(value) 
         @view.textAlignment = TEXT_ALIGNMENTS[value] || value
       end
@@ -22,6 +34,7 @@ module RubyMotionQuery
         @view.sizeToFit
       end
       alias :size_to_fit :resize_to_fit_text
+
 
       TEXT_ALIGNMENTS = {
         left: NSTextAlignmentLeft,

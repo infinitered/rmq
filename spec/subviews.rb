@@ -54,6 +54,8 @@ describe 'subviews' do
     view.rmq_data.style_name.should == :my_style
   end
 
+  # TODO test ops in append, unshift, and create
+
   it 'should add a subview at a specific index' do
     view = @vc.rmq.append(UIView).get
     view2 = @vc.rmq.append(UIView).get

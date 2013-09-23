@@ -44,6 +44,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.opaque = false
 
     st.background_color = color.red
+    # TODO test background_image
 
     st.scale = 1.5
   end
@@ -98,7 +99,7 @@ shared 'styler' do
     view.layer.zPosition.should == 99
   end
 
-
+  # TODO, test super_height and super_width
 
   it 'should apply a style with every UIViewStyler wrapper method' do
     view = @vc.rmq.append(@view_klass, :ui_view_kitchen_sink).get

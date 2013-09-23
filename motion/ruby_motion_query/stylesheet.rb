@@ -58,7 +58,7 @@ module RubyMotionQuery
         when UILabel              then Stylers::UILabelStyler.new(view)
         when UIButton             then Stylers::UIButtonStyler.new(view)
         when UIImageView          then Stylers::UIImageViewStyler.new(view)
-        when UIScrollView         then Stylers::UIScrollViewStyler.new(view)
+        when UITableView          then Stylers::UITableViewStyler.new(view)
         when UISwitch             then Stylers::UISwitchStyler.new(view)
         when UIDatePicker         then Stylers::UIDatePickerStyler.new(view)
         when UISegmentedControl   then Stylers::UISegmentedControlStyler.new(view)
@@ -67,11 +67,11 @@ module RubyMotionQuery
         when UISlider             then Stylers::UISliderStyler.new(view)
         when UIStepper            then Stylers::UIStepperStyler.new(view)
         when UITabBar             then Stylers::UITabBarStyler.new(view)
-        when UITableView          then Stylers::UITableViewStyler.new(view)
         when UITableViewCell      then Stylers::UITableViewCellStyler.new(view)
         when UITextView           then Stylers::UITextViewStyler.new(view)
         when UITextField          then Stylers::UITextFieldStyler.new(view)
         when UINavigationBar      then Stylers::UINavigationBarStyler.new(view)
+        when UIScrollView         then Stylers::UIScrollViewStyler.new(view)
         # TODO, all the controls are done, but missing some views, add
         when UIControl            then Stylers::UIControlStyler.new(view)
         else

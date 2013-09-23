@@ -47,13 +47,16 @@ module RubyMotionQuery
     alias :insert :add_subview
 
     # @return [RMQ]
-    def append(view_or_constant, style=nil)
-      add_subview(view_or_constant, style: style)
+    def append(view_or_constant, style=nil, opts = {})
+      opts[:style] = style
+      add_subview(view_or_constant, opts)
     end
 
     # @return [RMQ]
-    def unshift(view_or_constant, style = nil)
-      add_subview view_or_constant, style: style, at_index: 0
+    def unshift(view_or_constant, style=nil, opts = {})
+      opts[:at_index] = 0
+      opts[:style] = style
+      add_subview view_or_constant, opts
     end
     alias :prepend :unshift
 
@@ -66,7 +69,7 @@ module RubyMotionQuery
     # @example
     #   def tableView(table_view, cellForRowAtIndexPath: index_path)
     #     cell = tableView.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin 
-    #       rmq.create(StoreCell, :store_cell)
+    #       rmq.create(StoreCell, :store_cell, reuse_identifier: CELL_IDENTIFIER)
     #     end
     #   end
     #
@@ -76,9 +79,11 @@ module RubyMotionQuery
     #     end
     #   end
     #
-    def create(view_or_constant, style = nil)
+    def create(view_or_constant, style = nil, opts = {})
       # TODO, refactor so that add_subview uses create, not backwards like it is now
-      add_subview view_or_constant, style: style, do_not_add: true
+      opts[:do_not_add] = true
+      opts[:style] = style
+      add_subview view_or_constant, opts
     end
 
     protected

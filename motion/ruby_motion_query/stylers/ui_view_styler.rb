@@ -24,6 +24,14 @@ module RubyMotionQuery
       end
       alias :parent :superview
 
+      def super_height
+        @view.superview.frame.size.height
+      end
+
+      def super_width
+        @view.superview.frame.size.width
+      end
+
       def tag(tags)
         rmq(@view).tag(tags)
       end
@@ -189,7 +197,9 @@ module RubyMotionQuery
         @view.backgroundColor
       end
       
-      # TODO add background_image_tiled
+      def background_image=(value)
+        @view.backgroundColor = UIColor.colorWithPatternImage(value)
+      end
 
       def z_position=(index)
         @view.layer.zPosition = index
