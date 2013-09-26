@@ -44,7 +44,7 @@ module RubyMotionQuery
     def reapply_styles
       selected.each do |selected_view|
         if style_name = selected_view.rmq_data.style_name
-        apply_style_to_view selected_view, style_name
+          apply_style_to_view selected_view, style_name
         end
       end
       self
