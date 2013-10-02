@@ -164,7 +164,8 @@ module RubyMotionQuery
 
     # Super useful in the console. log outputs to the console a table of the selected views
     #
-    # @param :wide outputs wide format (really wide, but awesome: rmq.all.log :wide)
+    # @param :wide outputs wide format (really wide, but awesome: rmq.all.log :wide). :tree outputs the 
+    # log in a tree form
     #
     # @return [String]
     #
@@ -193,7 +194,18 @@ module RubyMotionQuery
     #    168204512   | UIView                | 0                       |                                 |
     #    - - - - - - | - - - - - - - - - - - | - - - - - - - - - - - - | - - - - - - - - - - - - - - - - |
     #    RMQ 278442176. 6 selected. selectors: [UIImageView]#
+    #
+    # @example
+    #   rmq.log :tree
+    #
+    # @example
+    #   rmq.all.log :wide
     def log(opt = nil)
+      if opt == :tree
+        puts tree_to_s(selected) 
+        return
+      end
+
       wide = (opt == :wide)
       out =  "\n object_id   | class                 | style_name              | frame                           |"
       out << "\n" unless wide
@@ -232,6 +244,44 @@ module RubyMotionQuery
       out << "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors.to_s}"
 
       puts out
+    end
+
+    def tree_to_s(selected_views, depth = 0)
+      out = ""
+
+      selected_views.each do |view| 
+        first = (view == selected_views.first)
+        last = (view == selected_views.last)
+
+        if depth == 0
+          out << "\n"
+        else
+          0.upto(depth - 1).each do |i|
+            out << (i == (depth - 1) ? '    ├' : '    │')
+          end
+        end
+
+        out << '───'
+
+        out << " #{view.class.name[0..21]}"
+        out << "  ( #{view.rmq_data.style_name[0..23]} )" if view.rmq_data.style_name
+        out << "  #{view.object_id.to_s}"
+        out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
+
+        if view.origin
+          format = '#0.#'
+          s = "  {l: #{RMQ.format.numeric(view.origin.x, format)}"
+          s << ", t: #{RMQ.format.numeric(view.origin.y, format)}"
+          s << ", w: #{RMQ.format.numeric(view.size.width, format)}"
+          s << ", h: #{RMQ.format.numeric(view.size.height, format)}}"
+          out << s
+        end
+
+        out << "\n"
+        out << tree_to_s(view.subviews, depth + 1)
+      end
+
+      out
     end
 
     class << self

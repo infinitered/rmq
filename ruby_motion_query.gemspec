@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-Version = "0.3.5"
+Version = "0.3.6"
 
 Gem::Specification.new do |spec|
   spec.name = 'ruby_motion_query'
