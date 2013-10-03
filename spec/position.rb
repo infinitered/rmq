@@ -59,4 +59,20 @@ describe 'position' do
     view.origin.y.should == 90 
   end
 
+  it 'should give location of a view within the root view' do
+    view = @vc.rmq.append(UIView).move(l: 10, t: 20, w: 30, h: 40).get
+    @vc.rmq(view).location_in_root_view.should == CGPoint.new(10, 20)
+
+    view_2 = @vc.rmq(view).append(UIView).move(l: 10, t: 20, w: 5, h: 5).get
+    view_2.origin.should == CGPoint.new(10, 20)
+    @vc.rmq(view_2).location_in_root_view.should == CGPoint.new(20, 40)
+  end
+
+  it 'should give location of a views (as an array) within the root view' do
+    view = @vc.rmq.append(UIView).move(l: 10, t: 20, w: 30, h: 40).get
+    view_2 = @vc.rmq(view).append(UIView).move(l: 10, t: 20, w: 5, h: 5).get
+
+    @vc.rmq(view, view_2).location_in_root_view.should == [CGPoint.new(10, 20),CGPoint.new(20, 40)]
+  end
+
 end

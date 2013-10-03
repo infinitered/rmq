@@ -37,5 +37,20 @@ module RubyMotionQuery
       self
     end
 
+    # @return [Array] or [CGSize]
+    def location_in_root_view
+      self.location_in(self.root_view)
+    end
+
+    # @return [Array] or [CGSize]
+    def location_in(view)
+      out = []
+      selected.each do |selected_view|
+        out << selected_view.convertRect(selected_view.bounds, toView: view).origin
+      end
+      out = out.first if out.length == 1
+      out
+    end
+
   end
 end
