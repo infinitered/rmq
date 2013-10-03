@@ -38,6 +38,10 @@ module RubyMotionQuery
         @_iphone
       end
 
+      def simulator?
+        @_simulator ||= !(UIDevice.currentDevice.model =~ /simulator/i).nil?
+      end
+
       def four_inch?
         @_four_inch = (Device.height == 568.0) if @_four_inch.nil?
         @_four_inch

@@ -279,17 +279,19 @@ module RubyMotionQuery
           out << s
         end
 
-        if out.size > maxlength[0]
-          lines.each do |l|
-            l.gsub!('%PADDING%', " " * (out.size - maxlength[0]) + '%PADDING%')
+        if RMQ.debugging?
+          if out.size > maxlength[0]
+            lines.each do |l|
+              l.gsub!('%PADDING%', " " * (out.size - maxlength[0]) + '%PADDING%')
+            end
+            maxlength[0] = out.size
           end
-          maxlength[0] = out.size
-        end
 
-        if view.rmq_data.source
-          pad = " " * (maxlength[0] - out.size)
-          out << pad << "%PADDING%: "
-          out << view.rmq_data.source
+          if view.rmq_data.source
+            pad = " " * (maxlength[0] - out.size)
+            out << pad << "%PADDING%: "
+            out << view.rmq_data.source
+          end
         end
 
         lines << out
@@ -299,13 +301,21 @@ module RubyMotionQuery
 
       if depth == 0
         pad = " " * (100 - maxlength[0])
-        lines.join("\n").gsub!("%PADDING%", " ")
+        lines.each { |l| l.gsub!("%PADDING%", " ") }.join("\n")
       end
     end
 
     class << self
       attr_accessor :cache_controller_rmqs
       @cache_controller_rmqs = true
+
+      def debugging?
+        @debugging ||= ENV['rmq_debug'] == 'true'
+      end
+
+      def debugging=(flag)
+        @debugging = flag
+      end
     end
 
     protected
