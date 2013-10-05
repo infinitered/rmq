@@ -44,7 +44,7 @@ Some of the code in RMQ came from BubbleWrap and Sugarcube. Not too much but som
 - `rmq create my_app`
 - `cd my_app`
 - `bundle`
-- `rake rmq_debug=true`
+- `rake`
 
 Adding `rmq_debug=true` to rake turns on some debugging features that are too slow or verbose to include in a normal build.  It's great for normal use in the simulator, but you'll want to leave it off if you're measuring performance.
 
@@ -586,6 +586,34 @@ The following are the only pollution in RMQ
      - your_stylesheet.rb (inherit from ApplicationStylesheet)
      - your_other_stylesheet.rb (inherit from ApplicationStylesheet)
    - views
+
+### Debugging 
+
+```
+rake rmq_debug=true
+```
+
+```ruby
+rmq.debugging?
+=> true
+```
+
+```ruby
+rmq.log :tree
+rmq.all.log
+rmq.all.log :wide
+
+rmq(Section).log :tree
+# 163792144 is the ID a button
+rmq(163792144).style{|st| st.background_color = rmq.color.blue}
+
+rmq(Section).children.and_self.log :wide
+
+rmq(UILabel).animations.blink
+
+# Show subview index and thus zorder of Section within Section's parent
+rmq(Section).parent.children.log
+```
 
 ----------
 
