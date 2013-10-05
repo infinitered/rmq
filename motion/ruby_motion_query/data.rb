@@ -1,6 +1,6 @@
 module RubyMotionQuery
   class ViewData
-    attr_accessor :events, :style_name, :source
+    attr_accessor :events, :style_name
 
     # @return [Hash] Array of tag names assigned to to this view
     def tags

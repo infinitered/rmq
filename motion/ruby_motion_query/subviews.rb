@@ -13,10 +13,6 @@ module RubyMotionQuery
       subviews_added = []
       style = opts[:style]
 
-      if RMQ.debugging?
-        opts[:caller] ||= caller.first
-      end
-
       selected.each do |selected_view|
         created = false
 
@@ -43,7 +39,6 @@ module RubyMotionQuery
           apply_style_to_view(new_view, style) if style
         end
 
-        new_view.rmq_data.source = opts[:caller]
         new_view.rmq_did_create(self.wrap(new_view)) if created
       end
 
@@ -54,9 +49,6 @@ module RubyMotionQuery
     # @return [RMQ]
     def append(view_or_constant, style=nil, opts = {})
       opts[:style] = style
-      if RMQ.debugging?
-        opts[:caller] = caller.first
-      end
       add_subview(view_or_constant, opts)
     end
 
@@ -64,9 +56,6 @@ module RubyMotionQuery
     def unshift(view_or_constant, style=nil, opts = {})
       opts[:at_index] = 0
       opts[:style] = style
-      if RMQ.debugging?
-        opts[:caller] = caller.first
-      end
       add_subview view_or_constant, opts
     end
     alias :prepend :unshift
