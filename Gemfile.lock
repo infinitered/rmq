@@ -7,7 +7,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     bacon (1.2.0)
-    rake (10.0.4)
+    rake (10.1.0)
 
 PLATFORMS
   ruby
