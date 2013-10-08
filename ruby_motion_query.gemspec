@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-Version = "0.3.6"
+Version = "0.3.7"
 
 Gem::Specification.new do |spec|
   spec.name = 'ruby_motion_query'
@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   files << 'LICENSE'
   files.concat(Dir.glob('lib/**/*.rb'))
   files.concat(Dir.glob('motion/**/*.rb'))
+  files.concat(Dir.glob('templates/**/*.rb'))
   spec.files = files
   
   spec.executables << 'rmq'

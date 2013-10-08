@@ -1,21 +1,21 @@
 #!/usr/bin/env ruby
 
 require "erb"
+require "rubygems"
 
 class RmqCommandLine
   HELP_TEXT = %{
      Some things you can do with the rmq command:
      > rmq api
      > rmq docs
+
      > rmq create my_new_app
+
      > rmq create model foo
      > rmq create controller foos
      > rmq create view bar
      > rmq create shared some_class_used_app_wide
      > rmq create lib some_class_used_by_multiple_apps
-
-     # To test the create command without actually creating any files, do:
-     > rmq create view my_view dry_run
 
      > rmq help }
 
@@ -57,24 +57,46 @@ class RmqCommandLine
 
     end
 
+    def template_path(template_name)
+      sub_path = "templates/#{template_name}/"
+
+      # First check local directory, use that if it exists
+      if Dir.exist?("#{Dir.pwd}/#{sub_path}")
+        "#{Dir.pwd}/#{sub_path}"
+      else # Then check the gem
+        begin
+          spec = Gem::Specification.find_by_name("ruby_motion_query")
+          gem_root = spec.gem_dir
+          "#{gem_root}/#{sub_path}"
+        rescue Exception => e
+          puts "RMQ - could not find template directory\n"
+          nil
+        end
+      end
+    end
+
     def insert_from_template(template_name, name)
       puts "\n     Creating #{template_name}: #{name}\n\n"
 
-      @template_dir = "#{Dir.pwd}/templates/#{template_name}/"
-      files = Dir["#{@template_dir}**/*"].select {|f| !File.directory? f}
+      return unless (@template_path = template_path(template_name))
+      files = Dir["#{@template_path}**/*"].select {|f| !File.directory? f}
 
       @name = name.gsub(/(controller|stylesheet)/,'')
       @name_camel_case = @name.split('_').map{|word| word.capitalize}.join
 
       files.each do |template_file_path_and_name|
-        @in_app_path = File.dirname(template_file_path_and_name).gsub(@template_dir, '')
+        @in_app_path = File.dirname(template_file_path_and_name).gsub(@template_path, '')
         @ext = File.extname(template_file_path_and_name)
         @file_name = File.basename(template_file_path_and_name, @ext)
         
         @new_file_name = @file_name.gsub('name', @name)
         @new_file_path_name = "#{Dir.pwd}/#{@in_app_path}/#{@new_file_name}#{@ext}"
 
-        #self.instance_variables.each{|var| puts "#{var} = #{self.instance_variable_get(var)}"}
+        if @dry_run
+          puts "\n     Instance vars:"
+          self.instance_variables.each{|var| puts "     #{var} = #{self.instance_variable_get(var)}"} 
+          puts
+        end
 
         if Dir.exist?(@in_app_path)
           puts "     Using existing directory: #{@in_app_path}"
