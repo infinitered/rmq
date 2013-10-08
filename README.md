@@ -1,7 +1,7 @@
 ![RQM logo](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/9/2013/07/rmq_logo.png)
 
 # RubyMotionQuery - RMQ
-A light, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
+A fast, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
 
 **The [RMQ Introductory Guide and other info][1] is a great place to start.**
 
@@ -46,8 +46,6 @@ Some of the code in RMQ came from BubbleWrap and Sugarcube. Not too much but som
 - `bundle`
 - `rake`
 
-Adding `rmq_debug=true` to rake turns on some debugging features that are too slow or verbose to include in a normal build.  It's great for normal use in the simulator, but you'll want to leave it off if you're measuring performance.
-
 ## Installation
 
 RMQ **requires no other gems**. If you use stuff like **scale** and certain animations it will require some frameworks (like QuartzCore or CoreGraphics)
@@ -70,7 +68,7 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 	git clone git@github.com:infinitered/rmq.git
 	cd rmq
-	rake rmq_debug=true
+	rake
 
 The example app works in any orientation, on both iPhone and iPad. Notice how the benchmark popup is done with RMQ, then think about how you'd do that without it.
 
@@ -143,6 +141,33 @@ rmq(my_view).get
 # returns an array
 rmq(UILabel).get
 ```
+
+### Command-line Tool
+
+RMQ provides a command-line tool, mostly for generating files:
+```
+> rmq create my_app
+```
+
+Here are the commands available to you:
+```
+ > rmq api
+ > rmq docs
+
+ > rmq create my_new_app
+ > rmq create model foo
+ > rmq create controller bar
+ > rmq create view foo_bar
+ > rmq create shared some_class_used_app_wide
+ > rmq create lib some_class_used_by_multiple_apps
+
+ # To test the create command without actually creating any files, do:
+ > rmq create view my_view dry_run
+
+ > rmq help
+```
+
+
 
 ### Selectors
 
@@ -577,6 +602,7 @@ The following are the only pollution in RMQ
      - your_controller.rb
      - your_other_controller.rb
    - models
+   - shared
    - stylers
          - ui_view_styler.rb 
          - ui_button_styler.rb
@@ -585,14 +611,26 @@ The following are the only pollution in RMQ
      - application_stylesheet.rb (inherit from RubyMotionQuery::Stylesheet)
      - your_stylesheet.rb (inherit from ApplicationStylesheet)
      - your_other_stylesheet.rb (inherit from ApplicationStylesheet)
+     - your_view_stylesheet.rb (module, included an any controller's stylesheet that needs it)
+   - views
+ - lib
+ - resource
+ - spec
+   - controllers
+   - lib
+   - models
+   - shared
+   - stylers
    - views
 
 ### Debugging 
 
+Adding rmq_debug=true to rake turns on some debugging features that are too slow or verbose to include in a normal build.  It's great for normal use in the simulator, but you'll want to leave it off if you're measuring performance.
 ```
 rake rmq_debug=true
 ```
 
+Use this to add your optional debugging code
 ```ruby
 rmq.debugging?
 => true

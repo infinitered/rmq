@@ -1,37 +1,129 @@
 #!/usr/bin/env ruby
 
-unless ARGV.length > 0
-  puts 'RMQ - Invalid command, do something like this: rmq create my_new_app'
-  exit
+require "erb"
+
+class RmqCommandLine
+  HELP_TEXT = %{
+     Some things you can do with the rmq command:
+     > rmq api
+     > rmq docs
+     > rmq create my_new_app
+     > rmq create model foo
+     > rmq create controller foos
+     > rmq create view bar
+     > rmq create shared some_class_used_app_wide
+     > rmq create lib some_class_used_by_multiple_apps
+
+     # To test the create command without actually creating any files, do:
+     > rmq create view my_view dry_run
+
+     > rmq help }
+
+  class << self
+    VALID_CREATE_TYPES = [:model, :controller, :view, :shared, :lib]
+
+    def create(template_or_app_name, name, options)
+      @dry_run = true if options == 'dry_run'
+
+      if name
+        if VALID_CREATE_TYPES.include?(template_or_app_name.to_sym)
+          insert_from_template(template_or_app_name, name)
+        else
+          puts "RMQ - Invalid command, do something like this: rmq create controller my_controller\n"
+        end
+      else
+        create_app(template_or_app_name)
+      end
+    end
+
+    def create_app(app_name)
+      puts '     Creating app'
+
+      `motion create --template=git@github.com:infinitered/rmq-template.git #{app_name}`
+
+      puts %{
+      Complete. Things you should do:
+      > cd #{app_name}
+      > bundle
+      > rake spec
+      > rake
+      (main)> exit
+
+      Then try these:
+      > rake retina=3.5
+      > rake retina=4 
+      > rake device_family=ipad 
+      > rake device }
+
+    end
+
+    def insert_from_template(template_name, name)
+      puts "\n     Creating #{template_name}: #{name}\n\n"
+
+      @template_dir = "#{Dir.pwd}/templates/#{template_name}/"
+      files = Dir["#{@template_dir}**/*"].select {|f| !File.directory? f}
+
+      @name = name.gsub(/(controller|stylesheet)/,'')
+      @name_camel_case = @name.split('_').map{|word| word.capitalize}.join
+
+      files.each do |template_file_path_and_name|
+        @in_app_path = File.dirname(template_file_path_and_name).gsub(@template_dir, '')
+        @ext = File.extname(template_file_path_and_name)
+        @file_name = File.basename(template_file_path_and_name, @ext)
+        
+        @new_file_name = @file_name.gsub('name', @name)
+        @new_file_path_name = "#{Dir.pwd}/#{@in_app_path}/#{@new_file_name}#{@ext}"
+
+        #self.instance_variables.each{|var| puts "#{var} = #{self.instance_variable_get(var)}"}
+
+        if Dir.exist?(@in_app_path)
+          puts "     Using existing directory: #{@in_app_path}"
+        else
+          puts "  \u0394  Creating directory: #{@in_app_path}"
+          Dir.mkdir(@in_app_path) unless @dry_run
+        end
+
+        results = load_and_parse_erb(template_file_path_and_name)
+
+        if File.exists?(@new_file_path_name)
+          puts "  X  File exists, SKIPPING: #{@new_file_path_name}"
+        else
+          puts "  \u0394  Creating file: #{@new_file_path_name}"
+          File.open(@new_file_path_name, 'w+') { |file| file.write(results) } unless @dry_run
+        end
+      end
+
+      puts "\n     Done"
+    end
+
+    def load_and_parse_erb(template_file_name_and_path)
+      template_file = File.open(template_file_name_and_path, 'r').read
+      erb = ERB.new(template_file)
+      erb.result(binding)
+    end
+  end
 end
 
 
+# Process input, execute actions
+unless ARGV.length > 0
+  puts "RMQ - Invalid command, do something like this: rmq create my_new_app\n"
+  puts RmqCommandLine::HELP_TEXT
+  exit
+end
+
 action = ARGV[0]
-value = ARGV[1]
 
 case action
 when 'create'
-  `motion create --template=git@github.com:infinitered/rmq-template.git #{value}`
-
-  puts %{
-Complete. Things you should do:
-> cd #{value}
-> bundle
-> rake spec
-> rake
-(main)> exit
-
-Then try these:
-> rake retina=3.5
-> rake retina=4 
-> rake device_family=ipad 
-> rake device }
-
+  RmqCommandLine.create(ARGV[1], ARGV[2], ARGV[3])
 when 'api'
   `open http://rdoc.info/github/infinitered/rmq`
 when 'docs'
   `open http://infinitered.com/rmq`
+when 'help'
+  puts RmqCommandLine::HELP_TEXT
 else
   puts 'RMQ - Invalid action'
-
+  puts RmqCommandLine::HELP_TEXT
 end
