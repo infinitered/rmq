@@ -102,6 +102,35 @@ module RubyMotionQuery
       )
     end
 
+    def drop_and_spin(opts = {})
+      remove_view = opts[:remove_view]
+      opts.merge!({
+        duration: 0.4 + (rand(8) / 10),
+        options: UIViewAnimationOptionCurveEaseIn|UIViewAnimationOptionBeginFromCurrentState,
+        animations: -> (cq) {
+          cq.style do |st| 
+            st.top = @rmq.device.height + st.height
+            st.rotation = 180 + rand(50) 
+          end
+        },
+        completion: -> (did_finish, q) {
+          if did_finish
+            q.style do |st| 
+              st.rotation = 0
+            end
+
+            if remove_view
+              q.remove
+            else
+              q.hide.move(t:0)
+            end
+          end
+        }
+      })
+
+      @rmq.animate(opts)
+    end
+
     # @return [RMQ]
     def blink
       self.fade_out(duration: 0.2, after: lambda {|did_finish, rmq| rmq.animations.fade_in(duration: 0.2)})

@@ -40,17 +40,39 @@ RMQ **doesn't require any** other wrapper or gem.
 Some of the code in RMQ came from BubbleWrap and Sugarcube. Not too much but some did. I thank you BubbleWrap and Sugarcube teams for your work.
 
 ## Quick Start
-- `gem install ruby_motion_query`
-- `rmq create my_app`
-- `cd my_app`
-- `bundle`
-- `rake`
+
+```
+gem install ruby_motion_query
+rmq create my_app
+cd my_app
+bundle
+rake
+```
+
+Or, if you use **rbenv**:
+
+```
+gem install ruby_motion_query
+rmq create my_app
+rbenv rehash
+cd my_app
+bundle
+rake
+```
+
 
 ## Installation
 
 RMQ **requires no other gems**. If you use stuff like **scale** and certain animations it will require some frameworks (like QuartzCore or CoreGraphics)
 
 - `gem install ruby_motion_query`
+
+If you use rbenv
+
+- `rbenv rehash`
+
+Require it
+
 - `require 'ruby_motion_query'`
 
 or add it to your `Gemfile`:
@@ -437,6 +459,7 @@ rmq(my_view).animations.fade_out(duration: 0.8)
 
 rmq(my_view).animations.blink
 rmq(my_view).animations.throb
+rmq(my_view).animations.drop_and_spin
 
 rmq.animations.start_spinner
 rmq.animations.stop_spinner
@@ -966,6 +989,7 @@ def ui_view_kitchen_sink(st)
   st.background_color = color.red
 
   st.scale = 1.5
+  st.rotation = 45
 end
 ```
 

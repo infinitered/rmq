@@ -47,6 +47,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     # TODO test background_image
 
     st.scale = 1.5
+    st.rotation = 45
   end
 
 end

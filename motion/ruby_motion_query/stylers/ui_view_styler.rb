@@ -245,6 +245,11 @@ module RubyMotionQuery
         end
       end
 
+      def rotation=(new_angle)
+        radians = new_angle * Math::PI / 180 
+        @view.transform = CGAffineTransformMakeRotation(radians)
+      end
+
     end
   end
 end
