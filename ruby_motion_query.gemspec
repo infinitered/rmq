@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
-Version = "0.4.0"
+$:.push File.expand_path("../motion", __FILE__)
+require "ruby_motion_query/version"
 
 Gem::Specification.new do |spec|
   spec.name = 'ruby_motion_query'
@@ -9,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Todd Werth", "InfiniteRed"]
   spec.email = 'todd@infinitered.com'
   spec.homepage = "http://infinitered.com/rmq"
-  spec.version = Version
+  spec.version = RubyMotionQuery::VERSION
   spec.license = 'MIT'
 
   files = []

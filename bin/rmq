@@ -3,8 +3,12 @@
 require "erb"
 require "rubygems"
 
+$:.unshift(File.join(File.dirname(__FILE__), "/../motion/ruby_motion_query"))
+require "version"
+
 class RmqCommandLine
-  HELP_TEXT = %{
+  HELP_TEXT = %{     rmq version #{RubyMotionQuery::VERSION}
+
      Some things you can do with the rmq command:
      > rmq api
      > rmq docs
@@ -17,7 +21,8 @@ class RmqCommandLine
      > rmq create shared some_class_used_app_wide
      > rmq create lib some_class_used_by_multiple_apps
 
-     > rmq help }
+     > rmq -h, --help
+     > rmq -v, --version }
 
   class << self
     VALID_CREATE_TYPES = [:model, :controller, :view, :shared, :lib]
@@ -143,8 +148,10 @@ when 'api'
   `open http://rdoc.info/github/infinitered/rmq`
 when 'docs'
   `open http://infinitered.com/rmq`
-when 'help'
+when '--help', '-h'
   puts RmqCommandLine::HELP_TEXT
+when '-v', '--version'
+  puts RubyMotionQuery::VERSION
 else
   puts 'RMQ - Invalid action'
   puts RmqCommandLine::HELP_TEXT
