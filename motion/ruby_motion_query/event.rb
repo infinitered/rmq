@@ -44,7 +44,17 @@ module RubyMotionQuery
           o.delegate = opts[:delegate] if opts.include?(:delegate)
           o.numberOfTapsRequired = opts[:taps_required] if opts.include?(:taps_required)
           o.numberOfTouchesRequired = opts[:fingers_required] if opts.include?(:fingers_required)
-          # TODO, add the rest
+          o.maximumNumberOfTouches = opts[:maximum_number_of_touches] if opts.include?(:maximum_number_of_touches)
+          o.minimumNumberOfTouches = opts[:minimum_number_of_touches] if opts.include?(:minimum_number_of_touches)
+          o.allowableMovement = opts[:allowable_movement] if opts.include?(:allowable_movement)
+          o.minimumPressDuration = opts[:minimum_press_duration] if opts.include?(:minimum_press_duration)
+          o.direction = opts[:direction] if opts.include?(:direction)
+          o.rotation = opts[:rotation] if opts.include?(:rotation)
+          o.scale = opts[:scale] if opts.include?(:scale)
+
+          if opts.include?(:init)
+            opts[:init].call(@recognizer)
+          end
         end
       end
     end

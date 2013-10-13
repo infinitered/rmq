@@ -1102,6 +1102,14 @@ end
 rmq.append(YourView, :your_style)
 ```
 
+### Future features
+
+Future features that I plan on adding
+
+- rmq.push_sub_controller(my_controller) and rmq.pop_sub_controller and rmq.pop_this_controller
+- add borders to UIView styler: st.borders = {l: {w: 2, color: color.black}, r: {w: 2, color: color.black}}
+- add templates for: nav controller, tab controller, table controller, collection controller
+
 
 ## Contact
 

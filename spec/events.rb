@@ -33,7 +33,7 @@ describe 'events on views' do
     1.should == 1
   end
 
-  it 'should add gesture on multiple view' do
+  it 'should add gesture on multiple views' do
     # TODO dup the events above and do gestures, minor test
     1.should == 1
   end
@@ -124,6 +124,11 @@ describe 'events' do
     should.raise(RuntimeError) do 
       @events.on(@view, :tap) {|o|;}
     end
+  end
+
+  it 'should return event based on events index' do
+    # TODO, finish
+    1.should == 1
   end
 
   it 'should not fail if you remove an event that isnt\'t there' do

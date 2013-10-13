@@ -75,6 +75,12 @@ describe 'event' do
     # TODO, add the rest
   end
 
+  it 'should return the recognizer if a block is passed as the init option' do
+    event = RubyMotionQuery::Event.new(@control, :tap, lambda {|sender| ;}) 
+    event.gesture?.should == true
+    event.set_options init: ->(recongnizer){recongnizer.is_a?(UIGestureRecognizer).should == true}
+  end
+
   it 'should return as gesture if is one' do
     event = RubyMotionQuery::Event.new(@control, :tap, lambda {|sender| ;}) 
     event.gesture?.should == true
