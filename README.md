@@ -354,6 +354,12 @@ rmq(my_view).tag(your_tag: 22, your_other_tag: 'Hello world')
 # You can use a tag or tags as selecors
 rmq(:selected).hide
 rmq(:your_tag).and(:selected).hide
+
+# Get tags for a view
+your_view.rmq_data.tags
+# Also
+your_view.rmq_data.has_tag?(:foo)
+your_view.rmq_data.tag_names
 ```
 
 ### Actions
@@ -1109,6 +1115,7 @@ Future features that I plan on adding
 - rmq.push_sub_controller(my_controller) and rmq.pop_sub_controller and rmq.pop_this_controller
 - add borders to UIView styler: st.borders = {l: {w: 2, color: color.black}, r: {w: 2, color: color.black}}
 - add templates for: nav controller, tab controller, table controller, collection controller
+- add from_right, from_bottom, and centered to both st.frame and to move
 
 
 ## Contact

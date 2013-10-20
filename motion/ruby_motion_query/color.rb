@@ -127,6 +127,10 @@ module RubyMotionQuery
       def from_hsva(h,s,v,a)
         UIColor.alloc.initWithHue(h, saturation: s, brightness: v, alpha: a)
       end
+
+      def random
+        from_rgba(rand(255), rand(255), rand(255), 1.0)
+      end
     end
 
   end

@@ -1,3 +1,3 @@
 module RubyMotionQuery
-  VERSION = "0.4.1b"
+  VERSION = "0.4.1"
 end

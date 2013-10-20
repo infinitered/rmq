@@ -21,11 +21,13 @@ class RmqCommandLine
      > rmq create shared some_class_used_app_wide
      > rmq create lib some_class_used_by_multiple_apps
 
+     > rmq create collection_view_controller foos
+
      > rmq -h, --help
      > rmq -v, --version }
 
   class << self
-    VALID_CREATE_TYPES = [:model, :controller, :view, :shared, :lib]
+    VALID_CREATE_TYPES = [:model, :controller, :view, :shared, :lib, :collection_view_controller]
 
     def create(template_or_app_name, name, options)
       @dry_run = true if options == 'dry_run'
