@@ -26,7 +26,7 @@ A fast, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymo
 
 ----------
 
-**Tested only on iOS only, not OS X (nor is there any OS X specific code)**
+**Tested on iOS, not OS X (nor is there any OS X specific code)**
 
 ----------
 
@@ -182,6 +182,8 @@ Here are the commands available to you:
  > rmq create view foo_bar
  > rmq create shared some_class_used_app_wide
  > rmq create lib some_class_used_by_multiple_apps
+
+ > rmq create collection_view_controller foos 
 
  # To test the create command without actually creating any files, do:
  > rmq create view my_view dry_run
@@ -1116,6 +1118,7 @@ Future features that I plan on adding
 - add borders to UIView styler: st.borders = {l: {w: 2, color: color.black}, r: {w: 2, color: color.black}}
 - add templates for: nav controller, tab controller, table controller, collection controller
 - add from_right, from_bottom, and centered to both st.frame and to move
+- add binding that combines KVO and events to bind an attribute of one object to the attribute of selected view(s), keeping both in sync, like so: rmq.append(UITextField).bind(@person, attr: :name, to: :text)
 
 
 ## Contact

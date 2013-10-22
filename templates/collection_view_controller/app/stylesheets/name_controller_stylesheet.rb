@@ -10,12 +10,12 @@ class <%= @name_camel_case %>ControllerStylesheet < ApplicationStylesheet
   end
 
   def collection_view(st)
-    st.frame = :full
     st.view.contentInset = [@margin, @margin, @margin, @margin]
     st.background_color = color.white
 
     st.view.collectionViewLayout.tap do |cl|
       cl.itemSize = cell_size
+      #cl.scrollDirection = UICollectionViewScrollDirectionHorizontal
       #cl.headerReferenceSize = cell_size
       cl.minimumInteritemSpacing = @margin 
       cl.minimumLineSpacing = @margin 

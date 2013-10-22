@@ -1,7 +1,13 @@
 class <%= @name_camel_case %>Controller < UICollectionViewController
-  # In app_delegate.rb or wherever you use this controller, just call #new like so:
-  # @window.rootViewController =  <%= @name_camel_case %>Controller.new
+  # In app_delegate.rb or wherever you use this controller, just call .new like so:
+  #   @window.rootViewController = <%= @name_camel_case %>Controller.new
+  #
+  # Or if you're adding using it in a navigation controller, do this
+  #  main_controller = <%= @name_camel_case %>Controller.new
+  #  @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
 
+  <%= @name.upcase %>_CELL_ID = "<%= @name_camel_case %>Cell"
+  
   def self.new(args = {})
     # Set layout 
     layout = UICollectionViewFlowLayout.alloc.init
@@ -14,7 +20,7 @@ class <%= @name_camel_case %>Controller < UICollectionViewController
     rmq.stylesheet = <%= @name_camel_case %>ControllerStylesheet
 
     collectionView.tap do |cv|
-      cv.registerClass(<%= @name_camel_case %>Cell, forCellWithReuseIdentifier: <%= @name_camel_case %>Cell.name)
+      cv.registerClass(<%= @name_camel_case %>Cell, forCellWithReuseIdentifier: <%= @name.upcase %>_CELL_ID)
       cv.delegate = self
       cv.dataSource = self
       cv.allowsSelection = true
@@ -30,7 +36,7 @@ class <%= @name_camel_case %>Controller < UICollectionViewController
 
   # Remove if you are only supporting portrait
   def willAnimateRotationToInterfaceOrientation(orientation, duration: duration)
-    rmq.all.reapply_styles
+    rmq(:reapply_style).reapply_styles
   end
 
   def numberOfSectionsInCollectionView(view)
@@ -38,11 +44,11 @@ class <%= @name_camel_case %>Controller < UICollectionViewController
   end
  
   def collectionView(view, numberOfItemsInSection: section)
-    40
+    200 
   end
     
   def collectionView(view, cellForItemAtIndexPath: index_path)
-    view.dequeueReusableCellWithReuseIdentifier(<%= @name_camel_case %>Cell.name, forIndexPath: index_path).tap do |cell|
+    view.dequeueReusableCellWithReuseIdentifier(<%= @name.upcase %>_CELL_ID, forIndexPath: index_path).tap do |cell|
       cell.setup_with(rmq)
 
       # Update cell's data here
@@ -50,7 +56,8 @@ class <%= @name_camel_case %>Controller < UICollectionViewController
   end
 
   def collectionView(view, didSelectItemAtIndexPath: index_path)
-    cell = collectionView.cellForItemAtIndexPath(index_path)
+    cell = view.cellForItemAtIndexPath(index_path)
+    puts "Selected at section: #{index_path.section}, row: #{index_path.row}"
   end
 
 end
