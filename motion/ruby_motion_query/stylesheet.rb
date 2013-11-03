@@ -179,8 +179,34 @@ module RubyMotionQuery
       device.screen.applicationFrame.size
     end
 
+    def screen_width
+      screen_size.width
+    end
+
+    def screen_height
+      screen_size.height
+    end
+
     def screen_size
       device.screen.bounds.size
+    end
+
+    def content_width
+      content_size.width
+    end
+
+    def content_height
+      content_size.height
+    end
+
+    # Content size of the controller's rootview, if it is a
+    # UIScrollView, UICollectionView, UITableView, etc
+    def content_size
+      if @controller.view.respond_to?(:contentSize)
+        @controller.view.contentSize
+      else
+        CGSizeZero
+      end
     end
 
     def image

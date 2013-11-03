@@ -19,7 +19,6 @@ class <%= @name_camel_case %>ControllerStylesheet < ApplicationStylesheet
       #cl.headerReferenceSize = cell_size
       cl.minimumInteritemSpacing = @margin 
       cl.minimumLineSpacing = @margin 
-      #cl.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight,
       #cl.sectionInsert = [0,0,0,0]
     end
   end

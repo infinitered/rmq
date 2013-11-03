@@ -42,6 +42,21 @@ describe 'stylesheet' do
     1.should == 1
   end
 
+  it 'should get app_size, width, and height' do
+    # TODO
+    1.should == 1
+  end
+
+  it 'should get screen_size, width, and height' do
+    # TODO
+    1.should == 1
+  end
+
+  it 'should get content_size, width, and height' do
+    # TODO
+    1.should == 1
+  end
+
   it 'should use parent_rmq to get stylesheet if there is no view_controller' do
     rmq1 = @vc.rmq
     rmq1.append(UILabel)
