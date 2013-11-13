@@ -410,7 +410,7 @@ This is very handy for stuff like table cells:
 
 ```ruby
 # In your controller that is a delegate for a UITableView
-def tableView(table_view, cellForRowAtIndexPath: index_path)
+def tableView(tableView, cellForRowAtIndexPath: index_path)
   cell = tableView.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin
     rmq.create(StoreCell, :store_cell, cell_identifier: CELL_IDENTIFIER)
   end
@@ -419,7 +419,7 @@ end
 # Your cell
 class StoreCell < UITableViewCell
   def rmq_did_create(self_in_rmq)
-    self_in_rmq.append(UILabel, :title_label) # <- this works even though this object isn't in a controller
+    self_in_rmq.append(UILabel, :title_label).get # <- this works even though this object isn't in a controller
   end
 end
 ```
