@@ -411,8 +411,8 @@ This is very handy for stuff like table cells:
 ```ruby
 # In your controller that is a delegate for a UITableView
 def tableView(table_view, cellForRowAtIndexPath: index_path)
-  cell = tableView.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin
-    rmq.create(StoreCell, :store_cell, cell_identifier: CELL_IDENTIFIER)
+  cell = table_view.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin
+    rmq.create(StoreCell, :store_cell, cell_identifier: CELL_IDENTIFIER).get
   end
 end
 
