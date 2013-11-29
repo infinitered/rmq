@@ -37,6 +37,26 @@ module RubyMotionQuery
       self
     end
 
+    def distribute(type = :vertical, params = {})
+      return 0 if selected.length == 0
+
+      margin = params[:margin] || 0
+
+      current_end = 0 - margin
+
+      selected.each do |view|
+        st = self.styler_for(view)
+        if type == :horizontal
+          st.left = current_end + margin
+          current_end = st.right
+        else
+          st.top = current_end + margin
+          current_end = st.bottom
+        end
+        
+      end
+    end
+
     # @return [Array] or [CGSize]
     def location_in_root_view
       self.location_in(self.root_view)
