@@ -44,6 +44,11 @@ describe 'position' do
     # TODO
   end
 
+  it 'should resize to fit subviews' do
+    1.should == 1
+    # TODO
+  end
+
   it 'should nudge a view in various directions' do
     view = @vc.rmq.append(UILabel).get
     view.origin.x.should == 0

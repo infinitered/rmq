@@ -55,6 +55,28 @@ module RubyMotionQuery
         end
         
       end
+
+      self
+    end
+
+    def resize_to_fit_subviews
+      selected.each do |view|
+        st = self.styler_for(view)
+
+        w = 0
+        h = 0
+
+        view.subviews.each do |subview|
+          sub_st = self.styler_for(subview)
+          w = [sub_st.right, w].max
+          h = [sub_st.bottom, h].max
+        end
+
+        st.width = w if st.width < w
+        st.height = h if st.height < h
+      end
+
+      self
     end
 
     # @return [Array] or [CGSize]
