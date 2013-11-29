@@ -41,11 +41,13 @@ module RubyMotionQuery
       return 0 if selected.length == 0
 
       margin = params[:margin] || 0
-
-      current_end = 0 - margin
+      current_end = nil
 
       selected.each do |view|
         st = self.styler_for(view)
+
+        current_end = (st.top - margin) unless current_end
+
         if type == :horizontal
           st.left = current_end + margin
           current_end = st.right
