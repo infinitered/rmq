@@ -21,6 +21,10 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.frame = CGRectMake(5, 10, 20, 30)
   end
 
+  def array_frame(st)
+    st.frame = [[5, 10], [20, 30]]
+  end
+
   def ui_view_kitchen_sink(st)
     st.frame = {l: 1, t: 2, w: 3, h: 4}
     st.frame = {left: 1, top: 2, width: 3, height: 4}
@@ -135,6 +139,14 @@ describe 'ui_view_styler' do
 
   it 'should set a real frame' do
     view = @vc.rmq.append(@view_klass, :real_frame).get
+    view.frame.origin.x.should == 5
+    view.frame.origin.y.should == 10
+    view.frame.size.width.should == 20
+    view.frame.size.height.should == 30
+  end
+
+  it 'should set an array frame' do
+    view = @vc.rmq.append(@view_klass, :array_frame).get
     view.frame.origin.x.should == 5
     view.frame.origin.y.should == 10
     view.frame.size.width.should == 20
