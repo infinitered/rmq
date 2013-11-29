@@ -17,6 +17,10 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.frame = {left: 5, t: 10}
   end
 
+  def real_frame(st)
+    st.frame = CGRectMake(5, 10, 20, 30)
+  end
+
   def ui_view_kitchen_sink(st)
     st.frame = {l: 1, t: 2, w: 3, h: 4}
     st.frame = {left: 1, top: 2, width: 3, height: 4}
@@ -59,7 +63,7 @@ shared 'styler' do
     view.origin.x.should == 1
     view.origin.y.should == 2
   end
-  
+
   it 'should return the view from the styler' do
     view = @vc.rmq.append(@view_klass, :my_style).get
     styler = @vc.rmq.styler_for(view)
@@ -129,6 +133,14 @@ describe 'ui_view_styler' do
     view.frame.size.height.should == 30
   end
 
+  it 'should set a real frame' do
+    view = @vc.rmq.append(@view_klass, :real_frame).get
+    view.frame.origin.x.should == 5
+    view.frame.origin.y.should == 10
+    view.frame.size.width.should == 20
+    view.frame.size.height.should == 30
+  end
+
   it 'should keep existing frame values if not an entire frame is specified' do
     view = @vc.rmq.append(@view_klass).get
     view.frame = [[1,2],[3,4]]
@@ -142,9 +154,9 @@ describe 'ui_view_styler' do
 
     view.frame = [[1,2],[3,4]]
     @vc.rmq(view).apply_style(:partial_frame_location)
-    view.frame.origin.x.should == 5 
-    view.frame.origin.y.should == 10 
-    view.frame.size.width.should == 3 
-    view.frame.size.height.should == 4 
+    view.frame.origin.x.should == 5
+    view.frame.origin.y.should == 10
+    view.frame.size.width.should == 3
+    view.frame.size.height.should == 4
   end
 end
