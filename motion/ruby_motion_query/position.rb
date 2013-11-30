@@ -40,19 +40,27 @@ module RubyMotionQuery
     def distribute(type = :vertical, params = {})
       return 0 if selected.length == 0
 
+      margins = params[:margins]
       margin = params[:margin] || 0
       current_end = nil
 
-      selected.each do |view|
+      selected.each_with_index do |view, i|
         st = self.styler_for(view)
+        next if st.height == 0
 
-        current_end = (st.top - margin) unless current_end
+        view_margin = if (margins && margins[i])
+          margins[i]
+        else
+          margin
+        end
+
+        current_end = (st.top - view_margin) unless current_end
 
         if type == :horizontal
-          st.left = current_end + margin
+          st.left = current_end + view_margin
           current_end = st.right
         else
-          st.top = current_end + margin
+          st.top = current_end + view_margin
           current_end = st.bottom
         end
         
