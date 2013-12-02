@@ -88,7 +88,7 @@ module RubyMotionQuery
 
     def apply_style_to_view(view, style_name)
       begin
-        stylesheet.__send__(style_name, styler_for(view))
+        stylesheet.public_send(style_name, styler_for(view))
         view.rmq_data.style_name = style_name
       rescue NoMethodError => e
         if e.message =~ /.*#{style_name.to_s}.*/
