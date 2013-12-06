@@ -26,17 +26,28 @@ module RubyMotionQuery
       # @param view
       # @return [UIViewController] The controller the view it is sitting in, or nil if it's not sitting anywhere in particular 
       def controller_for_view(view)
-        # Non-recursive for speed
-        while view
-          view = view.nextResponder
-          if view.is_a?(UIViewController)
-            break
-          elsif !view.is_a?(UIView)
-            view = nil
-          end
-        end
+        if view && (vc = view.rmq_data.view_controller)
+          vc 
+        else
 
-        view
+          # Non-recursive for speed
+          while view
+            view = view.nextResponder
+            if view.is_a?(UIViewController)
+              break
+            elsif view.is_a?(UIView)
+              if vc = view.rmq_data.view_controller
+                view = vc
+                break
+              end
+            else
+              view = nil
+            end
+          end
+
+          view
+
+        end
       end
 
       # Mainly used for console and logging

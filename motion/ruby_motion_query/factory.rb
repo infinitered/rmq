@@ -1,12 +1,22 @@
 module RubyMotionQuery
   class RMQ
-    # TODO question, should there be a rmq pool to reuse?
 
+    # TODO
+    def create_factory(klass)
+      # TODO
+    end
+
+    # This is used internally, to get a new rmq instance, just call "rmq" in your view or controller or
+    # just create a new one like so: RubyMotionQuery::RMQ.new
+    #
     # @return [RMQ]
     def create_blank_rmq
       RMQ.create_with_array_and_selectors([], self.selectors, @context)
     end
 
+    # This is used internally, to get a new rmq instance, just call "rmq" in your view or controller or
+    # just create a new one like so: RubyMotionQuery::RMQ.new
+    #
     # @return [RMQ]
     def create_rmq_in_context(*selectors)
       RMQ.create_with_selectors(selectors, @context)
@@ -14,23 +24,29 @@ module RubyMotionQuery
 
     class << self
 
+      # This is used internally, to get a new rmq instance, just call "rmq" in your view or controller or
+      # just create a new one like so: RubyMotionQuery::RMQ.new
+      #
       # @return [RMQ]
       def create_with_selectors(selectors, context, parent_rmq = nil)
-        RMQ.new.tap do |o|
-          o.context = context
-          o.parent_rmq = parent_rmq
-          o.selectors = selectors
-        end
+        q = RMQ.new
+        q.context = context
+        q.parent_rmq = parent_rmq
+        q.selectors = selectors
+        q
       end
 
+      # This is used internally, to get a new rmq instance, just call "rmq" in your view or controller or
+      # just create a new one like so: RubyMotionQuery::RMQ.new
+      #
       # @return [RMQ]
       def create_with_array_and_selectors(array, selectors, context, parent_rmq = nil) # TODO, convert to opts
-        RMQ.new.tap do |o|
-          o.context = context
-          o.selectors = selectors
-          o.parent_rmq = parent_rmq
-          o.selected = array # Must be last
-        end
+        q = RMQ.new
+        q.context = context
+        q.selectors = selectors
+        q.parent_rmq = parent_rmq
+        q.selected = array # Must be last
+        q
       end
 
     end

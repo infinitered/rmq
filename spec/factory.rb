@@ -6,6 +6,14 @@ describe 'factory' do
     rmq.context.should == view
   end
 
+  it 'should set context to the controller' do
+    u = UIView.alloc.initWithFrame(CGRectZero)
+    vc = UIViewController.alloc.init
+    vc.view.addSubview(u)
+    q = RubyMotionQuery::RMQ.create_with_selectors(nil, vc)
+    q.context.should == vc
+  end
+
   it 'should create blank RMQ from existing RMQ' do
     view_controller = UIViewController.alloc.init
     view = UIView.alloc.initWithFrame(CGRectZero)

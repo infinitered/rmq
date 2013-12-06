@@ -15,6 +15,8 @@ module RubyMotionQuery
 
       selected.each do |selected_view|
         created = false
+        appended = false
+
 
         if view_or_constant.is_a?(UIView)
           new_view = view_or_constant
@@ -22,6 +24,8 @@ module RubyMotionQuery
           created = true
           new_view = create_view(view_or_constant, opts)
         end
+
+        new_view.rmq_data.view_controller = self.view_controller
 
         subviews_added << new_view
 
@@ -33,13 +37,20 @@ module RubyMotionQuery
           else
             selected_view.addSubview(new_view)
           end
+
+          appended = true
         end
 
         if self.stylesheet
           apply_style_to_view(new_view, style) if style
         end
 
-        new_view.rmq_did_create(self.wrap(new_view)) if created
+        if created
+          new_view.rmq_did_create(self.wrap(new_view)) 
+          new_view.rmq_created
+        end
+        new_view.rmq_appended if appended
+        new_view.rmq_created_or_appended
       end
 
       RMQ.create_with_array_and_selectors(subviews_added, selectors, @context, self)

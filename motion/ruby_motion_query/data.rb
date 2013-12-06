@@ -43,6 +43,14 @@ module RubyMotionQuery
         RMQ.is_blank?(@_tags)
       end
     end
+
+    def view_controller=(value)
+      @view_controller = WeakRef.new(value)
+    end
+
+    def view_controller
+      @view_controller
+    end
   end
 
   class ControllerData

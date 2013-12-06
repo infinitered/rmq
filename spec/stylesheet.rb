@@ -57,7 +57,7 @@ describe 'stylesheet' do
     1.should == 1
   end
 
-  it 'should use parent_rmq to get stylesheet if there is no view_controller' do
+  it 'should use parent_rmq to get stylesheet if there is no view_controller for the rmq instance' do
     rmq1 = @vc.rmq
     rmq1.append(UILabel)
     rmq1.stylesheet = StyleSheetForStylesheetTests
@@ -73,6 +73,8 @@ describe 'stylesheet' do
 
     foo_view = UIView.alloc.initWithFrame(CGRectZero)
     rmq3 = rmq1.wrap(foo_view)
+    rmq3.parent_rmq.should == rmq1
+    rmq3.view_controller.should == rmq1.view_controller
     rmq3.stylesheet.should == ss1
 
     bar_view = UIView.alloc.initWithFrame(CGRectZero)

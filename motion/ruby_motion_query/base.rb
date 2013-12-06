@@ -16,10 +16,17 @@ module RubyMotionQuery
   #   controller that the view is currently in or to the current screen's
   #   controller
   class RMQ
-    attr_accessor :context
 
     def initialize
       @selected_dirty = true
+    end
+
+    def context=(value)
+      @context = value
+    end
+
+    def context
+      @context
     end
 
     # Do not use

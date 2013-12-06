@@ -9,7 +9,7 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def logo(st)
-    st.frame = {t: 10, w: 200, h: 95.5}
+    st.frame = {t: 20, w: 200, h: 95.5}
     st.centered = :horizontal
     st.image = image.resource('logo')
   end

@@ -58,5 +58,24 @@ describe 'app' do
       @app.release?.should == false
       @app.production?.should == false
     end
+
+  describe 'app - current_view_controller' do
+    it 'should return current_view_controller from current window' do
+      rmq.app.current_view_controller.should == rmq.app.window.rootViewController
+    end
+
+    it 'should return current_view_controller when presenting a new controller' do
+      1.should == 1
+    end
+
+    it 'should return current_view_controller when root controller is UINavigationController with multiple controllers' do
+      1.should == 1
+    end
+
+    it 'should return current_view_controller when root controller is UITabController with multiple controllers' do
+      1.should == 1
+    end
+  end
+
   end
 end

@@ -27,5 +27,13 @@ describe 'rmq_data' do
     end
   end
 
+  it 'should store view controller' do
+    u = UIView.alloc.initWithFrame(CGRectZero)
+    u.rmq_data.view_controller.should == nil
+    vc = UIViewController.alloc.init
+    u.rmq_data.view_controller = vc
+    u.rmq_data.view_controller.should == vc
+  end
+
   # Tags are tested in spec/tags.rb
 end

@@ -1085,7 +1085,7 @@ You can also include all of your custom stylers in one file, which works well if
 
 If you use RMQ's stylesheets and you create your own views, you should add your subviews and such in this method:
 ```ruby
-def rmq_did_create
+def rmq_created_or_appended
 end
 ```
 
@@ -1096,7 +1096,7 @@ order.
 ```ruby
 # Your view
 class YourView < UIView
-  def rmq_did_create
+  def rmq_created_or_appended
     rmq(self).tap do |q|
       q.append(UILabel, :section_title)
       q.append(UIButton, :buy_button).on(:tap) do |sender|
@@ -1119,6 +1119,9 @@ Future features that I plan on adding
 - add templates for: nav controller, tab controller, table controller, collection controller
 - add from_right, from_bottom, and centered to both st.frame and to move
 - add binding that combines KVO and events to bind an attribute of one object to the attribute of selected view(s), keeping both in sync, like so: rmq.append(UITextField).bind(@person, attr: :name, to: :text)
+- rmq.log to wrap nslog to allow you to turn off logging (or does NSLog already have this feature?)
+- add selectors for UITextField
+- add string to height utility, given the font and the width
 
 
 ## Contact

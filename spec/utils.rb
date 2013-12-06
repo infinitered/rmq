@@ -45,8 +45,15 @@ describe 'utils' do
     end
 
     it 'should return nil if a view isn\'t in a controller' do
-      u = UIView.alloc.initWithFrame([[0,0],[0,0]])
+      u = UIView.alloc.initWithFrame(CGRectZero)
       @rmq.controller_for_view(u).should == nil
+    end
+
+    it 'should return the controller assigned to the view, if it exists' do
+      u = UIView.alloc.initWithFrame(CGRectZero)
+      vc = UIViewController.alloc.init
+      u.rmq_data.view_controller = vc
+      @rmq.controller_for_view(u).should == vc
     end
 
     it 'should return a view\'s controller' do
@@ -54,11 +61,11 @@ describe 'utils' do
       root_view = controller.view
       @rmq.controller_for_view(root_view).should == controller
 
-      sub_view = UIView.alloc.initWithFrame([[0,0],[0,0]])
+      sub_view = UIView.alloc.initWithFrame(CGRectZero)
       root_view.addSubview(sub_view)
       @rmq.controller_for_view(sub_view).should == controller
 
-      sub_sub_view = UIView.alloc.initWithFrame([[0,0],[0,0]])
+      sub_sub_view = UIView.alloc.initWithFrame(CGRectZero)
       sub_view.addSubview(sub_sub_view)
       @rmq.controller_for_view(sub_sub_view).should == controller
     end

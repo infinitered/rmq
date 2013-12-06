@@ -9,6 +9,11 @@ describe 'ext' do
     top = TopLevel.alloc.init
     top.rmq.is_a?(RubyMotionQuery::RMQ).should == true
   end
+
+  it 'should return an rmq object when Object#rmq is called' do
+    jesse_object = "I'm an object yo!"
+    jesse_object.rmq.is_a?(RubyMotionQuery::RMQ).should == true
+  end
   
   it 'should auto create rmq_data on a view if it doesn\'t exist' do
     vc = UIViewController.alloc.init
@@ -34,19 +39,68 @@ describe 'ext' do
     view = vc.rmq.append(ExtTestView).get
 
     view.get_context.should == view
+    view.rmq.context.should == view
   end
 
-  it 'should call rmq_did_create after appending to view' do
+  it 'DEPRECATED - should call rmq_did_create after appending to view' do
     vc = UIViewController.alloc.init
     view = vc.rmq.append(ExtTestView).get
     view.controller.should == vc
   end
+
+  it 'should call rmq_did_create after creating a view' do
+    vc = UIViewController.alloc.init
+    view = vc.rmq.create(ExtTestView).get
+    view.controller.should == vc
+    view.created.should == true
+    view.appended.nil?.should == true
+    view.created_or_appended.should == true
+  end
+
+  it 'should call rmq_created_or_appended and rmq_appended after appending a view' do
+    vc = UIViewController.alloc.init
+    view = vc.rmq.append(ExtTestView).get
+    view.controller.should == vc
+    view.created.should == true
+    view.appended.should == true
+    view.created_or_appended.should == true
+  end
+
+  it 'should call rmq_created_or_appended and rmq_appended after appending a existing view' do
+    vc = UIViewController.alloc.init
+    v = ExtTestView.alloc.initWithFrame(CGRectZero)
+    v.created.nil?.should == true
+    v.appended.nil?.should == true
+    v.created_or_appended.nil?.should == true
+    v.controller.nil?.should == true
+
+    view = vc.rmq.append(v).get
+    view.controller.should == vc
+    view.created.nil?.should == true
+    view.appended.should == true
+    view.created_or_appended.should == true
+  end
 end
 
 class ExtTestView < UIView
-  attr_accessor :controller
+  attr_accessor :controller, :created, :appended, :created_or_appended
   def rmq_did_create(rmq)
     @controller = rmq.view_controller
+  end
+
+  def rmq_created
+    @controller = rmq.view_controller
+    @created = true
+  end
+
+  def rmq_appended
+    @controller = rmq.view_controller
+    @appended = true
+  end
+
+  def rmq_created_or_appended
+    @controller = rmq.view_controller
+    @created_or_appended = true
   end
 
   def get_context

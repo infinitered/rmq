@@ -244,20 +244,45 @@ module RubyMotionQuery
       end
     end
 
+    # When you call rmq within a controller or view, a new instance of RMQ is created with the selectors you may or may
+    # not have supplied. That instance will determine what view_controller it should use for stuff like traversing, 
+    # stylesheet, etc.
+    #
+    # * rmq method called in a controller: that controller is used
+    #
+    # * rmq method called in a view and that view is within the subview tree of a controller: that controller is used 
+    #
+    #
+    # * rmq method called in a view and that view is NOT within any subview tree of any controller (common in a UITableViewCell 
+    #   for example). In this case it will use the view's controller or the "current controller". Generally
+    #   that is what is desired, however there are some situations where another controller should be used. In that
+    #   situation create your own rmq instance and assign the controller you'd rather use
+    #
+    # * if an rmq instance was created from another rmq instance, it will attempt to the parent_rmq's controller, if it exists
+    #
     # @return [UIViewController] Controller of this rmq instance
     #
     # @example
-    #   rmq.view_controller
+    #   rmq(my_view).view_controller
     def view_controller
       @_view_controller ||= begin
         if @context.is_a?(UIViewController)
-          WeakRef.new(@context)
-        else
+          @context
+        else # in view
           if vc = RMQ.controller_for_view(@context)
-            WeakRef.new(vc)
+            vc
+          else
+            if self.parent_rmq && vc = self.parent_rmq.view_controller
+              vc
+            else
+              RMQ.app.current_view_controller
+            end
           end
         end
       end
+    end
+    def view_controller=(value)
+      @_view_controller = WeakRef.new(value)
     end
 
     # @return [UIView] Root view of this rmq instance's controller
