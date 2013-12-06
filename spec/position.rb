@@ -39,7 +39,12 @@ describe 'position' do
     end
   end
 
-  it 'should align multiple views with each other' do
+  it 'should distribute multiple views with each other' do
+    1.should == 1
+    # TODO
+  end
+
+  it 'should resize to fit subviews' do
     1.should == 1
     # TODO
   end

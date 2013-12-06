@@ -88,11 +88,11 @@ module RubyMotionQuery
 
     def apply_style_to_view(view, style_name)
       begin
-        stylesheet.__send__(style_name, styler_for(view))
+        stylesheet.public_send(style_name, styler_for(view))
         view.rmq_data.style_name = style_name
       rescue NoMethodError => e
         if e.message =~ /.*#{style_name.to_s}.*/
-          puts "\n[RMQ ERROR]  style_name :#{style_name} doesn't exist for a #{view.class.name}. Add 'def #{style_name}(sv)' to #{stylesheet.class.name} class\n\n"
+          puts "\n[RMQ ERROR]  style_name :#{style_name} doesn't exist for a #{view.class.name}. Add 'def #{style_name}(st)' to #{stylesheet.class.name} class\n\n"
         else
           raise e
         end

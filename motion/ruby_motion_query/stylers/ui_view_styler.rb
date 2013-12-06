@@ -2,7 +2,7 @@ module RubyMotionQuery
   module Stylers
 
     # When you create a styler, always inherit UIViewStyler
-    class UIViewStyler 
+    class UIViewStyler
       def initialize(view)
         @view = view
       end
@@ -49,6 +49,8 @@ module RubyMotionQuery
           f.size.height =h[:h] || h[:height] || f.size.height
 
           @view.frame = f
+        else
+          @view.frame = value
         end
       end
       def frame
@@ -68,7 +70,7 @@ module RubyMotionQuery
           value = [
             [h[:l], h[:t]],
             [
-              sbounds.size.width - h[:l] - h[:r], 
+              sbounds.size.width - h[:l] - h[:r],
               sbounds.size.height - h[:t] - h[:b]
             ]]
 
@@ -181,7 +183,7 @@ module RubyMotionQuery
           case option
           when :horizontal
             # Not using parent.center.x here for orientation
-            self.center_x = parent.bounds.size.width / 2 
+            self.center_x = parent.bounds.size.width / 2
           when :vertical
             self.center_y = parent.bounds.size.height / 2
           else
@@ -196,7 +198,7 @@ module RubyMotionQuery
       def background_color
         @view.backgroundColor
       end
-      
+
       def background_image=(value)
         @view.backgroundColor = UIColor.colorWithPatternImage(value)
       end
@@ -246,7 +248,7 @@ module RubyMotionQuery
       end
 
       def rotation=(new_angle)
-        radians = new_angle * Math::PI / 180 
+        radians = new_angle * Math::PI / 180
         @view.transform = CGAffineTransformMakeRotation(radians)
       end
 
