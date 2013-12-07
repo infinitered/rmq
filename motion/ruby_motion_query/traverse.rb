@@ -275,7 +275,9 @@ module RubyMotionQuery
             if self.parent_rmq && vc = self.parent_rmq.view_controller
               vc
             else
-              RMQ.app.current_view_controller
+              vc = RMQ.app.current_view_controller
+              @context.rmq_data.view_controller = vc if @context
+              vc
             end
           end
         end

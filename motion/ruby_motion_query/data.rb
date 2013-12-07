@@ -54,6 +54,6 @@ module RubyMotionQuery
   end
 
   class ControllerData
-    attr_accessor :stylesheet, :rmq
+    attr_accessor :stylesheet, :cached_rmq
   end
 end

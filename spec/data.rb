@@ -14,8 +14,8 @@ describe 'rmq_data' do
       vc.rmq_data.stylesheet.should == :foo
 
       q = vc.rmq
-      vc.rmq_data.rmq = q
-      vc.rmq_data.rmq.should == q
+      vc.rmq_data.cached_rmq = q
+      vc.rmq_data.cached_rmq.should == q
 
       vc.view.rmq_data.tap do |q_data|
         q_data.style_name = :style_name

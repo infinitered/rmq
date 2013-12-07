@@ -1,6 +1,6 @@
-class <%= @name_camel_case %>ControllerStylesheet < ApplicationStylesheet
+class CollectionControllerStylesheet < ApplicationStylesheet
 
-  include <%= @name_camel_case %>CellStylesheet
+  include CollectionCellStylesheet
 
   def setup
     # Add sytlesheet specific setup stuff here.

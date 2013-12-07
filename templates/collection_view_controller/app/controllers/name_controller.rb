@@ -49,7 +49,7 @@ class <%= @name_camel_case %>Controller < UICollectionViewController
     
   def collectionView(view, cellForItemAtIndexPath: index_path)
     view.dequeueReusableCellWithReuseIdentifier(<%= @name.upcase %>_CELL_ID, forIndexPath: index_path).tap do |cell|
-      cell.setup_with(rmq)
+      rmq.build(cell) unless cell.reused
 
       # Update cell's data here
     end

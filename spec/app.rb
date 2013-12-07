@@ -61,7 +61,7 @@ describe 'app' do
 
   describe 'app - current_view_controller' do
     it 'should return current_view_controller from current window' do
-      rmq.app.current_view_controller.should == rmq.app.window.rootViewController
+      rmq.app.current_view_controller.should == rmq.app.window.rootViewController.visibleViewController
     end
 
     it 'should return current_view_controller when presenting a new controller' do

@@ -54,36 +54,43 @@ describe 'ext' do
     view.controller.should == vc
     view.created.should == true
     view.appended.nil?.should == true
-    view.created_or_appended.should == true
+    view.built.should == true
   end
 
-  it 'should call rmq_created_or_appended and rmq_appended after appending a view' do
+  it 'should call rmq_build and rmq_appended after appending a view' do
     vc = UIViewController.alloc.init
     view = vc.rmq.append(ExtTestView).get
     view.controller.should == vc
     view.created.should == true
     view.appended.should == true
-    view.created_or_appended.should == true
+    view.built.should == true
   end
 
-  it 'should call rmq_created_or_appended and rmq_appended after appending a existing view' do
+  it 'should call rmq_build and rmq_appended after appending a existing view' do
     vc = UIViewController.alloc.init
     v = ExtTestView.alloc.initWithFrame(CGRectZero)
     v.created.nil?.should == true
     v.appended.nil?.should == true
-    v.created_or_appended.nil?.should == true
+    v.built.nil?.should == true
     v.controller.nil?.should == true
 
     view = vc.rmq.append(v).get
     view.controller.should == vc
     view.created.nil?.should == true
     view.appended.should == true
-    view.created_or_appended.should == true
+    view.built.should == true
+  end
+
+  it 'should call rmq_build after calling build on a view' do
+    v = ExtTestView.alloc.initWithFrame(CGRectZero)
+    v.built.should == nil
+    rmq.build(v)
+    v.built.should == true
   end
 end
 
 class ExtTestView < UIView
-  attr_accessor :controller, :created, :appended, :created_or_appended
+  attr_accessor :controller, :created, :appended, :built
   def rmq_did_create(rmq)
     @controller = rmq.view_controller
   end
@@ -98,9 +105,9 @@ class ExtTestView < UIView
     @appended = true
   end
 
-  def rmq_created_or_appended
+  def rmq_build
     @controller = rmq.view_controller
-    @created_or_appended = true
+    @built = true
   end
 
   def get_context

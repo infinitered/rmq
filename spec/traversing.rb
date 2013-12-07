@@ -309,7 +309,7 @@ describe 'transversing' do
       view_4 = UIView.alloc.initWithFrame(CGRectZero)
 
       q = RubyMotionQuery::RMQ.new
-      q.wrap(view_4).view_controller.should == q.app.window.rootViewController
+      q.wrap(view_4).view_controller.should == q.app.window.rootViewController.visibleViewController
     end
 
     it 'should be located from any view if the view is in subview tree of a controller' do
@@ -342,6 +342,13 @@ describe 'transversing' do
       view_2 = UIView.alloc.initWithFrame(CGRectZero)
       view_2.rmq_data.view_controller = @vc2
       RubyMotionQuery::RMQ.new.wrap(view_2).view_controller.should == @vc2
+    end
+
+    it 'should assign a found controller to a view that didn\'t have one' do
+      orphan_view = UIView.alloc.initWithFrame(CGRectZero)
+      orphan_view.rmq_data.view_controller.should == nil
+      vc = orphan_view.rmq.view_controller
+      orphan_view.rmq_data.view_controller.should == vc
     end
   end
 

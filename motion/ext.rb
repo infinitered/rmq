@@ -11,14 +11,17 @@ class UIView
     @_rmq_data ||= RubyMotionQuery::ViewData.new
   end
 
-  # @deprecated No longer needed, use rmq_created_or_appended
+  # @deprecated No longer needed, use rmq_build
   def rmq_did_create(self_in_rmq)
   end
   def rmq_created
   end
-  def rmq_appended
+
+  # Override this to build your view and view's subviews
+  def rmq_build
   end
-  def rmq_created_or_appended
+
+  def rmq_appended
   end
 
   # I intend for this to be protected
@@ -39,10 +42,10 @@ end
 
 class UIViewController
   def rmq(*selectors)
-    if RubyMotionQuery::RMQ.cache_controller_rmqs && selectors.length == 0
-      rmq_data.rmq ||= RubyMotionQuery::RMQ.create_with_selectors(selectors, self)
+    if selectors.length == 0
+      rmq_data.cached_rmq ||= RubyMotionQuery::RMQ.create_with_selectors(selectors, self)
     else
-      RubyMotionQuery::RMQ.create_with_selectors(selectors, self, rmq_data.rmq)
+      RubyMotionQuery::RMQ.create_with_selectors(selectors, self, rmq_data.cached_rmq)
     end
   end
 

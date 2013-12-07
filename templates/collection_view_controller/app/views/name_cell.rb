@@ -1,17 +1,17 @@
 class <%= @name_camel_case %>Cell < UICollectionViewCell 
-  def setup_with(controller_rmq)
-    unless @initialized
-      @initialized = true
+  attr_reader :reused
 
-      controller_rmq.wrap(self).tap do |q|
-        q.apply_style :<%= @name %>_cell
+  def rmq_build
+    rmq(self).apply_style :<%= @name %>_cell
 
-        # Add your subviews, init stuff here
-        # @foo = q.append(UILabel, :foo).get
-      end
+    rmq(self.contentView).tap do |q|
+      # Add your subviews, init stuff here
+      # @foo = q.append(UILabel, :foo).get
     end
   end
 
   def prepareForReuse
+    @reused = true
   end
+
 end

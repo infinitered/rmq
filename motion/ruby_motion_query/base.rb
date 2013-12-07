@@ -292,9 +292,6 @@ module RubyMotionQuery
     end
 
     class << self
-      attr_accessor :cache_controller_rmqs
-      @cache_controller_rmqs = true
-
       def debugging?
         @debugging ||= ENV['rmq_debug'] == 'true'
       end

@@ -1,11 +1,5 @@
 module RubyMotionQuery
   class RMQ
-
-    # TODO
-    def create_factory(klass)
-      # TODO
-    end
-
     # This is used internally, to get a new rmq instance, just call "rmq" in your view or controller or
     # just create a new one like so: RubyMotionQuery::RMQ.new
     #
@@ -51,4 +45,5 @@ module RubyMotionQuery
 
     end
   end
+
 end
