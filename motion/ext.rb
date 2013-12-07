@@ -42,10 +42,12 @@ end
 
 class UIViewController
   def rmq(*selectors)
+    crmq = (rmq_data.cached_rmq ||= RubyMotionQuery::RMQ.create_with_selectors([], self))
+
     if selectors.length == 0
-      rmq_data.cached_rmq ||= RubyMotionQuery::RMQ.create_with_selectors(selectors, self)
+      crmq
     else
-      RubyMotionQuery::RMQ.create_with_selectors(selectors, self, rmq_data.cached_rmq)
+      RubyMotionQuery::RMQ.create_with_selectors(selectors, self, crmq)
     end
   end
 
