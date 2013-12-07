@@ -45,7 +45,7 @@ module RubyMotionQuery
     end
 
     def view_controller=(value)
-      @view_controller = WeakRef.new(value)
+      @view_controller = value
     end
 
     def view_controller

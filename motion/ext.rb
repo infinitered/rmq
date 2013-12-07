@@ -34,7 +34,7 @@ class UIView
   def rmq(*selectors)
     RubyMotionQuery::RMQ.create_with_selectors(selectors, self).tap do |o|
       if vc = self.rmq_data.view_controller
-        o.view_controller = vc
+        o.weak_view_controller = vc
       end
     end
   end

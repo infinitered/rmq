@@ -350,6 +350,23 @@ describe 'transversing' do
       vc = orphan_view.rmq.view_controller
       orphan_view.rmq_data.view_controller.should == vc
     end
+
+    it 'should not wrap a WeakRef in another WeakRef (was bug)' do
+      # Many ways to cause this bug, I'll do a few here
+      q = @vc1.rmq
+      q.view_controller = @vc1
+      view = q.append(UIView).get
+      view.rmq.append(UIView)
+      q2 = view.rmq.wrap(UIView)
+      q2.view_controller.is_a?(UIViewController).should == true
+
+      view.rmq.context.rmq_data.view_controller.is_a?(UIViewController).should == true
+
+      orphan_view = UIView.alloc.initWithFrame(CGRectZero)
+      orphan_view.rmq_data.view_controller = rmq(orphan_view).view_controller
+      orphan_view.rmq.view_controller = orphan_view.rmq_data.view_controller
+      orphan_view.rmq.view_controller.is_a?(UIViewController).should == true
+    end
   end
 
 end

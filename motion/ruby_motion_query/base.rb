@@ -21,6 +21,10 @@ module RubyMotionQuery
       @selected_dirty = true
     end
 
+    # If rmq was called in a view, context will be that view. If it was called
+    # in a UIViewController, it will be that controller. If it is called in another
+    # object, it will be current controller's rmq instance and thus context will be 
+    # that controller
     def context=(value)
       @context = value
     end

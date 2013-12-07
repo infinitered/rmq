@@ -3,7 +3,8 @@ module RubyMotionQuery
 
     # @return [RMQ]
     def stylesheet=(value)
-      controller = view_controller
+      controller = self.view_controller
+
       unless value.is_a?(RubyMotionQuery::Stylesheet)
         value = value.new(controller)
       end
