@@ -106,7 +106,7 @@ module RubyMotionQuery
     attr_reader :controller
 
     def initialize(controller)
-      @controller = WeakRef.new(controller)
+      @controller = RubyMotionQuery::RMQ.weak_ref(controller)
 
       unless Stylesheet.application_was_setup
         Stylesheet.application_was_setup = true

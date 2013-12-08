@@ -45,7 +45,7 @@ module RubyMotionQuery
     end
 
     def view_controller=(value)
-      @view_controller = value
+      @view_controller = RubyMotionQuery::RMQ.weak_ref(value)
     end
 
     def view_controller

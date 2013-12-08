@@ -265,29 +265,25 @@ module RubyMotionQuery
     # @example
     #   rmq(my_view).view_controller
     def view_controller
-      return @_view_controller if @_view_controller
-
-      if @context.is_a?(UIViewController)
-        @context
-      else # view
-        if vc = RMQ.controller_for_view(@context)
-          @_view_controller = WeakRef.new(vc)
-        else
-          if self.parent_rmq && (vc = self.parent_rmq.view_controller)
-            @_view_controller = vc
-          else
-            if vc = RMQ.app.current_view_controller
-              @_view_controller = vc
-            end
-          end
-        end
-
-        @context.rmq_data.view_controller = @_view_controller if @context
+      if @_view_controller
         @_view_controller
+      else
+        if @context.is_a?(UIViewController)
+          @context
+        else # view
+          vc = RMQ.controller_for_view(@context) ||
+            (self.parent_rmq && self.parent_rmq.view_controller) ||
+            RMQ.app.current_view_controller
+
+          self.view_controller = vc
+          @context.rmq_data.view_controller = @_view_controller if @context
+
+          @_view_controller
+        end
       end
     end
     def view_controller=(value)
-      @_view_controller = WeakRef.new(value)
+      @_view_controller = RubyMotionQuery::RMQ.weak_ref(value)
     end
     def weak_view_controller=(value)
       @_view_controller = value

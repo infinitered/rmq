@@ -344,11 +344,16 @@ describe 'transversing' do
       RubyMotionQuery::RMQ.new.wrap(view_2).view_controller.should == @vc2
     end
 
-    it 'should assign a found controller to a view that didn\'t have one' do
+    it 'should assign a found controller to a view that did not have one' do
       orphan_view = UIView.alloc.initWithFrame(CGRectZero)
       orphan_view.rmq_data.view_controller.should == nil
       vc = orphan_view.rmq.view_controller
-      orphan_view.rmq_data.view_controller.should == vc
+      data_vc = orphan_view.rmq_data.view_controller
+
+      # This fails oddly, so we'll check type ad ID, seems a bug in RM
+      #data_vc.should == vc
+      vc.class.should == data_vc.class
+      vc.object_id.should == data_vc.object_id
     end
 
     it 'should not wrap a WeakRef in another WeakRef (was bug)' do

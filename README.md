@@ -609,6 +609,7 @@ RubyMotionQuery::RMQ.is_class?(foo)
 RubyMotionQuery::RMQ.is_blank?(foo)
 RubyMotionQuery::RMQ.controller_for_view(view)
 RubyMotionQuery::RMQ.view_to_s(view)
+RubyMotionQuery::RMQ.weak_ref(foo)
 ```
 
 ### Pollution
