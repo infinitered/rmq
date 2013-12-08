@@ -39,6 +39,23 @@ describe 'utils' do
     (s =~ /.*VIEW.*/).should == 1 
   end
 
+  it 'should not wrap a weak ref inside another weak ref' do
+    foo = 'hi'
+
+    # RM's standard WeakRef will wrap a weak ref inside aonther weak ref
+    rm_weak = WeakRef.new(foo)
+    rm_weak.is_a?(String).should == true
+    rm_weak = WeakRef.new(rm_weak)
+    rm_weak.is_a?(WeakRef).should == true
+
+    # Now make sure rmq's does not
+    weak = RubyMotionQuery::RMQ.weak_ref(foo)
+    weak.is_a?(String).should == true
+    weak = RubyMotionQuery::RMQ.weak_ref(weak)
+    weak.is_a?(WeakRef).should == false
+    weak.is_a?(String).should == true
+  end
+
   describe 'utils - controller_for_view' do
     it 'should return nil if view is nil' do
       @rmq.controller_for_view(nil).should == nil
@@ -70,5 +87,6 @@ describe 'utils' do
       @rmq.controller_for_view(sub_sub_view).should == controller
     end
   end
+
 
 end

@@ -50,6 +50,26 @@ module RubyMotionQuery
         end
       end
 
+      # Creates a weak reference to an object. Unlike WeakRef.new provided by RubyMotion, this will 
+      # not wrap a weak ref inside another weak ref (which causes bugs).
+      #
+      # This is fairly performant. It's about twice as slow as WeakRef.new. However, you can 
+      # create a million weak refs in about 651 miliseconds, compared to 319 for WeakRef.new
+      #
+      # Creating a WeakRef with a literal like a string will cause your app to crash
+      # instantly, it's fun, try it. Only create weak refs of variables
+      #
+      # @example
+      # foo = RubyMotionQuery::RMQ.weak_ref(bar)
+      def weak_ref(o)
+        weak = WeakRef.new(o)
+        if weak.is_a?(WeakRef)
+          o # Already a weak ref, return original
+        else
+          weak
+        end
+      end
+
       # Mainly used for console and logging
       #
       # @return [String]
