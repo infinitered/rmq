@@ -50,7 +50,6 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.hidden = false
     st.z_position = 66
     st.opaque = false
-    p st.opaque
     st.clips_to_bounds = false
     st.hidden = true
     st.content_mode = UIViewContentModeBottomLeft
