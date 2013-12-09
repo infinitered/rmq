@@ -1,0 +1,4 @@
+#!/bin/sh
+
+yardoc
+doc_to_dash -p YardParser -i ./docset/docset_icon.png -o ./docset -n RMQ ./doc
