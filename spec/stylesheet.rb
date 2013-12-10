@@ -74,7 +74,7 @@ describe 'stylesheet' do
     foo_view = UIView.alloc.initWithFrame(CGRectZero)
     rmq3 = rmq1.wrap(foo_view)
     rmq3.parent_rmq.should == rmq1
-    rmq3.view_controller.should == rmq1.view_controller
+    RubyMotionQuery::RMQ.weak_ref_is_same_object?(rmq3.view_controller, rmq1.view_controller).should == true
     rmq3.stylesheet.should == ss1
 
     bar_view = UIView.alloc.initWithFrame(CGRectZero)

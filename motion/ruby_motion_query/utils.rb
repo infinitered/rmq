@@ -70,6 +70,13 @@ module RubyMotionQuery
         end
       end
 
+      # This gets around a bug in RubyMotion
+      # Hopefully I can remove this quickly. Only use this for complex objects that have no comparison
+      # other than that they are the exact same object. For example, strings compare their contents.
+      def weak_ref_is_same_object?(a, b)
+        (a.class == b.class) && (a.object_id == b.object_id)
+      end
+
       # Mainly used for console and logging
       #
       # @return [String]

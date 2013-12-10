@@ -28,8 +28,13 @@ module RubyMotionQuery
     # object, it will be current controller's rmq instance and thus context will be 
     # that controller
     def context=(value)
-      @context = value
+      if value.is_a?(UIViewController)
+        @context = RubyMotionQuery::RMQ.weak_ref(value)
+      else
+        @context = value
+      end
     end
+
     def context
       @context
     end
