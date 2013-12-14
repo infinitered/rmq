@@ -61,5 +61,15 @@ module RubyMotionQuery
       self
     end
 
+    def enabled(is_enabled)
+      selected.each { |view| view.enabled = is_enabled }
+      self
+    end
+
+    def interaction_enabled(is_enabled)
+      selected.each { |view| view.userInteractionEnabled = is_enabled }
+      self
+    end
+
   end
 end

@@ -8,7 +8,7 @@ end
 
 class UIView
   def rmq_data
-    @_rmq_data ||= RubyMotionQuery::ViewData.new
+    @_rmq_data ||= RubyMotionQuery::ViewData.new(self)
   end
 
   # @deprecated No longer needed, use rmq_build

@@ -1,5 +1,12 @@
 module RubyMotionQuery
   class RMQ
+    def inspector
+      self.all.off.interaction_enabled(true).on(:tap)do |sender| 
+        puts
+        rmq(sender).log :tree
+        sender.rmq_data.frame.log
+      end
+    end
 
     class << self
       # @return [Boolean]

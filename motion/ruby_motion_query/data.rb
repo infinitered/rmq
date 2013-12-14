@@ -2,6 +2,10 @@ module RubyMotionQuery
   class ViewData
     attr_accessor :events, :style_name
 
+    def initialize(view)
+      @view = RubyMotionQuery::RMQ.weak_ref(view)
+    end
+
     # @return [Hash] Array of tag names assigned to to this view
     def tags
       @_tags ||= {}
@@ -50,6 +54,10 @@ module RubyMotionQuery
 
     def view_controller
       @view_controller
+    end
+
+    def frame
+      @frame ||= Frame.new(@view)
     end
   end
 
