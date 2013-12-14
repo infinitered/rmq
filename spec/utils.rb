@@ -43,10 +43,11 @@ describe 'utils' do
     foo = 'hi'
 
     # RM's standard WeakRef will wrap a weak ref inside aonther weak ref
-    rm_weak = WeakRef.new(foo)
-    rm_weak.is_a?(String).should == true
-    rm_weak = WeakRef.new(rm_weak)
-    rm_weak.is_a?(WeakRef).should == true
+    # THIS IS NO LONGER TRUE IN RubyMotion 2.17, disabling test
+    #rm_weak = WeakRef.new(foo)
+    #rm_weak.is_a?(String).should == true
+    #rm_weak = WeakRef.new(rm_weak)
+    #rm_weak.is_a?(WeakRef).should == true
 
     # Now make sure rmq's does not
     weak = RubyMotionQuery::RMQ.weak_ref(foo)

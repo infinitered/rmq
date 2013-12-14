@@ -244,6 +244,9 @@ module RubyMotionQuery
       end
     end
 
+    # This returns a weak ref to the controller. The controller may be destroyed and you will still have a pointer to it.
+    # Be mindful of that.
+    #
     # When you call rmq within a controller or view, a new instance of RMQ is created with the selectors you may or may
     # not have supplied. That instance will determine what view_controller it should use for stuff like traversing, 
     # stylesheet, etc.
