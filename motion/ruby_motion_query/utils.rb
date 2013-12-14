@@ -50,6 +50,8 @@ module RubyMotionQuery
         end
       end
 
+      # @deprecated this has been fixed in 2.17, so this method is no longer needed. 
+      #
       # Creates a weak reference to an object. Unlike WeakRef.new provided by RubyMotion, this will 
       # not wrap a weak ref inside another weak ref (which causes bugs).
       #
@@ -70,6 +72,8 @@ module RubyMotionQuery
         end
       end
 
+      # @deprecated this has been fixed in 2.17, so this method is no longer needed. 
+      #
       # This gets around a bug in RubyMotion
       # Hopefully I can remove this quickly. Only use this for complex objects that have no comparison
       # other than that they are the exact same object. For example, strings compare their contents.
