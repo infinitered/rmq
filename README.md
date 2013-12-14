@@ -1156,6 +1156,8 @@ Random future features that I plan on adding
 - rmq.log to wrap nslog to allow you to turn off logging (or does NSLog already have this feature?)
 - add selectors for UITextField
 - add string to height utility, given the font and the width
+- add block to wrap useful for a variety of things, but here is solid example: rmq.append(UIButton).tag(:foo).wrap{|view| view.titleLabel}.tag(:foo_title)
+- add def rmq_build_with_properties(props = {}). Perhaps remove rmq_created and rmq_appended, not sure if those are usefull or not
 
 
 ## Contact
