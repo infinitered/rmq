@@ -50,6 +50,9 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.hidden = false
     st.z_position = 66
     st.opaque = false
+    st.clips_to_bounds = false
+    st.hidden = true
+    st.content_mode = UIViewContentModeBottomLeft
 
     st.background_color = color.red
     # TODO test background_image
@@ -170,5 +173,12 @@ describe 'ui_view_styler' do
     view.frame.origin.y.should == 10
     view.frame.size.width.should == 3
     view.frame.size.height.should == 4
+  end
+
+  it 'should set attributes onto the view' do
+    view = @vc.rmq.append(@view_klass, :ui_view_kitchen_sink).get
+    view.clipsToBounds.should == false
+    view.isHidden.should == true
+    view.contentMode.should == UIViewContentModeBottomLeft
   end
 end

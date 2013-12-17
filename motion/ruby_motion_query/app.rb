@@ -69,6 +69,26 @@ module RubyMotionQuery
       def document_path
         NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)[0]
       end
+
+      # Returns the current view controller in the app. If the current controller is a tab or
+      # navigation controller, then it gets the current tab or topmost controller in the nav.
+      #
+      # This mostly works... mostly. As there really isn't a "current view_controller"
+      #
+      # @return [UIViewController]
+      def current_view_controller(root_view_controller = nil)
+        if root_view_controller || ((window = RMQ.app.window) && (root_view_controller = window.rootViewController))
+          case root_view_controller
+          when UINavigationController
+            root_view_controller.visibleViewController
+          when UITabBarController
+            current_view_controller(root_view_controller.selectedViewController)
+          else 
+            root_view_controller
+          end
+        end
+      end
+
     end
   end
 end

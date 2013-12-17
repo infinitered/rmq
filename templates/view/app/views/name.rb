@@ -1,13 +1,11 @@
 class <%= @name_camel_case %> < UIView
 
-  def rmq_did_create(self_in_rmq)
+  def rmq_build
 
-    self_in_rmq.tap do |q|
-      q.apply_style :<%= @name %>
+    rmq.apply_style :<%= @name %>
 
-      # Add subviews here, like so:
-      #q.append(UILabel, :some_label)
-    end
+    # Add subviews here, like so:
+    #rmq.append(UILabel, :some_label)
 
   end
 

@@ -16,7 +16,6 @@ module RubyMotionQuery
       @_selectors
     end
 
-
     protected 
 
     def match_context(new_selectors)

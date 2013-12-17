@@ -1,8 +1,9 @@
 class Section < UIView
 
-  def rmq_did_create(self_in_rmq)
+  def rmq_build
+    rmq(self).tap do |q|
+      q.apply_style :section
 
-    self_in_rmq.tap do |q|
       q.append(UILabel, :section_title)
 
       q.append(UILabel, :section_enabled_title)
@@ -13,14 +14,13 @@ class Section < UIView
       end
 
       q.append(UIButton, :start_spinner).on(:tap) do |sender|
-        q.animations.start_spinner
+        rmq.animations.start_spinner
       end
 
       q.append(UIButton, :stop_spinner).on(:tap) do |sender|
-        q.animations.stop_spinner
+        rmq.animations.stop_spinner
       end
     end
-
   end
 
 end

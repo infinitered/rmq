@@ -6,6 +6,14 @@ describe 'factory' do
     rmq.context.should == view
   end
 
+  it 'should set context to the controller' do
+    u = UIView.alloc.initWithFrame(CGRectZero)
+    vc = UIViewController.alloc.init
+    vc.view.addSubview(u)
+    q = RubyMotionQuery::RMQ.create_with_selectors(nil, vc)
+    q.context.should == vc
+  end
+
   it 'should create blank RMQ from existing RMQ' do
     view_controller = UIViewController.alloc.init
     view = UIView.alloc.initWithFrame(CGRectZero)
@@ -13,7 +21,7 @@ describe 'factory' do
     blank_rmq = rmq.create_blank_rmq
     blank_rmq.is_a?(RubyMotionQuery::RMQ).should == true
     blank_rmq.length.should == 0
-    blank_rmq.context.should == rmq.context
+    RubyMotionQuery::RMQ.weak_ref_is_same_object?(rmq.context, blank_rmq.context).should == true
     blank_rmq.selectors.should == rmq.selectors
     blank_rmq.to_a.should == []
   end

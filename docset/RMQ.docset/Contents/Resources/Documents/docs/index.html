@@ -1,0 +1,1304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.7.3
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><p><img src="http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/9/2013/07/rmq_logo.png" alt="RQM logo"></p>
+
+<h1>RubyMotionQuery - RMQ</h1>
+
+<p>A fast, muggle, nonpolluting, jQuery-like library for <a href="http://rubymotion.com">RubyMotion</a>.</p>
+
+<p><strong>The <a href="http://infinitered.com/rmq">RMQ Introductory Guide and other info</a> is a great place to start.</strong></p>
+
+<p><a href="https://gemnasium.com/infinitered/rmq"><img src="https://gemnasium.com/infinitered/rmq.png" alt="Dependency Status"></a>
+<a href="https://travis-ci.org/infinitered/rmq"><img src="https://travis-ci.org/infinitered/rmq.png?branch=master" alt="Build Status"></a></p>
+
+<h2>General</h2>
+
+<h3>Some of the very cool features:</h3>
+
+<ul>
+<li><strong>selecting</strong> (<em>querying</em>) views</li>
+<li><strong>traversal</strong> through view hierarchy (moving around the tree)</li>
+<li>tagging</li>
+<li><strong>events and gestures</strong></li>
+<li>animations</li>
+<li><strong>stylers and stylesheets</strong></li>
+<li>colors</li>
+<li>fonts</li>
+<li>image utilities</li>
+<li>app</li>
+<li>device</li>
+</ul>
+
+<hr>
+
+<p><strong>Tested on iOS, not OS X (nor is there any OS X specific code)</strong></p>
+
+<hr>
+
+<h3>Other wrapper libraries</h3>
+
+<p>There are a lot of great wrappers out there such as Teacup and Sugarcube. I&#39;ve used these and I enjoy them. However, many of the wrappers heavily pollute the standard classes, which is great if you like that sort of thing. RMQ is designed to have minimal pollution, to be very simple and high performance (it will be when it&#39;s done). RMQ shouldn&#39;t conflict with anything.</p>
+
+<p>RMQ <strong>doesn&#39;t require any</strong> other wrapper or gem.</p>
+
+<blockquote>
+<p>If you preferred jQuery over Prototype, you&#39;ll love RMQ.</p>
+</blockquote>
+
+<p>Some of the code in RMQ came from BubbleWrap and Sugarcube. Not too much but some did. I thank you BubbleWrap and Sugarcube teams for your work.</p>
+
+<h2>Quick Start</h2>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='id identifier rubyid_install'>install</span> <span class='id identifier rubyid_ruby_motion_query'>ruby_motion_query</span>
+<span class='id identifier rubyid_rmq'>rmq</span> <span class='id identifier rubyid_create'>create</span> <span class='id identifier rubyid_my_app'>my_app</span>
+<span class='id identifier rubyid_cd'>cd</span> <span class='id identifier rubyid_my_app'>my_app</span>
+<span class='id identifier rubyid_bundle'>bundle</span>
+<span class='id identifier rubyid_rake'>rake</span>
+</code></pre>
+
+<p>Or, if you use <strong>rbenv</strong>:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='id identifier rubyid_install'>install</span> <span class='id identifier rubyid_ruby_motion_query'>ruby_motion_query</span>
+<span class='id identifier rubyid_rmq'>rmq</span> <span class='id identifier rubyid_create'>create</span> <span class='id identifier rubyid_my_app'>my_app</span>
+<span class='id identifier rubyid_rbenv'>rbenv</span> <span class='id identifier rubyid_rehash'>rehash</span>
+<span class='id identifier rubyid_cd'>cd</span> <span class='id identifier rubyid_my_app'>my_app</span>
+<span class='id identifier rubyid_bundle'>bundle</span>
+<span class='id identifier rubyid_rake'>rake</span>
+</code></pre>
+
+<h2>Installation</h2>
+
+<p>RMQ <strong>requires no other gems</strong>. If you use stuff like <strong>scale</strong> and certain animations it will require some frameworks (like QuartzCore or CoreGraphics)</p>
+
+<ul>
+<li><code>gem install ruby_motion_query</code></li>
+</ul>
+
+<p>If you use rbenv</p>
+
+<ul>
+<li><code>rbenv rehash</code></li>
+</ul>
+
+<p>Require it</p>
+
+<ul>
+<li><code>require &#39;ruby_motion_query&#39;</code></li>
+</ul>
+
+<p>or add it to your <code>Gemfile</code>:</p>
+
+<ul>
+<li><code>gem &#39;ruby_motion_query&#39;</code></li>
+</ul>
+
+<p>for <strong>bleeding edge</strong>, add this to your <code>Gemfile</code>:</p>
+
+<ul>
+<li><code>gem &#39;ruby_motion_query&#39;, :git =&gt; &#39;git@github.com:infinitered/rmq.git&#39;</code></li>
+</ul>
+
+<h2>Deprecation</h2>
+
+<ul>
+<li><strong>UIView#rmq_did_create(self_in_rmq)</strong> - <em>Use rmq_build instead</em></li>
+</ul>
+
+<h2>Usage</h2>
+
+<h3>Example App</h3>
+
+<p><em>Clone this repo and run the example app to see an example of use.</em></p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_git'>git</span> <span class='id identifier rubyid_clone'>clone</span> <span class='id identifier rubyid_git'>git</span><span class='ivar'>@github</span><span class='period'>.</span><span class='id identifier rubyid_com'>com</span><span class='symbol'>:infinitered</span><span class='op'>/</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_git'>git</span>
+<span class='id identifier rubyid_cd'>cd</span> <span class='id identifier rubyid_rmq'>rmq</span>
+<span class='id identifier rubyid_rake'>rake</span>
+</code></pre>
+
+<p>The example app works in any orientation, on both iPhone and iPad. Notice how the benchmark popup is done with RMQ, then think about how you&#39;d do that without it.</p>
+
+<h3>What&#39;s an rmq instance?</h3>
+
+<ul>
+<li>an rmq instance is an array-like object containing UIViews</li>
+<li>rmq() never returns nil. If nothing is selected, it&#39;s an empty [ ] array-like
+object</li>
+<li>an rmq object always (almost always) returns either itself or a new
+rmq object. This is  how chaining works. You do not need to worry if
+an rmq is blank or not, everything  always works without throwing a
+nil exception</li>
+<li>jQuery uses the DOM, what is rmq using for the &quot;DOM&quot;? It uses the
+controller it was  called in. The &quot;DOM&quot; is the controller&#39;s subview
+tree. If you call rmq inside a view, it will  attach to the
+controller that the view is currently in or to the current screen&#39;s
+controller</li>
+</ul>
+
+<h3>Basic syntax</h3>
+
+<p>The main command is <code>rmq</code> and you use it everywhere. You can rename this by aliasing the methods in <code>ext.rb</code>.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># Like jQuery you wrap your objects or selectors in a rmq(), here are some examples
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_show'>show</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
+
+<span class='comment'># You can use zero or more selectors, all these are valid
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='comma'>,</span> <span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='symbol'>:a_tag</span><span class='comma'>,</span> <span class='symbol'>:a_style_name</span><span class='comma'>,</span> <span class='const'>UIImageView</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='label'>hidden:</span> <span class='kw'>true</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_show'>show</span>
+
+<span class='comment'># If you use a set of selectors, they are an &quot;or&quot;, to do an &quot;and&quot; use .and
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UIImageView</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_and'>and</span><span class='lparen'>(</span><span class='label'>hidden:</span> <span class='kw'>true</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_show'>show</span>
+</code></pre>
+
+<p><strong>rmq by itself is the rmq instance of the current UIViewController if you&#39;re inside a UIViewController</strong>.</p>
+
+<p>If you&#39;re inside a UIView you&#39;ve created, <code>rmq.closest(UIControl)</code> is the same as <code>rmq(self).closest(UIControl)</code>.</p>
+
+<h4>rmq is always an array-like object (enumerablish), never nil, etc:</h4>
+
+<p>Because of this, you <strong>never have to check</strong> if your selectors return anything before calling actions or other methods on your rmq object.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># This will hide any UILabel in the controller, if any exist. If not, nothing happens
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
+
+<span class='comment'># Because of this, you can create chains without worry of exceptions
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='symbol'>:this_tag_does_not_exist</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_show'>show</span><span class='period'>.</span><span class='id identifier rubyid_apply_style'>apply_style</span><span class='lparen'>(</span><span class='symbol'>:my_style_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:touch_down</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>score!</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span>
+</code></pre>
+
+<h4>Almost all methods of an rmq object return either itself or another rmq object, so you can chain:</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='symbol'>:label_style</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='comma'>,</span><span class='id identifier rubyid_event'>event</span><span class='op'>|</span> <span class='id identifier rubyid_sender'>sender</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span><span class='rbrace'>}</span>
+
+<span class='comment'># or
+</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_closest'>closest</span><span class='lparen'>(</span><span class='const'>AddEntry</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='symbol'>:delete_button</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>AddEntry</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_blink'>blink</span>
+
+</code></pre>
+
+<p>If you want the actual inner object(s), use <strong>.get</strong></p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># returns my_view
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span>
+
+<span class='comment'># returns an array
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span>
+</code></pre>
+
+<h3>Command-line Tool</h3>
+
+<p>RMQ provides a command-line tool, mostly for generating files:
+```</p>
+
+<blockquote>
+<p>rmq create my_app
+```</p>
+</blockquote>
+
+<p>Here are the commands available to you:
+```</p>
+
+<blockquote>
+<p>rmq api
+rmq docs</p>
+
+<p>rmq create my_new_app
+rmq create model foo
+rmq create controller bar
+rmq create view foo_bar
+rmq create shared some_class_used_app_wide
+rmq create lib some_class_used_by_multiple_apps</p>
+
+<p>rmq create collection_view_controller foos</p>
+</blockquote>
+
+<p># To test the create command without actually creating any files, do:</p>
+
+<blockquote>
+<p>rmq create view my_view dry_run</p>
+
+<p>rmq help
+```</p>
+</blockquote>
+
+<h3>Selectors</h3>
+
+<ul>
+<li>Constant</li>
+<li>:a_tag</li>
+<li>:a_style_name</li>
+<li>my_view_instance</li>
+<li>text: &#39;you can select via attributes also&#39;</li>
+<li>:another_tag, UILabel, text: &#39;an array&#39; &lt;- this is an &quot;or&quot;, use .and for and</li>
+</ul>
+
+<h3>Traversing</h3>
+
+<ul>
+<li>all</li>
+<li>and</li>
+<li>not</li>
+<li>and_self</li>
+<li>end</li>
+<li>find</li>
+<li>children</li>
+<li>siblings</li>
+<li>next</li>
+<li>prev</li>
+<li>closest</li>
+<li>parent</li>
+<li>parents</li>
+<li>filter</li>
+<li>view_controller</li>
+<li>root_view # View of the view_controller</li>
+<li>window # Window of the root_view</li>
+</ul>
+
+<h3>Enumerablish</h3>
+
+<p>A rmq object is like an enumerable, but each method returns a rmq object instead of a enumerable. For example, these methods:</p>
+
+<ul>
+<li>each</li>
+<li>map</li>
+<li>select</li>
+<li>grep</li>
+<li>detect</li>
+<li>inject</li>
+<li>first</li>
+<li>last</li>
+<li>[]</li>
+<li>&lt;&lt;</li>
+<li><em>etc</em></li>
+</ul>
+
+<p>all return another rmq instance, so you can chain.</p>
+
+<p>You can also do <strong>rmq.length</strong> and <strong>rmq[0]</strong> like an array</p>
+
+<p><strong>.to_a</strong> gives you an actual array, so will <strong>.get</strong> (this is preferred)</p>
+
+<h3>Events and Gestures</h3>
+
+<h4>On / Off</h4>
+
+<p>To add an event, use .on, to remove it it, use .off</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># Simple example
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UIView</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='op'>|</span> <span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_sender'>sender</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span><span class='rbrace'>}</span>
+
+<span class='comment'># Adding an Event during creation
+</span><span class='id identifier rubyid_view_q'>view_q</span> <span class='op'>=</span> <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIView</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='comma'>,</span> <span class='id identifier rubyid_event'>event</span><span class='op'>|</span>
+    <span class='comment'># do something here
+</span><span class='kw'>end</span>
+
+<span class='comment'># removing an Event
+</span><span class='id identifier rubyid_view_q'>view_q</span><span class='period'>.</span><span class='id identifier rubyid_off'>off</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span>
+
+<span class='comment'># or you remove them all
+</span><span class='id identifier rubyid_view_q'>view_q</span><span class='period'>.</span><span class='id identifier rubyid_off'>off</span>
+
+<span class='comment'># like everything in RMQ, this works on all items selected
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UIView</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_off'>off</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span>
+</code></pre>
+
+<h4>RubyMotionQuery::Event</h4>
+
+<p>In RMQ events and gestures are normalized with the same API. For example removing events or gestures is foo.off, and the appropriate thing happens.</p>
+
+<p>If you see Event, just remember that&#39;s either an event or gesture. I decided to call them Events</p>
+
+<h5>Type of events and gestures</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># Events on controls
+</span><span class='symbol'>:touch</span>
+<span class='symbol'>:touch_up</span>
+<span class='symbol'>:touch_down</span>
+<span class='symbol'>:touch_start</span>
+<span class='symbol'>:touch_stop</span>
+<span class='symbol'>:change</span>
+
+<span class='symbol'>:touch_down_repeat</span>
+<span class='symbol'>:touch_drag_inside</span>
+<span class='symbol'>:touch_drag_outside</span>
+<span class='symbol'>:touch_drag_enter</span>
+<span class='symbol'>:touch_drag_exit</span>
+<span class='symbol'>:touch_up_inside</span>
+<span class='symbol'>:touch_up_outside</span>
+<span class='symbol'>:touch_cancel</span>
+
+<span class='symbol'>:value_changed</span>
+
+<span class='symbol'>:editing_did_begin</span>
+<span class='symbol'>:editing_changed</span>
+<span class='symbol'>:editing_did_change</span>
+<span class='symbol'>:editing_did_end</span>
+<span class='symbol'>:editing_did_endonexit</span>
+
+<span class='symbol'>:all_touch</span>
+<span class='symbol'>:all_editing</span>
+
+<span class='symbol'>:application</span>
+<span class='symbol'>:system</span>
+<span class='symbol'>:all</span>
+
+<span class='comment'># Gestures
+</span><span class='symbol'>:tap</span>
+<span class='symbol'>:pinch</span>
+<span class='symbol'>:rotate</span>
+<span class='symbol'>:swipe</span>
+<span class='symbol'>:pan</span>
+<span class='symbol'>:long_press</span>
+</code></pre>
+
+<h5>Interesting methods of an RubyMotionQuery::Event:</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_sender'>sender</span>
+<span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_event'>event</span>
+
+<span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_gesture?'>gesture?</span>
+<span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_recognizer'>recognizer</span>
+<span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_gesture'>gesture</span>
+
+<span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_location'>location</span>
+<span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_location_in'>location_in</span>
+
+<span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_sdk_event_or_recognizer'>sdk_event_or_recognizer</span>
+</code></pre>
+
+<p>TODO, need many examples here</p>
+
+<h4>RubyMotionQuery::Events</h4>
+
+<p>The internal store of events in a UIView. It&#39;s rmq.events, you won&#39;t use it too often</p>
+
+<h3>Tags</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># Add tags
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tag'>tag</span><span class='lparen'>(</span><span class='symbol'>:your_tag</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_clear_tags'>clear_tags</span><span class='period'>.</span><span class='id identifier rubyid_tag'>tag</span><span class='lparen'>(</span><span class='symbol'>:your_new_tag</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tag'>tag</span><span class='lparen'>(</span><span class='symbol'>:selected</span><span class='comma'>,</span> <span class='symbol'>:customer</span><span class='rparen'>)</span>
+
+<span class='comment'># You can optionally store a value in the tag, which can be super useful in some rare situations
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tag'>tag</span><span class='lparen'>(</span><span class='label'>your_tag:</span> <span class='int'>22</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tag'>tag</span><span class='lparen'>(</span><span class='label'>your_tag:</span> <span class='int'>22</span><span class='comma'>,</span> <span class='label'>your_other_tag:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Hello world</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+
+
+<span class='comment'># You can use a tag or tags as selecors
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='symbol'>:selected</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='symbol'>:your_tag</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_and'>and</span><span class='lparen'>(</span><span class='symbol'>:selected</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
+
+<span class='comment'># Get tags for a view
+</span><span class='id identifier rubyid_your_view'>your_view</span><span class='period'>.</span><span class='id identifier rubyid_rmq_data'>rmq_data</span><span class='period'>.</span><span class='id identifier rubyid_tags'>tags</span>
+<span class='comment'># Also
+</span><span class='id identifier rubyid_your_view'>your_view</span><span class='period'>.</span><span class='id identifier rubyid_rmq_data'>rmq_data</span><span class='period'>.</span><span class='id identifier rubyid_has_tag?'>has_tag?</span><span class='lparen'>(</span><span class='symbol'>:foo</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_your_view'>your_view</span><span class='period'>.</span><span class='id identifier rubyid_rmq_data'>rmq_data</span><span class='period'>.</span><span class='id identifier rubyid_tag_names'>tag_names</span>
+</code></pre>
+
+<h3>Actions</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_attr'>attr</span><span class='lparen'>(</span><span class='label'>text:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Foo bar</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='symbol'>:some_method</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_show'>show</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_toggle'>toggle</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_toggle_enabled'>toggle_enabled</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_text_field'>my_text_field</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_focus'>focus</span> <span class='comment'># or .become_first_responder
+</span></code></pre>
+
+<h3>Subviews - appending, creating, etc</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span> <span class='comment'># Creates a UILabel in the current controller
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='symbol'>:my_label_style</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='period'>.</span><span class='id identifier rubyid_alloc'>alloc</span><span class='period'>.</span><span class='id identifier rubyid_initWithFrame'>initWithFrame</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='lbracket'>[</span><span class='int'>10</span><span class='comma'>,</span><span class='int'>10</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='symbol'>:my_label_style</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_remove'>remove</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_vuew'>my_vuew</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_remove'>remove</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UIView</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='comma'>,</span> <span class='symbol'>:delete_me</span><span class='rparen'>)</span> <span class='comment'># A custom button for all views
+</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_unshift'>unshift</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span> <span class='comment'># Adds to index 0 of the subviews
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_unshift'>unshift</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='symbol'>:my_style</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='label'>at_index:</span> <span class='int'>2</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='label'>at_index:</span> <span class='int'>2</span><span class='comma'>,</span> <span class='label'>style:</span> <span class='symbol'>:my_style</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='label'>below_view:</span> <span class='id identifier rubyid_some_view_of_mine'>some_view_of_mine</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='label'>below_view:</span> <span class='id identifier rubyid_some_view_of_mine'>some_view_of_mine</span><span class='comma'>,</span> <span class='label'>style:</span> <span class='symbol'>:my_style</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span>  <span class='comment'># .superview works too
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_parents'>parents</span> <span class='comment'># all parents up the tree, up to the root
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span> <span class='comment'># children, grandchildren, etc
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_root_view'>root_view</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_view_controller'>view_controller</span>
+</code></pre>
+
+<h4>Create a view</h4>
+
+<p>If you want to create a view but not add it to the subviews of any other view, you can
+use #create. It&#39;s basically #append without the actual appending.
+This is very handy for stuff like table cells:</p>
+
+<pre class="code ruby"><code class="ruby"># In your controller that is a delegate for a UITableView
+def tableView(table_view, cellForRowAtIndexPath: index_path)
+  cell = table_view.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin
+    rmq.create(StoreCell, :store_cell, cell_identifier: CELL_IDENTIFIER).get
+  end
+end
+
+# Your cell
+class StoreCell &lt; UITableViewCell
+  def rmq_build
+    rmq(self).append(UILabel, :title_label) # &lt;- this works even though this object isn't in a controller
+  end
+end
+</code></pre>
+
+<h3>Animate</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animate'>animate</span><span class='lparen'>(</span>
+  <span class='label'>duration:</span> <span class='float'>0.3</span><span class='comma'>,</span>
+  <span class='label'>animations:</span> <span class='id identifier rubyid_lambda'>lambda</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_q'>q</span><span class='op'>|</span>
+    <span class='id identifier rubyid_q'>q</span><span class='period'>.</span><span class='id identifier rubyid_move'>move</span> <span class='label'>left:</span> <span class='int'>20</span>
+  <span class='rbrace'>}</span>
+<span class='rparen'>)</span>
+</code></pre>
+
+<pre class="code ruby"><code class="ruby"># As an example, this is the implementation of .animations.throb
+rmq(selectors).animate(
+  duration: 0.1,
+  animations: -&gt; (q) {
+    q.style {|st| st.scale = 1.1}
+  },
+  completion: -&gt; (did_finish, q) {
+    q.animate(
+      duration: 0.4,
+      animations: -&gt; (cq) {
+        cq.style {|st| st.scale = 1.0}
+      }
+    )
+  }
+)
+
+# You can pass any options that animateWithDuration allows: options: YOUR_OPTIONS
+</code></pre>
+
+<h3>Animations</h3>
+
+<h4>Current animations included:</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_fade_in'>fade_in</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_fade_in'>fade_in</span><span class='lparen'>(</span><span class='label'>duration:</span> <span class='float'>0.8</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_fade_out'>fade_out</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_fade_out'>fade_out</span><span class='lparen'>(</span><span class='label'>duration:</span> <span class='float'>0.8</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_blink'>blink</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_throb'>throb</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_drop_and_spin'>drop_and_spin</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_start_spinner'>start_spinner</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_stop_spinner'>stop_spinner</span>
+</code></pre>
+
+<h3>Color</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_red'>red</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_hex'>from_hex</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>#ffffff</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_hex'>from_hex</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ffffff</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_rgba'>from_rgba</span><span class='lparen'>(</span><span class='int'>128</span><span class='comma'>,</span> <span class='int'>128</span><span class='comma'>,</span> <span class='int'>128</span><span class='comma'>,</span> <span class='float'>0.5</span><span class='rparen'>)</span>
+
+<span class='comment'># Add a new standard color
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:pitch_black</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>#000000</span><span class='tstring_end'>'</span></span>
+<span class='comment'># Or
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:pitch_black</span><span class='comma'>,</span> <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_black'>black</span>
+
+<span class='comment'># In a stylesheet you don't need the rmq
+</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_pitch_black'>pitch_black</span>
+<span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_red'>red</span>
+</code></pre>
+
+<h3>Font</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_system'>system</span><span class='lparen'>(</span><span class='int'>12</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_font_with_name'>font_with_name</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Helvetica</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='int'>18</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_family_list'>family_list</span> <span class='comment'># useful in console
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_for_family'>for_family</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Helvetica</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'># useful in console
+</span>
+<span class='comment'># Add a new standard font
+</span><span class='id identifier rubyid_font_family'>font_family</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Helvetica Neue</span><span class='tstring_end'>'</span></span>
+<span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:large</span><span class='comma'>,</span>    <span class='id identifier rubyid_font_family'>font_family</span><span class='comma'>,</span> <span class='int'>36</span>
+<span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:medium</span><span class='comma'>,</span>   <span class='id identifier rubyid_font_family'>font_family</span><span class='comma'>,</span> <span class='int'>24</span>
+<span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:small</span><span class='comma'>,</span>    <span class='id identifier rubyid_font_family'>font_family</span><span class='comma'>,</span> <span class='int'>18</span>
+
+<span class='comment'># then use them like so
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_large'>large</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_small'>small</span>
+
+<span class='comment'># In a stylesheet you don't need the rmq
+</span><span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_medium'>medium</span>
+<span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_system'>system</span><span class='lparen'>(</span><span class='int'>14</span><span class='rparen'>)</span>
+</code></pre>
+
+<h3>Position (moving, sizing, and nudging)</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># Move/Size changes size and origin of selected view(s)
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_move'>move</span><span class='lparen'>(</span><span class='label'>l:</span> <span class='int'>20</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_move'>move</span><span class='lparen'>(</span><span class='label'>left:</span> <span class='int'>20</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_move'>move</span><span class='lparen'>(</span><span class='label'>l:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>50</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_move'>move</span><span class='lparen'>(</span><span class='label'>left:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>top:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>width:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='label'>height:</span> <span class='int'>50</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='lparen'>(</span><span class='label'>left:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>top:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>width:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='label'>height:</span> <span class='int'>50</span><span class='rparen'>)</span> <span class='comment'># alias
+</span>
+<span class='comment'># Nudge pushes them in a direction
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nudge'>nudge</span><span class='lparen'>(</span><span class='label'>d:</span> <span class='int'>20</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nudge'>nudge</span><span class='lparen'>(</span><span class='label'>down:</span> <span class='int'>20</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nudge'>nudge</span><span class='lparen'>(</span><span class='label'>l:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>r:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>u:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='label'>d:</span> <span class='int'>50</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='id identifier rubyid_your_view'>your_view</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nudge'>nudge</span><span class='lparen'>(</span><span class='label'>left:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>right:</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>up:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='label'>down:</span> <span class='int'>50</span><span class='rparen'>)</span>
+</code></pre>
+
+<h3>Images</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>ImageUtils</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>subfolder/foo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource_for_device'>resource_for_device</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'># will look for 4inch or 3.5inch
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='label'>cached:</span> <span class='kw'>false</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource_resizable'>resource_resizable</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>foo</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='label'>left:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='label'>top:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='label'>right:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='label'>bottom:</span> <span class='int'>10</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_from_view'>from_view</span><span class='lparen'>(</span><span class='id identifier rubyid_my_view'>my_view</span><span class='rparen'>)</span>
+
+<span class='comment'># In a stylesheet you don't need the rmq
+</span><span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h3>App</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>App</span><span class='period'>.</span><span class='id identifier rubyid_window'>window</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_window'>window</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_delegate'>delegate</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_environment'>environment</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_release?'>release?</span> <span class='comment'># .production? also
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_test?'>test?</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_development?'>development?</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_version'>version</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_identifier'>identifier</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_resource_path'>resource_path</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_document_path'>document_path</span>
+</code></pre>
+
+<h3>Device</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>Device</span><span class='period'>.</span><span class='id identifier rubyid_screen'>screen</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_screen'>screen</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_width'>width</span> <span class='comment'># screen width
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_height'>height</span> <span class='comment'># screen height
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_ipad?'>ipad?</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_iphone?'>iphone?</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_four_inch?'>four_inch?</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_retina?'>retina?</span>
+
+<span class='comment'># return values are :unkown, :portrait, :portrait_upside_down, :landscape_Left,
+</span><span class='comment'># :landscape_right, :face_up, :face_down
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_orientation'>orientation</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_landscape?'>landscape?</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_device'>device</span><span class='period'>.</span><span class='id identifier rubyid_portrait?'>portrait?</span>
+</code></pre>
+
+<h3>Format</h3>
+
+<p>A performant way to format numbers and dates.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_format'>format</span><span class='period'>.</span><span class='id identifier rubyid_number'>number</span><span class='lparen'>(</span><span class='int'>1232</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>#,##0.##</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_format'>format</span><span class='period'>.</span><span class='id identifier rubyid_date'>date</span><span class='lparen'>(</span><span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>EEE, MMM d, </span><span class='tstring_end'>'</span></span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>yy</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_format'>format</span><span class='period'>.</span><span class='id identifier rubyid_numeric_formatter'>numeric_formatter</span><span class='lparen'>(</span><span class='id identifier rubyid_your_format_here'>your_format_here</span><span class='rparen'>)</span> <span class='comment'># returns cached numeric formatter
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_format'>format</span><span class='period'>.</span><span class='id identifier rubyid_date_formatter'>date_formatter</span><span class='lparen'>(</span><span class='id identifier rubyid_your_format_here'>your_format_here</span><span class='rparen'>)</span> <span class='comment'># returns cached date formatter
+</span></code></pre>
+
+<p>See <a href="http://www.unicode.org/reports/tr35/tr35-19.html#Date_Format_Patterns">http://www.unicode.org/reports/tr35/tr35-19.html#Date_Format_Patterns</a> for more information about date format strings.</p>
+
+<h3>Utils</h3>
+
+<p>These are mostly used internally by rmq.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>RMQ</span><span class='period'>.</span><span class='id identifier rubyid_is_class?'>is_class?</span><span class='lparen'>(</span><span class='id identifier rubyid_foo'>foo</span><span class='rparen'>)</span>
+<span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>RMQ</span><span class='period'>.</span><span class='id identifier rubyid_is_blank?'>is_blank?</span><span class='lparen'>(</span><span class='id identifier rubyid_foo'>foo</span><span class='rparen'>)</span>
+<span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>RMQ</span><span class='period'>.</span><span class='id identifier rubyid_controller_for_view'>controller_for_view</span><span class='lparen'>(</span><span class='id identifier rubyid_view'>view</span><span class='rparen'>)</span>
+<span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>RMQ</span><span class='period'>.</span><span class='id identifier rubyid_view_to_s'>view_to_s</span><span class='lparen'>(</span><span class='id identifier rubyid_view'>view</span><span class='rparen'>)</span>
+<span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>RMQ</span><span class='period'>.</span><span class='id identifier rubyid_weak_ref'>weak_ref</span><span class='lparen'>(</span><span class='id identifier rubyid_foo'>foo</span><span class='rparen'>)</span>
+</code></pre>
+
+<h3>Pollution</h3>
+
+<p>The following are the only pollution in RMQ</p>
+
+<ul>
+<li>UIView
+
+<ul>
+<li>rmq</li>
+<li>rmq_data</li>
+</ul></li>
+<li>UIViewController
+
+<ul>
+<li>rmq</li>
+<li>rmq_data</li>
+</ul></li>
+<li>Object
+
+<ul>
+<li>rmq</li>
+</ul></li>
+</ul>
+
+<h3>Console Fun</h3>
+
+<p>rmq.log :tree
+    rmq.all.log
+    rmq.all.log :wide
+    rmq(UIView).show
+    rmq(UILabel).animations.blink
+    rmq(UIButton).nudge l: 10</p>
+
+<h3>A recommended project structure</h3>
+
+<ul>
+<li>app
+
+<ul>
+<li>controllers
+
+<ul>
+<li>your_controller.rb</li>
+<li>your_other_controller.rb</li>
+</ul></li>
+<li>models</li>
+<li>shared</li>
+<li>stylers
+
+<ul>
+<li>ui_view_styler.rb</li>
+<li>ui_button_styler.rb</li>
+<li>etc</li>
+</ul></li>
+<li>stylesheets
+
+<ul>
+<li>application_stylesheet.rb (inherit from RubyMotionQuery::Stylesheet)</li>
+<li>your_stylesheet.rb (inherit from ApplicationStylesheet)</li>
+<li>your_other_stylesheet.rb (inherit from ApplicationStylesheet)</li>
+<li>your_view_stylesheet.rb (module, included an any controller&#39;s stylesheet that needs it)</li>
+</ul></li>
+<li>views</li>
+</ul></li>
+<li>lib</li>
+<li>resource</li>
+<li>spec
+
+<ul>
+<li>controllers</li>
+<li>lib</li>
+<li>models</li>
+<li>shared</li>
+<li>stylers</li>
+<li>views</li>
+</ul></li>
+</ul>
+
+<h3>Debugging</h3>
+
+<p>Adding rmq_debug=true to rake turns on some debugging features that are too slow or verbose to include in a normal build.  It&#39;s great for normal use in the simulator, but you&#39;ll want to leave it off if you&#39;re measuring performance.
+<code>
+rake rmq_debug=true
+</code></p>
+
+<p>Use this to add your optional debugging code
+<code>ruby
+rmq.debugging?
+=&gt; true
+</code></p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='symbol'>:tree</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span>
+<span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='symbol'>:wide</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>Section</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='symbol'>:tree</span>
+<span class='comment'># 163792144 is the ID a button
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='int'>163792144</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_style'>style</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_st'>st</span><span class='op'>|</span> <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_blue'>blue</span><span class='rbrace'>}</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>Section</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_and_self'>and_self</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='symbol'>:wide</span>
+
+<span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_blink'>blink</span>
+
+<span class='comment'># Show subview index and thus zorder of Section within Section's parent
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>Section</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span>
+</code></pre>
+
+<hr>
+
+<h3>Styles and stylesheets</h3>
+
+<p>A very lightweight style system, designed for a low memory footprint, fast startup, and fast operation. Most everything is done at compile-time, as it&#39;s all just ruby code. Low magic.</p>
+
+<p><strong>You don&#39;t have to use this system, you can use Teacup instead</strong>, or whatever you like. RMQ works great without using the style system.</p>
+
+<h4>Example controller</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>MainController</span> <span class='op'>&lt;</span> <span class='const'>UIViewController</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_viewDidLoad'>viewDidLoad</span>
+    <span class='kw'>super</span>
+
+    <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_stylesheet'>stylesheet</span> <span class='op'>=</span> <span class='const'>MainControllerStyleSheet</span>
+    <span class='id identifier rubyid_view'>view</span><span class='period'>.</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_apply_style'>apply_style</span> <span class='symbol'>:root_view</span>
+
+    <span class='ivar'>@title_label</span> <span class='op'>=</span> <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='symbol'>:title_label</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span>
+
+    <span class='id identifier rubyid_image_view'>image_view</span> <span class='op'>=</span> <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIImageView</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span>
+    <span class='comment'># Apply style anywhere
+</span>    <span class='id identifier rubyid_image_view'>image_view</span><span class='period'>.</span><span class='id identifier rubyid_apply_style'>apply_style</span><span class='lparen'>(</span><span class='symbol'>:logo</span><span class='rparen'>)</span>
+
+    <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='comma'>,</span> <span class='symbol'>:make_labels_blink</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='op'>|</span>
+      <span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_blink'>blink</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='period'>.</span><span class='id identifier rubyid_buttonWithType'>buttonWithType</span><span class='lparen'>(</span><span class='const'>UIButtonTypeRoundedRect</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='symbol'>:make_buttons_throb</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='op'>|</span>
+      <span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_throb'>throb</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIView</span><span class='comma'>,</span> <span class='symbol'>:section</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_section'>section</span><span class='op'>|</span>
+      <span class='id identifier rubyid_section'>section</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='symbol'>:section_title</span><span class='rparen'>)</span>
+
+      <span class='id identifier rubyid_section'>section</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='symbol'>:section_enabled_title</span><span class='rparen'>)</span>
+
+      <span class='id identifier rubyid_section'>section</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UISwitch</span><span class='comma'>,</span> <span class='symbol'>:section_enabled</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:change</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='op'>|</span>
+        <span class='id identifier rubyid_style'>style</span> <span class='op'>=</span> <span class='id identifier rubyid_sender'>sender</span><span class='period'>.</span><span class='id identifier rubyid_isOn'>isOn</span> <span class='op'>?</span> <span class='symbol'>:section_button_enabled</span> <span class='op'>:</span> <span class='symbol'>:section_button_disabled</span>
+        <span class='id identifier rubyid_buttons'>buttons</span> <span class='op'>=</span> <span class='id identifier rubyid_sender'>sender</span><span class='period'>.</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_apply_style'>apply_style</span><span class='lparen'>(</span><span class='id identifier rubyid_style'>style</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+
+      <span class='id identifier rubyid_section'>section</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='comma'>,</span> <span class='symbol'>:start_spinner</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='op'>|</span>
+        <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_start_spinner'>start_spinner</span>
+      <span class='kw'>end</span>
+
+      <span class='id identifier rubyid_section'>section</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='comma'>,</span> <span class='symbol'>:stop_spinner</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='op'>|</span>
+        <span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_animations'>animations</span><span class='period'>.</span><span class='id identifier rubyid_stop_spinner'>stop_spinner</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h4>Example stylesheet</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>ApplicationStylesheet</span> <span class='op'>&lt;</span> <span class='const'>RubyMotionQuery</span><span class='op'>::</span><span class='const'>Stylesheet</span>
+  <span class='const'>PADDING</span> <span class='op'>=</span> <span class='int'>10</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_application_setup'>application_setup</span>
+    <span class='id identifier rubyid_font_family'>font_family</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Helvetica Neue</span><span class='tstring_end'>'</span></span>
+    <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:large</span><span class='comma'>,</span>    <span class='id identifier rubyid_font_family'>font_family</span><span class='comma'>,</span> <span class='int'>36</span>
+    <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:medium</span><span class='comma'>,</span>   <span class='id identifier rubyid_font_family'>font_family</span><span class='comma'>,</span> <span class='int'>24</span>
+    <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:small</span><span class='comma'>,</span>    <span class='id identifier rubyid_font_family'>font_family</span><span class='comma'>,</span> <span class='int'>18</span>
+
+    <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:translucent_black</span><span class='comma'>,</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_rgba'>from_rgba</span><span class='lparen'>(</span><span class='int'>0</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='float'>0.4</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_add_named'>add_named</span> <span class='symbol'>:battleship_gray</span><span class='comma'>,</span>   <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>#7F7F7F</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_label'>label</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='kw'>end</span>
+
+<span class='kw'>end</span>
+
+<span class='kw'>class</span> <span class='const'>MainStylesheet</span> <span class='op'>&lt;</span> <span class='const'>ApplicationStylesheet</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_setup'>setup</span>
+    <span class='comment'># Add sytlesheet specific setup stuff here.
+</span>    <span class='comment'># Add application specific setup stuff in application_stylesheet.rb
+</span>  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_root_view'>root_view</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_logo'>logo</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>t:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>200</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>96</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_centered'>centered</span> <span class='op'>=</span> <span class='symbol'>:horizontal</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span> <span class='op'>=</span> <span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_title_label'>title_label</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_label'>label</span> <span class='id identifier rubyid_st'>st</span> <span class='comment'># stack styles
+</span>    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='const'>PADDING</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>120</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>200</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>20</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Test label</span><span class='tstring_end'>'</span></span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_rgba'>from_rgba</span><span class='lparen'>(</span><span class='int'>34</span><span class='comma'>,</span> <span class='int'>132</span><span class='comma'>,</span> <span class='int'>198</span><span class='comma'>,</span> <span class='float'>1.0</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span> <span class='op'>=</span> <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_medium'>medium</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_make_labels_blink'>make_labels_blink</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>t:</span> <span class='int'>120</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>150</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>20</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_from_right'>from_right</span> <span class='op'>=</span> <span class='const'>PADDING</span>
+
+    <span class='comment'># ipad? (and landscape?, etc) is just a convenience methods for
+</span>    <span class='comment'># rmq.device.ipad?
+</span>
+    <span class='comment'># Here is a complete example of different formatting for orientatinos
+</span>    <span class='comment'># and devices
+</span>    <span class='comment'>#  if ipad?
+</span>    <span class='comment'>#    if landscape?
+</span>    <span class='comment'>#      st.frame = {l: 20, t: 120, w: 150, h: four_inch? ? 20 : 30}
+</span>    <span class='comment'>#    else
+</span>    <span class='comment'>#      st.frame = {l: 90, t: 120, w: 150, h: four_inch? ? 25 : 35}
+</span>    <span class='comment'>#    end
+</span>    <span class='comment'>#  else
+</span>    <span class='comment'>#    if landscape?
+</span>    <span class='comment'>#      st.frame = {l: 20, t: 20, w: 150, h: four_inch? ? 22 : 32}
+</span>    <span class='comment'>#    else
+</span>    <span class='comment'>#      st.frame = {l: 90, t: 20, w: 150, h: four_inch? ? 30 : 40}
+</span>    <span class='comment'>#    end
+</span>    <span class='comment'>#  end
+</span>
+    <span class='comment'># If you don't want something to be reapplied during orientation
+</span>    <span class='comment'># changes (assuming you're reapplying durring orientation changes
+</span>    <span class='comment'># in your controller, it's not automatic)
+</span>    <span class='kw'>unless</span> <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_view_has_been_styled?'>view_has_been_styled?</span>
+      <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Blink labels</span><span class='tstring_end'>'</span></span>
+      <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span> <span class='op'>=</span> <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_system'>system</span><span class='lparen'>(</span><span class='int'>10</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+      <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_hex'>from_hex</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ed1160</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_make_buttons_throb'>make_buttons_throb</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>t:</span> <span class='int'>150</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>150</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>20</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_from_right'>from_right</span> <span class='op'>=</span> <span class='const'>PADDING</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Throb buttons</span><span class='tstring_end'>'</span></span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_black'>black</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_section'>section</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>w:</span> <span class='int'>270</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>110</span><span class='rbrace'>}</span>
+
+    <span class='kw'>if</span> <span class='id identifier rubyid_landscape?'>landscape?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_iphone?'>iphone?</span>
+      <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_left'>left</span> <span class='op'>=</span> <span class='const'>PADDING</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_centered'>centered</span> <span class='op'>=</span> <span class='symbol'>:horizontal</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_from_bottom'>from_bottom</span> <span class='op'>=</span> <span class='const'>PADDING</span>
+
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_z_position'>z_position</span> <span class='op'>=</span> <span class='int'>1</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_battleship_gray'>battleship_gray</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_section_label'>section_label</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_label'>label</span> <span class='id identifier rubyid_st'>st</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_section_title'>section_title</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_section_label'>section_label</span> <span class='id identifier rubyid_st'>st</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='const'>PADDING</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='const'>PADDING</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>150</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>20</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Section title</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_section_enabled'>section_enabled</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_label'>label</span> <span class='id identifier rubyid_st'>st</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='const'>PADDING</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>30</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_section_enabled_title'>section_enabled_title</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_section_label'>section_label</span> <span class='id identifier rubyid_st'>st</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='int'>93</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>34</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>150</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>20</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Enabled</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_section_buttons'>section_buttons</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='const'>PADDING</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>64</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>120</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>40</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_black'>black</span>
+    <span class='id identifier rubyid_section_button_enabled'>section_button_enabled</span> <span class='id identifier rubyid_st'>st</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_start_spinner'>start_spinner</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_section_buttons'>section_buttons</span> <span class='id identifier rubyid_st'>st</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Start spinner</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_stop_spinner'>stop_spinner</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_section_buttons'>section_buttons</span> <span class='id identifier rubyid_st'>st</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_from_right'>from_right</span> <span class='op'>=</span> <span class='const'>PADDING</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Stop spinner</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_section_button_disabled'>section_button_disabled</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_enabled'>enabled</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_dark_gray'>dark_gray</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_section_button_enabled'>section_button_enabled</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_enabled'>enabled</span> <span class='op'>=</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_animate_move'>animate_move</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_scale'>scale</span> <span class='op'>=</span> <span class='float'>1.0</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>t:</span> <span class='int'>180</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>150</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>20</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_from_right'>from_right</span> <span class='op'>=</span> <span class='const'>PADDING</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Animate move and scale</span><span class='tstring_end'>'</span></span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span> <span class='op'>=</span> <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_system'>system</span><span class='lparen'>(</span><span class='int'>10</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_hex'>from_hex</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ed1160</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_z_position'>z_position</span> <span class='op'>=</span> <span class='int'>99</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_overlay'>overlay</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='symbol'>:full</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_translucent_black'>translucent_black</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_hidden'>hidden</span> <span class='op'>=</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_z_position'>z_position</span> <span class='op'>=</span> <span class='int'>99</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_benchmarks_results_wrapper'>benchmarks_results_wrapper</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_hidden'>hidden</span> <span class='op'>=</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>w:</span> <span class='id identifier rubyid_app_width'>app_width</span> <span class='op'>-</span> <span class='int'>20</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>120</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_centered'>centered</span> <span class='op'>=</span> <span class='symbol'>:both</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_z_position'>z_position</span> <span class='op'>=</span> <span class='int'>100</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_benchmarks_results_label'>benchmarks_results_label</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_label'>label</span> <span class='id identifier rubyid_st'>st</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_padded'>padded</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='label'>b:</span><span class='int'>10</span><span class='comma'>,</span> <span class='label'>r:</span> <span class='int'>10</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text_alignment'>text_alignment</span> <span class='op'>=</span> <span class='symbol'>:left</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_black'>black</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span> <span class='op'>=</span> <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_system'>system</span><span class='lparen'>(</span><span class='int'>10</span><span class='rparen'>)</span>
+
+    <span class='comment'># If the styler doesn't have the method, you can add it or
+</span>    <span class='comment'># just use st.view to get the actual object
+</span>    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_view'>view</span><span class='period'>.</span><span class='id identifier rubyid_numberOfLines'>numberOfLines</span> <span class='op'>=</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_view'>view</span><span class='period'>.</span><span class='id identifier rubyid_lineBreakMode'>lineBreakMode</span> <span class='op'>=</span> <span class='const'>NSLineBreakByWordWrapping</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_run_benchmarks'>run_benchmarks</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='const'>PADDING</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>150</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>130</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>20</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Run benchmarks</span><span class='tstring_end'>'</span></span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span> <span class='op'>=</span> <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_system'>system</span><span class='lparen'>(</span><span class='int'>11</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_enabled'>enabled</span> <span class='op'>=</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_hex'>from_hex</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>faa619</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_run_benchmarks_disabled'>run_benchmarks_disabled</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_enabled'>enabled</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_from_hex'>from_hex</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>de8714</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_benchmark'>benchmark</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_hidden'>hidden</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>foo</span><span class='tstring_end'>'</span></span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_white'>white</span>
+    <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_left'>left</span> <span class='op'>=</span> <span class='int'>10</span>
+  <span class='kw'>end</span>
+
+<span class='kw'>end</span>
+</code></pre>
+
+<h4>Stylers</h4>
+
+<p>A styler wraps around a view, augmenting it with styling power and sugar.</p>
+
+<p>Each UIView subclass can have its own styler (many exist in RMQ, but not all <em>yet</em>). There is a UIViewStyler class they all inherit from, and a UIControlStyler controls inherit from. Much of the code is in UIViewStyler.</p>
+
+<p>When you create a &quot;style method&quot;, it will be passed the view, wrapped in a styler. You can get the view using st.view.</p>
+
+<h5>UIViewStyler</h5>
+
+<p>Here is a silly example, showing you a bunch of methods the UIViewStyler gives you:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>def</span> <span class='id identifier rubyid_ui_view_kitchen_sink'>ui_view_kitchen_sink</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='int'>1</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>2</span><span class='comma'>,</span> <span class='label'>w:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='label'>h:</span> <span class='int'>4</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>left:</span> <span class='int'>1</span><span class='comma'>,</span> <span class='label'>top:</span> <span class='int'>2</span><span class='comma'>,</span> <span class='label'>width:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='label'>height:</span> <span class='int'>4</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_frame'>frame</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>left:</span> <span class='int'>10</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_left'>left</span> <span class='op'>=</span> <span class='int'>20</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_top'>top</span> <span class='op'>=</span> <span class='int'>30</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_width'>width</span> <span class='op'>=</span> <span class='int'>40</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_height'>height</span> <span class='op'>=</span> <span class='int'>50</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_right'>right</span> <span class='op'>=</span> <span class='int'>100</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_bottom'>bottom</span> <span class='op'>=</span> <span class='int'>110</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_from_right'>from_right</span> <span class='op'>=</span> <span class='int'>10</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_from_bottom'>from_bottom</span> <span class='op'>=</span> <span class='int'>12</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_padded'>padded</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>l:</span> <span class='int'>1</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='int'>2</span><span class='comma'>,</span> <span class='label'>r:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='label'>b:</span> <span class='int'>4</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_padded'>padded</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>left:</span> <span class='int'>1</span><span class='comma'>,</span> <span class='label'>top:</span> <span class='int'>2</span><span class='comma'>,</span> <span class='label'>right:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='label'>bottom:</span> <span class='int'>4</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_center'>center</span> <span class='op'>=</span> <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_superview'>superview</span><span class='period'>.</span><span class='id identifier rubyid_center'>center</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_center_x'>center_x</span> <span class='op'>=</span> <span class='int'>50</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_center_y'>center_y</span> <span class='op'>=</span> <span class='int'>60</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_centered'>centered</span> <span class='op'>=</span> <span class='symbol'>:horizontal</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_centered'>centered</span> <span class='op'>=</span> <span class='symbol'>:vertical</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_centered'>centered</span> <span class='op'>=</span> <span class='symbol'>:both</span>
+
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_enabled'>enabled</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_hidden'>hidden</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_z_position'>z_position</span> <span class='op'>=</span> <span class='int'>66</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_opaque'>opaque</span> <span class='op'>=</span> <span class='kw'>false</span>
+
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_background_color'>background_color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_red'>red</span>
+
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_scale'>scale</span> <span class='op'>=</span> <span class='float'>1.5</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_rotation'>rotation</span> <span class='op'>=</span> <span class='int'>45</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h5>UIControlStyler</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>Nothing</span> <span class='id identifier rubyid_yet'>yet</span>
+</code></pre>
+
+<h5>UILabelStyler</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>def</span> <span class='id identifier rubyid_ui_label_kitchen_sink'>ui_label_kitchen_sink</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>rmq is awesome</span><span class='tstring_end'>'</span></span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span> <span class='op'>=</span> <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_system'>system</span><span class='lparen'>(</span><span class='int'>12</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_black'>black</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text_alignment'>text_alignment</span> <span class='op'>=</span> <span class='symbol'>:center</span>
+
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_resize_to_fit_text'>resize_to_fit_text</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_size_to_fit'>size_to_fit</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h5>UIButtonStyler</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>def</span> <span class='id identifier rubyid_ui_button_kitchen_sink'>ui_button_kitchen_sink</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>foo</span><span class='tstring_end'>'</span></span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span> <span class='op'>=</span> <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_system'>system</span><span class='lparen'>(</span><span class='int'>12</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='id identifier rubyid_color'>color</span><span class='period'>.</span><span class='id identifier rubyid_red'>red</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_image_normal'>image_normal</span> <span class='op'>=</span> <span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_image_highlighted'>image_highlighted</span> <span class='op'>=</span> <span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h5>UIImageViewStyler</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>def</span> <span class='id identifier rubyid_u_image_view_kitchen_sink'>u_image_view_kitchen_sink</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_image'>image</span> <span class='op'>=</span> <span class='id identifier rubyid_image'>image</span><span class='period'>.</span><span class='id identifier rubyid_resource'>resource</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h5>UIScrollViewStyler</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>def</span> <span class='id identifier rubyid_ui_scroll_view_kitchen_sink'>ui_scroll_view_kitchen_sink</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_paging'>paging</span> <span class='op'>=</span> <span class='kw'>true</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h5>UISwitchStyler</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>def</span> <span class='id identifier rubyid_ui_switch_kitchen_sink'>ui_switch_kitchen_sink</span><span class='lparen'>(</span><span class='id identifier rubyid_st'>st</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_st'>st</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span> <span class='op'>=</span> <span class='kw'>true</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p><strong>There should be a styler for each UIView type. And each one should wrap all common methods and attributes, plus add functionality for common operations. This will come in future versions</strong></p>
+
+<h4>Add your own stylers</h4>
+
+<p>In the example app, look in <strong>/app/stylers</strong>, you can just copy that whole folder to start. Then add methods to the appropriate class.</p>
+
+<p>Here is an example of adding a method to all stylers:
+```ruby
+module RubyMotionQuery
+  module Stylers
+    class UIViewStyler</p>
+
+<pre class="code ruby"><code class="ruby">  def border_width=(value)
+    @view.layer.borderWidth = value
+  end
+  def border_width
+    @view.layer.borderWidth
+  end
+
+end
+</code></pre>
+
+<p>end
+end
+```</p>
+
+<p>You can also include all of your custom stylers in one file, which works well if you don&#39;t have a lot.</p>
+
+<h3>Creating your own views</h3>
+
+<p>RMQ calls 3 methods when you create, append, or build a view using rmq. rmq_build is the one you most want to use
+```ruby
+def rmq_build
+end</p>
+
+<p>def rmq_created
+end</p>
+
+<p>def rmq_appended
+end
+<code>
+If you append a view like so:
+</code>ruby
+rmq.append(UILabel)
+```
+The 3 methods will be called in this order:
+- rmq_created
+- rmq_appended
+- rmq_build</p>
+
+<p>In the following example an instance of YourView is created, :your_style is applied
+then rmq_build is called on the instance that was just created. In that
+order.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># Your view
+</span><span class='kw'>class</span> <span class='const'>YourView</span> <span class='op'>&lt;</span> <span class='const'>UIView</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_rmq_build'>rmq_build</span>
+    <span class='id identifier rubyid_rmq'>rmq</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_q'>q</span><span class='op'>|</span>
+      <span class='id identifier rubyid_q'>q</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UILabel</span><span class='comma'>,</span> <span class='symbol'>:section_title</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_q'>q</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>UIButton</span><span class='comma'>,</span> <span class='symbol'>:buy_button</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:tap</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_sender'>sender</span><span class='op'>|</span>
+        <span class='comment'># do  something
+</span>      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+
+<span class='comment'># In your controller
+</span><span class='id identifier rubyid_rmq'>rmq</span><span class='period'>.</span><span class='id identifier rubyid_append'>append</span><span class='lparen'>(</span><span class='const'>YourView</span><span class='comma'>,</span> <span class='symbol'>:your_style</span><span class='rparen'>)</span>
+</code></pre>
+
+<h3>Future features</h3>
+
+<p>Current roadmap:</p>
+
+<ul>
+<li>v0.5 new view_controller system: which solves the #1 problem in rmq: having to pass rmq around in things like cells. rmq command will work everywhere</li>
+<li>v0.6 new frame system: I’ve already designed this, I just have to implement it and use it in the real world and tweak. This is going to be very cool. It adds to the existing frame system. It doesn’t replace constraints, but rather gives you almost all the features you need without the complexity of constraints.</li>
+<li>v0.6.5 templates and stylers all finished</li>
+<li>v0.6.7 performance improvements</li>
+<li>v0.7 first rmq plugin and any base features needed to support plugins (I don’t think there will be any base features needed)</li>
+<li>v0.8 binding system</li>
+<li>?</li>
+<li>?</li>
+<li>v1.0</li>
+</ul>
+
+<p>Random future features that I plan on adding</p>
+
+<ul>
+<li>rmq.push_sub_controller(my_controller) and rmq.pop_sub_controller and rmq.pop_this_controller</li>
+<li>add borders to UIView styler: st.borders = {w: 2, color: color.black, r: 2, color: color.black}</li>
+<li>add templates for: nav controller, tab controller, table controller, collection controller</li>
+<li>add from_right, from_bottom, and centered to both st.frame and to move</li>
+<li>add binding that combines KVO and events to bind an attribute of one object to the attribute of selected view(s), keeping both in sync, like so: rmq.append(UITextField).bind(@person, attr: :name, to: :text)</li>
+<li>rmq.log to wrap nslog to allow you to turn off logging (or does NSLog already have this feature?)</li>
+<li>add selectors for UITextField</li>
+<li>add string to height utility, given the font and the width</li>
+</ul>
+
+<h2>Contact</h2>
+
+<p>created by <strong>Todd Werth</strong> (<a href="http://toddwerth.com">http://toddwerth.com</a>)</p>
+
+<ul>
+<li><a href="http://twitter.com/twerth">@twerth</a></li>
+<li><a href="mailto:todd@infinitered.com">todd@infinitered.com</a></li>
+<li><a href="https://github.com/twerth">github</a></li>
+</ul>
+
+<p>with help from the team at <strong>InfiniteRed</strong> (<a href="http://infinitered.com">http://infinitered.com</a>)</p>
+
+<ul>
+<li><a href="http://twitter.com/infinite_red">@infinite_red</a></li>
+<li><a href="https://github.com/infinitered">github</a></li>
+</ul>
+
+<h2>License</h2>
+
+<p>RMQ is available under the MIT license. See the LICENSE file for more info.</p>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am &#39;Add some feature&#39;</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+</div></div>
+
+    <div id="footer">
+  Generated on Sun Dec  8 20:15:50 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.3 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

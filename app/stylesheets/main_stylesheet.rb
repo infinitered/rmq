@@ -9,21 +9,14 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def logo(st)
-    st.frame = {t: 10, w: 200, h: 95.5}
+    st.frame = {t: 77, w: 200, h: 95.5}
     st.centered = :horizontal
     st.image = image.resource('logo')
   end
 
-  def title_label(st)
-    label st # stack styles
-    st.frame = {l: PADDING, t: 120, w: 200, h: 20}
-    st.text = 'Test label'
-    st.color = color.from_rgba(34, 132, 198, 1.0)
-    st.font = font.medium
-  end
 
   def make_labels_blink(st)
-    st.frame = {t: 120, w: 150, h: 20}
+    st.frame = {t: 180, w: 150, h: 20}
     st.from_right = PADDING
 
     # ipad? (and landscape?, etc) is just a convenience methods for
@@ -57,11 +50,32 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def make_buttons_throb(st)
-    st.frame = {t: 150, w: 150, h: 20}
+    st.frame = {t: 205, w: 150, h: 20}
     st.from_right = PADDING
     st.text = 'Throb buttons'
     st.color = color.black
   end
+
+  def animate_move(st)
+    st.scale = 1.0
+    st.frame = {t: 230, w: 150, h: 20}
+    st.from_right = PADDING
+    st.text = 'Animate move and scale'
+    st.font = font.system(10)
+    st.color = color.white
+    st.background_color = color.from_hex('ed1160')
+    st.z_position = 99
+    st.color = color.white
+  end
+
+  def collection(st)
+    st.frame = {t: 260, w: 150, h: 20}
+    st.from_right = PADDING
+    st.background_color = color.black
+    st.font = font.small
+    st.text = 'Collection View'
+  end
+
 
   def section(st)
     st.frame = {w: 270, h: 110}
@@ -128,16 +142,33 @@ class MainStylesheet < ApplicationStylesheet
     st.color = color.white
   end
 
-  def animate_move(st)
-    st.scale = 1.0
-    st.frame = {t: 180, w: 150, h: 20}
-    st.from_right = PADDING
-    st.text = 'Animate move and scale'
-    st.font = font.system(10)
-    st.color = color.white
-    st.background_color = color.from_hex('ed1160')
-    st.z_position = 99
-    st.color = color.white
+  def benchmark_section(st)
+    t = (landscape? && iphone?) ? 100 : 180
+    st.frame = {l: PADDING, t: t, w: 100 + (PADDING * 2), h: 60}
+    st.background_color = color.from_hex('faa619')
+  end
+
+  def run_benchmarks(st)
+    st.frame = {l: PADDING, t: 30, w: 100, h: 20}
+    st.text = 'Run benchmarks'
+    st.font = font.system(11)
+    st.color = color.from_hex('faa619')
+    st.enabled = true
+    st.background_color = color.white
+  end
+
+  def run_benchmarks_disabled(st)
+    st.enabled = false
+    st.color = color.from_hex('de8714')
+  end
+
+  def title_label(st)
+    label st # stack styles
+    st.frame = {l: PADDING, t: PADDING, w: 100, h: 15}
+
+    st.text = 'Test label'
+    st.color = color.from_rgba(34, 132, 198, 1.0)
+    st.font = font.small
   end
 
   def overlay(st)
@@ -166,20 +197,6 @@ class MainStylesheet < ApplicationStylesheet
     # just use st.view to get the actual object
     st.view.numberOfLines = 0
     st.view.lineBreakMode = NSLineBreakByWordWrapping
-  end
-
-  def run_benchmarks(st)
-    st.frame = {l: PADDING, t: 150, w: 130, h: 20}
-    st.text = 'Run benchmarks'
-    st.font = font.system(11)
-    st.color = color.white
-    st.enabled = true
-    st.background_color = color.from_hex('faa619')
-  end
-
-  def run_benchmarks_disabled(st)
-    st.enabled = false
-    st.color = color.from_hex('de8714')
   end
 
   def benchmark(st)

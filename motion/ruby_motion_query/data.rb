@@ -43,9 +43,17 @@ module RubyMotionQuery
         RMQ.is_blank?(@_tags)
       end
     end
+
+    def view_controller=(value)
+      @view_controller = RubyMotionQuery::RMQ.weak_ref(value)
+    end
+
+    def view_controller
+      @view_controller
+    end
   end
 
   class ControllerData
-    attr_accessor :stylesheet, :rmq
+    attr_accessor :stylesheet, :cached_rmq
   end
 end

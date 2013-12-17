@@ -171,7 +171,7 @@ module RubyMotionQuery
       def center_y=(value)
         c = @view.center
         c.y = value
-        @view.center = c
+        @view.setCenter c
       end
       def center_y
         @view.center.y
@@ -193,39 +193,39 @@ module RubyMotionQuery
       end
 
       def background_color=(value)
-        @view.backgroundColor = value
+        @view.setBackgroundColor value
       end
       def background_color
         @view.backgroundColor
       end
 
       def background_image=(value)
-        @view.backgroundColor = UIColor.colorWithPatternImage(value)
+        @view.setBackgroundColor UIColor.colorWithPatternImage(value)
       end
 
       def z_position=(index)
-        @view.layer.zPosition = index
+        @view.layer.setZPosition index
       end
       def z_position
         @view.layer.zPosition
       end
 
       def opaque=(value)
-        @view.layer.opaque = value
+        @view.layer.setOpaque value
       end
       def opaque
-        @view.layer.opaque
+        @view.layer.isOpaque
       end
 
       def hidden=(value)
-        @view.hidden = value
+        @view.setHidden value
       end
       def hidden
-        @view.hidden
+        @view.isHidden
       end
 
       def enabled=(value)
-        @view.enabled = value
+        @view.setEnabled value
       end
       def enabled
         @view.enabled
@@ -253,16 +253,15 @@ module RubyMotionQuery
       end
 
       def content_mode=(value)
-        @view.contentMode = value
+        @view.setContentMode value
       end
       def content_mode
         @view.contentMode
       end
 
       def clips_to_bounds=(value)
-        @view.clipsToBounds = value
+        @view.setClipsToBounds value
       end
-
       def clips_to_bounds
         @view.clipsToBounds
       end

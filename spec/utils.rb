@@ -39,14 +39,39 @@ describe 'utils' do
     (s =~ /.*VIEW.*/).should == 1 
   end
 
+  it 'should not wrap a weak ref inside another weak ref' do
+    foo = 'hi'
+
+    # RM's standard WeakRef will wrap a weak ref inside aonther weak ref
+    # THIS IS NO LONGER TRUE IN RubyMotion 2.17, disabling test
+    #rm_weak = WeakRef.new(foo)
+    #rm_weak.is_a?(String).should == true
+    #rm_weak = WeakRef.new(rm_weak)
+    #rm_weak.is_a?(WeakRef).should == true
+
+    # Now make sure rmq's does not
+    weak = RubyMotionQuery::RMQ.weak_ref(foo)
+    weak.is_a?(String).should == true
+    weak = RubyMotionQuery::RMQ.weak_ref(weak)
+    weak.is_a?(WeakRef).should == false
+    weak.is_a?(String).should == true
+  end
+
   describe 'utils - controller_for_view' do
     it 'should return nil if view is nil' do
       @rmq.controller_for_view(nil).should == nil
     end
 
     it 'should return nil if a view isn\'t in a controller' do
-      u = UIView.alloc.initWithFrame([[0,0],[0,0]])
+      u = UIView.alloc.initWithFrame(CGRectZero)
       @rmq.controller_for_view(u).should == nil
+    end
+
+    it 'should return the controller assigned to the view, if it exists' do
+      u = UIView.alloc.initWithFrame(CGRectZero)
+      vc = UIViewController.alloc.init
+      u.rmq_data.view_controller = vc
+      @rmq.controller_for_view(u).should == vc
     end
 
     it 'should return a view\'s controller' do
@@ -54,14 +79,15 @@ describe 'utils' do
       root_view = controller.view
       @rmq.controller_for_view(root_view).should == controller
 
-      sub_view = UIView.alloc.initWithFrame([[0,0],[0,0]])
+      sub_view = UIView.alloc.initWithFrame(CGRectZero)
       root_view.addSubview(sub_view)
       @rmq.controller_for_view(sub_view).should == controller
 
-      sub_sub_view = UIView.alloc.initWithFrame([[0,0],[0,0]])
+      sub_sub_view = UIView.alloc.initWithFrame(CGRectZero)
       sub_view.addSubview(sub_sub_view)
       @rmq.controller_for_view(sub_sub_view).should == controller
     end
   end
+
 
 end

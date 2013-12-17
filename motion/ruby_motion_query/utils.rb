@@ -26,17 +26,59 @@ module RubyMotionQuery
       # @param view
       # @return [UIViewController] The controller the view it is sitting in, or nil if it's not sitting anywhere in particular 
       def controller_for_view(view)
-        # Non-recursive for speed
-        while view
-          view = view.nextResponder
-          if view.is_a?(UIViewController)
-            break
-          elsif !view.is_a?(UIView)
-            view = nil
-          end
-        end
+        if view && (vc = view.rmq_data.view_controller)
+          vc 
+        else
 
-        view
+          # Non-recursive for speed
+          while view
+            view = view.nextResponder
+            if view.is_a?(UIViewController)
+              break
+            elsif view.is_a?(UIView)
+              if vc = view.rmq_data.view_controller
+                view = vc
+                break
+              end
+            else
+              view = nil
+            end
+          end
+
+          view
+
+        end
+      end
+
+      # @deprecated this has been fixed in 2.17, so this method is no longer needed. 
+      #
+      # Creates a weak reference to an object. Unlike WeakRef.new provided by RubyMotion, this will 
+      # not wrap a weak ref inside another weak ref (which causes bugs).
+      #
+      # This is fairly performant. It's about twice as slow as WeakRef.new. However, you can 
+      # create a million weak refs in about 651 miliseconds, compared to 319 for WeakRef.new
+      #
+      # Creating a WeakRef with a literal like a string will cause your app to crash
+      # instantly, it's fun, try it. Only create weak refs of variables
+      #
+      # @example
+      # foo = RubyMotionQuery::RMQ.weak_ref(bar)
+      def weak_ref(o)
+        weak = WeakRef.new(o)
+        if weak.is_a?(WeakRef)
+          o # Already a weak ref, return original
+        else
+          weak
+        end
+      end
+
+      # @deprecated this has been fixed in 2.17, so this method is no longer needed. 
+      #
+      # This gets around a bug in RubyMotion
+      # Hopefully I can remove this quickly. Only use this for complex objects that have no comparison
+      # other than that they are the exact same object. For example, strings compare their contents.
+      def weak_ref_is_same_object?(a, b)
+        (a.class == b.class) && (a.object_id == b.object_id)
       end
 
       # Mainly used for console and logging

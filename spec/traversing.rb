@@ -2,7 +2,6 @@ describe 'transversing' do
   before do
     @vc = UIViewController.alloc.init
     @root_view = @vc.view
-    @rmq = @vc.rmq
 
     @views_hash = {
       v_0: { 
@@ -56,10 +55,6 @@ describe 'transversing' do
     q.get.should == @last_image
   end
 
-  it 'locate view controller from any view' do
-    @vc.rmq(@v0).view_controller.should == @vc
-    @vc.rmq(@last_image).view_controller.should == @vc
-  end
 
   it 'should return empty array for root_view closest' do
     closest = @vc.rmq(@root_view).closest
@@ -287,6 +282,96 @@ describe 'transversing' do
 
   it 'should return the window that the controller is sitting in' do
     @vc.rmq.window.should == @vc.view.window
+  end
+
+  describe 'rmq.view controller' do
+    before do
+      @vc1 = UIViewController.alloc.init
+      @vc2 = UIViewController.alloc.init
+    end
+
+    it 'should be located if the rmq methods is called from within a controller' do
+      @vc1.rmq.view_controller.should == @vc1
+    end
+
+    it "should always return the controller that the rmq method is called in, regardless if the view it's wrapping has its own controller" do
+      @vc2.rmq.view_controller.should == @vc2
+      view_1 = UIView.alloc.initWithFrame(CGRectZero)
+      view_1.rmq_data.view_controller = @vc1
+
+      # This rmq instance won't be associated with any controller
+      RubyMotionQuery::RMQ.new.wrap(view_1).view_controller.should == @vc1
+
+      @vc2.rmq(view_1).view_controller.should == @vc2
+    end
+
+    it 'should be the current controller, if a view is not in a subview tree and that view has NOT been assigned a view_controller to rmq_data' do
+      view_4 = UIView.alloc.initWithFrame(CGRectZero)
+
+      q = RubyMotionQuery::RMQ.new
+      q.wrap(view_4).view_controller.should == q.app.window.rootViewController.visibleViewController
+    end
+
+    it 'should be located from any view if the view is in subview tree of a controller' do
+      @v0.rmq.view_controller.should == @vc
+      @last_image.rmq.view_controller.should == @vc
+
+      view_1 = @vc2.rmq.append(UIView).get
+      view_1.rmq.view_controller.should == @vc2
+
+      view_2 = UIView.alloc.initWithFrame(CGRectZero)
+      view_1.addSubview(view_2)
+      view_2.rmq.view_controller.should == @vc2
+
+      view_3 = UIView.alloc.initWithFrame(CGRectZero)
+      view_2.addSubview(view_3)
+      view_3.rmq.view_controller.should == @vc2
+    end
+
+    it 'should be located if a view is not in a subview tree and that view has been assigned a view_controller to rmq_data' do
+      view_1 = @vc2.rmq.create(UIView).get
+      view_1.rmq_data.view_controller.should == @vc2
+      view_1.rmq.view_controller.should == @vc2
+      RubyMotionQuery::RMQ.new.wrap(view_1).view_controller.should == @vc2
+
+      @vc.rmq.append(view_1)
+      RubyMotionQuery::RMQ.new.wrap(view_1).view_controller.should == @vc
+      view_1.rmq_data.view_controller.should == @vc
+      view_1.rmq.view_controller.should == @vc
+     
+      view_2 = UIView.alloc.initWithFrame(CGRectZero)
+      view_2.rmq_data.view_controller = @vc2
+      RubyMotionQuery::RMQ.new.wrap(view_2).view_controller.should == @vc2
+    end
+
+    it 'should assign a found controller to a view that did not have one' do
+      orphan_view = UIView.alloc.initWithFrame(CGRectZero)
+      orphan_view.rmq_data.view_controller.should == nil
+      vc = orphan_view.rmq.view_controller
+      data_vc = orphan_view.rmq_data.view_controller
+
+      # This fails oddly, so we'll check type ad ID, seems a bug in RM
+      #data_vc.should == vc
+      vc.class.should == data_vc.class
+      vc.object_id.should == data_vc.object_id
+    end
+
+    it 'should not wrap a WeakRef in another WeakRef (was bug)' do
+      # Many ways to cause this bug, I'll do a few here
+      q = @vc1.rmq
+      q.view_controller = @vc1
+      view = q.append(UIView).get
+      view.rmq.append(UIView)
+      q2 = view.rmq.wrap(UIView)
+      q2.view_controller.is_a?(UIViewController).should == true
+
+      view.rmq.context.rmq_data.view_controller.is_a?(UIViewController).should == true
+
+      orphan_view = UIView.alloc.initWithFrame(CGRectZero)
+      orphan_view.rmq_data.view_controller = rmq(orphan_view).view_controller
+      orphan_view.rmq.view_controller = orphan_view.rmq_data.view_controller
+      orphan_view.rmq.view_controller.is_a?(UIViewController).should == true
+    end
   end
 
 end

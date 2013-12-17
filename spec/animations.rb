@@ -4,8 +4,14 @@ describe 'animations' do
   before do
     @vc = UIViewController.alloc.init
     @viewq = @vc.rmq.append(UIView)
+    UIView.setAnimationsEnabled false
     @sub_viewq = @vc.rmq(@viewq).append(UIView)
   end
+
+  after do
+    UIView.setAnimationsEnabled true
+  end
+  
 
   it 'should animate' do
     @vc.rmq.animate(

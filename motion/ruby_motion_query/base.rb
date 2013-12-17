@@ -16,10 +16,27 @@ module RubyMotionQuery
   #   controller that the view is currently in or to the current screen's
   #   controller
   class RMQ
-    attr_accessor :context
 
     def initialize
       @selected_dirty = true
+    end
+
+    # This is mostly used internally
+    #
+    # If rmq was called in a view, context will be that view. If it was called
+    # in a UIViewController, it will be that controller. If it is called in another
+    # object, it will be current controller's rmq instance and thus context will be 
+    # that controller
+    def context=(value)
+      if value.is_a?(UIViewController)
+        @context = RubyMotionQuery::RMQ.weak_ref(value)
+      else
+        @context = value
+      end
+    end
+
+    def context
+      @context
     end
 
     # Do not use
@@ -285,9 +302,6 @@ module RubyMotionQuery
     end
 
     class << self
-      attr_accessor :cache_controller_rmqs
-      @cache_controller_rmqs = true
-
       def debugging?
         @debugging ||= ENV['rmq_debug'] == 'true'
       end

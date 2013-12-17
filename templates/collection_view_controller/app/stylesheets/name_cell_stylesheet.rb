@@ -1,6 +1,6 @@
 module <%= @name_camel_case %>CellStylesheet
   def cell_size
-    [96, 96]
+    {w: 96, h: 96}
   end
 
   def <%= @name %>_cell(st)

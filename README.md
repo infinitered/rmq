@@ -83,6 +83,12 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 - `gem 'ruby_motion_query', :git => 'git@github.com:infinitered/rmq.git'`
 
+
+## Deprecation
+
+- **UIView#rmq_did_create(self_in_rmq)** - *Use rmq_build instead*
+
+
 ## Usage
 
 ### Example App
@@ -418,8 +424,8 @@ end
 
 # Your cell
 class StoreCell < UITableViewCell
-  def rmq_did_create(self_in_rmq)
-    self_in_rmq.append(UILabel, :title_label) # <- this works even though this object isn't in a controller
+  def rmq_build
+    rmq(self).append(UILabel, :title_label) # <- this works even though this object isn't in a controller
   end
 end
 ```
@@ -603,6 +609,7 @@ RubyMotionQuery::RMQ.is_class?(foo)
 RubyMotionQuery::RMQ.is_blank?(foo)
 RubyMotionQuery::RMQ.controller_for_view(view)
 RubyMotionQuery::RMQ.view_to_s(view)
+RubyMotionQuery::RMQ.weak_ref(foo)
 ```
 
 ### Pollution
@@ -610,16 +617,17 @@ RubyMotionQuery::RMQ.view_to_s(view)
 The following are the only pollution in RMQ
 
  - UIView
-   - rmq
-   - rmq_data
+    - rmq
+    - rmq_data
  - UIViewController
-   - rmq
-   - rmq_data
- - TopLevel  *(Only in development, used for console)*
-   - rmq
+    - rmq
+    - rmq_data
+ - Object
+    - rmq
 
 ### Console Fun
 
+  rmq.log :tree
 	rmq.all.log
 	rmq.all.log :wide
 	rmq(UIView).show
@@ -1083,20 +1091,34 @@ You can also include all of your custom stylers in one file, which works well if
 
 ### Creating your own views
 
-If you use RMQ's stylesheets and you create your own views, you should add your subviews and such in this method:
+RMQ calls 3 methods when you create, append, or build a view using rmq. rmq_build is the one you most want to use
 ```ruby
-def rmq_did_create
+def rmq_build
+end
+
+def rmq_created
+end
+
+def rmq_appended
 end
 ```
+If you append a view like so:
+```ruby
+rmq.append(UILabel)
+```
+The 3 methods will be called in this order:
+- rmq_created
+- rmq_appended
+- rmq_build
 
 In the following example an instance of YourView is created, :your_style is applied
-then rmq_did_create is called on the instance that was just created. In that
+then rmq_build is called on the instance that was just created. In that
 order.
 
 ```ruby
 # Your view
 class YourView < UIView
-  def rmq_did_create
+  def rmq_build
     rmq(self).tap do |q|
       q.append(UILabel, :section_title)
       q.append(UIButton, :buy_button).on(:tap) do |sender|
@@ -1112,13 +1134,30 @@ rmq.append(YourView, :your_style)
 
 ### Future features
 
-Future features that I plan on adding
+Current roadmap:
+
+- v0.5 new view_controller system: which solves the #1 problem in rmq: having to pass rmq around in things like cells. rmq command will work everywhere
+- v0.6 new frame system: I’ve already designed this, I just have to implement it and use it in the real world and tweak. This is going to be very cool. It adds to the existing frame system. It doesn’t replace constraints, but rather gives you almost all the features you need without the complexity of constraints.
+- v0.6.5 templates and stylers all finished
+- v0.6.7 performance improvements
+- v0.7 first rmq plugin and any base features needed to support plugins (I don’t think there will be any base features needed)
+- v0.8 binding system
+- ?
+- ?
+- v1.0
+
+Random future features that I plan on adding
 
 - rmq.push_sub_controller(my_controller) and rmq.pop_sub_controller and rmq.pop_this_controller
 - add borders to UIView styler: st.borders = {l: {w: 2, color: color.black}, r: {w: 2, color: color.black}}
 - add templates for: nav controller, tab controller, table controller, collection controller
 - add from_right, from_bottom, and centered to both st.frame and to move
 - add binding that combines KVO and events to bind an attribute of one object to the attribute of selected view(s), keeping both in sync, like so: rmq.append(UITextField).bind(@person, attr: :name, to: :text)
+- rmq.log to wrap nslog to allow you to turn off logging (or does NSLog already have this feature?)
+- add selectors for UITextField
+- add string to height utility, given the font and the width
+- add block to wrap useful for a variety of things, but here is solid example: rmq.append(UIButton).tag(:foo).wrap{|view| view.titleLabel}.tag(:foo_title)
+- add def rmq_build_with_properties(props = {}). Perhaps remove rmq_created and rmq_appended, not sure if those are usefull or not
 
 
 ## Contact

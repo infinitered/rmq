@@ -239,7 +239,6 @@ describe 'base' do
       q.wrap(UIView).length.should == 0
       q.wrap(my_view_3).length.should == 1
       q.wrap(my_view_3).siblings.length.should == 0
-      q.wrap(my_view_3).view_controller.nil?.should == true
     end
 
   end
