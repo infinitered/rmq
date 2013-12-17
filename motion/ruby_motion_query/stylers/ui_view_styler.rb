@@ -259,6 +259,14 @@ module RubyMotionQuery
         @view.contentMode
       end
 
+      def clips_to_bounds=(value)
+        @view.clipsToBounds = value
+      end
+
+      def clips_to_bounds
+        @view.clipsToBounds
+      end
+
     end
   end
 end
