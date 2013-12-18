@@ -7,7 +7,7 @@ A fast, muggle, nonpolluting, zero-dependency, jQuery-like library for [RubyMoti
 
 [![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
 [![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
-
+[![Gem Version](https://badge.fury.io/rb/ruby_motion_query.png)](http://badge.fury.io/rb/ruby_motion_query)
 
 ## General
 
