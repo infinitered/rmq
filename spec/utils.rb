@@ -57,6 +57,15 @@ describe 'utils' do
     weak.is_a?(String).should == true
   end
 
+  it 'should convert a weak ref into a strong ref' do
+    s = "string"
+    weak_s = WeakRef.new(s)
+    strong_s = RubyMotionQuery::RMQ.weak_ref_to_strong_ref(weak_s)
+    strong_s.should == weak_s
+    strong_s.object_id.should == s.object_id
+    # TODO, test weather strong_s is really a strong reference
+  end
+
   describe 'utils - controller_for_view' do
     it 'should return nil if view is nil' do
       @rmq.controller_for_view(nil).should == nil

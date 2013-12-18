@@ -81,6 +81,12 @@ module RubyMotionQuery
         (a.class == b.class) && (a.object_id == b.object_id)
       end
 
+      # Gets a strong reference from a weak reference
+      def weak_ref_to_strong_ref(weak_ref)
+        # This is a hack but it works, is there a better way?
+        weak_ref.tap{}
+      end
+
       # Mainly used for console and logging
       #
       # @return [String]
