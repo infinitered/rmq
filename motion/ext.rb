@@ -1,7 +1,7 @@
 class Object
-  def rmq(*selectors)
+  def rmq(*working_selectors)
     if window = RubyMotionQuery::RMQ.app.window
-      RubyMotionQuery::RMQ.app.current_view_controller.rmq(selectors)
+      RubyMotionQuery::RMQ.app.current_view_controller.rmq(working_selectors)
     end
   end
 end
@@ -31,8 +31,8 @@ class UIView
   # Technically my_view.rmq is the same as rmq(my_view), so it may seem enticing to use
   # but the really nice thing about rmq is its consistent API, and doing this
   # for one view: my_view.rmq and this for two views: rmq(my_view, my_other_view) sucks
-  def rmq(*selectors)
-    RubyMotionQuery::RMQ.create_with_selectors(selectors, self).tap do |o|
+  def rmq(*working_selectors)
+    RubyMotionQuery::RMQ.create_with_selectors(working_selectors, self).tap do |o|
       if vc = self.rmq_data.view_controller
         o.weak_view_controller = vc
       end
@@ -41,13 +41,13 @@ class UIView
 end
 
 class UIViewController
-  def rmq(*selectors)
+  def rmq(*working_selectors)
     crmq = (rmq_data.cached_rmq ||= RubyMotionQuery::RMQ.create_with_selectors([], self))
 
-    if selectors.length == 0
+    if working_selectors.length == 0
       crmq
     else
-      RubyMotionQuery::RMQ.create_with_selectors(selectors, self, crmq)
+      RubyMotionQuery::RMQ.create_with_selectors(working_selectors, self, crmq)
     end
   end
 
