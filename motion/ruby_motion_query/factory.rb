@@ -12,8 +12,8 @@ module RubyMotionQuery
     # just create a new one like so: RubyMotionQuery::RMQ.new
     #
     # @return [RMQ]
-    def create_rmq_in_context(*selectors)
-      RMQ.create_with_selectors(selectors, @context)
+    def create_rmq_in_context(*working_selectors)
+      RMQ.create_with_selectors(working_selectors, @context)
     end
 
     class << self
@@ -22,11 +22,11 @@ module RubyMotionQuery
       # just create a new one like so: RubyMotionQuery::RMQ.new
       #
       # @return [RMQ]
-      def create_with_selectors(selectors, context, parent_rmq = nil)
+      def create_with_selectors(current_selectors, current_context, parent_rmq = nil)
         q = RMQ.new
-        q.context = context
+        q.context = current_context
         q.parent_rmq = parent_rmq
-        q.selectors = selectors
+        q.selectors = current_selectors
         q
       end
 
@@ -34,10 +34,10 @@ module RubyMotionQuery
       # just create a new one like so: RubyMotionQuery::RMQ.new
       #
       # @return [RMQ]
-      def create_with_array_and_selectors(array, selectors, context, parent_rmq = nil) # TODO, convert to opts
+      def create_with_array_and_selectors(array, current_selectors, current_context, parent_rmq = nil) # TODO, convert to opts
         q = RMQ.new
-        q.context = context
-        q.selectors = selectors
+        q.context = current_context
+        q.selectors = current_selectors
         q.parent_rmq = parent_rmq
         q.selected = array # Must be last
         q

@@ -65,12 +65,12 @@ module RubyMotionQuery
         scale = UIScreen.mainScreen.scale
         if use_content_size
           UIGraphicsBeginImageContextWithOptions(view.contentSize, false, scale)
-          context = UIGraphicsGetCurrentContext()
+          graphics_context = UIGraphicsGetCurrentContext()
           view.subviews.each do |subview|
-            CGContextSaveGState(context)
-            CGContextTranslateCTM(context, subview.frame.origin.x, subview.frame.origin.y)
-            subview.layer.renderInContext(context)
-            CGContextRestoreGState(context)
+            CGContextSaveGState(graphics_context)
+            CGContextTranslateCTM(graphics_context, subview.frame.origin.x, subview.frame.origin.y)
+            subview.layer.renderInContext(graphics_context)
+            CGContextRestoreGState(graphics_context)
           end
           image = UIGraphicsGetImageFromCurrentImageContext()
           UIGraphicsEndImageContext()

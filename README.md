@@ -1,7 +1,7 @@
 ![RQM logo](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/9/2013/07/rmq_logo.png)
 
 # RubyMotionQuery - RMQ
-A fast, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
+A fast, muggle, nonpolluting, zero-dependency, jQuery-like library for [RubyMotion](http://rubymotion.com).
 
 **The [RMQ Introductory Guide and other info][1] is a great place to start.**
 

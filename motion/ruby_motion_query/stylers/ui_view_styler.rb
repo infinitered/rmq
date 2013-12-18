@@ -20,7 +20,7 @@ module RubyMotionQuery
       end
 
       def superview
-        @view.superview || rmq(@view).view_controller.view || rmq.window
+        @view.superview || rmq(@view).root_view || rmq.window
       end
       alias :parent :superview
 
