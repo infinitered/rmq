@@ -26,7 +26,7 @@ module RubyMotionQuery
 
       # @return [Symbol] Environment the app is running it
       def environment
-        RUBYMOTION_ENV.to_sym
+        @_environment ||= RUBYMOTION_ENV.to_sym
       end
 
       # @return [Boolean] true if the app is running in the :release environment
