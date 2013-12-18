@@ -214,7 +214,7 @@ Here are the commands available to you:
  - and
  - not
  - and_self
- - end
+ - back  - rmq(test_view).find(UIImageView).tag(:foo).back.find(UILabel).tag(:bar) 
  - find
  - children
  - siblings

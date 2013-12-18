@@ -86,11 +86,12 @@ module RubyMotionQuery
     end
     alias :add_self :and_self
     
-    # @return [RMQ] The parent rmq instance 
+    # @return [RMQ] The parent rmq instance. This is useful when you want to go down
+    # into the tree, then move back up to do more work. Like jQuery's "end"
     #
     # @example
-    #   rmq(test_view).find(UIImageView).tag(:foo).end.find(UILabel).tag(:bar)
-    def end
+    #   rmq(test_view).find(UIImageView).tag(:foo).back.find(UILabel).tag(:bar)
+    def back
       self.parent_rmq || self
     end
 
