@@ -36,7 +36,7 @@ module RubyMotionQuery
     # @example
     #   rmq.all.log
     def all
-      self.view_controller.rmq.find
+      self.weak_view_controller.rmq.find
     end
 
     # @return [RMQ] A new rmq instance reducing selected views to those that match selectors provided
@@ -269,6 +269,12 @@ module RubyMotionQuery
     # @example
     #   rmq(my_view).view_controller
     def view_controller
+      RMQ.weak_ref_to_strong_ref(self.weak_view_controller)
+    end
+
+    # Mostly used internally
+    # See #view_controller
+    def weak_view_controller
       if @_view_controller
         @_view_controller
       else
@@ -276,8 +282,17 @@ module RubyMotionQuery
           @context
         else # view
           vc = RMQ.controller_for_view(@context) ||
-            (self.parent_rmq && self.parent_rmq.view_controller) ||
+            (self.parent_rmq && self.parent_rmq.weak_view_controller) ||
             RMQ.app.current_view_controller
+
+          #debug.assert(vc.is_a?(UIViewController), 'Invalid controller in weak_view_controller') do
+            #{
+              #vc: vc, 
+              #context: @context, 
+              #parent_rmq: self.parent_rmq, 
+              #current_view_controller: RMQ.app.current_view_controller
+            #}
+          #end
 
           self.view_controller = vc
           @context.rmq_data.view_controller = @_view_controller if @context
@@ -298,11 +313,11 @@ module RubyMotionQuery
     # @example
     #   rmq.root_view
     def root_view
-      vc = self.view_controller
+      vc = self.weak_view_controller
       if RMQ.is_blank?(vc)
         self.context_or_context_view
       else
-        self.view_controller.view
+        vc.view
       end
     end
 

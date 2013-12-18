@@ -25,7 +25,7 @@ module RubyMotionQuery
           new_view = create_view(view_or_constant, opts)
         end
 
-        new_view.rmq_data.view_controller = self.view_controller
+        new_view.rmq_data.view_controller = self.weak_view_controller
 
         subviews_added << new_view
 

@@ -1,6 +1,5 @@
 module RubyMotionQuery
   class RMQ
-
     class << self
       # @return [Boolean]
       def is_class?(o)
@@ -26,10 +25,11 @@ module RubyMotionQuery
       # @param view
       # @return [UIViewController] The controller the view it is sitting in, or nil if it's not sitting anywhere in particular 
       def controller_for_view(view)
+        #debug.assert(view.nil? || view.is_a?(UIView), 'Invalid view in controller for view', {view: view}) 
+
         if view && (vc = view.rmq_data.view_controller)
           vc 
         else
-
           # Non-recursive for speed
           while view
             view = view.nextResponder
