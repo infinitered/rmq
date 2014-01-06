@@ -8,6 +8,8 @@ A fast, muggle, nonpolluting, zero-dependency, jQuery-like library for [RubyMoti
 [![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
 [![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
 [![Gem Version](https://badge.fury.io/rb/ruby_motion_query.png)](http://badge.fury.io/rb/ruby_motion_query)
+[![Crusher.io optimized](http://www.crusher.io/repo/infinitered/rmq/badge)](http://www.crusher.io/repo/infinitered/rmq)
+
 
 ## General
 
@@ -1158,6 +1160,7 @@ Random future features that I plan on adding
 - add string to height utility, given the font and the width
 - add block to wrap useful for a variety of things, but here is solid example: rmq.append(UIButton).tag(:foo).wrap{|view| view.titleLabel}.tag(:foo_title)
 - add def rmq_build_with_properties(props = {}). Perhaps remove rmq_created and rmq_appended, not sure if those are usefull or not
+- add easy way to do alerts and actionsheets
 
 
 ## Contact

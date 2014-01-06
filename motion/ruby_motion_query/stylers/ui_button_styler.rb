@@ -26,6 +26,9 @@ module RubyMotionQuery
         @view.tintColor
       end
 
+      def image=(value)
+        self.image_normal = value
+      end
       def image_normal=(value)
         @view.setImage value, forState: UIControlStateNormal
       end
