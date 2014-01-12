@@ -3,7 +3,7 @@ class <%= @name_camel_case %>ControllerStylesheet < ApplicationStylesheet
   include <%= @name_camel_case %>CellStylesheet
 
   def setup
-    # Add sytlesheet specific setup stuff here.
+    # Add stylesheet specific setup stuff here.
     # Add application specific setup stuff in application_stylesheet.rb
 
     @margin = ipad? ? 12 : 8
