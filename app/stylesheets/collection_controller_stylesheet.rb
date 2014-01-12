@@ -3,7 +3,7 @@ class CollectionControllerStylesheet < ApplicationStylesheet
   include CollectionCellStylesheet
 
   def setup
-    # Add sytlesheet specific setup stuff here.
+    # Add stylesheet specific setup stuff here.
     # Add application specific setup stuff in application_stylesheet.rb
 
     @margin = ipad? ? 12 : 8
