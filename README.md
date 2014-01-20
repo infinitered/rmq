@@ -1,15 +1,21 @@
 ![RQM logo](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/9/2013/07/rmq_logo.png)
 
 # RubyMotionQuery - RMQ
-A fast, muggle, nonpolluting, zero-dependency, jQuery-like library for [RubyMotion](http://rubymotion.com).
-
-**The [RMQ Introductory Guide and other info][1] is a great place to start.**
 
 [![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
 [![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
 [![Gem Version](https://badge.fury.io/rb/ruby_motion_query.png)](http://badge.fury.io/rb/ruby_motion_query)
 [![Crusher.io optimized](http://www.crusher.io/repo/infinitered/rmq/badge)](http://www.crusher.io/repo/infinitered/rmq)
 
+A fast, muggle, nonpolluting, zero-dependency, jQuery-like library for [RubyMotion](http://rubymotion.com).
+
+**The [RMQ website][1] is a great place to start.**
+
+Also this 6 minute **[intro video](https://www.youtube.com/watch?v=2ihGjCI2DYE)**
+
+And this 36 minute video: **[Creating an Image Browser app in RubyMotion and RubyMotionQuery](https://www.youtube.com/watch?v=4eCNaxqNhKA)**
+
+----------
 
 ## General
 
@@ -88,6 +94,7 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 ## Deprecation
 
+- **RubyMotionQuery::RMQ.weak_ref(object)** - no longer needed post RubyMotion 2.18
 - **UIView#rmq_did_create(self_in_rmq)** - *Use rmq_build instead*
 
 

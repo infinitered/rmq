@@ -50,6 +50,10 @@ module RubyMotionQuery
         end
       end
 
+      # @deprecated this is no longer needed in RubyMotion >= 2.19. In a later version this will be
+      # changed to simply be a wrapper of RubyMotion's WeakRef
+      #
+      #
       # Creates a weak reference to an object. Unlike WeakRef.new provided by RubyMotion, this will
       # not wrap a weak ref inside another weak ref (which causes bugs).
       #
@@ -63,15 +67,17 @@ module RubyMotionQuery
       # foo = RubyMotionQuery::RMQ.weak_ref(bar)
       def weak_ref(o)
         weak = WeakRef.new(weak_ref_to_strong_ref(o))
+        #WeakRef.new(o) # For future release
       end
 
-      # @deprecated this has been fixed in 2.17, so this method is no longer needed.
+      # @deprecated this has been fixed in RubyMotion 2.17, so this method is no longer needed.
       #
       # This gets around a bug in RubyMotion
       # Hopefully I can remove this quickly. Only use this for complex objects that have no comparison
       # other than that they are the exact same object. For example, strings compare their contents.
       def weak_ref_is_same_object?(a, b)
         (a.class == b.class) && (a.object_id == b.object_id)
+        #a == b # For future release
       end
 
       # Gets a strong reference from a weak reference
