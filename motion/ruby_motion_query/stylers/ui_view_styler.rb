@@ -266,6 +266,10 @@ module RubyMotionQuery
         @view.clipsToBounds
       end
 
+      def layer
+        @view.layer
+      end
+
     end
   end
 end
