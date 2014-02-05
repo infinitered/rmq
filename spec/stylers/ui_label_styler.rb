@@ -6,6 +6,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.color = color.black
     st.text_alignment = :center
     st.number_of_lines = :unlimited
+    st.adjusts_font_size = true
     st.resize_to_fit_text
     st.size_to_fit
   end
@@ -29,6 +30,7 @@ describe 'stylers/ui_label' do
       v.font = UIFont.systemFontOfSize(12)
       v.color = UIColor.blackColor
       v.textAlignment = NSTextAlignmentCenter
+      v.adjustsFontSizeToFitWidth.should == true
       v.size.width.should > 0
       v.numberOfLines.should == 0
     end
