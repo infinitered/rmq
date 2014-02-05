@@ -59,6 +59,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
     st.scale = 1.5
     st.rotation = 45
+    st.layer.cornerRadius = 5
   end
 
 end
@@ -180,5 +181,6 @@ describe 'ui_view_styler' do
     view.clipsToBounds.should == false
     view.isHidden.should == true
     view.contentMode.should == UIViewContentModeBottomLeft
+    view.layer.cornerRadius.should == 5
   end
 end
