@@ -1168,6 +1168,7 @@ Random future features that I plan on adding
 - add block to wrap useful for a variety of things, but here is solid example: rmq.append(UIButton).tag(:foo).wrap{|view| view.titleLabel}.tag(:foo_title)
 - add def rmq_build_with_properties(props = {}). Perhaps remove rmq_created and rmq_appended, not sure if those are useful or not
 - add easy way to do alerts and actionsheets
+- add rmq.help with basic help for when you're in repl
 
 
 ## Contact
