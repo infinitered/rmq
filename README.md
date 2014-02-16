@@ -7,7 +7,7 @@
 [![Gem Version](https://badge.fury.io/rb/ruby_motion_query.png)](http://badge.fury.io/rb/ruby_motion_query)
 [![Crusher.io optimized](http://www.crusher.io/repo/infinitered/rmq/badge)](http://www.crusher.io/repo/infinitered/rmq)
 
-A fast, muggle, nonpolluting, zero-dependency, jQuery-like library for [RubyMotion](http://rubymotion.com).
+A fast, non-polluting, chaining, front-end library. It’s jQuery for [RubyMotion](http://rubymotion.com), plus stylesheets and templates
 
 **The [RMQ website][1] is a great place to start.**
 
@@ -199,6 +199,7 @@ Here are the commands available to you:
  > rmq create lib some_class_used_by_multiple_apps
 
  > rmq create collection_view_controller foos
+ > rmq create table_view_controller bars
 
  # To test the create command without actually creating any files, do:
  > rmq create view my_view dry_run

@@ -58,15 +58,15 @@ class MainController < UIViewController
   #  rmq(:reapply_style).reapply_styles
 
   def init_buttons
-    rmq.append(UIButton, :make_labels_blink).on(:tap) do |sender|
+    rmq.append(UIButton, :make_labels_blink_button).on(:tap) do |sender|
       rmq(UILabel).animations.blink
     end
 
-    rmq.append(UIButton.buttonWithType(UIButtonTypeRoundedRect), :make_buttons_throb).on(:tap) do |sender|
+    rmq.append(UIButton.buttonWithType(UIButtonTypeRoundedRect), :make_buttons_throb_button).on(:tap) do |sender|
       rmq(UIButton).not(sender).animations.throb
     end
 
-    rmq.append(UIButton, :animate_move).on(:tap) do |sender|
+    rmq.append(UIButton, :animate_move_button).on(:tap) do |sender|
       rmq(sender).animate( duration: 0.5, animations: -> (rmq) {
         # You really should create a new style in the stylesheet, 
         # but you can do it inline too, like so
@@ -85,8 +85,13 @@ class MainController < UIViewController
       })
     end
 
-    rmq.append(UIButton, :collection).on(:touch_up) do |sender|
+    rmq.append(UIButton, :collection_button).on(:touch_up) do |sender|
       controller = CollectionController.new
+      self.navigationController.pushViewController(controller, animated: true)
+    end
+
+    rmq.append(UIButton, :table_button).on(:touch_up) do |sender|
+      controller = TableController.new
       self.navigationController.pushViewController(controller, animated: true)
     end
     

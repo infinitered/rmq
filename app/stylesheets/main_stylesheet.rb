@@ -15,7 +15,7 @@ class MainStylesheet < ApplicationStylesheet
   end
 
 
-  def make_labels_blink(st)
+  def make_labels_blink_button(st)
     st.frame = {t: 180, w: 150, h: 20}
     st.from_right = PADDING
 
@@ -49,14 +49,14 @@ class MainStylesheet < ApplicationStylesheet
     end
   end
 
-  def make_buttons_throb(st)
+  def make_buttons_throb_button(st)
     st.frame = {t: 205, w: 150, h: 20}
     st.from_right = PADDING
     st.text = 'Throb buttons'
     st.color = color.black
   end
 
-  def animate_move(st)
+  def animate_move_button(st)
     st.scale = 1.0
     st.frame = {t: 230, w: 150, h: 20}
     st.from_right = PADDING
@@ -68,12 +68,20 @@ class MainStylesheet < ApplicationStylesheet
     st.color = color.white
   end
 
-  def collection(st)
+  def collection_button(st)
     st.frame = {t: 260, w: 150, h: 20}
     st.from_right = PADDING
     st.background_color = color.black
     st.font = font.small
     st.text = 'Collection View'
+  end
+
+  def table_button(st)
+    st.frame = {t: 290, w: 150, h: 20}
+    st.from_right = PADDING
+    st.background_color = color.black
+    st.font = font.small
+    st.text = 'Table View'
   end
 
 
