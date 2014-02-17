@@ -1,4 +1,4 @@
-![RMQ logo](https://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/9/2013/07/rmq_logo.png)
+![RMQ logo](https://raw.github.com/infinitered/rmq/master/resources/logo@2x.png?raw=true)
 
 # RubyMotionQuery - RMQ
 
