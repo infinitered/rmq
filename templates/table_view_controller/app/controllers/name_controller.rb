@@ -37,7 +37,7 @@ class <%= @name_camel_case %>Controller < UITableViewController
     data_row = @data[index_path.row]
 
     cell = table_view.dequeueReusableCellWithIdentifier(<%= @name.upcase %>_CELL_ID) || begin
-      rmq.create(<%= @name_camel_case %>Cell).get
+      rmq.create(<%= @name_camel_case %>Cell, :<%= @name %>_cell, reuse_identifier: <%= @name.upcase %>_CELL_ID).get
     end
 
     cell.update(data_row)

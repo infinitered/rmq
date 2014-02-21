@@ -37,7 +37,7 @@ class TableController < UITableViewController
     data_row = @data[index_path.row]
 
     cell = table_view.dequeueReusableCellWithIdentifier(TABLE_CELL_ID) || begin
-      rmq.create(TableCell).get
+      rmq.create(TableCell, :table_cell, reuse_identifier: TABLE_CELL_ID).get
     end
 
     cell.update(data_row)

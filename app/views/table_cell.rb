@@ -1,8 +1,6 @@
 class TableCell < UITableViewCell 
 
   def rmq_build
-    rmq(self).apply_style :table_cell
-
     rmq(self.contentView).tap do |q|
       # Add your subviews, init stuff here
       # @foo = q.append(UILabel, :foo).get
