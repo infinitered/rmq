@@ -1,7 +1,9 @@
 class Object
   def rmq(*working_selectors)
-    if window = RubyMotionQuery::RMQ.app.window
-      RubyMotionQuery::RMQ.app.current_view_controller.rmq(working_selectors)
+    if (app = RubyMotionQuery::RMQ.app) && (window = app.window) && (cvc = app.current_view_controller)
+      cvc.rmq(working_selectors)
+    else
+      RubyMotionQuery::RMQ.create_with_array_and_selectors([], working_selectors, self)
     end
   end
 end

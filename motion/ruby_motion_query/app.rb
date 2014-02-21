@@ -16,7 +16,9 @@ module RubyMotionQuery
 
       # @return [UIWindow]
       def window
-        UIApplication.sharedApplication.keyWindow || UIApplication.sharedApplication.windows[0]
+        if shared_application = UIApplication.sharedApplication
+          shared_application.keyWindow || shared_application.windows[0]
+        end
       end
 
       # @return [UIApplicationDelegate]
