@@ -718,7 +718,7 @@ class MainController < UIViewController
   def viewDidLoad
     super
 
-    rmq.stylesheet = MainControllerStyleSheet
+    rmq.stylesheet = MainStyleSheet
     view.rmq.apply_style :root_view
 
     @title_label = rmq.append(UILabel, :title_label).get
