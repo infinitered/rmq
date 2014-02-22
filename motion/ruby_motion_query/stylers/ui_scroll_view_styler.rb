@@ -8,6 +8,9 @@ module RubyMotionQuery
       def scroll_enabled=(value) ; @view.scrollEnabled = value ; end
       def scroll_enabled? ; @view.isScrollEnabled ; end
 
+      def direction_lock=(value) ; @view.directionalLockEnabled = value ; end
+      def direction_lock? ; @view.isDirectionalLockEnabled ; end
+
     end
 
   end
