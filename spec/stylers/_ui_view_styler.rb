@@ -3,6 +3,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.frame = {l: 1, t: 2, w: 3, h: 4}
     st.background_color = RubyMotionQuery::Color.red
     st.background_color = color.red
+    st.tint_color = color.red
   end
 
   def complete_frame(st)
@@ -59,6 +60,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
     st.scale = 1.5
     st.rotation = 45
+    st.tint_color = color.blue
     st.layer.cornerRadius = 5
   end
 
@@ -181,6 +183,7 @@ describe 'ui_view_styler' do
     view.clipsToBounds.should == false
     view.isHidden.should == true
     view.contentMode.should == UIViewContentModeBottomLeft
+    view.tintColor.class.should == UIColor.blueColor.class
     view.layer.cornerRadius.should == 5
   end
 end

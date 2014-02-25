@@ -266,6 +266,11 @@ module RubyMotionQuery
         @view.clipsToBounds
       end
 
+      def tint_color=(value)
+        @view.tintColor = value if @view.respond_to?('setTintColor:')
+      end
+      def tint_color ; @view.tintColor ; end
+
       def layer
         @view.layer
       end
