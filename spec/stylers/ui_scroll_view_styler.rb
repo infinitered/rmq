@@ -15,7 +15,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
   end
 
   # We have to test contentOffset separately from contentInset
-  # because setting contentInset modified contentOffset.
+  # because setting contentInset modifies contentOffset.
   def ui_scroll_view_content_offset(st)
     st.content_offset = st.content_offset
     st.content_offset = CGPointMake(12, 12)
