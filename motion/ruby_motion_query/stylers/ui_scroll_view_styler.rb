@@ -11,6 +11,12 @@ module RubyMotionQuery
       def direction_lock=(value) ; @view.directionalLockEnabled = value ; end
       def direction_lock ; @view.isDirectionalLockEnabled ; end
 
+      def content_offset=(value) ; @view.contentOffset = value ; end
+      def content_offset ; @view.contentOffset ; end
+
+      def content_inset=(value) ; @view.contentInset = value ; end
+      def content_inset ; @view.contentInset ; end
+
     end
 
   end

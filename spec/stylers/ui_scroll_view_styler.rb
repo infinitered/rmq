@@ -9,6 +9,16 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
     st.direction_lock = st.direction_lock
     st.direction_lock = true
+
+    st.content_inset = st.content_inset
+    st.content_inset = UIEdgeInsetsMake(1, 2, 3, 4)
+  end
+
+  # We have to test contentOffset separately from contentInset
+  # because setting contentInset modifies contentOffset.
+  def ui_scroll_view_content_offset(st)
+    st.content_offset = st.content_offset
+    st.content_offset = CGPointMake(12, 12)
   end
 
 end
@@ -29,6 +39,14 @@ describe 'stylers/ui_scroll_view' do
       v.isPagingEnabled.should == true
       v.isScrollEnabled.should == false
       v.isDirectionalLockEnabled.should == true
+      v.contentInset.should == UIEdgeInsetsMake(1, 2, 3, 4)
     end
+
+    view = @vc.rmq.append(@view_klass, :ui_scroll_view_content_offset).get
+
+    view.tap do |v|
+      v.contentOffset.should == CGPointMake(12, 12)
+    end
+
   end
 end
