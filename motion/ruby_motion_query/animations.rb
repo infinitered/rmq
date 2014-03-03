@@ -1,38 +1,41 @@
 module RubyMotionQuery
   class RMQ
 
+    # Animate
+    #
     # @return [RMQ]
     def animate(opts = {})
+      animations_callback = (opts[:animations] || opts[:changes])
+      after_callback = (opts[:completion] || opts[:after])
+      return self unless animations_callback
+
+
       working_selected = self.selected
-      @_rmq = self # @ for rm bug
+      self_rmq = self
 
-      animations_lambda = if (animations_callback = (opts.delete(:animations) || opts.delete(:changes)))
-        -> do
-          working_selected.each do |view|
-            animations_callback.call(@_rmq.create_rmq_in_context(view))
-          end
+      working_selected.each do |view|
+        view_rmq = self_rmq.wrap(view)
+
+        animations_lambda = -> do
+          animations_callback.call(view_rmq)
         end
-      else
-        nil
+
+        after_lambda = if after_callback
+          ->(did_finish) {
+            after_callback.call(did_finish, view_rmq)
+          }
+        else
+          nil
+        end
+
+        UIView.animateWithDuration(
+          opts[:duration] || 0.3,
+          delay: opts[:delay] || 0,
+          options: opts[:options] || UIViewAnimationOptionCurveEaseInOut,
+          animations: animations_lambda,
+          completion: after_lambda
+        )
       end
-
-      return self unless animations_lambda
-
-      after_lambda = if (after_callback = (opts.delete(:completion) || opts.delete(:after)))
-        -> (did_finish) {
-          after_callback.call(did_finish, @_rmq)
-        }
-      else
-        nil
-      end
-
-      UIView.animateWithDuration(
-        opts.delete(:duration) || 0.3,
-        delay: opts.delete(:delay) || 0,
-        options: (opts.delete(:options) || UIViewAnimationOptionCurveEaseInOut),
-        animations: animations_lambda,
-        completion: after_lambda
-      )
 
       self
     end
@@ -86,34 +89,38 @@ module RubyMotionQuery
     def throb(opts = {})
       opts.merge!({
         duration: 0.4,
-        animations: -> (cq) {
+        animations: ->(cq) {
           cq.style {|st| st.scale = 1.0}
         }
       })
 
-      @rmq.animate(
+      out = @rmq.animate(
         duration: 0.1,
-        animations: -> (q) {
+        animations: ->(q) {
           q.style {|st| st.scale = 1.1}
         },
-        completion: -> (did_finish, q) {
-          q.animate(opts)
+        completion: ->(did_finish, completion_rmq) {
+          if did_finish
+            completion_rmq.animate(opts)
+          end
         }
       )
+      out
     end
 
+    # @return [RMQ]
     def drop_and_spin(opts = {})
       remove_view = opts[:remove_view]
       opts.merge!({
         duration: 0.4 + (rand(8) / 10),
         options: UIViewAnimationOptionCurveEaseIn|UIViewAnimationOptionBeginFromCurrentState,
-        animations: -> (cq) {
+        animations: ->(cq) {
           cq.style do |st| 
             st.top = @rmq.device.height + st.height
             st.rotation = 180 + rand(50) 
           end
         },
-        completion: -> (did_finish, q) {
+        completion: ->(did_finish, q) {
           if did_finish
             q.style do |st| 
               st.rotation = 0

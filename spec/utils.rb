@@ -43,10 +43,11 @@ describe 'utils' do
     foo = 'hi'
 
     # RM's standard WeakRef will wrap a weak ref inside aonther weak ref
-    rm_weak = WeakRef.new(foo)
-    rm_weak.is_a?(String).should == true
-    rm_weak = WeakRef.new(rm_weak)
-    rm_weak.is_a?(WeakRef).should == true
+    # THIS IS NO LONGER TRUE IN RubyMotion 2.17, disabling test
+    #rm_weak = WeakRef.new(foo)
+    #rm_weak.is_a?(String).should == true
+    #rm_weak = WeakRef.new(rm_weak)
+    #rm_weak.is_a?(WeakRef).should == true
 
     # Now make sure rmq's does not
     weak = RubyMotionQuery::RMQ.weak_ref(foo)
@@ -54,6 +55,15 @@ describe 'utils' do
     weak = RubyMotionQuery::RMQ.weak_ref(weak)
     weak.is_a?(WeakRef).should == false
     weak.is_a?(String).should == true
+  end
+
+  it 'should convert a weak ref into a strong ref' do
+    s = "string"
+    weak_s = WeakRef.new(s)
+    strong_s = RubyMotionQuery::RMQ.weak_ref_to_strong_ref(weak_s)
+    strong_s.should == weak_s
+    strong_s.object_id.should == s.object_id
+    # TODO, test weather strong_s is really a strong reference
   end
 
   describe 'utils - controller_for_view' do

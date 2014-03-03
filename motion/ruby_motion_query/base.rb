@@ -28,11 +28,18 @@ module RubyMotionQuery
     # object, it will be current controller's rmq instance and thus context will be 
     # that controller
     def context=(value)
-      if value.is_a?(UIViewController)
-        @context = RubyMotionQuery::RMQ.weak_ref(value)
+      if value
+        if value.is_a?(UIViewController)
+          @context = RubyMotionQuery::RMQ.weak_ref(value)
+        elsif value.is_a?(UIView)
+          @context = value
+        #else
+          #debug.log_detailed('Invalid context', objects: {value: value})
+        end
       else
-        @context = value
+        @context = nil
       end
+      @context
     end
 
     def context
@@ -107,6 +114,7 @@ module RubyMotionQuery
       @_parent_rmq
     end
     def parent_rmq=(value)
+      #debug.assert(value.is_a?(RMQ) || value.nil?, 'Invalid parent_rmq', { value: value })
       @_parent_rmq = value
     end
 
@@ -117,7 +125,7 @@ module RubyMotionQuery
       if pq = self.parent_rmq
         pq.selected
       else
-        [self.view_controller.view]
+        [self.weak_view_controller.view]
       end
     end
 
@@ -299,16 +307,6 @@ module RubyMotionQuery
       end
 
       out
-    end
-
-    class << self
-      def debugging?
-        @debugging ||= ENV['rmq_debug'] == 'true'
-      end
-
-      def debugging=(flag)
-        @debugging = flag
-      end
     end
 
     protected 

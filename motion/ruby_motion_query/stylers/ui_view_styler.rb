@@ -20,7 +20,7 @@ module RubyMotionQuery
       end
 
       def superview
-        @view.superview || rmq(@view).view_controller.view || rmq.window
+        @view.superview || rmq(@view).root_view || rmq.window
       end
       alias :parent :superview
 
@@ -260,10 +260,19 @@ module RubyMotionQuery
       end
 
       def clips_to_bounds=(value)
-        @view.setClipsToBounds value
+        @view.clipsToBounds = value
       end
       def clips_to_bounds
         @view.clipsToBounds
+      end
+
+      def tint_color=(value)
+        @view.tintColor = value if @view.respond_to?('setTintColor:')
+      end
+      def tint_color ; @view.tintColor ; end
+
+      def layer
+        @view.layer
       end
 
     end

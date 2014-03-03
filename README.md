@@ -1,13 +1,21 @@
-![RQM logo](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/9/2013/07/rmq_logo.png)
+![RMQ logo](https://raw.github.com/infinitered/rmq/master/resources/logo@2x.png?raw=true)
 
 # RubyMotionQuery - RMQ
-A fast, muggle, nonpolluting, jQuery-like library for [RubyMotion](http://rubymotion.com).
-
-**The [RMQ Introductory Guide and other info][1] is a great place to start.**
 
 [![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
 [![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
+[![Gem Version](https://badge.fury.io/rb/ruby_motion_query.png)](http://badge.fury.io/rb/ruby_motion_query)
+[![Crusher.io optimized](http://www.crusher.io/repo/infinitered/rmq/badge)](http://www.crusher.io/repo/infinitered/rmq)
 
+A fast, non-polluting, chaining, front-end library. It’s jQuery for [RubyMotion](http://rubymotion.com), plus stylesheets and templates
+
+**The [RMQ website][1] is a great place to start.**
+
+Also this 6 minute **[intro video](https://www.youtube.com/watch?v=2ihGjCI2DYE)**
+
+And this 36 minute video: **[Creating an Image Browser app in RubyMotion and RubyMotionQuery](https://www.youtube.com/watch?v=4eCNaxqNhKA)**
+
+----------
 
 ## General
 
@@ -86,6 +94,7 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 ## Deprecation
 
+- **RubyMotionQuery::RMQ.weak_ref(object)** - no longer needed post RubyMotion 2.18
 - **UIView#rmq_did_create(self_in_rmq)** - *Use rmq_build instead*
 
 
@@ -190,6 +199,7 @@ Here are the commands available to you:
  > rmq create lib some_class_used_by_multiple_apps
 
  > rmq create collection_view_controller foos
+ > rmq create table_view_controller bars
 
  # To test the create command without actually creating any files, do:
  > rmq create view my_view dry_run
@@ -214,7 +224,7 @@ Here are the commands available to you:
  - and
  - not
  - and_self
- - end
+ - back  - rmq(test_view).find(UIImageView).tag(:foo).back.find(UILabel).tag(:bar) 
  - find
  - children
  - siblings
@@ -582,7 +592,7 @@ rmq.device.iphone?
 rmq.device.four_inch?
 rmq.device.retina?
 
-# return values are :unkown, :portrait, :portrait_upside_down, :landscape_Left,
+# return values are :unknown, :portrait, :portrait_upside_down, :landscape_Left,
 # :landscape_right, :face_up, :face_down
 rmq.device.orientation
 rmq.device.landscape?
@@ -708,7 +718,7 @@ class MainController < UIViewController
   def viewDidLoad
     super
 
-    rmq.stylesheet = MainControllerStyleSheet
+    rmq.stylesheet = MainStyleSheet
     view.rmq.apply_style :root_view
 
     @title_label = rmq.append(UILabel, :title_label).get
@@ -772,7 +782,7 @@ end
 
 class MainStylesheet < ApplicationStylesheet
   def setup
-    # Add sytlesheet specific setup stuff here.
+    # Add stylesheet specific setup stuff here.
     # Add application specific setup stuff in application_stylesheet.rb
   end
 
@@ -801,7 +811,7 @@ class MainStylesheet < ApplicationStylesheet
     # ipad? (and landscape?, etc) is just a convenience methods for
     # rmq.device.ipad?
 
-    # Here is a complete example of different formatting for orientatinos
+    # Here is a complete example of different formatting for orientations
     # and devices
     #  if ipad?
     #    if landscape?
@@ -818,7 +828,7 @@ class MainStylesheet < ApplicationStylesheet
     #  end
 
     # If you don't want something to be reapplied during orientation
-    # changes (assuming you're reapplying durring orientation changes
+    # changes (assuming you're reapplying during orientation changes
     # in your controller, it's not automatic)
     unless st.view_has_been_styled?
       st.text = 'Blink labels'
@@ -1157,7 +1167,9 @@ Random future features that I plan on adding
 - add selectors for UITextField
 - add string to height utility, given the font and the width
 - add block to wrap useful for a variety of things, but here is solid example: rmq.append(UIButton).tag(:foo).wrap{|view| view.titleLabel}.tag(:foo_title)
-- add def rmq_build_with_properties(props = {}). Perhaps remove rmq_created and rmq_appended, not sure if those are usefull or not
+- add def rmq_build_with_properties(props = {}). Perhaps remove rmq_created and rmq_appended, not sure if those are useful or not
+- add easy way to do alerts and actionsheets
+- add rmq.help with basic help for when you're in repl
 
 
 ## Contact

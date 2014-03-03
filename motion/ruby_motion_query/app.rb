@@ -16,7 +16,9 @@ module RubyMotionQuery
 
       # @return [UIWindow]
       def window
-        UIApplication.sharedApplication.keyWindow || UIApplication.sharedApplication.windows[0]
+        if shared_application = UIApplication.sharedApplication
+          shared_application.keyWindow || shared_application.windows[0]
+        end
       end
 
       # @return [UIApplicationDelegate]
@@ -26,7 +28,7 @@ module RubyMotionQuery
 
       # @return [Symbol] Environment the app is running it
       def environment
-        RUBYMOTION_ENV.to_sym
+        @_environment ||= RUBYMOTION_ENV.to_sym
       end
 
       # @return [Boolean] true if the app is running in the :release environment

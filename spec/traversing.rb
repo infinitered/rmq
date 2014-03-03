@@ -161,14 +161,14 @@ describe 'transversing' do
     q.get.should.include(test_view)
   end
 
-  it 'should return parent rmq using .end' do
+  it 'should return parent rmq using .back' do
     test_view = @v0
 
     a = @vc.rmq(test_view)
-    a.get.should == @vc.rmq(test_view).children.end.get
+    a.get.should == @vc.rmq(test_view).children.back.get
 
-    # This is a good example of when you'd use .end
-    @vc.rmq(test_view).find(UIImageView).tag(:foo).end.find(UILabel).tag(:bar)
+    # This is a good example of when you'd use .back
+    @vc.rmq(test_view).find(UIImageView).tag(:foo).back.find(UILabel).tag(:bar)
 
     @vc.rmq(:foo).get.should == @vc.rmq(test_view).find(UIImageView).get
     @vc.rmq(:bar).get.should == @vc.rmq(test_view).find(UILabel).get

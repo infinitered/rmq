@@ -3,7 +3,7 @@ class <%= @name_camel_case %>ControllerStylesheet < ApplicationStylesheet
   # include FooStylesheet
 
   def setup
-    # Add sytlesheet specific setup stuff here.
+    # Add stylesheet specific setup stuff here.
     # Add application specific setup stuff in application_stylesheet.rb
   end
 

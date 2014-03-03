@@ -49,11 +49,13 @@ module RubyMotionQuery
     end
 
     def view_controller=(value)
-      @view_controller = RubyMotionQuery::RMQ.weak_ref(value)
+      #RubyMotionQuery::RMQ.debug.assert(value.is_a?(UIViewController), 'Invalid controller in ViewData', { controller: value })
+
+      @_view_controller = RubyMotionQuery::RMQ.weak_ref(value)
     end
 
     def view_controller
-      @view_controller
+      @_view_controller
     end
 
     def frame
