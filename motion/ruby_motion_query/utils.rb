@@ -1,7 +1,8 @@
 module RubyMotionQuery
   class RMQ
+    # Just for testing right now
     def inspector
-      self.all.off.interaction_enabled(true).on(:tap)do |sender| 
+      self.all.off.enable_interaction.on(:tap)do |sender| 
         puts
         rmq(sender).log :tree
         sender.rmq_data.frame.log
