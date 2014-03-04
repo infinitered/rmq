@@ -37,6 +37,15 @@ module RubyMotionQuery
       self
     end
 
+    # @example
+    #   rmq(UIButton).distribute
+    #   rmq(UIButton).distribute(:vertical)
+    #   rmq(UIButton).distribute(:horizontal)
+    #   rmq(UIButton).distribute(:vertical, margin: 20)
+    #   rmq(my_view, my_other_view, third_view).distribute(:vertical, margin: 10)
+    #   rmq(UIButton).distribute(:vertical, margins: [5,5,10,5,10,5,10,20])
+    #
+    # @return [RMQ]
     def distribute(type = :vertical, params = {})
       return 0 if selected.length == 0
 

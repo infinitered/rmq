@@ -546,6 +546,14 @@ rmq(your_view).nudge(down: 20)
 rmq(your_view).nudge(l: 20, r: 20, u: 100, d: 50)
 rmq(your_view).nudge(left: 20, right: 20, up: 100, down: 50)
 ```
+# Distribute
+rmq(UIButton).distribute
+rmq(UIButton).distribute(:vertical)
+rmq(UIButton).distribute(:horizontal)
+rmq(UIButton).distribute(:vertical, margin: 20)
+rmq(my_view, my_other_view, third_view).distribute(:vertical, margin: 10)
+rmq(UIButton).distribute(:vertical, margins: [5,5,10,5,10,5,10,20])
+
 
 ### Images
 
@@ -718,7 +726,7 @@ class MainController < UIViewController
   def viewDidLoad
     super
 
-    rmq.stylesheet = MainStyleSheet
+    rmq.stylesheet = MainStyleSheet # Each controller has its own stylesheet
     view.rmq.apply_style :root_view
 
     @title_label = rmq.append(UILabel, :title_label).get
