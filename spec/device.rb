@@ -11,7 +11,6 @@ describe 'device' do
   end
 
   it 'contains "unknown" in device orientations' do
-    puts RubyMotionQuery::Device.orientations.inspect
     RubyMotionQuery::Device.orientations[UIDeviceOrientationUnknown].should.not == nil
   end
 
