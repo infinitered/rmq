@@ -10,5 +10,10 @@ describe 'device' do
     rmq.device.should == RubyMotionQuery::Device
   end
 
+  it 'contains "unknown" in device orientations' do
+    puts RubyMotionQuery::Device.orientations.inspect
+    RubyMotionQuery::Device.orientations[UIDeviceOrientationUnknown].should.not == nil
+  end
+
   # TODO finish
 end
