@@ -7,7 +7,7 @@
 [![Gem Version](https://badge.fury.io/rb/ruby_motion_query.png)](http://badge.fury.io/rb/ruby_motion_query)
 [![Crusher.io optimized](http://www.crusher.io/repo/infinitered/rmq/badge)](http://www.crusher.io/repo/infinitered/rmq)
 
-A fast, non-polluting, chaining, front-end library. It’s jQuery for [RubyMotion](http://rubymotion.com), plus stylesheets and templates
+A fast, non-polluting, chaining, front-end library. It’s like jQuery for [RubyMotion](http://rubymotion.com). Templates, stylesheets, events, animations, etc.
 
 **The [RMQ website][1] is a great place to start.**
 
@@ -20,21 +20,27 @@ And this 36 minute video: **[Creating an Image Browser app in RubyMotion and Rub
 ## General
 
 ### Some of the very cool features:
- - **selecting** (*querying*) views
- - **traversal** through view hierarchy (moving around the tree)
- - tagging
- - **events and gestures**
+ - events and gestures
+ - view factory
+ - stylesheets
+ - actions
+ - position
+ - selecting (_querying views_)
+ - templates
+ - traversal through view hierarchy (moving around the tree)
  - animations
- - **stylers and stylesheets**
+ - tagging
  - colors
  - fonts
  - image utilities
  - app
  - device
 
+[![features](https://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/11/2014/03/rmq_parts-300x231.png)](https://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/11/2014/03/rmq_parts.png)
+
 ----------
 
-**Tested on iOS, not OS X (nor is there any OS X specific code)**
+**RMQ only works in iOS, not OS X**
 
 ----------
 
@@ -533,12 +539,16 @@ font.system(14)
 ### Position (moving, sizing, and nudging)
 
 ```ruby
-# Move/Size changes size and origin of selected view(s)
-rmq(your_view).move(l: 20)
-rmq(your_view).move(left: 20)
-rmq(your_view).move(l: 20, t: 20, w: 100, h: 50)
-rmq(your_view).move(left: 20, top: 20, width: 100, height: 50)
-rmq(your_view).size(left: 20, top: 20, width: 100, height: 50) # alias
+# Layout, move, or resize selected views
+rmq(your_view).layout(left: 20, top: 20, width: 100, height: 50)
+rmq(your_view).layout(l: 20)
+rmq(your_view).layout(left: 20)
+rmq(your_view).layout(l: 20, t: 20, w: 100, h: 50)
+rmq(your_view).layout(left: 20, top: 20, width: 100, height: 50)
+
+rmq(your_view).move(left: 20) # alias for layout
+rmq(your_view).move(l: 30, t: 50) # alias for layout
+rmq(your_view).resize(width: 100, height: 50) # alias for layout
 
 # Nudge pushes them in a direction
 rmq(your_view).nudge(d: 20)
@@ -1155,7 +1165,6 @@ rmq.append(YourView, :your_style)
 
 Current roadmap:
 
-- v0.5 new view_controller system: which solves the #1 problem in rmq: having to pass rmq around in things like cells. rmq command will work everywhere
 - v0.6 new frame system: I’ve already designed this, I just have to implement it and use it in the real world and tweak. This is going to be very cool. It adds to the existing frame system. It doesn’t replace constraints, but rather gives you almost all the features you need without the complexity of constraints.
 - v0.6.5 templates and stylers all finished
 - v0.6.7 performance improvements
