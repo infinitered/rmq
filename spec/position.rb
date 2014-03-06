@@ -10,6 +10,18 @@ describe 'position' do
     view.origin.x.should == 30
   end
 
+  it 'resize and layout should alias move' do
+    view = @vc.rmq.append(UIView).get
+    view.origin.x.should == 0
+    @vc.rmq(view).layout(l: 40, t: 5, w: 10, h: 10)
+    view.origin.x.should == 40
+    view.origin.y.should == 5 
+
+    @vc.rmq(view).resize(width: 50, height: 20)
+    view.size.width.should == 50
+    view.size.height.should == 20
+  end
+
   it 'should move and resize multiple views' do
 
     view = @vc.rmq.append(UIView).get

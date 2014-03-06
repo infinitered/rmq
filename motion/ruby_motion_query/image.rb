@@ -35,6 +35,11 @@ module RubyMotionQuery
         end
       end
 
+      # @example
+      #   image = rmq.image.resource_resizable('foo', top: 4, left: 4, right: 4, bottom: 4)
+      # or in styler
+      #   st.image = image.resource_resizable('foo', top: 4, left: 4, right: 4, bottom: 4)
+      #
       # @return [UIImage]
       def resource_resizable(file_base_name, opts)
         # TODO, also alloow short syntax, t: instead of top: etc
