@@ -4,7 +4,7 @@ module RubyMotionQuery
     #
     # @return [RMQ]
     #
-    # on(event_or_gesture, options) do |sender, event|
+    # on(event_or_gesture, options) do |sender, rmq_event|
     #   # your code when event fires
     # end
     #

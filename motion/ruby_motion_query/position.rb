@@ -1,8 +1,13 @@
 module RubyMotionQuery
   class RMQ
 
+    # @example
+    #   rmq.append(UILabel).layout(l: 10, t: 100, w: 100, h: 18)
+    #   rmq(my_view).move(l: 10, t: 100)
+    #   rmq(my_view).resize(h: 10, w: 100)
+    #
     # @return [RMQ]
-    def move(opts) 
+    def layout(opts) 
       # TODO, add centered and from_bottom and from_top, and bottom and top
       # TODO, add animate option
       left = opts[:left] || opts[:l] || opts[:x]
@@ -19,7 +24,8 @@ module RubyMotionQuery
 
       self
     end
-    alias :resize :move
+    alias :move :layout
+    alias :resize :layout
 
     # @return [RMQ]
     def nudge(opts) 
@@ -37,6 +43,15 @@ module RubyMotionQuery
       self
     end
 
+    # @example
+    #   rmq(UIButton).distribute
+    #   rmq(UIButton).distribute(:vertical)
+    #   rmq(UIButton).distribute(:horizontal)
+    #   rmq(UIButton).distribute(:vertical, margin: 20)
+    #   rmq(my_view, my_other_view, third_view).distribute(:vertical, margin: 10)
+    #   rmq(UIButton).distribute(:vertical, margins: [5,5,10,5,10,5,10,20])
+    #
+    # @return [RMQ]
     def distribute(type = :vertical, params = {})
       return 0 if selected.length == 0
 
