@@ -209,21 +209,27 @@ rmq(UILabel).get
 
 <br />
 
-### Command-line Tool
+### Command-line Tool and Generators
 
 ----
 
-RMQ provides a command-line tool, mostly for generating files:
+
+
+Like Rails, RMQ provides a command-line tool, mostly for generating files. **Create a new app**:
+
 ```
 > rmq create my_app
 ```
 
-Here are the commands available to you:
-```
- > rmq api
- > rmq docs
+To get all the commands available just do:
 
- > rmq create my_new_app
+```
+> rmq
+```
+
+To generate **controllers, models, views**, etc, do the following:
+
+```
  > rmq create model foo
  > rmq create controller bar
  > rmq create view foo_bar
@@ -233,11 +239,22 @@ Here are the commands available to you:
  > rmq create collection_view_controller foos
  > rmq create table_view_controller bars
 
- # To test the create command without actually creating any files, do:
  > rmq create view my_view dry_run
-
- > rmq help
 ```
+
+I recomend you play around with it, do this:
+
+```
+> cd
+> cd Desktop
+> rmq create test_rmq_app
+> cd test_rmq_app
+> rmq create table_view_controller people
+> rmq create view group
+> bundle
+> rake
+```
+
 
 
 <br />
