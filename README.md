@@ -67,8 +67,8 @@ Or, if you use **rbenv**:
 
 ```
 gem install ruby_motion_query
-rmq create my_app
 rbenv rehash
+rmq create my_app
 cd my_app
 bundle
 rake
@@ -281,7 +281,7 @@ I recomend you play around with it, do this:
  - and
  - not
  - and_self
- - back  - rmq(test_view).find(UIImageView).tag(:foo).back.find(UILabel).tag(:bar) 
+ - back  - rmq(test_view).find(UIImageView).tag(:foo).back.find(UILabel).tag(:bar)
  - find
  - children
  - siblings
@@ -563,7 +563,7 @@ rmq(selectors).animate(
 
 <br />
 
-### Animations 
+### Animations
 
 ----
 
@@ -687,7 +687,7 @@ If you want to load an image from your **/resources** folder (_which is where th
 
 **Capped images**
 
-Sometimes when you apply a background_image to a view you want the image to stretch to the size of the view without stretching the corners of the image, for example if you're making a rounded button. The SDK has a nice feature for this, called UIImage#resizableImageWithCapInsets. It stretches the center of your image, but not the corners. 
+Sometimes when you apply a background_image to a view you want the image to stretch to the size of the view without stretching the corners of the image, for example if you're making a rounded button. The SDK has a nice feature for this, called UIImage#resizableImageWithCapInsets. It stretches the center of your image, but not the corners.
 
 Let's say you want to create this, like we did in [Temple](http://app.temple.cx/):
 
@@ -701,7 +701,7 @@ Basically just the center line of it stretches, the other 4 quadrants do not. RM
 
 ```ruby
  rmq.append(UIImageView, :your_style)
- # Then in your style 
+ # Then in your style
  st.image = image.resource_resizable('your_image', top: 4, left: 4, right: 4, bottom: 4)
 ```
 
