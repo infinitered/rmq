@@ -1,6 +1,6 @@
 module RubyMotionQuery
   module Stylers
-    class UIButtonStyler < UIControlStyler 
+    class UIButtonStyler < UIControlStyler
 
       def text=(value)
         @view.setTitle(value, forState: UIControlStateNormal)
