@@ -3,8 +3,6 @@ module RubyMotionQuery
 
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
-      extend DelegatableMethod
-
       def initialize(view)
         @view = view
       end
