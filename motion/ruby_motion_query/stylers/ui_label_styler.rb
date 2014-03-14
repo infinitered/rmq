@@ -44,14 +44,6 @@ module RubyMotionQuery
       def adjusts_font_size
         @view.adjustsFontSizeToFitWidth
       end
-
-      TEXT_ALIGNMENTS = {
-        left: NSTextAlignmentLeft,
-        center: NSTextAlignmentCenter,
-        right: NSTextAlignmentRight,
-        justified: NSTextAlignmentJustified,
-        natural: NSTextAlignmentNatural
-      }
     end
 
   end

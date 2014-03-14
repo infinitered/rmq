@@ -1,6 +1,14 @@
 module RubyMotionQuery
   module Stylers
 
+    TEXT_ALIGNMENTS = {
+      left: NSTextAlignmentLeft,
+      center: NSTextAlignmentCenter,
+      right: NSTextAlignmentRight,
+      justified: NSTextAlignmentJustified,
+      natural: NSTextAlignmentNatural
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)
