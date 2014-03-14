@@ -312,13 +312,13 @@ module RubyMotionQuery
     protected 
     def extract_views_from_selectors(view_container, working_selectors)
       unless RMQ.is_blank?(working_selectors)
-        working_selectors.each do |selector|
-          if selector.is_a?(UIView)
-            view_container << working_selectors.delete(selector)
+        working_selectors.delete_if do |selector|
+          if selector.is_a?(UIView) 
+            view_container << selector
+            true
           end
         end
       end
-      [view_container, working_selectors]
     end
 
     def all_subviews_for(view)
