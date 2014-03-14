@@ -52,29 +52,12 @@ module RubyMotionQuery
     end
 
     def styler_for(view)
-      # TODO should have a pool of stylers to reuse, or just assume single threaded and 
+      # TODO should have a pool of stylers to reuse, or just assume single threaded and
       # memoize this, however if you do that, make sure the dev doesn't retain them in a var
       custom_stylers(view) || begin
-        case view
-        when UILabel              then Stylers::UILabelStyler.new(view)
-        when UIButton             then Stylers::UIButtonStyler.new(view)
-        when UIImageView          then Stylers::UIImageViewStyler.new(view)
-        when UITableView          then Stylers::UITableViewStyler.new(view)
-        when UISwitch             then Stylers::UISwitchStyler.new(view)
-        when UIDatePicker         then Stylers::UIDatePickerStyler.new(view)
-        when UISegmentedControl   then Stylers::UISegmentedControlStyler.new(view)
-        when UIRefreshControl     then Stylers::UIRefreshControlStyler.new(view)
-        when UIPageControl        then Stylers::UIPageControlStyler.new(view)
-        when UISlider             then Stylers::UISliderStyler.new(view)
-        when UIStepper            then Stylers::UIStepperStyler.new(view)
-        when UITabBar             then Stylers::UITabBarStyler.new(view)
-        when UITableViewCell      then Stylers::UITableViewCellStyler.new(view)
-        when UITextView           then Stylers::UITextViewStyler.new(view)
-        when UITextField          then Stylers::UITextFieldStyler.new(view)
-        when UINavigationBar      then Stylers::UINavigationBarStyler.new(view)
-        when UIScrollView         then Stylers::UIScrollViewStyler.new(view)
-        # TODO, all the controls are done, but missing some views, add
-        when UIControl            then Stylers::UIControlStyler.new(view)
+        if Stylers.const_defined?("#{view.class}Styler")
+          styler = Stylers.const_get("#{view.class}Styler")
+          styler.new(view)
         else
           Stylers::UIViewStyler.new(view)
         end
@@ -110,13 +93,13 @@ module RubyMotionQuery
 
       unless Stylesheet.application_was_setup
         Stylesheet.application_was_setup = true
-        application_setup 
+        application_setup
       end
       setup
     end
 
     def application_setup
-      # Override to do your overall setup for your applications. This 
+      # Override to do your overall setup for your applications. This
       # is where you want to add your custom fonts and colors
       # This only gets called once
     end

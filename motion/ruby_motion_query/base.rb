@@ -5,7 +5,7 @@ module RubyMotionQuery
   # What's an rmq instance?
   # - an rmq instance is an array-like object containing UIViews
   # - rmq() never returns nil. If nothing is selected, it's an empty [ ] array-like
-  #   object   
+  #   object
   # - an rmq object always (almost always) returns either itself or a new
   #   rmq object. This is  how chaining works. You do not need to worry if
   #   an rmq is blank or not, everything  always works without throwing a
@@ -25,7 +25,7 @@ module RubyMotionQuery
     #
     # If rmq was called in a view, context will be that view. If it was called
     # in a UIViewController, it will be that controller. If it is called in another
-    # object, it will be current controller's rmq instance and thus context will be 
+    # object, it will be current controller's rmq instance and thus context will be
     # that controller
     def context=(value)
       if value
@@ -87,7 +87,7 @@ module RubyMotionQuery
 
     # Wraps 1 or more views in an rmq instance.
     #
-    # Normally you select a view or views using rmq(my_view). Which doesn't 
+    # Normally you select a view or views using rmq(my_view). Which doesn't
     # work if you have an instance of a RMQ, in which case it isn't a method.
     # In some cases you want to save an instance of rmq and use it like the rmq
     # method, for this you'd use #wrap
@@ -96,7 +96,7 @@ module RubyMotionQuery
     #   q = RubyMotionQuery::RMQ.new
     #
     #   # Bad
-    #   q(my_view).view_controller 
+    #   q(my_view).view_controller
     #
     #   # Good
     #   q.wrap(my_view).view_controller
@@ -107,7 +107,7 @@ module RubyMotionQuery
     end
 
 
-    # Untested and I don' think it's getting set right in some situations 
+    # Untested and I don' think it's getting set right in some situations
     #
     # @return [RMQ] rmq that created this rmq, if any
     def parent_rmq
@@ -129,7 +129,7 @@ module RubyMotionQuery
       end
     end
 
-    # Returns a view or array of views. 
+    # Returns a view or array of views.
     # Normally used to get the only view in selected.
     #
     # @example
@@ -151,19 +151,19 @@ module RubyMotionQuery
       end
     end
 
-    # Is this rmq a root instance? 
+    # Is this rmq a root instance?
     #
     # Which means it only has 1 selected view, and that view
-    # is the view you called rmq in. Which is a tad confusing, but if you call *just* rmq inside a 
+    # is the view you called rmq in. Which is a tad confusing, but if you call *just* rmq inside a
     # view, then only that view will be *selected* and this rmq will be *root*. If you call rmq
     # inside a controller, only controller.view will be selected and the rma instance will be a root.
     def root?
       (selected.length == 1) && (selected.first == @context)
     end
 
-    # The context is where rmq was created (not the selectors). 
+    # The context is where rmq was created (not the selectors).
     #
-    # Normally you are inside a controller or a UIView when you execute the rmq method. 
+    # Normally you are inside a controller or a UIView when you execute the rmq method.
     #
     # @return [UIView] the controller's view or the view you are in when calling rmq
     def context_or_context_view
@@ -189,7 +189,7 @@ module RubyMotionQuery
 
     # Super useful in the console. log outputs to the console a table of the selected views
     #
-    # @param :wide outputs wide format (really wide, but awesome: rmq.all.log :wide). :tree outputs the 
+    # @param :wide outputs wide format (really wide, but awesome: rmq.all.log :wide). :tree outputs the
     # log in a tree form
     #
     # @return [String]
@@ -227,7 +227,7 @@ module RubyMotionQuery
     #   rmq.all.log :wide
     def log(opt = nil)
       if opt == :tree
-        puts tree_to_s(selected) 
+        puts tree_to_s(selected)
         return
       end
 
@@ -240,7 +240,7 @@ module RubyMotionQuery
       out << line.chop if wide
       out << line
 
-      selected.each do |view| 
+      selected.each do |view|
         out << " #{view.object_id.to_s.ljust(12)}|"
         out << " #{view.class.name[0..21].ljust(22)}|"
         out << " #{(view.rmq_data.style_name || '')[0..23].ljust(24)}|"
@@ -274,7 +274,7 @@ module RubyMotionQuery
     def tree_to_s(selected_views, depth = 0)
       out = ""
 
-      selected_views.each do |view| 
+      selected_views.each do |view|
         first = (view == selected_views.first)
         last = (view == selected_views.last)
 
@@ -309,7 +309,7 @@ module RubyMotionQuery
       out
     end
 
-    protected 
+    protected
     def extract_views_from_selectors(view_container, working_selectors)
       unless RMQ.is_blank?(working_selectors)
         working_selectors.each do |selector|
@@ -339,7 +339,7 @@ module RubyMotionQuery
       if (nr = view.nextResponder) && nr.is_a?(UIView)
         out << nr
         all_superviews_for(nr, out)
-      end     
+      end
       out
     end
 
