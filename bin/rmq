@@ -106,7 +106,7 @@ class RmqCommandLine
       return unless (@template_path = template_path(template_name))
       files = Dir["#{@template_path}**/*"].select {|f| !File.directory? f}
 
-      @name = name.gsub(/(controller|stylesheet)/,'')
+      @name = name.gsub(/_?(controller|stylesheet)/,'')
       @name_camel_case = @name.split('_').map{|word| word.capitalize}.join
 
       files.each do |template_file_path_and_name|
