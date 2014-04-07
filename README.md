@@ -13,7 +13,7 @@ A fast, non-polluting, chaining, front-end library. It’s like jQuery for [Ruby
 
 Also this 6 minute **[intro video](https://www.youtube.com/watch?v=2ihGjCI2DYE)**
 
-And this 36 minute video: **[Creating an Image Browser app in RubyMotion and RubyMotionQuery](https://www.youtube.com/watch?v=4eCNaxqNhKA)**
+And this 36 minute video: **[Creating an Image Browser app in RubyMotion and RubyMotionQuery](http://infinitered.com/2013/12/26/creating-an-image-browser-app-in-rubymotion-and-rubymotionquery-rmq/)**
 
 ----------
 
@@ -256,7 +256,6 @@ I recomend you play around with it, do this:
 ```
 
 
-
 <br />
 
 ### Selectors
@@ -269,6 +268,25 @@ I recomend you play around with it, do this:
  - my_view_instance
  - text: 'you can select via attributes also'
  - :another_tag, UILabel, text: 'an array' <- this is an "or", use .and for and
+ 
+The more common use is to select any view or views you have assigned to variables, then perform actions on them. For example:
+
+```ruby
+view_1 = UIView.alloc.initWithFrame([[10,10],[100, 10]])
+view_2 = UIView.alloc.initWithFrame([[10,20],[100, 10]])
+@view_3 = rmq.append(UIView, :some_style).get
+
+rmq(view_1).layout(l: 20, t: 40, w: 80, h: 20)
+
+rmq(view_1, view_2, @view_3).hide
+a = [view_1, view_2, @view_3]
+
+rmq(a).distribute(:vertical, margin: 10)
+
+rmq(a).on(:tap) do |sender|
+   puts 'Tapped'
+end
+```
 
 
 <br />
@@ -277,23 +295,33 @@ I recomend you play around with it, do this:
 
 ----
 
+Moving around the subview tree.
+
+Used often:
+
+ - view_controller
+ - root_view # View of the view_controller
+
+The rest of traversing isn't used too often, but when you need it, it's super handy. The most common methods used are:
+
+ - window # Window of the root_view
  - all
+ - closest
+ - find
+ 
+These are less common: 
+
  - and
  - not
  - and_self
- - back  - rmq(test_view).find(UIImageView).tag(:foo).back.find(UILabel).tag(:bar)
- - find
+ - back  - _rmq(test_view).find(UIImageView).tag(:foo).back.find(UILabel).tag(:bar)_
  - children
  - siblings
  - next
  - prev
- - closest
  - parent
  - parents
  - filter
- - view_controller
- - root_view # View of the view_controller
- - window # Window of the root_view
 
 
 <br />

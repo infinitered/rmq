@@ -80,6 +80,7 @@ module RubyMotionQuery
         #a == b # For future release
       end
 
+      # @deprecated, this has been fixed in RubyMotion 2.24, so this method is no longer needed.
       # Gets a strong reference from a weak reference
       def weak_ref_to_strong_ref(weak_ref)
         # This is a hack but it works, is there a better way?
