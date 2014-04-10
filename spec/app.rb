@@ -60,22 +60,81 @@ describe 'app' do
     end
 
   describe 'app - current_view_controller' do
+    it 'should return controller that is passed in to current_view_controller if it is justa UIViewController' do
+      new_controller = UIViewController.new
+      rmq.app.current_view_controller(new_controller).should == new_controller
+    end
+
     it 'should return current_view_controller from current window' do
       rmq.app.current_view_controller.should == rmq.app.window.rootViewController.visibleViewController
     end
 
     it 'should return current_view_controller when presenting a new controller' do
-      1.should == 1
+      controller = UIViewController.alloc.init
+      rmq.app.window.rootViewController.presentViewController(controller, animated: false, completion: nil)
+      rmq.app.current_view_controller.should == controller
+      controller.dismissViewControllerAnimated(false, completion: nil)
     end
 
     it 'should return current_view_controller when root controller is UINavigationController with multiple controllers' do
-      1.should == 1
+      rmq.app.current_view_controller.class.should == MainController
     end
 
     it 'should return current_view_controller when root controller is UITabController with multiple controllers' do
+      tabbar = UITabBarController.alloc.init
+      new_controller = UIViewController.new
+      tabbar.viewControllers = [new_controller]
+      old_root = rmq.app.window.rootViewController
+      rmq.app.window.rootViewController = tabbar
+      rmq.app.current_view_controller.should == new_controller
+      rmq.app.window.rootViewController = old_root
+    end
+
+    it 'should return current_view_controller when root controller is container controller with a topViewController method' do
+      controller = MyTopViewController.alloc.init
+      new_controller = UIViewController.new
+      controller.my_controller = new_controller
+      controller.my_controller.should == new_controller
+
+      old_root = rmq.app.window.rootViewController
+      rmq.app.window.rootViewController = controller
+      rmq.app.current_view_controller.should == new_controller
+      rmq.app.window.rootViewController = old_root
+    end
+
+
+    it 'should return current_view_controller when root controller is container controller with a visibleViewController method' do
+      controller = MyVisibleViewController.alloc.init
+      new_controller = UIViewController.new
+      controller.my_controller = new_controller
+      controller.my_controller.should == new_controller
+
+      old_root = rmq.app.window.rootViewController
+      rmq.app.window.rootViewController = controller
+      rmq.app.current_view_controller.should == new_controller
+      rmq.app.window.rootViewController = old_root
+    end
+
+    it 'should return current_view_controller when root controller is container controller with more than one child controllers' do
+      # TODO
       1.should == 1
     end
   end
 
+  end
+end
+
+
+class MyTopViewController < UIViewController
+  attr_accessor :my_controller
+  def topViewController
+    @my_controller
+  end
+end
+
+class MyVisibleViewController < UIViewController
+  attr_accessor :my_controller
+  def visibleViewController
+    @my_controller
   end
 end

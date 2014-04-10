@@ -73,7 +73,7 @@ module RubyMotionQuery
       end
 
       # Returns the current view controller in the app. If the current controller is a tab or
-      # navigation controller, then it gets the current tab or topmost controller in the nav.
+      # navigation controller, then it gets the current tab or topmost controller in the nav, etc
       #
       # This mostly works... mostly. As there really isn't a "current view_controller"
       #
@@ -86,7 +86,15 @@ module RubyMotionQuery
           when UITabBarController
             current_view_controller(root_view_controller.selectedViewController)
           else 
-            root_view_controller
+            if root_view_controller.respond_to?(:visibleViewController)
+              current_view_controller(root_view_controller.visibleViewController)
+            elsif root_view_controller.respond_to?(:topViewController)
+              current_view_controller(root_view_controller.topViewController)
+            elsif root_view_controller.childViewControllers.count > 0
+              current_view_controller(root_view_controller.childViewControllers.first)
+            else
+              root_view_controller
+            end
           end
         end
       end
