@@ -102,7 +102,7 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 - **RubyMotionQuery::RMQ.weak_ref(object)** - no longer needed post RubyMotion 2.18
 - **UIView#rmq_did_create(self_in_rmq)** - *Use rmq_build instead*
-
+- **RubyMotionQuery::RMQ.weak_ref_to_strong_ref(object)** - no longer needed post RubyMotion 2.24
 
 <br />
 
@@ -504,6 +504,12 @@ rmq(my_text_field).focus # or .become_first_responder
 ### Subviews - appending, creating, etc
 
 ----
+
+* build: takes an existing view, applies the style if it exists, then calls rmq_build method
+* create: creates the view when given the class, or uses an existing view you pass it, then does a [build]
+* append: [create] + appends the view to the end of the subview tree or to then end of the children of a view (if called on an rmq object with that view in it)
+* prepend: Same as [append], but inserts the view to beginning of the subview tree (overall or view's children)
+* insert: Same as [append], but inserts the view at the index of the subview tree (overall or view's children)
 
 ```ruby
 rmq.append(UILabel) # Creates a UILabel in the current controller
