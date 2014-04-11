@@ -23,7 +23,5 @@ describe 'stylers/ui_text_field' do
     view.tap do |v|
       1.should == 1
     end
-
-    rmq.all.log
   end
 end

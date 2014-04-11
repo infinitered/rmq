@@ -82,6 +82,19 @@ describe 'stylesheet' do
     rmq4.stylesheet.should == ss1
   end
 
+  it 'should allow rmq in stylesheet as if it\'s in the controller' do
+    @vc.rmq.should == @vc.rmq.stylesheet.self_rmq
+
+    q = @vc.rmq.append(UILabel, :style_use_rmq)
+    q.get.textColor.should == rmq.color.blue
+
+    ss = StyleSheetForStylesheetTests.new(nil)
+    ss.controller.should == nil
+    label = UILabel.alloc.initWithFrame(CGRectZero)
+    ss.style_use_rmq(@vc.rmq.styler_for(label))
+    label.textColor.should == rmq.color.blue
+  end
+
   describe 'styles' do
 
     it 'should apply style_name to a view' do
@@ -152,4 +165,11 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
     st.background_color = color.panther_black
   end
 
+  def style_use_rmq(st)
+    rmq(st.view).get.textColor = color.blue
+  end
+
+  def self_rmq
+    rmq
+  end
 end

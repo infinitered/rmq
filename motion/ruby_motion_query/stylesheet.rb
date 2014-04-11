@@ -130,11 +130,17 @@ module RubyMotionQuery
     end
 
     # Convenience methods -------------------
-    def rmq
-      if @controller.nil?
-        RMQ.new
+    def rmq(*working_selectors)
+      q = if @controller.nil?
+        RubyMotionQuery::RMQ.new
       else
         @controller.rmq
+      end
+
+      if working_selectors.length > 0
+        q.wrap(working_selectors)
+      else
+        q
       end
     end
 
