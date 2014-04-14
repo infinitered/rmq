@@ -124,7 +124,8 @@ module RubyMotionQuery
           o.opaque = true
         end
       elsif reuse_identifier = opts[:reuse_identifier]
-        klass.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: reuse_identifier).tap do |o|
+        style = opts[:cell_style] || UITableViewCellStyleDefault
+        klass.alloc.initWithStyle(style, reuseIdentifier: reuse_identifier).tap do |o|
           o.hidden = false
           o.opaque = true
         end

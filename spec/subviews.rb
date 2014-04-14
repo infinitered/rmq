@@ -155,6 +155,20 @@ describe 'subviews' do
       test_view.subview.rmq_data.style_name.should == :create_sub_view_style
       test_view.subview.backgroundColor.should == RubyMotionQuery::Color.orange
     end
+
+    it 'should create a default table cell' do
+      q = @vc.rmq
+      cell = q.append(UITableViewCell, nil, reuse_identifier: 'bar').get
+      cell.should != nil
+    end
+
+    it 'should allow you to create a table cell while specifying the cell style' do
+      q = @vc.rmq
+      cell = q.append(UITableViewCell, nil, reuse_identifier: 'foo', cell_style: UITableViewCellStyleSubtitle).get
+      cell.detailTextLabel.should != nil
+      detail_label = q.build(cell.detailTextLabel).get
+      detail_label.should != nil
+    end
   end
 
   describe 'build' do

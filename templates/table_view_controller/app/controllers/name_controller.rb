@@ -38,6 +38,9 @@ class <%= @name_camel_case %>Controller < UITableViewController
 
     cell = table_view.dequeueReusableCellWithIdentifier(<%= @name.upcase %>_CELL_ID) || begin
       rmq.create(<%= @name_camel_case %>Cell, :<%= @name %>_cell, reuse_identifier: <%= @name.upcase %>_CELL_ID).get
+
+      # If you want to change the style of the cell, you can do something like this:
+      #rmq.create(<%= @name_camel_case %>Cell, :<%= @name %>_cell, reuse_identifier: <%= @name.upcase %>_CELL_ID, cell_style: UITableViewCellStyleSubtitle).get
     end
 
     cell.update(data_row)
