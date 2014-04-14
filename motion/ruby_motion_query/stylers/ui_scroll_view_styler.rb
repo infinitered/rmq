@@ -23,11 +23,11 @@ module RubyMotionQuery
       def content_size=(value); @view.contentSize = value; end
       def content_size; @view.contentSize; end
 
-      def shows_horizontal_scroll_indicator; @view.showsHorizontalScrollIndicator; end
       def shows_horizontal_scroll_indicator=(value); @view.showsHorizontalScrollIndicator = value; end
+      def shows_horizontal_scroll_indicator; @view.showsHorizontalScrollIndicator; end
 
-      def shows_vertical_scroll_indicator; @view.showsVerticalScrollIndicator; end
       def shows_vertical_scroll_indicator=(value); @view.showsVerticalScrollIndicator = value; end
+      def shows_vertical_scroll_indicator; @view.showsVerticalScrollIndicator; end
 
       def scroll_indicator_insets=(value); @view.scrollIndicatorInsets = value; end
       def scroll_indicator_insets; @view.scrollIndicatorInsets; end
