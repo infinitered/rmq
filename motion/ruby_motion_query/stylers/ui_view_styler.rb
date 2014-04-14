@@ -283,6 +283,9 @@ module RubyMotionQuery
         @view.layer
       end
 
+      def border_width; @view.layer.borderWidth; end
+      def border_width=(value); @view.layer.borderWidth = value; end
+
     end
   end
 end
