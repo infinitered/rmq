@@ -546,14 +546,23 @@ This is very handy for stuff like table cells:
 # In your controller that is a delegate for a UITableView
 def tableView(table_view, cellForRowAtIndexPath: index_path)
   cell = table_view.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin
-    rmq.create(StoreCell, :store_cell, cell_identifier: CELL_IDENTIFIER).get
+    rmq.create(StoreCell, :store_cell, reuse_identifier: CELL_IDENTIFIER).get
+
+    # If you want to change the style of the cell, you can do something like this:
+    # rmq.create(StoreCell, :store_cell, reuse_identifier: CELL_IDENTIFIER, cell_style: UITableViewCellStyleSubtitle).get
   end
 end
 
 # Your cell
 class StoreCell < UITableViewCell
   def rmq_build
-    rmq(self).append(UILabel, :title_label) # <- this works even though this object isn't in a controller
+    q = rmq(self.contentView)
+    q.append(UILabel, :title_label) # <- this works even though this object isn't in a controller
+
+    # Use built in views, this assumes you're using the UITableViewCellStyleSubtitle style for the cell
+    q.build(self.textLabel, :cell_label)
+    q.build(self.imageView, :cell_image)
+    q.build(self.detailTextLabel, :cell_label_detail)
   end
 end
 ```
