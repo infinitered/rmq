@@ -320,6 +320,14 @@ module RubyMotionQuery
         @view.layer.cornerRadius
       end
 
+      def masks_to_bounds=(value)
+        @view.layer.masksToBounds = value
+      end
+
+      def masks_to_bounds
+        @view.layer.masksToBounds
+      end
+
     end
   end
 end
