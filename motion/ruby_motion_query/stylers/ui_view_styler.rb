@@ -300,6 +300,25 @@ module RubyMotionQuery
         @view.layer.borderWidth
       end
 
+      def border_color=(value)
+        if value.is_a?(UICachedDeviceRGBColor)
+          @view.layer.setBorderColor(value.CGColor)
+        else
+          @view.layer.setBorderColor value
+        end
+      end
+
+      def border_color
+        @view.layer.borderColor
+      end
+
+      def corner_radius=(value = 2)
+        @view.layer.cornerRadius = value
+      end
+
+      def corner_radius
+        @view.layer.cornerRadius
+      end
 
     end
   end
