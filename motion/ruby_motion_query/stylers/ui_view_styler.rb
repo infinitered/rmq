@@ -54,7 +54,17 @@ module RubyMotionQuery
           f.origin.x = h[:l] || h[:left] || f.origin.x
           f.origin.y = h[:t] || h[:top] || f.origin.y
           f.size.width = h[:w] || h[:width] || f.size.width
-          f.size.height =h[:h] || h[:height] || f.size.height
+          f.size.height = h[:h] || h[:height] || f.size.height
+
+          if sv = @view.superview
+            if fr = (h[:from_right] || h[:fr])
+              f.origin.x = sv.bounds.size.width - f.size.width - fr
+            end
+
+            if fb = (h[:from_bottom] || h[:fb])
+              f.origin.y = sv.bounds.size.height - f.size.height - fb
+            end
+          end
 
           @view.frame = f
         else
@@ -132,13 +142,13 @@ module RubyMotionQuery
       end
 
       def from_bottom=(value)
-        if superview = @view.superview
-          self.top = superview.bounds.size.height - self.height - value
+        if sv = @view.superview
+          self.top = sv.bounds.size.height - self.height - value
         end
       end
       def from_bottom
-        if superview = @view.superview
-          superview.bounds.size.height - self.top
+        if sv = @view.superview
+          sv.bounds.size.height - self.top
         end
       end
 

@@ -14,10 +14,8 @@ class MainStylesheet < ApplicationStylesheet
     st.image = image.resource('logo')
   end
 
-
   def make_labels_blink_button(st)
-    st.frame = {t: 180, w: 150, h: 20}
-    st.from_right = PADDING
+    st.frame = {from_right: PADDING, t: 180, w: 150, h: 20}
 
     # ipad? (and landscape?, etc) is just a convenience methods for
     # rmq.device.ipad?
@@ -50,16 +48,14 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def make_buttons_throb_button(st)
-    st.frame = {t: 205, w: 150, h: 20}
-    st.from_right = PADDING
+    st.frame = {fr: PADDING, t: 205, w: 150, h: 20}
     st.text = 'Throb buttons'
     st.color = color.black
   end
 
   def animate_move_button(st)
     st.scale = 1.0
-    st.frame = {t: 230, w: 150, h: 20}
-    st.from_right = PADDING
+    st.frame = {from_right: PADDING, t: 230, w: 150, h: 20}
     st.text = 'Animate move and scale'
     st.font = font.system(10)
     st.color = color.white
@@ -69,16 +65,14 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def collection_button(st)
-    st.frame = {t: 260, w: 150, h: 20}
-    st.from_right = PADDING
+    st.frame = {from_right: PADDING, t: 260, w: 150, h: 20}
     st.background_color = color.black
     st.font = font.small
     st.text = 'Collection View'
   end
 
   def table_button(st)
-    st.frame = {t: 290, w: 150, h: 20}
-    st.from_right = PADDING
+    st.frame = {from_right: PADDING, t: 290, w: 150, h: 20}
     st.background_color = color.black
     st.font = font.small
     st.text = 'Table View'
@@ -86,15 +80,13 @@ class MainStylesheet < ApplicationStylesheet
 
 
   def section(st)
-    st.frame = {w: 270, h: 110}
+    st.frame = {fb: PADDING, w: 270, h: 110}
 
     if landscape? && iphone?
       st.left = PADDING
     else
       st.centered = :horizontal
     end
-
-    st.from_bottom = PADDING
 
     st.z_position = 1
     st.background_color = color.battleship_gray

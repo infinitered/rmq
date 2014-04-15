@@ -29,7 +29,8 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
   def ui_view_kitchen_sink(st)
     st.frame = {l: 1, t: 2, w: 3, h: 4}
     st.frame = {left: 1, top: 2, width: 3, height: 4}
-    st.frame = {left: 10}
+    st.frame = {from_right: 1, from_bottom: 2, width: 3, height: 4}
+    st.frame = {fr: 1, fb: 2, w: 3, h: 4}
     st.left = 20
     st.top = 30
     st.width = 40
