@@ -61,6 +61,14 @@ describe 'animations' do
     @viewq.animations.drop_and_spin.is_a?(RubyMotionQuery::RMQ).should == true
   end
 
+  it 'should sink and throb' do
+    @viewq.animations.sink_and_throb.is_a?(RubyMotionQuery::RMQ).should == true
+  end
+
+  it 'should land, sink, and throb' do
+    @viewq.animations.land_and_sink_and_throb.is_a?(RubyMotionQuery::RMQ).should == true
+  end
+
   it 'should start spinner' do
     q = @vc.rmq.animations.start_spinner
     q.first.get.is_a?(UIActivityIndicatorView).should == true

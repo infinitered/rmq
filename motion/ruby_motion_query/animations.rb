@@ -109,6 +109,55 @@ module RubyMotionQuery
     end
 
     # @return [RMQ]
+    def sink_and_throb(opts = {})
+      opts.merge!({
+        duration: 0.3,
+        animations: ->(cq) {
+         cq.animations.throb(duration: 0.6)
+        }
+      })
+
+      out = @rmq.animate(
+        duration: 0.1,
+        animations: ->(q) {
+          q.style {|st| st.scale = 0.9}
+        },
+        completion: ->(did_finish, completion_rmq) {
+          if did_finish
+            completion_rmq.animate(opts)
+          end
+        }
+      )
+      out
+    end
+
+    # @return [RMQ]
+    def land_and_sink_and_throb(opts = {})
+      @rmq.hide.style do |st|
+        st.opacity = 0.1
+        st.scale = 8.0
+        st.hidden = false
+      end
+
+      opts.merge!({
+        duration: 0.5,
+        animations: ->(cq) {
+          cq.style do |st| 
+            st.opacity = 1.0
+            st.scale = 0.8
+          end
+        },
+        completion: ->(did_finish, last_completion_rmq) {
+          if did_finish
+            last_completion_rmq.animations.throb
+          end
+        }
+      })
+
+      @rmq.animate(opts)
+    end
+
+    # @return [RMQ]
     def drop_and_spin(opts = {})
       remove_view = opts[:remove_view]
       opts.merge!({

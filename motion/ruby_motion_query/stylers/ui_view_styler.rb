@@ -293,6 +293,13 @@ module RubyMotionQuery
         @view.layer
       end
 
+      def opacity=(value)
+        @view.layer.opacity = value
+      end
+      def opacity
+        @view.layer.opacity
+      end
+
       def border_width=(value)
         @view.layer.borderWidth = value
       end
