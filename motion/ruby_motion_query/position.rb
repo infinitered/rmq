@@ -7,19 +7,9 @@ module RubyMotionQuery
     #   rmq(my_view).resize(h: 10, w: 100)
     #
     # @return [RMQ]
-    def layout(opts) 
-      # TODO, add centered and from_bottom and from_top, and bottom and top
-      # TODO, add animate option
-      left = opts[:left] || opts[:l] || opts[:x]
-      top = opts[:top] || opts[:t] || opts[:y]
-      width = opts[:width] || opts[:w]
-      height = opts[:height] || opts[:h]
-
+    def layout(params) 
       selected.each do |view|
-        view.frame = [
-          [left || view.origin.x, top || view.origin.y],
-          [width || view.size.width, height || view.size.height]
-        ]
+        RubyMotionQuery::Rect.update_view_frame(view, params)
       end
 
       self
@@ -28,11 +18,12 @@ module RubyMotionQuery
     alias :resize :layout
 
     # @return [RMQ]
-    def nudge(opts) 
-      left = opts[:left] || opts[:l] || 0
-      right = opts[:right] || opts[:r] || 0
-      up = opts[:up] || opts[:u] || 0
-      down = opts[:down] || opts[:d] || 0
+    # TODO move nudge implementation into Rect
+    def nudge(params) 
+      left = params[:left] || params[:l] || 0
+      right = params[:right] || params[:r] || 0
+      up = params[:up] || params[:u] || 0
+      down = params[:down] || params[:d] || 0
 
       selected.each do |view|
         f = view.frame
