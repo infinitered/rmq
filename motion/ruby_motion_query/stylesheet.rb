@@ -52,7 +52,7 @@ module RubyMotionQuery
     end
 
     def styler_for(view)
-      # TODO should have a pool of stylers to reuse, or just assume single threaded and 
+      # TODO should have a pool of stylers to reuse, or just assume single threaded and
       # memoize this, however if you do that, make sure the dev doesn't retain them in a var
       custom_stylers(view) || begin
         case view
@@ -110,13 +110,13 @@ module RubyMotionQuery
 
       unless Stylesheet.application_was_setup
         Stylesheet.application_was_setup = true
-        application_setup 
+        application_setup
       end
       setup
     end
 
     def application_setup
-      # Override to do your overall setup for your applications. This 
+      # Override to do your overall setup for your applications. This
       # is where you want to add your custom fonts and colors
       # This only gets called once
     end
@@ -175,11 +175,11 @@ module RubyMotionQuery
     end
 
     def app_width
-      landscape? ? app_size.width : app_size.height
+      portrait? ? app_size.width : app_size.height
     end
 
     def app_height
-      landscape? ? app_size.height : app_size.width
+      portrait? ? app_size.height : app_size.width
     end
 
     def app_size
@@ -187,11 +187,11 @@ module RubyMotionQuery
     end
 
     def screen_width
-      landscape? ? screen_size.width : screen_size.height
+      portrait? ? screen_size.width : screen_size.height
     end
 
     def screen_height
-      landscape? ? screen_size.height : screen_size.width
+      portrait? ? screen_size.height : screen_size.width
     end
 
     def screen_size
