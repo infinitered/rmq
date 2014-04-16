@@ -175,11 +175,11 @@ module RubyMotionQuery
     end
 
     def app_width
-      app_size.width
+      landscape? ? app_size.width : app_size.height
     end
 
     def app_height
-      app_size.height
+      landscape? ? app_size.height : app_size.width
     end
 
     def app_size
@@ -187,11 +187,11 @@ module RubyMotionQuery
     end
 
     def screen_width
-      screen_size.width
+      landscape? ? screen_size.width : screen_size.height
     end
 
     def screen_height
-      screen_size.height
+      landscape? ? screen_size.height : screen_size.width
     end
 
     def screen_size
