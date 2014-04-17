@@ -169,6 +169,11 @@ describe 'subviews' do
       detail_label = q.build(cell.detailTextLabel).get
       detail_label.should != nil
     end
+
+    it 'should create a UITableView' do
+      #TODO
+      1.should == 1
+    end
   end
 
   describe 'build' do
