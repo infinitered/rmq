@@ -38,6 +38,9 @@ describe 'subviews' do
     view2 = @vc.rmq.append(UIButton).get
     view.rmq_data.style_name.should == :my_style
     view2.rmq_data.style_name.nil?.should == true
+
+    view3 = @vc.rmq.append(SubButtonTest).get
+    view3.class.should == SubButtonTest
   end
 
   it 'should unshift a view to the front of the subviews' do
@@ -170,9 +173,22 @@ describe 'subviews' do
       detail_label.should != nil
     end
 
-    it 'should create a UITableView' do
-      #TODO
-      1.should == 1
+    it 'should allow you to create a UITableView while specifying the table_style' do
+      q = @vc.rmq
+
+      table = q.append(UITableView).get
+      table.style.should == UITableViewStylePlain
+
+      table = q.append(UITableView, nil, table_style: UITableViewStyleGrouped).get
+      table.style.should == UITableViewStyleGrouped
+
+      table = q.append(UITableView, nil, table_style: UITableViewStylePlain).get
+      table.class.should == UITableView
+      table.style.should == UITableViewStylePlain
+
+      table_sub = q.append(SubTableTest, nil, table_style: UITableViewStyleGrouped).get
+      table_sub.class.should == SubTableTest
+      table_sub.style.should == UITableViewStyleGrouped
     end
   end
 
@@ -244,4 +260,8 @@ class SubviewTestView < UIView
   end
 end
 
+class SubTableTest < UITableView
+end
 
+class SubButtonTest < UIButton
+end

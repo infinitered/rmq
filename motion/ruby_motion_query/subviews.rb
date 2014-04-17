@@ -118,21 +118,20 @@ module RubyMotionQuery
     protected
 
     def create_view(klass, opts)
-      if klass == UIButton
+      if (klass == UIButton) || klass < UIButton
         klass.buttonWithType(UIButtonTypeCustom).tap do |o|
-          o.hidden = false
-          o.opaque = true
-        end
-      elsif klass == UITableView
-        style = opts[:table_style] || UITableViewStylePlain
-
-        UITableView.alloc.initWithFrame(CGRectZero, style: style).tap do |o|
           o.hidden = false
           o.opaque = true
         end
       elsif reuse_identifier = opts[:reuse_identifier]
         style = opts[:cell_style] || UITableViewCellStyleDefault
         klass.alloc.initWithStyle(style, reuseIdentifier: reuse_identifier).tap do |o|
+          o.hidden = false
+          o.opaque = true
+        end
+      elsif (klass == UITableView) || klass < UITableView
+        style = opts[:table_style] || UITableViewStylePlain
+        klass.alloc.initWithFrame(CGRectZero, style: style).tap do |o|
           o.hidden = false
           o.opaque = true
         end
@@ -144,10 +143,5 @@ module RubyMotionQuery
       end
     end
 
-    private
-
-    def dummy
-      o = UITableViewStyleGrouped
-    end
   end
 end
