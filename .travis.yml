@@ -1,8 +1,7 @@
 language: objective-c
 before_install:
     - (ruby --version)
-    - sudo chown -R travis /Users/travis/Library/RubyMotion
-    - sudo chown -R travis /Users/travis/Library/RubyMotion/build
+    - mkdir /Users/travis/Library/RubyMotion/build
 script:
     - bundle install
     - bundle exec rake clean
