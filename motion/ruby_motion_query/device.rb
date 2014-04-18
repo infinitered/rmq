@@ -58,11 +58,12 @@ module RubyMotionQuery
 
       # @return :unknown or from ORIENTATIONS
       def orientation
-        ORIENTATIONS[UIDevice.currentDevice.orientation] || :unknown
+        orientation = UIApplication.sharedApplication.statusBarOrientation
+        ORIENTATIONS[orientation] || :unknown
       end
 
       def landscape?
-        Device.orientation == :landscape_Left || Device.orientation == :landscape_right
+        Device.orientation == :landscape_left || Device.orientation == :landscape_right
       end
 
       def portrait?
@@ -77,7 +78,7 @@ module RubyMotionQuery
         UIDeviceOrientationUnknown => :unknown,
         UIDeviceOrientationPortrait => :portrait,
         UIDeviceOrientationPortraitUpsideDown => :portrait_upside_down,
-        UIDeviceOrientationLandscapeLeft => :landscape_Left,
+        UIDeviceOrientationLandscapeLeft => :landscape_left,
         UIDeviceOrientationLandscapeRight => :landscape_right,
         UIDeviceOrientationFaceUp => :face_up,
         UIDeviceOrientationFaceDown => :face_down

@@ -119,9 +119,9 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 *Clone this repo and run the example app to see an example of use.*
 
-	git clone git@github.com:infinitered/rmq.git
-	cd rmq
-	rake
+  git clone git@github.com:infinitered/rmq.git
+  cd rmq
+  rake
 
 The example app works in any orientation, on both iPhone and iPad. Notice how the benchmark popup is done with RMQ, then think about how you'd do that without it.
 
@@ -268,7 +268,7 @@ I recomend you play around with it, do this:
  - my_view_instance
  - text: 'you can select via attributes also'
  - :another_tag, UILabel, text: 'an array' <- this is an "or", use .and for and
- 
+
 The more common use is to select any view or views you have assigned to variables, then perform actions on them. For example:
 
 ```ruby
@@ -377,8 +377,8 @@ The rest of traversing isn't used too often, but when you need it, it's super ha
  - all
  - closest
  - find
- 
-These are less common: 
+
+These are less common:
 
  - and
  - not
@@ -500,7 +500,7 @@ rmq(UIView).on(:tap){|sender| rmq(sender).hide}
 
 # Adding an Event during creation
 view_q = rmq.append(UIView).on(:tap) do |sender, event|
-	# do something here
+  # do something here
 end
 
 # removing an Event
@@ -845,7 +845,7 @@ rmq.device.iphone?
 rmq.device.four_inch?
 rmq.device.retina?
 
-# return values are :unknown, :portrait, :portrait_upside_down, :landscape_Left,
+# return values are :unknown, :portrait, :portrait_upside_down, :landscape_left,
 # :landscape_right, :face_up, :face_down
 rmq.device.orientation
 rmq.device.landscape?
@@ -1314,7 +1314,7 @@ end
 ```
 
 ##### UIControlStyler
-	Nothing yet
+  Nothing yet
 
 ##### UILabelStyler
 
