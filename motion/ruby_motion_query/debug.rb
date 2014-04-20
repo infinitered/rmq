@@ -28,12 +28,6 @@ module RubyMotionQuery
   class Debug
     class << self
 
-      def inspector
-        if rmq(InspectorView).length == 0
-          rmq.append(InspectorView).animations.land_and_sink_and_throb
-        end
-      end
-
       # Warning, this is very slow
       def log_detailed(label, params = {})
         return unless RMQ.app.development? || RMQ.app.test?
