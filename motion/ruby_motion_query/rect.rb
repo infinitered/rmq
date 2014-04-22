@@ -27,19 +27,19 @@ module RubyMotionQuery
   #    *                   |         |                           *   signed integer
   #    *                  top        |                           *   float
   #    *                   |         |                           *   :prev
-  #    *                   |         |                           *    
-  #    *                  ---        |                           *   additional size options
-  #    *              ***************|*****   ---                *   -----------------------
-  #    *              * view         |    *    |                 *   :full
-  #    *              *              |    *    |                 *   :half
-  #    *              *           bottom  *    |                 *   :quarter
-  #    *              *              |    *    |                 *
-  #    *|--- left ---|*              |    *    |                 *   centered options
-  #    *              *              |    * height               *   ---------
+  #    *                   |         |                           *   'a1:b4' 
+  #    *                  ---        |                           *   
+  #    *              ***************|*****   ---                *   additional size options
+  #    *              * view         |    *    |                 *   -----------------------
+  #    *              *              |    *    |                 *   :full
+  #    *              *           bottom  *    |                 *   :half
+  #    *              *              |    *    |                 *   :quarter
+  #    *|--- left ---|*              |    *    |                 *                          
+  #    *              *              |    * height               *   centered options
+  #    *              *              |    *    |                 *   ---------
   #    *              *              |    *    |                 *   :horizontal
-  #    *              *              |    *    |                 *   :vertical
-  #    *|-------------------- right -+---|*    |                 *   :both
-  #    *              *              |    *    |                 *
+  #    *|-------------------- right -+---|*    |                 *   :vertical
+  #    *              *              |    *    |                 *   :both
   #    *              *              |    * |--+--from_right----|*
   #    *              *             ---   *    |                 *
   #    *              ***************---***   ---                *

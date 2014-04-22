@@ -51,23 +51,33 @@ module RubyMotionQuery
       end
 
       q.append(UIButton).on(:tap) do |sender|
-        @draw_grid_x = !@draw_grid_x
+        @draw_grid = !@draw_grid
         redisplay
       end.style do |st|
         st.frame = {l: 40, from_bottom: 2, w: 30, h: 12}
+        st.text = 'grid'
+        st.font = rmq.font.system(7)
+        st.background_color = rmq.color.green
+      end
+
+      q.append(UIButton).on(:tap) do |sender|
+        @draw_grid_x = !@draw_grid_x
+        redisplay
+      end.style do |st|
+        st.frame = {l: 75, from_bottom: 2, w: 30, h: 12 }
         st.text = 'grid x'
         st.font = rmq.font.system(7)
-        st.background_color = rmq.color.blue
+        st.background_color = rmq.color.green
       end
 
       q.append(UIButton).on(:tap) do |sender|
         @draw_grid_y = !@draw_grid_y
         redisplay
       end.style do |st|
-        st.frame = {l: 75, from_bottom: 2, w: 30, h: 12}
+        st.frame = {l: 110, from_bottom: 2, w: 30, h: 12}
         st.text = 'grid y'
         st.font = rmq.font.system(7)
-        st.background_color = rmq.color.blue
+        st.background_color = rmq.color.green
       end
 
       q.append(UIButton).on(:tap) do |sender|
@@ -79,7 +89,7 @@ module RubyMotionQuery
 
         redisplay
       end.style do |st|
-        st.frame = {l: 110, from_bottom: 2, w: 30, h: 12}
+        st.frame = {l: 145, from_bottom: 2, w: 30, h: 12}
         st.text = 'dim'
         st.font = rmq.font.system(7)
         st.background_color = rmq.color.blue
@@ -90,7 +100,7 @@ module RubyMotionQuery
 
         redisplay
       end.style do |st|
-        st.frame = {l: 145, from_bottom: 2, w: 50, h: 12}
+        st.frame = {l: 180, from_bottom: 2, w: 50, h: 12}
         st.text = 'outline views'
         st.font = rmq.font.system(7)
         st.background_color = rmq.color.blue
@@ -134,7 +144,7 @@ module RubyMotionQuery
 
         grid.column_lefts.each do |x|
           CGContextFillRect(context, [[x,0],[grid.column_width, screen_height]])
-          CGContextFillRect(context, [[x,0],[1, screen_height]])
+         CGContextFillRect(context, [[x,0],[1, screen_height]])
         end
       end
 
@@ -144,6 +154,19 @@ module RubyMotionQuery
         grid.row_tops.each do |y|
           CGContextFillRect(context, [[0,y],[screen_width, grid.row_height]])
           CGContextFillRect(context, [[0,y],[screen_width, 1]])
+        end
+      end
+
+      if @draw_grid
+        0.upto(grid.rows - 1) do |r|
+          0.upto(grid.columns - 1) do |c|
+            rec = grid[[c, r]]
+            CGContextSetFillColorWithColor(context, @column_fill_color)
+            CGContextFillRect(context, rec) 
+            text = "#{(c+97).chr}#{r}"
+            CGContextSetFillColorWithColor(context, @text_color)
+            CGContextShowTextAtPoint(context, rec.origin.x + 1, rec.origin.y + 5, text, text.length)
+          end
         end
       end
 
