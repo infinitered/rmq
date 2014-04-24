@@ -1,12 +1,28 @@
 module RubyMotionQuery
 
   class RMQ
-    def frame
-      if selected.length == 1
-        Rect.frame_for_view(selected.first)
+    # @example
+    # rmq(my_view).frame
+    #
+    def frame(params = nil)
+      if params
+        frame = params
+        self
       else
-        selected.map{|s| Rect.frame_for_view(s)}
+        if selected.length == 1
+          Rect.frame_for_view(selected.first)
+        else
+          selected.map{|s| Rect.frame_for_view(s)}
+        end
       end
+    end
+
+    # @example
+    # rmq(my_view).frame = :full
+    # rmq(my_view, my_other_view).frame = {l: 0, t: 0, w: 100, h: 20}
+    # rmq(my_view, my_other_view).frame(l: 0, t: 0, w: 100, h: 20).show
+    def frame=(value)
+      selected.each{|s| Rect.frame_for_view(s).apply_to_frame}
     end
 
     def bounds
@@ -15,6 +31,9 @@ module RubyMotionQuery
       else
         selected.map{|s| Rect.bounds_for_view(s)}
       end
+    end
+    def bounds=(value)
+      selected.each{|s| Rect.bounds_for_view(s).apply_to_bounds}
     end
   end
 
@@ -53,7 +72,8 @@ module RubyMotionQuery
   #    *                             ---                         *
   #    ***********************************************************
   #
-  class Rect < CGRect
+  class Rect
+    attr_reader :view
 
     class << self
 
@@ -117,24 +137,40 @@ module RubyMotionQuery
       def bounds_for_view(view)
         Rect.new(view.bounds, view)
       end
-
     end # << self
 
-
-    def initialize(rect, view = nil)
+    def initialize(params, view = nil)
       @view = view
-      self.origin = rect.origin
-      self.size = rect.size
+      update params
+    end
+
+    def update(params)
+      if params.is_a?(NSArray)
+        @left, @top, @width, @height = params
+      elsif params.is_a?(Hash)
+        # TODO
+      elsif params.is_a?(CGRect)
+        @left, @top, @width, @height = params.origin.x, params.origin.y, params.size.width, params.size.height
+      else
+        @left, @top, @width, @height = params.to_a
+      end
+    end
+
+    def apply_to_frame
+      @view.frame = to_cgrect if @view
+    end
+    def apply_to_bounds
+      @view.bounds = to_cgrect if @view
     end
 
     def left
-      origin.x
+      @left
     end
     alias :l :left
     alias :x :left
 
     def right
-      left + width
+      @left + @width
     end
     alias :r :right
 
@@ -145,13 +181,13 @@ module RubyMotionQuery
     end
 
     def top
-      origin.y
+      @top
     end
     alias :t :top
     alias :y :top
 
     def bottom
-      top + height
+      @top + @height
     end
     alias :b :bottom
 
@@ -162,12 +198,12 @@ module RubyMotionQuery
     end
 
     def width
-      size.width
+      @width
     end
     alias :w :width
     
     def height
-      size.height
+      @height
     end
     alias :h :height
 
@@ -181,6 +217,33 @@ module RubyMotionQuery
       if @view
         @view.layer.zPosition
       end
+    end
+
+    def to_cgpoint
+      CGPointMake(@left, @top)
+    end
+
+    def to_cgsize
+      CGSizeMake(@width, @height)
+    end
+
+    def to_cgrect
+      CGRectMake(@left,@top, @width, @height)
+    end
+    def to_a
+      [@left, @top, @width, @height]
+    end
+    def to_a
+      {left: @left, top: @top, width: @width, height: @height}
+    end
+
+    def inspect
+      format = '#0.#'
+      s = "Rect {l: #{RMQ.format.numeric(left, format)}"
+      s << ", t: #{RMQ.format.numeric(top, format)}"
+      s << ", w: #{RMQ.format.numeric(width, format)}"
+      s << ", h: #{RMQ.format.numeric(height, format)}}"
+      s
     end
 
     def log
@@ -239,16 +302,8 @@ module RubyMotionQuery
  *                           ---                        *
  ********************************************************
 )
-      NSLog out
+      puts out
     end
 
-    def inspect
-      format = '#0.#'
-      s = "Rect {l: #{RMQ.format.numeric(left, format)}"
-      s << ", t: #{RMQ.format.numeric(top, format)}"
-      s << ", w: #{RMQ.format.numeric(width, format)}"
-      s << ", h: #{RMQ.format.numeric(height, format)}}"
-      s
-    end
   end
 end

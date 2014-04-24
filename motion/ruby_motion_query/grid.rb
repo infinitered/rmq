@@ -53,7 +53,7 @@ module RubyMotionQuery
   #     row_gutter: 10,
   #     content_left_margin: 5,
   #     content_right_margin: 5,
-  #     content_top_margin: 5,
+  #     content_top_margin: 70,
   #     content_bottom_margin: 5,
   #     status_bar_bottom: 20,
   #     nav_bar_bottom: 64
@@ -94,7 +94,7 @@ module RubyMotionQuery
       column_gutter: 10,
       content_left_margin: 5,
       content_right_margin: 5,
-      content_top_margin: 5,
+      content_top_margin: 70,
       content_bottom_margin: 5,
       rows: 13,
       row_gutter: 10,
@@ -175,6 +175,7 @@ module RubyMotionQuery
     #   my_grid['a0:a0'] # Entire a0 block
     #   my_grid['a:d'] # Just width
     #   my_grid['1:4'] # Just height
+    #   my_grid['a:4'] # Just width, and just height on the other end (interesting eh)
     #
     # @return integer, CGPoint, or CGRect, depending
     def [](coord)
@@ -183,9 +184,9 @@ module RubyMotionQuery
           l = column_lefts[coord[0]]
           t = row_tops[coord[1]]
           if coord.length == 2
-            CGRectMake(l, t, column_width, row_height)
+            RubyMotionQuery::Rect.new([l, t], [column_width, row_height])
           elsif coord.length == 4
-            CGRectMake(l, t, coord[2], coord[3])
+            RubyMotionQuery::Rect.new([l, t], [coord[2], coord[3]])
           else
             0
           end
@@ -222,7 +223,7 @@ module RubyMotionQuery
             when 2
               p1 = self[parts.first]
               p2 = self[parts.last]
-              CGRectStandardize(CGRectMake(p1.x, p1.y,  p2.x - p1.x, p2.y - p1.y))
+              RubyMotionQuery::Rect.new([p1.x, p1.y], [p2.x - p1.x, p2.y - p1.y])
           end
 
         end
@@ -310,7 +311,7 @@ module RubyMotionQuery
     end
 
     def usable_height
-      @_usable_height ||= (RMQ.device.screen_height - @nav_bar_bottom - (@row_gutter * (@rows - 1)) - @content_top_margin - @content_bottom_margin)
+      @_usable_height ||= (RMQ.device.screen_height - (@row_gutter * (@rows - 1)) - @content_top_margin - @content_bottom_margin)
     end
 
     def row_height
@@ -321,7 +322,7 @@ module RubyMotionQuery
       out = []
       if @rows
         0.upto(@rows - 1) do |i|
-          out << (@nav_bar_bottom + @content_top_margin + (i * @row_gutter) + (i * row_height))
+          out << (@content_top_margin + (i * @row_gutter) + (i * row_height))
         end
       end
       out

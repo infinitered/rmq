@@ -22,6 +22,7 @@ module RubyMotionQuery
       def view
         @view
       end
+      alias :get :view
 
       def view_has_been_styled?
         !@view.rmq_data.style_name.nil?
