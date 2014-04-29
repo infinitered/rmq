@@ -1,4 +1,4 @@
-class <%= @name_camel_case %>Cell < UICollectionViewCell 
+class <%= @name_camel_case %>Cell < UICollectionViewCell
   attr_reader :reused
 
   def rmq_build
