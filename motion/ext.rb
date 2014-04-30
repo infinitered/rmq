@@ -26,10 +26,6 @@ class UIView
   def rmq_appended
   end
 
-  # I intend for this to be protected
-  # Do not call rmq from outside a view. Because of some weirdness with table cells
-  # and event blocks this has to be public (later I want to figure out why exactly).
-  #
   # Technically my_view.rmq is the same as rmq(my_view), so it may seem enticing to use
   # but the really nice thing about rmq is its consistent API, and doing this
   # for one view: my_view.rmq and this for two views: rmq(my_view, my_other_view) sucks

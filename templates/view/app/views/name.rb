@@ -1,12 +1,13 @@
 class <%= @name_camel_case %> < UIView
 
   def rmq_build
-
-    rmq.apply_style :<%= @name %>
+    q = rmq(self)
+    q.apply_style :<%= @name %>
 
     # Add subviews here, like so:
-    #rmq.append(UILabel, :some_label)
-
+    # q.append(UILabel, :some_label)
+    # -or-
+    # @submit_button = q.append(UIButon, :submit).get
   end
 
 end
