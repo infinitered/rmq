@@ -36,7 +36,7 @@ describe 'utils' do
     v = UIView.alloc.initWithFrame(CGRectZero)
     s = @rmq.view_to_s(v)
     s.is_a?(String) == true
-    (s =~ /.*VIEW.*/).should == 1 
+    (s =~ /.*VIEW.*/).should == 1
   end
 
   it 'should not wrap a weak ref inside another weak ref' do
@@ -63,7 +63,8 @@ describe 'utils' do
     strong_s = RubyMotionQuery::RMQ.weak_ref_to_strong_ref(weak_s)
     strong_s.should == weak_s
     strong_s.object_id.should == s.object_id
-    # TODO, test weather strong_s is really a strong reference
+    strong_s.is_a?(WeakRef).should == false
+    strong_s.is_a?(String).should == true
   end
 
   describe 'utils - controller_for_view' do
@@ -97,6 +98,4 @@ describe 'utils' do
       @rmq.controller_for_view(sub_sub_view).should == controller
     end
   end
-
-
 end
