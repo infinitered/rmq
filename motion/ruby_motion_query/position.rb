@@ -7,7 +7,7 @@ module RubyMotionQuery
     #   rmq(my_view).resize(h: 10, w: 100)
     #
     # @return [RMQ]
-    def layout(opts) 
+    def layout(opts)
       # TODO, add centered and from_bottom and from_top, and bottom and top
       # TODO, add animate option
       left = opts[:left] || opts[:l] || opts[:x]
@@ -28,7 +28,7 @@ module RubyMotionQuery
     alias :resize :layout
 
     # @return [RMQ]
-    def nudge(opts) 
+    def nudge(opts)
       left = opts[:left] || opts[:l] || 0
       right = opts[:right] || opts[:r] || 0
       up = opts[:up] || opts[:u] || 0
@@ -78,7 +78,6 @@ module RubyMotionQuery
           st.top = current_end + view_margin
           current_end = st.bottom
         end
-        
       end
 
       self

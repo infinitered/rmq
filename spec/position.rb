@@ -15,7 +15,7 @@ describe 'position' do
     view.origin.x.should == 0
     @vc.rmq(view).layout(l: 40, t: 5, w: 10, h: 10)
     view.origin.x.should == 40
-    view.origin.y.should == 5 
+    view.origin.y.should == 5
 
     @vc.rmq(view).resize(width: 50, height: 20)
     view.size.width.should == 50
@@ -38,7 +38,7 @@ describe 'position' do
     @vc.rmq(UIButton).each do |button|
       button.origin.x.should == 10
       button.origin.y.should == 20
-      button.size.width.should == 30 
+      button.size.width.should == 30
       button.size.height.should == 40
     end
 
@@ -52,28 +52,48 @@ describe 'position' do
   end
 
   it 'should distribute multiple views with each other' do
-    1.should == 1
-    # TODO
+    view = @vc.rmq.append(UIView).get
+    view.rmq.append(UIButton).resize(height: 50, width: 10)
+    view.rmq.append(UIButton).resize(height: 50, width: 10)
+    origins = view.rmq(UIButton).get.collect(&:origin)
+    origins.should == [ CGPoint.new(0,0),CGPoint.new(0,0) ]
+
+    view.rmq.all.distribute
+    origins = view.rmq(UIButton).get.collect(&:origin)
+    origins.should == [ CGPoint.new(0,0),CGPoint.new(0,50) ]
+
+    view.rmq(UIButton).move(l:0, t:0)
+    view.rmq.all.distribute(:vertical, margin: 10)
+    origins = view.rmq(UIButton).get.collect(&:origin)
+    origins.should == [ CGPoint.new(0,0),CGPoint.new(0,60) ]
+
+    view.rmq(UIButton).move(l:0, t:0)
+    view.rmq.all.distribute(:horizontal)
+    origins = view.rmq(UIButton).get.collect(&:origin)
+    origins.should == [ CGPoint.new(0,0),CGPoint.new(10,0) ]
   end
 
   it 'should resize to fit subviews' do
-    1.should == 1
-    # TODO
+    view = @vc.rmq.append(UIView).get
+    view.rmq.append(UIButton).resize(height: 50, width: 10)
+    view.size.width.should == 0
+    view.rmq.resize_to_fit_subviews
+    view.size.width.should == 10
   end
 
   it 'should nudge a view in various directions' do
     view = @vc.rmq.append(UILabel).get
     view.origin.x.should == 0
     @vc.rmq(view).nudge r: 10
-    view.origin.x.should == 10 
+    view.origin.x.should == 10
 
-    @vc.rmq(view).nudge l: 8, d: 1, u: 1 
+    @vc.rmq(view).nudge l: 8, d: 1, u: 1
     view.origin.x.should == 2
     view.origin.y.should == 0
 
     @vc.rmq(view).nudge left: 10, right: 80, down: 100, up: 10
     view.origin.x.should == 72
-    view.origin.y.should == 90 
+    view.origin.y.should == 90
   end
 
   it 'should give location of a view within the root view' do

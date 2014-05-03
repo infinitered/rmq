@@ -56,7 +56,7 @@ describe 'actions' do
     before do
       window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
       @vc = UIViewController.alloc.initWithNibName(nil, bundle: nil)
-      window.rootViewController = @vc 
+      window.rootViewController = @vc
       window.makeKeyAndVisible
 
       @tf_0 = @vc.rmq.append(UITextField).style do |st|
@@ -70,7 +70,7 @@ describe 'actions' do
     it 'should set focus to a selected view' do
       @tf_1.becomeFirstResponder.should == true
       @tf_1.isFirstResponder.should == true
-      @tf_0.isFirstResponder.should == false 
+      @tf_0.isFirstResponder.should == false
 
       @vc.rmq(@tf_0).focus.is_a?(RubyMotionQuery::RMQ).should == true
       @tf_1.isFirstResponder.should == false
@@ -88,23 +88,37 @@ describe 'actions' do
   end
 
   it 'should set attributes on a view' do
-    1.should == 1
-    # TODO
+    label = UILabel.alloc.init
+    label.text = "not modified"
+    @vc.rmq.append(label)
+    @vc.rmq(UILabel).attr({text: "updated"})
+    label.text.should == "updated"
   end
 
   it 'should set attributes on multiple views' do
-    1.should == 1
-    # TODO
+    labels = [ UILabel.alloc.init, UILabel.alloc.init, UILabel.alloc.init]
+    labels.each { |label| @vc.rmq.append(label) }
+    @vc.rmq(UILabel).attr({text: "updated"})
+    labels.each { |label| label.text.should == "updated" }
   end
 
   it 'should call method on a view' do
-    1.should == 1
-    # TODO
+    label = UILabel.alloc.init
+    label.text = "not modified"
+    @vc.rmq.append(label)
+    label.frame.size.width.should == 0
+    @vc.rmq(UILabel).send("sizeToFit")
+    label.frame.size.width.should.not == 0
   end
 
   it 'should call method  on multiple views' do
-    1.should == 1
-    # TODO
-  end
+    labels = [ UILabel.alloc.init, UILabel.alloc.init, UILabel.alloc.init]
+    labels.each do |label|
+      label.text = "something to make it need a width"
+      @vc.rmq.append(label)
+    end
 
+    @vc.rmq(UILabel).send("sizeToFit")
+    labels.each { |label| label.frame.size.width.should.not == 0 }
+  end
 end
