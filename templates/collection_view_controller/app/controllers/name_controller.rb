@@ -7,9 +7,9 @@ class <%= @name_camel_case %>Controller < UICollectionViewController
   #  @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
 
   <%= @name.upcase %>_CELL_ID = "<%= @name_camel_case %>Cell"
-  
+
   def self.new(args = {})
-    # Set layout 
+    # Set layout
     layout = UICollectionViewFlowLayout.alloc.init
     self.alloc.initWithCollectionViewLayout(layout)
   end
@@ -42,11 +42,11 @@ class <%= @name_camel_case %>Controller < UICollectionViewController
   def numberOfSectionsInCollectionView(view)
     1
   end
- 
+
   def collectionView(view, numberOfItemsInSection: section)
-    200 
+    200
   end
-    
+
   def collectionView(view, cellForItemAtIndexPath: index_path)
     view.dequeueReusableCellWithReuseIdentifier(<%= @name.upcase %>_CELL_ID, forIndexPath: index_path).tap do |cell|
       rmq.build(cell) unless cell.reused
@@ -64,8 +64,8 @@ end
 
 __END__
 
-# You don't have to reapply styles to all UIViews, if you want to optimize, 
-# another way to do it is tag the views you need to restyle in your stylesheet, 
+# You don't have to reapply styles to all UIViews, if you want to optimize,
+# another way to do it is tag the views you need to restyle in your stylesheet,
 # then only reapply the tagged views, like so:
 def logo(st)
   st.frame = {t: 10, w: 200, h: 96}

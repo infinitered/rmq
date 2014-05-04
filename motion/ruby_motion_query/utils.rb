@@ -50,8 +50,10 @@ module RubyMotionQuery
         end
       end
 
-      # @deprecated this is no longer needed in RubyMotion >= 2.19. In a later version this will be
-      # changed to simply be a wrapper of RubyMotion's WeakRef
+      # @deprecated ~~this is no longer needed in RubyMotion >= 2.19. In a later version this will be
+      # changed to simply be a wrapper of RubyMotion's WeakRef.~~ 
+      # **Actually, this still seems to be needed. More research is needed to determine if this should
+      # be be deprecated**
       #
       #
       # Creates a weak reference to an object. Unlike WeakRef.new provided by RubyMotion, this will
@@ -66,25 +68,35 @@ module RubyMotionQuery
       # @example
       # foo = RubyMotionQuery::RMQ.weak_ref(bar)
       def weak_ref(o)
-        weak = WeakRef.new(weak_ref_to_strong_ref(o))
+        if is_object_weak_ref?(o)
+          o
+        else
+          WeakRef.new(o)
+        end
+
         #WeakRef.new(o) # For future release
       end
 
       # @deprecated this has been fixed in RubyMotion 2.17, so this method is no longer needed.
       #
-      # This gets around a bug in RubyMotion
+      # This did gets around a bug in RubyMotion
       # Hopefully I can remove this quickly. Only use this for complex objects that have no comparison
       # other than that they are the exact same object. For example, strings compare their contents.
       def weak_ref_is_same_object?(a, b)
-        (a.class == b.class) && (a.object_id == b.object_id)
-        #a == b # For future release
+        # This was the workaround that isn't needed anymore, for your reference:
+        #(a.class == b.class) && (a.object_id == b.object_id)
+
+        a == b
       end
 
-      # @deprecated, this has been fixed in RubyMotion 2.24, so this method is no longer needed.
       # Gets a strong reference from a weak reference
       def weak_ref_to_strong_ref(weak_ref)
-        # This is a hack but it works, is there a better way?
-        weak_ref.tap{}
+        weak_ref.tap{} # This is a hack but it works, is there a better way?
+      end
+
+      # Is an object a weak_ref
+      def is_object_weak_ref?(o)
+        o.respond_to?(:weakref_alive?) # Is there a better way to do this?
       end
 
       # Mainly used for console and logging
