@@ -154,6 +154,11 @@ module RubyMotionQuery
       else
         @left, @top, @width, @height = params.to_a
       end
+
+      @left = 0 unless @left
+      @top = 0 unless @top
+      @width = 0 unless @width
+      @height = 0 unless @height
     end
 
     def apply_to_frame
@@ -211,6 +216,14 @@ module RubyMotionQuery
       if @view
         @view.superview.subviews.to_a.index(@view) # is there a better way??
       end
+    end
+
+    def origin
+      to_cgpoint
+    end
+
+    def size
+      to_cgpoint
     end
 
     def z_position

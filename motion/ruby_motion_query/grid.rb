@@ -181,15 +181,18 @@ module RubyMotionQuery
     def [](coord)
       @grid_hash[coord] ||= begin
         if coord.is_a?(NSArray)
+
           l = column_lefts[coord[0]]
           t = row_tops[coord[1]]
-          if coord.length == 2
-            RubyMotionQuery::Rect.new([l, t], [column_width, row_height])
-          elsif coord.length == 4
-            RubyMotionQuery::Rect.new([l, t], [coord[2], coord[3]])
+          case coord.length
+          when 2
+            RubyMotionQuery::Rect.new([l, t, column_width, row_height])
+          when 4
+            RubyMotionQuery::Rect.new([l, t, coord[2], coord[3]])
           else
             0
           end
+
         else
 
           parts = coord.split(':')
