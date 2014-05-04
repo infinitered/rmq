@@ -100,9 +100,7 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 ## Deprecation
 
-- **RubyMotionQuery::RMQ.weak_ref(object)** - no longer needed post RubyMotion 2.18
 - **UIView#rmq_did_create(self_in_rmq)** - *Use rmq_build instead*
-- **RubyMotionQuery::RMQ.weak_ref_to_strong_ref(object)** - no longer needed post RubyMotion 2.24
 
 <br />
 
