@@ -4,8 +4,9 @@ module RubyMotionQuery
     # Animate
     #
     # @return [RMQ]
-    def animate(opts = {})
-      animations_callback = (opts[:animations] || opts[:changes])
+    def animate(opts = {}, &block)
+      
+      animations_callback = (block || opts[:animations] || opts[:changes])
       after_callback = (opts[:completion] || opts[:after])
       return self unless animations_callback
 
