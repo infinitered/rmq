@@ -293,11 +293,11 @@ end
 
 ----
 
-* build: takes an existing view, applies the style if it exists, then calls rmq_build method
-* create: creates the view when given the class, or uses an existing view you pass it, then does a [build]
-* append: [create] + appends the view to the end of the subview tree or to then end of the children of a view (if called on an rmq object with that view in it)
-* prepend: Same as [append], but inserts the view to beginning of the subview tree (overall or view's children)
-* insert: Same as [append], but inserts the view at the index of the subview tree (overall or view's children)
+* **build**: takes an existing view, applies the style if it exists, then calls rmq_build method
+* **create**: creates the view when given the class, or uses an existing view you pass it, then does a [build]
+* **append**: [create] + appends the view to the end of the subview tree or to then end of the children of a view (if called on an rmq object with that view in it)
+* **prepend**: Same as [append], but inserts the view to beginning of the subview tree (overall or view's children)
+* **insert**: Same as [append], but inserts the view at the index of the subview tree (overall or view's children)
 
 ```ruby
 rmq.append(UILabel) # Creates a UILabel in the current controller
@@ -324,6 +324,27 @@ rmq(my_view).find # children, grandchildren, etc
 rmq.root_view
 rmq.view_controller
 ```
+
+Often when appending a subview, you assign the view to a instance variable, like so:
+
+```ruby
+@name = rmq.append(UILabel, :name).get
+```
+
+The **.get** returns the actual view. Without it you'll get a reference to an rmq instance, which is how
+chaining works.
+
+This is such a common pattern, an RMQ user (https://github.com/shreeve) created append!, which I've included into RMQ.
+The ! version of append or create returns the view directly:
+
+```ruby
+@name = rmq.append!(UILabel, :name)
+# Or the even shorter:
+@name = rmq.append! UILabel, :name
+```
+
+
+
 
 #### Create a view
 If you want to create a view but not add it to the subviews of any other view, you can

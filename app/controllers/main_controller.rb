@@ -101,7 +101,7 @@ class MainController < UIViewController
 
     rmq.append(UIView, :benchmark_section).tap do |q|
     
-      @title_label = q.append(UILabel, :title_label).get
+      @title_label = q.append!(UILabel, :title_label)
       q.append(UIButton, :run_benchmarks).on(:touch_down) do |sender|
 
         rmq(sender).apply_style(:run_benchmarks_disabled)
