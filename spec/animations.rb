@@ -28,6 +28,12 @@ describe 'animations' do
     })
   end
 
+  it 'should animate given only a block' do
+    @vc.rmq.animate do |q|
+      RubyMotionQuery::RMQ.is_blank?(rmq).should == false
+    end
+  end
+
   it 'should allow options from animateWithDuration in animate' do
     @vc.rmq.animate(
     duration: 0.0,

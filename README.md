@@ -636,6 +636,16 @@ rmq(my_text_field).focus # or .become_first_responder
 
 ----
 
+The most basic:
+
+```ruby
+rmq.animate do |q|
+  rmq(UIButton).nudge r: 40
+end
+```
+
+Some more options, this time it is animating a selectec view:
+
 ```ruby
 rmq(my_view).animate(
   duration: 0.3,
@@ -671,6 +681,8 @@ rmq(selectors).animate(
 ### Animations
 
 ----
+
+See animate above.
 
 #### Current animations included:
 
