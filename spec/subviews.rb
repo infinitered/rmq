@@ -9,6 +9,12 @@ describe 'subviews' do
     @vc.view.subviews.first.should == view
   end
 
+  it 'should append! view to a controller and return view without .get' do
+    view = @vc.rmq.append!(UIView)
+    @vc.view.subviews.length.should == 1
+    @vc.view.subviews.first.should == view
+  end
+
   it 'should addend to the end of the subviews' do
     view = @vc.rmq.append(UIView).get
     @vc.view.subviews[@vc.view.subviews.length - 1].should == view

@@ -92,6 +92,15 @@ module RubyMotionQuery
       add_subview(view_or_constant, opts)
     end
 
+    # Same as append, but instantly returns the view, without having to use .get
+    #
+    # @example
+    #   @my_button = rmq.append! UIButton
+    #   @my_label = rmq.append!(UILabel, :my_label)
+    def append!(view_or_constant, style=nil, opts = {})
+      append(view_or_constant, style, opts).get
+    end
+
     # Just like append, but inserts the view at index 0 of the subview array
     #
     # @return [RMQ]
@@ -127,6 +136,14 @@ module RubyMotionQuery
       opts[:do_not_add] = true
       opts[:style] = style
       add_subview view_or_constant, opts
+    end
+
+    # Same as create, but instantly returns the view, without having to use .get
+    #
+    # @example
+    #   @my_button = rmq.create! UIButton
+    def create!(view_or_constant, style=nil, opts = {})
+      create(view_or_constant, style, opts).get
     end
 
     # Build a view, similar to create and append, but only inits an existing view. Usefull
