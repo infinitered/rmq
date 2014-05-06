@@ -17,22 +17,40 @@ module RubyMotionQuery
 
     def rmq_build
       @outline_color = rmq.color.from_rgba(34,202,250,0.7).CGColor
+      @selected_outline_color = rmq.color.from_rgba(202,34,250,0.7).CGColor
       @view_background_color = rmq.color.from_rgba(34,202,250,0.4).CGColor
+      @view_selected_background_color = rmq.color.from_rgba(202,34,250,0.4)
       @text_color = rmq.color.from_rgba(0,0,0,0.9).CGColor
       @light_text_color = rmq.color.from_rgba(0,0,0,0.2).CGColor
       @fill_color = rmq.color.from_rgba(34,202,250,0.1).CGColor
       @row_fill_color = rmq.color.from_rgba(187,197,209,0.2).CGColor
       @column_fill_color = rmq.color.from_rgba(213,53,82,0.1).CGColor
       @background_color = rmq.color.from_rgba(255,255,255,0.9)
-      @view_scale = 0.95
-
-      rmq(rmq.view_controller.navigationController.navigationBar).style{|st| st.opacity = 0.2}
+      @toolbox_background_color = rmq.color.clear
+      @view_scale = 0.85
 
       @dimmed = true
       @views_outlined = true
-      create_overlay
 
+      @selected_views = []
+
+      root_view = rmq.root_view
       q = rmq(self)
+
+      tq = rmq(window).append(UIView).tag(:inspector_toolbox).style do |st|
+        #st.frame = {from_bottom: 0, w: rmq.device.width, h: 90}
+        st.frame = :full
+        st.background_color = @toolbox_background_color
+        #st.background_color =rmq.color.from_rgba(0,0,255,0.1)
+        st.z_position = 900
+      end
+      #.on(:tap){|sender| self.nextResponder}
+      @toolbox = tq.get
+
+      q.enable_interaction.on(:tap) do |sender, rmq_event|
+        select_at rmq_event.location_in(sender)
+      end
+
       q.style do |st|
         st.hidden = true
         st.frame = :full
@@ -42,33 +60,39 @@ module RubyMotionQuery
         st.scale = @view_scale
       end
 
-      rmq.animate(
-        animations: ->(q_back){rmq(rmq.root_view).style{|st| st.scale = @view_scale}},
-        after: ->(q_back, finished){ rmq(window).find(InspectorView).animations.fade_in }
+      rmq(rmq.root_view).animate(
+        animations: ->(q_back) do 
+          q_back.style do |st| 
+            st.scale = @view_scale
+            st.frame = {t: 20, left: 0}
+          end
+          #q_back.get.bounds = [-20, -20]
+          #q.get.bounds = q_back.get.bounds
+        end,
+        after: ->(finished, q) do 
+          rmq(window).find(InspectorView).animations.fade_in
+          dim_nav
+          create_overlay
+        end
       )
 
-      #rmq(self).disable_interaction
-      q.on(:tap) do |sender|
-        rotate
-        #redisplay
-      end
+      q.get.frame = rmq.root_view.frame
 
-      tq = rmq(window).append(UIView).tag(:inspector_toolbox).style do |st|
-        st.frame = :full
-        st.background_color = rmq.color.clear
-        #st.background_color =rmq.color.from_rgba(0,0,255,0.1)
-        st.z_position = 900
-      end
-      @toolbox = tq.get
+      #rmq(self).disable_interaction
 
       tq.append(UIButton).on(:tap) do |sender|
         rmq.animate do |foo|
-          rmq(rmq.root_view).style{|st| st.scale = 1.0}
+          rmq(rmq.root_view).style do |st| 
+            st.scale = 1.0
+            st.frame = {l: 0, t: 0}
+          end
         end
 
-        rmq(rmq.window).find(@toolbox, InspectorView).animations.drop_and_spin(after: ->(inner_q, finished){inner_q.remove})
+        rmq(rmq.window).find(InspectorView).animations.drop_and_spin(after: ->(finished, inner_q){inner_q.remove})
+        rmq(rmq.window).find(@toolbox).remove
         rmq(rmq.view_controller.navigationController).style{|st| st.opacity = 1.0}
         remove_overlay
+        show_nav_in_all_its_glory
       end.style do |st|
         st.frame = {from_bottom: 0, w: 30, h: 9}
         st.text = 'close'
@@ -138,10 +162,9 @@ module RubyMotionQuery
         st.background_color = rmq.color.from_hex('539ff4')
       end
 
-      tq.find(UIButton).distribute :horizontal, margin: 5
+      tq.disable_interaction.find(UIButton).enable_interaction.distribute :horizontal, margin: 5
 
       #self.transform = foo
-
     end
 
     def redisplay
@@ -157,14 +180,58 @@ module RubyMotionQuery
 
     def create_overlay
       rmq(rmq.root_view).append(UIView).tag(:inspector_overlay).style do |st|
+        st.hidden = true
         st.frame = :full
         st.background_color = @background_color
         st.z_position = 999
-      end
+      end.animations.fade_in
     end
 
     def remove_overlay
-      rmq(rmq.root_view).find(:inspector_overlay).remove
+      rmq(rmq.root_view).find(:inspector_overlay).animations.fade_out(after: ->(did_finish, q){ q.remove })
+    end
+
+    def dim_nav
+      rmq(rmq.view_controller.navigationController.navigationBar).animate do |q|
+        q.style{|st| st.opacity = 0.0}
+      end
+    end
+
+    def show_nav_in_all_its_glory
+      rmq(rmq.view_controller.navigationController.navigationBar).style{|st| st.opacity = 1.0}
+    end
+
+    def select_at(tapped_at)
+      @selected_views = []
+      tq = rmq(@toolbox)
+      tq.find(:selected_view).remove
+      root_view = rmq.root_view
+
+      @selected.each do |view|
+        rect = view.convertRect(view.bounds, toView: root_view)
+        #rect = rmq(view).location_in(root_view)
+        if CGRectContainsPoint(rect, tapped_at)
+          @selected_views << view
+          tq.append(UIImageView).tag(:selected_view).style do |st|
+            st.frame = {t: ((@selected_views.length - 1) * 30) + 18, from_right: 3, w: 40, h: 25}
+            st.view.contentMode = UIViewContentModeScaleAspectFit
+            image = rmq.image.from_view(view)
+            #st.font = rmq.font.system(9)
+            #st.text = view.inspect
+            #st.number_of_lines = 0
+            #image.setContentMode UIViewContentModeScaleAspectFit
+            #image.resizingMode = UIImageResizingModeStretch
+            st.image = image
+            st.background_color = rmq.color.from_hex('e29ff5') 
+
+ 
+          end.animations.sink_and_throb
+          #rmq(view).animations.sink_and_throb
+        end
+      end
+
+      rmq(@selected_views).log
+      redisplay
     end
 
     def drawRect(rect)
@@ -221,19 +288,24 @@ module RubyMotionQuery
       end
 
       if @views_outlined
-        CGContextSetFillColorWithColor(context, @outline_color)
 
         rmq(@selected).each do |view|
           rec = view.frame
           rec.origin = rmq(view).location_in(root_view)
           #rec.origin = view.origin
           
-          if @dimmed
+          if @selected_views.include?(view)
+            CGContextSetFillColorWithColor(context, @view_selected_background_color.CGColor)
+            CGContextSetStrokeColorWithColor(context, @selected_outline_color)
+          else
             CGContextSetFillColorWithColor(context, @view_background_color)
+            CGContextSetStrokeColorWithColor(context, @outline_color)
+          end
+          
+          if @dimmed
             CGContextFillRect(context, rec)
           end
 
-          CGContextSetFillColorWithColor(context, @outline_color)
           CGContextStrokeRect(context, rec)
 
           CGContextSetFillColorWithColor(context, @text_color)
@@ -245,73 +317,6 @@ module RubyMotionQuery
           CGContextShowTextAtPoint(context, rec.origin.x + 1, rec.origin.y + 16, text, text.length)
         end
       end
-    end
-
-    def rotate
-      puts 'rotating'
-      $o = self
-      #self.layer.zPosition = 100
-      #self.layer.anchorPoint =
-
-      #@rotation_states = [0,15, 45, 15, 0, -15, -45, -15]
-      @rotation_states ||= [
-        [0, 0],
-        [45, -20],
-        [0, 20],
-        [-45, 20]
-      ]
-      @rotation_index ||= 0
-
-      #rmq(self).animations.sink_and_throb
-      #foo = CATransform3DMakeRotation((10 * (Math::PI / 180)), 0.0, 1.0, 0.0)
-      #degree = 45.0
-
-      @rotation_index += 1
-      @rotation_index = 0 if @rotation_index >= @rotation_states.length
-
-      #@rotation = (@rotation == degree) ? 0.0 : degree
-
-      transformation = CATransform3DIdentity
-      transformation.m34 = 1.0 / -500
-      transformation = CATransform3DRotate(transformation, @rotation_states[@rotation_index][0] * Math::PI / 180.0, 0.1, 1.0, 0.0)
-      #transformation = CGAffineTransformScale(transformation,0.5,0.5)
-
-      #transformation2 = CATransform3DIdentity
-      ##transformation2.m34 = 1.0 / -500
-      ##transformation2.m43 = 1.0 / -500 # pushes on z-axis
-      #transformation2.m34 = 1.0 / -2000
-      ##transformation2 = CATransform3DTranslate(transformation2, 0.0, 0.0, 0.5)
-
-
-      #CATransform3D initialTransform = self.view.layer.sublayerTransform;
-      #initialTransform.m34 = 1.0 / -500;
-      #self.view.layer.sublayerTransform = initialTransform;
-      #CGPointMake(10.0, 10.0)
-
-      #puts "\n\n\n********************#{transformation.inspect}\n\n\n"
-      #rmq.animate(animations: ->(foo) do 
-      ##rmq.app.window.layer.transform = transformation
-      ##self.layer.transform = CATransform3DMakeTranslation(0.0, 0.0, 20.0)
-      ##rmq.root_view.layer.transform = transformation
-      ##self.layer.transform = transformation2
-      ##self.layer.transform = transformation
-      ##rmq(self).nudge r: @rotation_states[@rotation_index]
-      ##if @rotation_states[@rotation_index] == 0
-      ##rmq(self).nudge r: 20 #@rotation_states[@rotation_index]
-      ##else
-      #rmq(self).nudge l: 20
-      ##end
-      #end)
-
-      rmq.root_view.layer.transform = transformation
-      #rmq(self).nudge r: @rotation_states[@rotation_index][1]
-
-      #rmq.animate(animations: ->(foo) do 
-      #rmq.app.window.layer.transform = transformation
-      #end, after: ->(foo, bar) do
-      ##rmq(rmq.app.window).style{|st| st.scale = 0.7}
-      #end)
-
     end
 
   end

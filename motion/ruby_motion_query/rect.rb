@@ -19,7 +19,7 @@ module RubyMotionQuery
 
     # @example
     # rmq(my_view).frame = :full
-    # rmq(my_view, my_other_view).frame = {l: 0, t: 0, w: 100, h: 20}
+    # rmq(my_view, mRubyMotionQuery - y_other_view).frame = {l: 0, t: 0, w: 100, h: 20}
     # rmq(my_view, my_other_view).frame(l: 0, t: 0, w: 100, h: 20).show
     def frame=(value)
       selected.each{|s| Rect.frame_for_view(s).apply_to_frame}
@@ -126,7 +126,7 @@ module RubyMotionQuery
           rect
 
         else
-          rect 
+          params 
         end
       end
 

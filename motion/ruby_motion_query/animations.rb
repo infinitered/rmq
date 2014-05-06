@@ -18,11 +18,14 @@ module RubyMotionQuery
         view_rmq = self_rmq.wrap(view)
 
         animations_lambda = -> do
+          # TODO, check arity and allow no params
           animations_callback.call(view_rmq)
         end
 
         after_lambda = if after_callback
           ->(did_finish) {
+            # TODO, check arity and allow just view_rmq or no params. Also
+            # this is backwards, should be view_rmq, did_finish
             after_callback.call(did_finish, view_rmq)
           }
         else
