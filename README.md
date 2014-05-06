@@ -1,6 +1,6 @@
 ![RMQ logo](https://raw.github.com/infinitered/rmq/master/resources/logo@2x.png?raw=true)
 
-# RubyMotionQuery - RMQ
+# RMQ - RubyMotion Front-end Library
 
 [![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
 [![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)

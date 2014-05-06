@@ -248,7 +248,7 @@ module RubyMotionQuery
     end
   end
 
-  class InspectorStylesheet < RubyMotionQuery::Stylesheet
+  class InspectorStylesheet < Stylesheet
     attr_reader :selected_background_color
     def setup
       @view_scale = 0.85
