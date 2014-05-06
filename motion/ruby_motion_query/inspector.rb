@@ -11,184 +11,72 @@ module RubyMotionQuery
     end
   end
 
-  # This class is thrown together, it's just for debugging, so I didn't make 
-  # the code very nice. TODO, make code very nice
   class InspectorView < UIView
 
     def rmq_build
-      @outline_color = rmq.color.from_rgba(34,202,250,0.7).CGColor
-      @selected_outline_color = rmq.color.from_rgba(202,34,250,0.7).CGColor
-      @view_background_color = rmq.color.from_rgba(34,202,250,0.4).CGColor
-      @view_selected_background_color = rmq.color.from_rgba(202,34,250,0.4)
-      @text_color = rmq.color.from_rgba(0,0,0,0.9).CGColor
-      @light_text_color = rmq.color.from_rgba(0,0,0,0.2).CGColor
-      @fill_color = rmq.color.from_rgba(34,202,250,0.1).CGColor
-      @row_fill_color = rmq.color.from_rgba(187,197,209,0.2).CGColor
-      @column_fill_color = rmq.color.from_rgba(213,53,82,0.1).CGColor
-      @background_color = rmq.color.from_rgba(255,255,255,0.9)
-      @toolbox_background_color = rmq.color.clear
-      @view_scale = 0.85
 
-      @dimmed = true
-      @views_outlined = true
-
-      @selected_views = []
+      rmq.stylesheet = InspectorStylesheet
+      rmq(self).apply_style(:inspector_view)
 
       root_view = rmq.root_view
-      q = rmq(self)
-
-      tq = rmq(window).append(UIView).tag(:inspector_toolbox).style do |st|
-        #st.frame = {from_bottom: 0, w: rmq.device.width, h: 90}
-        st.frame = :full
-        st.background_color = @toolbox_background_color
-        #st.background_color =rmq.color.from_rgba(0,0,255,0.1)
-        st.z_position = 900
-      end
-      #.on(:tap){|sender| self.nextResponder}
-      @toolbox = tq.get
-
-      q.enable_interaction.on(:tap) do |sender, rmq_event|
+      self_q = rmq(self)
+      
+      @hud = self_q.append(InspectorHud, :hud).on(:tap) do |sender, rmq_event|
         select_at rmq_event.location_in(sender)
-      end
+      end.get
 
-      q.style do |st|
-        st.hidden = true
-        st.frame = :full
-        #st.frame = {l: -20, t: -20, w: RMQ.device.screen_width + 40, h: RMQ.device.screen_height + 40}
-        st.background_color = rmq.color.clear
-        st.z_position = 100
-        st.scale = @view_scale
-      end
-
-      rmq(rmq.root_view).animate(
-        animations: ->(q_back) do 
-          q_back.style do |st| 
-            st.scale = @view_scale
-            st.frame = {t: 20, left: 0}
-          end
-          #q_back.get.bounds = [-20, -20]
-          #q.get.bounds = q_back.get.bounds
-        end,
+      rmq(root_view).animate(
+        animations: ->(q){ q.apply_style :root_view_scaled },
         after: ->(finished, q) do 
-          rmq(window).find(InspectorView).animations.fade_in
+          self_q.animations.fade_in
           dim_nav
-          create_overlay
         end
       )
 
-      q.get.frame = rmq.root_view.frame
+      @stats = self_q.append! UILabel, :stats
 
-      #rmq(self).disable_interaction
-
-      tq.append(UIButton).on(:tap) do |sender|
-        rmq.animate do |foo|
-          rmq(rmq.root_view).style do |st| 
-            st.scale = 1.0
-            st.frame = {l: 0, t: 0}
-          end
-        end
+      self_q.append(UIButton, :close_button).on(:touch) do |sender|
+        rmq(root_view).animate{|q| q.apply_style(:root_view)}
 
         rmq(rmq.window).find(InspectorView).animations.drop_and_spin(after: ->(finished, inner_q){inner_q.remove})
-        rmq(rmq.window).find(@toolbox).remove
-        rmq(rmq.view_controller.navigationController).style{|st| st.opacity = 1.0}
-        remove_overlay
         show_nav_in_all_its_glory
-      end.style do |st|
-        st.frame = {from_bottom: 0, w: 30, h: 9}
-        st.text = 'close'
-        st.font = rmq.font.system(7)
-        st.background_color = rmq.color.from_hex('fe5875')
       end
 
-      tq.append(UIButton).on(:tap) do |sender|
-        @draw_grid = !@draw_grid
+      self_q.append(UIButton, :grid_button).on(:touch) do |sender|
+        @hud.draw_grid = !@hud.draw_grid
         redisplay
-      end.style do |st|
-        st.frame = {from_bottom: 0, w: 25, h: 9}
-        st.text = 'grid'
-        st.font = rmq.font.system(7)
-        st.background_color = rmq.color.from_hex('b7d95b')
       end
 
-      tq.append(UIButton).on(:tap) do |sender|
-        @draw_grid_x = !@draw_grid_x
+      self_q.append(UIButton, :grid_x_button).on(:touch) do |sender|
+        @hud.draw_grid_x = !@hud.draw_grid_x
         redisplay
-      end.style do |st|
-        st.frame = {from_bottom: 0, w: 25, h: 9 }
-        st.text = 'grid x'
-        st.font = rmq.font.system(7)
-        st.background_color = rmq.color.from_hex('b7d95b')
       end
 
-      tq.append(UIButton).on(:tap) do |sender|
-        @draw_grid_y = !@draw_grid_y
+      self_q.append(UIButton, :grid_y_button).on(:touch) do |sender|
+        @hud.draw_grid_y = !@hud.draw_grid_y
         redisplay
-      end.style do |st|
-        st.frame = {from_bottom: 0, w: 25, h: 9}
-        st.text = 'grid y'
-        st.font = rmq.font.system(7)
-        st.background_color = rmq.color.from_hex('b7d95b')
       end
 
-      tq.append(UIButton).on(:tap) do |sender|
-        if @dimmed
-          remove_overlay
-        else
-          create_overlay
-        end
-
-        @dimmed = !@dimmed
-
-        #rmq(sender).closest(InspectorView).style do |st|
-          #st.background_color = @dimmed ? @background_color : rmq.color.clear
-        #end
-
+      self_q.append(UIButton, :dim_button).on(:touch) do |sender|
+        @hud.dimmed = !@hud.dimmed
         redisplay
-      end.style do |st|
-        st.frame = {from_bottom: 0, w: 20, h: 9}
-        st.text = 'dim'
-        st.font = rmq.font.system(7)
-        st.background_color = rmq.color.from_hex('539ff4')
       end
 
-      tq.append(UIButton).on(:tap) do |sender|
-        @views_outlined = !@views_outlined
-
+      self_q.append(UIButton, :outline_button).on(:touch) do |sender|
+        @hud.views_outlined = !@hud.views_outlined
         redisplay
-      end.style do |st|
-        st.frame = {from_bottom: 0, w: 50, h: 9}
-        st.text = 'outline views'
-        st.font = rmq.font.system(7)
-        st.background_color = rmq.color.from_hex('539ff4')
       end
 
-      tq.disable_interaction.find(UIButton).enable_interaction.distribute :horizontal, margin: 5
-
-      #self.transform = foo
+      self_q.find(UIButton).distribute :horizontal, margin: 5 
     end
 
     def redisplay
-      self.setNeedsDisplay
-      # TODO make a rmq(self).redraw action
+      @hud.setNeedsDisplay
     end
 
     def update(selected)
-      @selected = selected
-      self.setNeedsDisplay
-      #rmq(self).animations.land_and_sink_and_throb
-    end
-
-    def create_overlay
-      rmq(rmq.root_view).append(UIView).tag(:inspector_overlay).style do |st|
-        st.hidden = true
-        st.frame = :full
-        st.background_color = @background_color
-        st.z_position = 999
-      end.animations.fade_in
-    end
-
-    def remove_overlay
-      rmq(rmq.root_view).find(:inspector_overlay).animations.fade_out(after: ->(did_finish, q){ q.remove })
+      @hud.selected = selected
+      redisplay
     end
 
     def dim_nav
@@ -202,36 +90,70 @@ module RubyMotionQuery
     end
 
     def select_at(tapped_at)
-      @selected_views = []
-      tq = rmq(@toolbox)
-      tq.find(:selected_view).remove
-      root_view = rmq.root_view
 
-      @selected.each do |view|
+      rmq(self).find(:selected_view).remove
+
+      @hud.selected_views = []
+      root_view = rmq.root_view
+      
+      rmq(@stats).hide
+
+      @hud.selected.each do |view|
         rect = view.convertRect(view.bounds, toView: root_view)
         #rect = rmq(view).location_in(root_view)
         if CGRectContainsPoint(rect, tapped_at)
-          @selected_views << view
-          tq.append(UIImageView).tag(:selected_view).style do |st|
-            st.frame = {t: ((@selected_views.length - 1) * 30) + 18, from_right: 3, w: 40, h: 25}
+          @hud.selected_views << view
+          rmq(self).append(UIImageView).tag(:selected_view).style do |st|
+            st.frame = {t: ((@hud.selected_views.length - 1) * 30) + 18, from_right: 3, w: 40, h: 25}
             st.view.contentMode = UIViewContentModeScaleAspectFit
             image = rmq.image.from_view(view)
-            #st.font = rmq.font.system(9)
-            #st.text = view.inspect
-            #st.number_of_lines = 0
-            #image.setContentMode UIViewContentModeScaleAspectFit
-            #image.resizingMode = UIImageResizingModeStretch
             st.image = image
-            st.background_color = rmq.color.from_hex('e29ff5') 
+            st.background_color = rmq.stylesheet.selected_background_color
 
- 
+            update_stats view
+          end.enable_interaction.on(:tap) do |sender|
+            rmq(sender).animations.sink_and_throb
+            rmq(view).frame.log
+            update_stats view
           end.animations.sink_and_throb
           #rmq(view).animations.sink_and_throb
         end
       end
 
-      rmq(@selected_views).log
+      @hud.selected_views.each{|view| Rect.frame_for_view(view).log}
       redisplay
+    end
+
+    def update_stats(view)
+      out = %(
+        #{view.class.name} - object_id: #{view.object_id.to_s}
+        #{rmq(view).frame.inspect}
+        style_name: :#{view.rmq_data.style_name || ''}
+      ).strip
+      rmq(@stats).show.get.text = out
+    end
+  end
+
+  class InspectorHud < UIView
+    attr_accessor :selected, :selected_views, :dimmed, :views_outlined, 
+      :draw_grid_x, :draw_grid, :draw_grid_y
+
+    def rmq_build
+      @outline_color = rmq.color.from_rgba(34,202,250,0.7).CGColor
+      @selected_outline_color = rmq.color.from_rgba(202,34,250,0.7).CGColor
+      @view_background_color = rmq.color.from_rgba(34,202,250,0.4).CGColor
+      @view_selected_background_color = rmq.color.from_rgba(202,34,250,0.4)
+      @text_color = rmq.color.from_rgba(0,0,0,0.9).CGColor
+      @light_text_color = rmq.color.from_rgba(0,0,0,0.2).CGColor
+      @fill_color = rmq.color.from_rgba(34,202,250,0.1).CGColor
+      @row_fill_color = rmq.color.from_rgba(187,197,209,0.2).CGColor
+      @column_fill_color = rmq.color.from_rgba(213,53,82,0.1).CGColor
+      @background_color = rmq.color.from_rgba(255,255,255,0.9)
+      @view_scale = 0.85
+
+      @views_outlined = true
+      @dimmed = true
+      @selected_views = []
     end
 
     def drawRect(rect)
@@ -239,10 +161,11 @@ module RubyMotionQuery
 
       return unless @selected
 
+      context = UIGraphicsGetCurrentContext()
+
       screen_height = RMQ.device.screen_height
       screen_width = RMQ.device.screen_width
 
-      context = UIGraphicsGetCurrentContext()
       CGContextSetStrokeColorWithColor(context, @outline_color)
       CGContextSetFillColorWithColor(context, @fill_color)
       CGContextSetLineWidth(context, 1.0)
@@ -255,6 +178,11 @@ module RubyMotionQuery
       w = rmq.window
       grid = rmq.stylesheet.grid
       root_view = rmq.root_view
+
+      if @dimmed
+        CGContextSetFillColorWithColor(context, @background_color.CGColor)
+        CGContextFillRect(context, self.bounds)
+      end
 
       if @draw_grid_x
         CGContextSetFillColorWithColor(context, @column_fill_color)
@@ -289,7 +217,7 @@ module RubyMotionQuery
 
       if @views_outlined
 
-        rmq(@selected).each do |view|
+        @selected.each do |view|
           rec = view.frame
           rec.origin = rmq(view).location_in(root_view)
           #rec.origin = view.origin
@@ -318,8 +246,89 @@ module RubyMotionQuery
         end
       end
     end
+  end
+
+  class InspectorStylesheet < RubyMotionQuery::Stylesheet
+    attr_reader :selected_background_color
+    def setup
+      @view_scale = 0.85
+      @tool_box_button_background = color.from_hex('fe5875')
+      @tool_box_button_background_alt = color.from_hex('b7d95b')
+      @selected_background_color = rmq.color.from_hex('D987F2')
+      #@selected_background_color = rmq.color.from_rgba(202,34,250,0.7)
+    end
+
+    def inspector_view(st)
+      st.hidden = true
+      st.frame = :full
+      st.background_color = color.clear
+      st.z_position = 999 
+      #st.scale = @view_scale
+    end
+
+    def root_view_scaled(st)
+      st.scale = @view_scale
+      st.frame = {t: 20, left: 0}
+    end
+
+    def root_view(st)
+      st.scale = 1.0
+      st.frame = {l: 0, t: 0}
+    end
+
+    def hud(st)
+      st.frame = :full
+      st.background_color = color.clear
+      st.scale = @view_scale
+      st.frame = {t: 20, left: 0}
+    end
+
+    def stats(st)
+      st.frame = {from_bottom: 15, w: screen_width, h: 45}
+      st.background_color = color.clear
+      st.font = rmq.font.system(8)
+      st.color = color.white
+      st.number_of_lines = 0
+    end
+
+    def tool_box_button(st)
+      st.frame = {from_bottom: 0, w: 30, h: 9}
+      st.text = 'close'
+      st.font = rmq.font.system(7)
+      st.background_color = @tool_box_button_background
+    end
+
+    def close_button(st)
+      tool_box_button(st)
+      st.text = 'close'
+    end
+
+    def grid_button(st)
+      tool_box_button(st)
+      st.text = 'grid'
+      st.background_color = @tool_box_button_background_alt
+    end
+    def grid_x_button(st)
+      tool_box_button(st)
+      st.text = 'grid-x'
+      st.background_color = @tool_box_button_background_alt
+    end
+    def grid_y_button(st)
+      tool_box_button(st)
+      st.text = 'grid-y'
+      st.background_color = @tool_box_button_background_alt
+    end
+
+    def dim_button(st)
+      tool_box_button(st)
+      st.text = 'dim'
+    end
+
+    def outline_button(st)
+      tool_box_button(st)
+      st.text = 'outline'
+    end
 
   end
+
 end
-
-
