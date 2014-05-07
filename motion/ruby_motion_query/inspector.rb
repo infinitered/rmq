@@ -5,6 +5,8 @@ module RubyMotionQuery
       if existing.length > 0
         existing.remove
       end
+      
+      puts 'The currently selected views will be assigned to $q'
 
       rmq(window).append(InspectorView).get.update(selected)
       self
@@ -12,62 +14,82 @@ module RubyMotionQuery
   end
 
   class InspectorView < UIView
+    # A note about this code. InspectorView will be sitting in the Window, not 
+    # the current controller. So when you do this rmq(UIButton), that is on the 
+    # current controller. rmq(self).find(UIButton) would be the buttons in the
+    # inspector.
 
     def rmq_build
+      @self_rmq = rmq(self)
+
+      # Storing the original stylesheet, so I can remove it, use our own, then
+      # put it back when we close the inspector, a bit of hackery here
+      @puppets_stylesheet = rmq.stylesheet
 
       rmq.stylesheet = InspectorStylesheet
-      rmq(self).apply_style(:inspector_view)
-
-      root_view = rmq.root_view
-      self_q = rmq(self)
+      @self_rmq.apply_style(:inspector_view)
       
-      @hud = self_q.append(InspectorHud, :hud).on(:tap) do |sender, rmq_event|
+      @hud = @self_rmq.append(InspectorHud, :hud).on(:tap) do |sender, rmq_event|
         select_at rmq_event.location_in(sender)
       end.get
+
+      root_view = rmq.root_view
 
       rmq(root_view).animate(
         animations: ->(q){ q.apply_style :root_view_scaled },
         after: ->(finished, q) do 
-          self_q.animations.fade_in
+          @self_rmq.animations.fade_in
           dim_nav
         end
       )
 
-      @stats = self_q.append! UILabel, :stats
+      @stats = @self_rmq.append! UILabel, :stats
 
-      self_q.append(UIButton, :close_button).on(:touch) do |sender|
-        rmq(root_view).animate{|q| q.apply_style(:root_view)}
+      @self_rmq.append(UIButton, :close_button).on(:touch) do |sender|
+        rmq(root_view).animate(
+          animations: ->(q){ q.apply_style(:root_view) },
+          after: ->(finished, inner_q){ rmq.stylesheet = @puppets_stylesheet })
 
-        rmq(rmq.window).find(InspectorView).animations.drop_and_spin(after: ->(finished, inner_q){inner_q.remove})
+        @self_rmq.animations.drop_and_spin(after: ->(finished, inner_q) do 
+          inner_q.remove
+        end)
+
+        @self_rmq = nil
+        $q = nil
         show_nav_in_all_its_glory
       end
 
-      self_q.append(UIButton, :grid_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :grid_button).on(:touch) do |sender|
         @hud.draw_grid = !@hud.draw_grid
         redisplay
       end
 
-      self_q.append(UIButton, :grid_x_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :grid_x_button).on(:touch) do |sender|
         @hud.draw_grid_x = !@hud.draw_grid_x
         redisplay
       end
 
-      self_q.append(UIButton, :grid_y_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :grid_y_button).on(:touch) do |sender|
         @hud.draw_grid_y = !@hud.draw_grid_y
         redisplay
       end
 
-      self_q.append(UIButton, :dim_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :dim_button).on(:touch) do |sender|
         @hud.dimmed = !@hud.dimmed
         redisplay
       end
 
-      self_q.append(UIButton, :outline_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :outline_button).on(:touch) do |sender|
         @hud.views_outlined = !@hud.views_outlined
         redisplay
       end
 
-      self_q.find(UIButton).distribute :horizontal, margin: 5 
+      @self_rmq.find(UIButton).distribute :horizontal, margin: 5 
+
+      @tree_zoomed = false
+      @tree_q = @self_rmq.append(UIScrollView, :tree).on(:tap) do |sender|
+        zoom_tree
+      end
     end
 
     def redisplay
@@ -76,7 +98,28 @@ module RubyMotionQuery
 
     def update(selected)
       @hud.selected = selected
+
+      selected.each { |view| create_tree_view(view) }
+
+      @self_rmq.find(:selected_view).distribute(:vertical, margin: 2)
+      if last = @self_rmq.find(:selected_view).last
+        #@self_rmq.find(:selected_view).log
+        @tree_q.get.contentSize = [40, last.frame.bottom]
+      end
+
       redisplay
+    end
+
+    def zoom_tree
+      rmq.animate do |q|
+        if @tree_zoomed
+          @tree_q.apply_style(:tree)
+        else
+          @tree_q.apply_style(:tree_zoomed)
+        end
+
+        @tree_zoomed = !@tree_zoomed
+      end
     end
 
     def dim_nav
@@ -89,46 +132,92 @@ module RubyMotionQuery
       rmq(rmq.view_controller.navigationController.navigationBar).style{|st| st.opacity = 1.0}
     end
 
-    def select_at(tapped_at)
-
-      rmq(self).find(:selected_view).remove
+    def select_at(tapped_at = nil)
+      #@tree_q.find(:selected_view).remove
+      rmq(@stats).hide
 
       @hud.selected_views = []
       root_view = rmq.root_view
       
-      rmq(@stats).hide
-
-      @hud.selected.each do |view|
-        rect = view.convertRect(view.bounds, toView: root_view)
-        #rect = rmq(view).location_in(root_view)
-        if CGRectContainsPoint(rect, tapped_at)
-          @hud.selected_views << view
-          rmq(self).append(UIImageView).tag(:selected_view).style do |st|
-            st.frame = {t: ((@hud.selected_views.length - 1) * 30) + 18, from_right: 3, w: 40, h: 25}
-            st.view.contentMode = UIViewContentModeScaleAspectFit
-            image = rmq.image.from_view(view)
-            st.image = image
-            st.background_color = rmq.stylesheet.selected_background_color
-
-            update_stats view
-          end.enable_interaction.on(:tap) do |sender|
-            rmq(sender).animations.sink_and_throb
-            rmq(view).frame.log
-            update_stats view
-          end.animations.sink_and_throb
-          #rmq(view).animations.sink_and_throb
+      if tapped_at
+        @hud.selected.each do |view|
+          rect = view.convertRect(view.bounds, toView: root_view)
+          if CGRectContainsPoint(rect, tapped_at)
+            @hud.selected_views << view
+          end
         end
       end
 
-      @hud.selected_views.each{|view| Rect.frame_for_view(view).log}
+      set_selected
+    end
+
+    def set_selected
+      if @hud.selected_views.length == 0
+        #rmq(rmq.root_view).find.each{|view| create_tree_view(view)}
+      else
+        update_stats @hud.selected_views.first
+
+        #@hud.selected_views.each do |view|
+          #create_tree_view(view)
+        #end
+      end
+
+      if @hud.selected_views.length == 0
+        rmq(rmq.root_view).log :tree
+      elsif @hud.selected_views.length == 1
+        Rect.frame_for_view(@hud.selected_views.first).log
+      else
+        rmq(@hud.selected_views.first).log :tree
+      end
+
+      $q = rmq(@hud.selected_views)
+
+      #@self_rmq.find(:selected_view).distribute(:vertical, margin: 5)
+      #if last = @self_rmq.find(:selected_view).last
+        #@self_rmq.find(:selected_view).log
+        #@tree_q.get.contentSize = [40, last.frame.bottom]
+      #end
+      #rmq(rmq.window).find(UIScrollView).style{|st| st.scale = 3.0; st.height = 580}.move t:0, w: 200
+
       redisplay
+    end
+
+    def create_tree_view(view)
+      @tree_q.append(UIImageView).tag(:selected_view).style do |st|
+        if image = rmq.image.from_view(view)
+
+          ratio = (image.size.height / image.size.width)
+          if image.size.height > image.size.width
+            h = 30
+            w = ratio * h
+          else
+            w = 30
+            h = ratio * w
+          end
+          left = 0 + ((rmq(view).parents.length - 1) * 5)
+          st.frame = {l: left, w: w, h: h}
+
+          st.view.contentMode = UIViewContentModeScaleAspectFit
+          st.image = image
+
+          st.border_color = rmq.color.from_rgba(34,202,250,0.7).CGColor
+          st.border_width = 0.5 
+          st.background_color = rmq.stylesheet.tree_node_background_color
+        end
+      end.enable_interaction.on(:tap) do |sender|
+        rmq(sender).animations.sink_and_throb
+
+        @hud.selected_views = [view]
+        set_selected
+        zoom_tree if @tree_zoomed
+      end
     end
 
     def update_stats(view)
       out = %(
-        #{view.class.name} - object_id: #{view.object_id.to_s}
-        #{rmq(view).frame.inspect}
         style_name: :#{view.rmq_data.style_name || ''}
+        #{rmq(view).frame.inspect}
+        #{view.class.name} - object_id: #{view.object_id.to_s}
       ).strip
       rmq(@stats).show.get.text = out
     end
@@ -248,14 +337,25 @@ module RubyMotionQuery
     end
   end
 
+  class TreeNodeView < UIView
+    def rmq_build
+      
+    end
+  end
+
   class InspectorStylesheet < Stylesheet
-    attr_reader :selected_background_color
+    attr_reader :tree_node_background_color, :selected_border_color
+
     def setup
       @view_scale = 0.85
       @tool_box_button_background = color.from_hex('fe5875')
       @tool_box_button_background_alt = color.from_hex('b7d95b')
-      @selected_background_color = rmq.color.from_hex('D987F2')
-      #@selected_background_color = rmq.color.from_rgba(202,34,250,0.7)
+      @tree_background_color = color.from_rgba(77, 77, 77, 0.9)
+      #@tree_node_background_color = color.from_rgba(77, 77, 77, 0.5)
+      @tree_node_background_color = rmq.color.from_rgba(34,202,250,0.4)
+      @selected_border_color = rmq.color.white
+      #@view_background_color = rmq.color.from_rgba(34,202,250,0.4).CGColor
+      #@tree_node_background_color = rmq.color.from_rgba(202,34,250,0.7)
     end
 
     def inspector_view(st)
@@ -281,6 +381,22 @@ module RubyMotionQuery
       st.background_color = color.clear
       st.scale = @view_scale
       st.frame = {t: 20, left: 0}
+    end
+
+    def tree(st)
+      st.scale = 1.0
+      st.frame = {t: 20, fr: 0, w: 45, fb: 0}
+      st.background_color = color.black
+      st.content_inset = [2,2,2,2]
+      #st.border_color = @tree_node_background_color.CGColor
+      #st.border_width = 0
+    end
+
+    def tree_zoomed(st)
+      st.scale = 2.0
+      st.background_color = @tree_background_color
+      st.frame = {fr: 0, t: 0, w: 165, fb: 0}
+      #st.border_width = 1
     end
 
     def stats(st)
