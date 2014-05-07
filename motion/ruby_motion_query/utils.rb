@@ -73,7 +73,7 @@ module RubyMotionQuery
 
       # Is an object a weak_ref
       def is_object_weak_ref?(o)
-        o.respond_to?(:weakref_alive?) # Is there a better way to do this?
+        o.respond_to?(:weakref_alive?) # This is the only way to do this currently
       end
 
       # @deprecated this has been fixed in RubyMotion 2.17, so this method is no longer needed.
