@@ -52,6 +52,14 @@ module RubyMotionQuery
           o.rotation = opts[:rotation] if opts.include?(:rotation)
           o.scale = opts[:scale] if opts.include?(:scale)
 
+          case event
+            when :swipe_up then o.direction = UISwipeGestureRecognizerDirectionUp
+            when :swipe_down then o.direction = UISwipeGestureRecognizerDirectionDown
+            when :swipe_left then o.direction = UISwipeGestureRecognizerDirectionLeft
+            when :swipe_right then o.direction = UISwipeGestureRecognizerDirectionRight
+          end
+
+
           if opts.include?(:init)
             opts[:init].call(@recognizer)
           end
@@ -127,6 +135,10 @@ module RubyMotionQuery
       pinch: UIPinchGestureRecognizer,
       rotate: UIRotationGestureRecognizer,
       swipe: UISwipeGestureRecognizer,
+      swipe_up: UISwipeGestureRecognizer,
+      swipe_down: UISwipeGestureRecognizer,
+      swipe_left: UISwipeGestureRecognizer,
+      swipe_right: UISwipeGestureRecognizer,
       pan: UIPanGestureRecognizer,
       long_press: UILongPressGestureRecognizer
     }
