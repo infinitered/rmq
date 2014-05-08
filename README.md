@@ -578,6 +578,10 @@ If you see Event, just remember that's either an event or gesture. I decided to 
 :pinch
 :rotate
 :swipe
+:swipe_up
+:swipe_down
+:swipe_left
+:swipe_right
 :pan
 :long_press
 ```
