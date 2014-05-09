@@ -88,15 +88,15 @@ module RubyMotionQuery
 
     # @return [RMQ]
     def throb(opts = {})
-      opts.merge!({
+      opts = {
         duration: 0.4,
         animations: ->(cq) {
           cq.style {|st| st.scale = 1.0}
         }
-      })
+      }.merge(opts)
 
       out = @rmq.animate(
-        duration: 0.1,
+        duration: opts[:duration_out] || 0.1,
         animations: ->(q) {
           q.style {|st| st.scale = 1.1}
         },
@@ -111,15 +111,15 @@ module RubyMotionQuery
 
     # @return [RMQ]
     def sink_and_throb(opts = {})
-      opts.merge!({
+      opts = {
         duration: 0.3,
         animations: ->(cq) {
          cq.animations.throb(duration: 0.6)
         }
-      })
+      }.merge(opts)
 
       out = @rmq.animate(
-        duration: 0.1,
+        duration: opts[:duration_out] || 0.1,
         animations: ->(q) {
           q.style {|st| st.scale = 0.9}
         },
@@ -140,7 +140,7 @@ module RubyMotionQuery
         st.hidden = false
       end
 
-      opts.merge!({
+      opts = {
         duration: 0.5,
         animations: ->(cq) {
           cq.style do |st| 
@@ -153,7 +153,7 @@ module RubyMotionQuery
             last_completion_rmq.animations.throb
           end
         }
-      })
+      }.merge(opts)
 
       @rmq.animate(opts)
     end
@@ -161,7 +161,7 @@ module RubyMotionQuery
     # @return [RMQ]
     def drop_and_spin(opts = {})
       remove_view = opts[:remove_view]
-      opts.merge!({
+      opts = {
         duration: 0.4 + (rand(8) / 10),
         options: UIViewAnimationOptionCurveEaseIn|UIViewAnimationOptionBeginFromCurrentState,
         animations: ->(cq) {
@@ -183,7 +183,7 @@ module RubyMotionQuery
             end
           end
         }
-      })
+      }.merge(opts)
 
       @rmq.animate(opts)
     end

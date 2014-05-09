@@ -669,7 +669,7 @@ rmq.animate do |q|
 end
 ```
 
-Some more options, this time it is animating a selectec view:
+Some more options, this time it is animating a selected view:
 
 ```ruby
 rmq(my_view).animate(
@@ -719,6 +719,8 @@ rmq(my_view).animations.fade_out(duration: 0.8)
 
 rmq(my_view).animations.blink
 rmq(my_view).animations.throb
+rmq(my_view).animations.sink_and_throb
+rmq(my_view).animations.land_and_sink_and_throb
 rmq(my_view).animations.drop_and_spin
 
 rmq.animations.start_spinner
