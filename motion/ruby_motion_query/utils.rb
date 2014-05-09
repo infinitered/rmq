@@ -50,17 +50,8 @@ module RubyMotionQuery
         end
       end
 
-      # @deprecated ~~this is no longer needed in RubyMotion >= 2.19. In a later version this will be
-      # changed to simply be a wrapper of RubyMotion's WeakRef.~~ 
-      # **Actually, this still seems to be needed. More research is needed to determine if this should
-      # be be deprecated**
-      #
-      #
       # Creates a weak reference to an object. Unlike WeakRef.new provided by RubyMotion, this will
       # not wrap a weak ref inside another weak ref (which causes bugs).
-      #
-      # This is fairly performant. It's about twice as slow as WeakRef.new. However, you can
-      # create a million weak refs in about 651 miliseconds, compared to 319 for WeakRef.new
       #
       # Creating a WeakRef with a literal like a string will cause your app to crash
       # instantly, it's fun, try it. Only create weak refs of variables
@@ -73,20 +64,6 @@ module RubyMotionQuery
         else
           WeakRef.new(o)
         end
-
-        #WeakRef.new(o) # For future release
-      end
-
-      # @deprecated this has been fixed in RubyMotion 2.17, so this method is no longer needed.
-      #
-      # This did gets around a bug in RubyMotion
-      # Hopefully I can remove this quickly. Only use this for complex objects that have no comparison
-      # other than that they are the exact same object. For example, strings compare their contents.
-      def weak_ref_is_same_object?(a, b)
-        # This was the workaround that isn't needed anymore, for your reference:
-        #(a.class == b.class) && (a.object_id == b.object_id)
-
-        a == b
       end
 
       # Gets a strong reference from a weak reference
@@ -96,7 +73,15 @@ module RubyMotionQuery
 
       # Is an object a weak_ref
       def is_object_weak_ref?(o)
-        o.respond_to?(:weakref_alive?) # Is there a better way to do this?
+        o.respond_to?(:weakref_alive?) # This is the only way to do this currently
+      end
+
+      # @deprecated this has been fixed in RubyMotion 2.17, so this method is no longer needed.
+      def weak_ref_is_same_object?(a, b)
+        # This was the workaround that isn't needed anymore, for your reference:
+        #(a.class == b.class) && (a.object_id == b.object_id)
+
+        a == b
       end
 
       # Mainly used for console and logging
