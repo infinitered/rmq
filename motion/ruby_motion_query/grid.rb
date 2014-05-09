@@ -7,6 +7,16 @@ module RubyMotionQuery
     end
   end
 
+  class RMQ
+    # Current grid, wether the current controller's or the App's gri
+    def grid
+      if stylesheet && (g = stylesheet.grid)
+        g
+      else
+        App.grid
+      end
+    end
+  end
 
   # A grid for layout.
   # There is an app grid at: rmq.app.grid

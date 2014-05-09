@@ -1,14 +1,13 @@
 describe 'rect' do
 
   describe 'view_rect_updated' do
-
-    def apply_frame(new_frame)
-      RubyMotionQuery::Rect.update_view_frame(@view, new_frame)
-    end
-
     before do
       @vc = UIViewController.alloc.init
       @view = @vc.rmq.append(UIView).get
+    end
+
+    def apply_frame(new_frame)
+      RubyMotionQuery::Rect.update_view_frame(@view, new_frame)
     end
 
     it 'should apply left or l or x' do
@@ -79,12 +78,17 @@ describe 'rect' do
       apply_frame width: 10, from_right: 10
       @view.frame.origin.x.should == rmq.device.width - 20
 
-      apply_frame w: 20, from_right: 20
+      apply_frame w: 20, fr: 20
       @view.frame.origin.x.should == rmq.device.width - 40
     end
 
-    #it 'should apply from_bottom and fb' do
-    #end
+    it 'should apply from_bottom and fb' do
+      apply_frame height: 10, from_bottom: 10
+      @view.frame.origin.y.should == rmq.device.height - 20
+
+      apply_frame : 20, fb: 20
+      @view.frame.origin.y.should == rmq.device.height - 40
+    end
 
     #it 'should change w when fr and l are set' do
     #end

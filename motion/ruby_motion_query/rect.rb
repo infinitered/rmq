@@ -19,10 +19,11 @@ module RubyMotionQuery
 
     # @example
     # rmq(my_view).frame = :full
-    # rmq(my_view, mRubyMotionQuery - y_other_view).frame = {l: 0, t: 0, w: 100, h: 20}
-    # rmq(my_view, my_other_view).frame(l: 0, t: 0, w: 100, h: 20).show
+    # rmq(my_view).frame = {l: 10, t: 20, w: 100, h: 150}
     def frame=(value)
-      selected.each{|s| Rect.frame_for_view(s).apply_to_frame}
+      selected.each do |view| 
+        Rect.frame_for_view(view).update(value, self.grid).apply_to_frame
+      end
     end
 
     def bounds
@@ -32,9 +33,16 @@ module RubyMotionQuery
         selected.map{|s| Rect.bounds_for_view(s)}
       end
     end
+
+    # @example
+    # rmq(my_view).bounds = :full
+    # rmq(my_view).bounds = {l: 10, t: 20, w: 100, h: 150}
     def bounds=(value)
-      selected.each{|s| Rect.bounds_for_view(s).apply_to_bounds}
+      selected.each do |view| 
+        Rect.bounds_for_view(view).update(value, self.grid).apply_to_bounds
+      end
     end
+
   end
 
 
@@ -84,6 +92,7 @@ module RubyMotionQuery
         view.bounds = view_rect_updated(view, view.bounds, params)
       end
 
+      # In singleton for performance # TODO, test if this is necessary
       def view_rect_updated(view, rect, params)
         if params == :full # Thanks teacup for the name
           view.superview.bounds
@@ -125,6 +134,7 @@ module RubyMotionQuery
           rect.size.height = h
           rect
 
+        elsif params.is_a?(String)
         else
           params 
         end
@@ -139,18 +149,35 @@ module RubyMotionQuery
       end
     end # << self
 
-    def initialize(params, view = nil)
+    def initialize(params, view = nil, grid = nil)
       @view = view
-      update params
+      update params, grid
     end
 
-    def update(params)
-      if params.is_a?(NSArray)
-        @left, @top, @width, @height = params
+    def update(params, grid = nil)
+      if params == :full
+        if @view
+          update @view.superview.bounds
+        else
+          update rmq.rootview.bounds
+        end
+      elsif params.is_a?(RubyMotionQuery::Rect)
+        @left, @top, @width, @height = point_or_rect.l, point_or_rect.t, point_or_rect.w, point_or_rect.h
       elsif params.is_a?(Hash)
-        # TODO
+        update hash_to_rect(params, grid), grid
+      elsif grid && params.is_a?(String) 
+        if point_or_rect = grid[string]
+          if point_or_rect.is_a?(CGPoint)
+            @left = point_or_rect.x
+            @top = point_or_rect.y
+          else
+            update point_or_rect, grid
+          end
+        end
       elsif params.is_a?(CGRect)
         @left, @top, @width, @height = params.origin.x, params.origin.y, params.size.width, params.size.height
+      elsif params.is_a?(NSArray)
+        @left, @top, @width, @height = params
       else
         @left, @top, @width, @height = params.to_a
       end
@@ -166,6 +193,10 @@ module RubyMotionQuery
     end
     def apply_to_bounds
       @view.bounds = to_cgrect if @view
+    end
+
+    def hash_to_rect(h, grid = nil)
+      Rect.new(self, [0,0,0,0], grid)
     end
 
     def left
@@ -246,7 +277,7 @@ module RubyMotionQuery
     def to_a
       [@left, @top, @width, @height]
     end
-    def to_a
+    def to_h
       {left: @left, top: @top, width: @width, height: @height}
     end
 
