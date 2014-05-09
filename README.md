@@ -719,6 +719,7 @@ rmq(my_view).animations.fade_out(duration: 0.8)
 
 rmq(my_view).animations.blink
 rmq(my_view).animations.throb
+rmq(my_view).animations.throb(duration: 0.8, duration_out: 0.8)
 rmq(my_view).animations.drop_and_spin
 
 rmq.animations.start_spinner
