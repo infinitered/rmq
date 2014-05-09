@@ -89,14 +89,14 @@ module RubyMotionQuery
     # @return [RMQ]
     def throb(opts = {})
       opts.merge!({
-        duration: 0.4,
+        duration: opts[:duration] || 0.4,
         animations: ->(cq) {
           cq.style {|st| st.scale = 1.0}
         }
       })
 
       out = @rmq.animate(
-        duration: 0.1,
+        duration: opts[:duration_out] || 0.1,
         animations: ->(q) {
           q.style {|st| st.scale = 1.1}
         },
