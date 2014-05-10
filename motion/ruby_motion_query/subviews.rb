@@ -111,6 +111,16 @@ module RubyMotionQuery
     end
     alias :prepend :unshift
 
+    # Same as prepend, but instantly returns the view, without having to use .get
+    #
+    # @example
+    #   @my_button = rmq.prepend! UIButton
+    #   @my_label = rmq.prepend!(UILabel, :my_label)
+    def unshift!(view_or_constant, style=nil, opts = {})
+      unshift(view_or_constant, style, opts).get
+    end
+    alias :prepend! :unshift!
+
     # Creates a view then returns an rmq with that view in it. It does not add that 
     # view to the view tree (append does this). This is useful for stuff like creating
     # table cells. You can use the rmq_did_create method, just like you do when you 

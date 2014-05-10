@@ -63,6 +63,13 @@ describe 'subviews' do
     view.rmq_data.style_name.should == :my_style
   end
 
+  it 'should unshift! view to a controller and return view without .get' do
+    view = @vc.rmq.unshift!(UIView)
+    view2 = @vc.rmq.unshift!(UIView)
+    @vc.view.subviews.length.should == 2
+    @vc.view.subviews.first.should == view2
+  end
+
   # TODO test ops in append, unshift, and create
 
   it 'should add a subview at a specific index' do
