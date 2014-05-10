@@ -75,6 +75,17 @@ module RubyMotionQuery
         @view.frame
       end
 
+      # Sets the frame using the Window's coordinates
+      def absolute_frame=(value)
+        self.frame = value
+
+        f = @view.frame
+        window_point = @view.convertPoint(f.origin, fromView: nil)
+        f.origin.x += window_point.x
+        f.origin.y += window_point.y
+        @view.frame = f
+      end
+
       def padded=(value)
         if value.is_a?(Hash)
           h = value
