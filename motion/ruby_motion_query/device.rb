@@ -39,7 +39,8 @@ module RubyMotionQuery
       end
 
       def simulator?
-        @_simulator ||= !(UIDevice.currentDevice.model =~ /simulator/i).nil?
+        @_simulator = !(UIDevice.currentDevice.model =~ /simulator/i).nil? if @_simulator.nil?
+        @_simulator
       end
 
       def four_inch?
@@ -47,7 +48,7 @@ module RubyMotionQuery
         @_four_inch
       end
 
-      def retina?()
+      def retina?
         if @_retina.nil?
           main_screen = Device.screen
           @_retina = !!(main_screen.respondsToSelector('displayLinkWithTarget:selector:') && main_screen.scale == 2.0)
