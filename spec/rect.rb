@@ -86,7 +86,7 @@ describe 'rect' do
       apply_frame height: 10, from_bottom: 10
       @view.frame.origin.y.should == rmq.device.height - 20
 
-      apply_frame : 20, fb: 20
+      apply_frame h: 20, fb: 20
       @view.frame.origin.y.should == rmq.device.height - 40
     end
 

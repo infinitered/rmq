@@ -299,21 +299,21 @@ module RubyMotionQuery
         end
       end
 
-      l = i_f_to_s(left).ljust(5)
-      t = i_f_to_s(top).rjust(5)
-      w = i_f_to_s(width).ljust(5)
-      h = i_f_to_s(height).ljust(5)
-      b = i_f_to_s(bottom).rjust(5)
-      r = i_f_to_s(right).ljust(5)
-      fr = i_f_to_s(from_right).ljust(5)
-      fb = i_f_to_s(from_bottom).rjust(5)
+      l = i_f_to_s(left.round(2)).ljust(5)
+      t = i_f_to_s(top.round(2)).rjust(5)
+      w = i_f_to_s(width.round(2)).ljust(5)
+      h = i_f_to_s(height.round(2)).ljust(5)
+      b = i_f_to_s(bottom.round(2)).rjust(5)
+      r = i_f_to_s(right.round(2)).ljust(5)
+      fr = i_f_to_s(from_right.round(2)).ljust(5)
+      fb = i_f_to_s(from_bottom.round(2)).rjust(5)
 
-      ww = i_f_to_s(rmq.app.window.size.width)
-      wh = i_f_to_s(rmq.app.window.size.height)
+      ww = i_f_to_s(rmq.app.window.size.width.round(2))
+      wh = i_f_to_s(rmq.app.window.size.height.round(2))
 
       if @view && (sv = @view.superview)
-        sw = i_f_to_s(sv.size.width)
-        sh = i_f_to_s(sv.size.height)
+        sw = i_f_to_s(sv.size.width.round(2))
+        sh = i_f_to_s(sv.size.height.round(2))
       end
 
       out = %(

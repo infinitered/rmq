@@ -194,16 +194,22 @@ module RubyMotionQuery
             w = 30
             h = ratio * w
           end
-          left = 0 + ((rmq(view).parents.length - 1) * 5)
-          st.frame = {l: left, w: w, h: h}
 
           st.view.contentMode = UIViewContentModeScaleAspectFit
           st.image = image
-
-          st.border_color = rmq.color.from_rgba(34,202,250,0.7).CGColor
-          st.border_width = 0.5 
-          st.background_color = rmq.stylesheet.tree_node_background_color
+        else
+          h = 10
+          w = 30
         end
+
+        left = 0 + ((rmq(view).parents.length - 1) * 5)
+
+        st.frame = {l: left, w: w, h: h}
+
+        st.border_color = rmq.color.from_rgba(34,202,250,0.7).CGColor
+        st.border_width = 0.5 
+        st.background_color = rmq.stylesheet.tree_node_background_color
+
       end.enable_interaction.on(:tap) do |sender|
         rmq(sender).animations.sink_and_throb
 
