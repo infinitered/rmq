@@ -1,6 +1,6 @@
 describe 'rect' do
 
-  describe 'view_rect_updated' do
+  describe 'updating rect of view' do
     before do
       @vc = UIViewController.alloc.init
       @view = @vc.rmq.append(UIView).get
@@ -90,17 +90,241 @@ describe 'rect' do
       @view.frame.origin.y.should == rmq.device.height - 40
     end
 
-    #it 'should change w when fr and l are set' do
+    def verify_view_with_superview_frame
+      @view.frame.origin.x.should == 1
+      @view.frame.origin.y.should == 2
+      @view.frame.size.width.should == 4
+      @view.frame.size.height.should == 5
+    end
+
+    it 'should not apply fr or fb if view does not have a superview' do
+      apply_frame l: 1 , t: 2, w: 4, h: 5
+      rmq(@view).remove
+      verify_view_with_superview_frame
+      apply_frame fr: 100
+      verify_view_with_superview_frame
+      apply_frame fb: 200
+      verify_view_with_superview_frame
+      apply_frame fr: 20, fb: 30
+      verify_view_with_superview_frame
+    end
+
+    it 'should change w when fr and l are set' do
+      w = @view.frame.size.width
+      apply_frame fr: 100, l: 30
+      new_w = @view.frame.size.width
+      w.should != new_w
+      new_w.should == rmq.device.width - 100 - 30
+    end
+
+    it 'should change h when fb and t are set' do
+      h = @view.frame.size.height
+      apply_frame fb: 50, t: 30
+      new_h = @view.frame.size.height
+      h.should != new_h
+      new_h.should == rmq.device.height - 50 - 30
+    end
+
+    it 'should change l when fr and w are set' do
+      l = @view.frame.size.width
+      apply_frame fr: 110, w: 50
+      new_l = @view.frame.origin.x
+      l.should != new_l
+      new_l.should == rmq.device.width - 110 - 50
+    end
+
+    it 'should change t when fb and h are set' do
+      t = @view.frame.origin.y
+      apply_frame fb: 90, h: 70
+      new_t = @view.frame.origin.y
+      t.should != new_t
+      new_t.should == rmq.device.height - 90 - 70
+    end
+
+    it 'should change left when right is changed (and not from_right)' do
+      apply_frame l: 10 , t: 20, w: 40, h: 50
+      l = @view.frame.origin.x
+      l.should == 10
+      h = @view.frame.size.height
+      w = @view.frame.size.width
+      w.should == 40
+      h.should == 50
+
+      apply_frame r: 60
+
+      new_l = @view.frame.origin.x
+      @view.frame.size.height.should == h
+      @view.frame.size.width.should == w 
+      l.should != new_l
+      new_l.should == 60 - 40
+
+      apply_frame right: 50
+      @view.frame.origin.x.should == 50 - 40
+    end
+
+    it 'should change top when bottom is changed (and not from_bottom)' do
+      apply_frame l: 20 , t: 30, w: 50, h: 60
+      t = @view.frame.origin.y
+      t.should == 30
+      w = @view.frame.size.width
+      h = @view.frame.size.height
+      w.should == 50
+      h.should == 60
+
+      apply_frame b: 76 
+
+      @view.frame.size.height.should == h
+      @view.frame.size.width.should == w 
+      new_t = @view.frame.origin.y
+      t.should != new_t
+      new_t.should == 76 - 60
+
+      apply_frame bottom: 66 
+      @view.frame.origin.y.should == 66 - 60
+    end
+
+    #it 'should change width when left and right are both changed' do
     #end
 
-    #it 'should change h when fb and t are set' do
+    #it 'should change height when top and bottom are both changed' do
     #end
 
-    #it 'should change l when fr and w are set' do
+    #it 'should use only top and height if top, height, and bottom are changed, ignoring bottom' do
     #end
 
-    #it 'should change t when fb and w are set' do
+    #it 'should use only left and width if left, width, and right are changed, ignoring right' do
     #end
- 
+  end
+
+  describe 'misc' do
+    before do
+      @vc = UIViewController.alloc.init
+      @view = @vc.rmq.append(UIView).get
+      apply_frame l: 44 , t: 55, w: 66, h: 77
+      @rect = RubyMotionQuery::Rect.frame_for_view(@view)
+    end
+
+    def apply_frame(new_frame)
+      RubyMotionQuery::Rect.update_view_frame(@view, new_frame)
+    end
+
+    it 'should have read only access to various attributes' do
+      @rect.l.should == 44
+      @rect.left.should == 44
+      @rect.t.should == 55
+      @rect.top.should == 55
+      @rect.width.should == 66
+      @rect.w.should == 66
+      @rect.height.should == 77
+      @rect.h.should == 77
+      @rect.bottom.should == 132
+      @rect.b.should == 132
+      @rect.right.should == 110
+      @rect.r.should == 110
+
+      @rect.from_bottom.should == rmq.device.height - 132
+      @rect.fb.should ==  rmq.device.height - 132 
+      @rect.from_right.should ==  rmq.device.width - 110
+      @rect.fr.should ==  rmq.device.width - 110
+
+      @rect.origin.should == @view.origin
+      @rect.size.should == @view.size
+      @rect.z_position.should == @view.layer.zPosition
+      @rect.z_order.should == 0
+
+      # TODO check to make sure they are read-only
+    end
+
+    it 'should convert to cgrect' do
+      @rect.to_cgrect.should == @view.frame
+    end
+
+    it 'should convert to cgpoint' do
+      @rect.to_cgpoint.should == @view.origin
+    end
+
+    it 'should convert to cgsize' do
+      @rect.to_cgsize.should == @view.size
+    end
+
+    it 'should convert to array' do
+      @rect.to_a.should == [44,55,66,77]
+    end
+
+    it 'should convert to hash' do
+      @rect.to_h.should == {left: 44, top: 55, width: 66, height: 77}
+    end
+
+    it 'should show nice inspect' do
+      @rect.inspect.should == "Rect {l: 44, t: 55, w: 66, h: 77}"
+    end
+  end
+
+  describe 'previous' do
+    before do
+      @vc = UIViewController.alloc.init
+      @view = @vc.rmq.append(UIView).get
+    end
+
+    # TODO
+  end
+
+  describe 'and grid' do
+    before do
+      @vc = UIViewController.alloc.init
+      @view = @vc.rmq.append(UIView).get
+    end
+
+    # TODO
+  end
+
+  describe 'rmq instance frame' do
+    before do
+      @vc = UIViewController.alloc.init
+      @view = @vc.rmq.append(UIView).layout(l: 44 , t: 55.23, w: 66, h: 77).get
+      @view_2 = @vc.rmq.append(UIView).layout(l: 144 , t: 155, w: 166, h: 177).get
+    end
+
+    it 'should get rect instance for a single selected view with .frame' do
+      rect = rmq(@view).frame
+      rect.class.should == RubyMotionQuery::Rect
+      rect.left.should == 44
+    end
+
+    it 'should get array of rect instances when multiple views are selected using .frame' do
+      rects = rmq(@view,@view_2).frame
+      rects.class.should == Array
+      rects.length.should == 2
+      rects.each do |rect|
+        rect.class.should == RubyMotionQuery::Rect
+      end
+      rects.first.top.should == 55.23
+    end
+
+    it 'should set frame with = when a single view is selected' do
+      @view.origin.x.should == 44
+
+      rmq(@view).frame = {l: 4, t: 5, w: 6, h: 7}
+      @view.origin.x.should == 4
+      @view.origin.y.should == 5
+      @view.size.width.should == 6
+      @view.size.height.should == 7
+    end
+
+    it 'should set frame with = when a multiple views are selected' do
+      @view.origin.x.should == 44
+      @view_2.origin.x.should == 144
+
+      rmq(@view, @view_2).frame = {l: 4, t: 5, w: 6, h: 7}
+      @view.origin.x.should == 4
+      @view.origin.y.should == 5
+      @view.size.width.should == 6
+      @view.size.height.should == 7
+
+      @view_2.origin.x.should == 4
+      @view_2.origin.y.should == 5
+      @view_2.size.width.should == 6
+      @view_2.size.height.should == 7
+    end
   end
 end

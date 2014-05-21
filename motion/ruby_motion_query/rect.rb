@@ -2,8 +2,7 @@ module RubyMotionQuery
 
   class RMQ
     # @example
-    # rmq(my_view).frame
-    #
+    # left = rmq(my_view).frame.left
     def frame(params = nil)
       if params
         frame = params
@@ -22,7 +21,7 @@ module RubyMotionQuery
     # rmq(my_view).frame = {l: 10, t: 20, w: 100, h: 150}
     def frame=(value)
       selected.each do |view| 
-        Rect.frame_for_view(view).update(value, self.grid).apply_to_frame
+        Rect.update_view_frame(view, value)
       end
     end
 
@@ -98,19 +97,21 @@ module RubyMotionQuery
           view.superview.bounds
         elsif params.is_a?(Hash)
 
-          l = params[:l] || params[:left] || params[:x] || rect.origin.x
-          t = params[:t] || params[:top] || params[:y] || rect.origin.y
+          params_l = params[:l] || params[:left] || params[:x]
+          l = params_l || rect.origin.x
+          params_t = params[:t] || params[:top] || params[:y]
+          t = params_t || rect.origin.y
           params_w = params[:w] || params[:width]
           w = params_w || rect.size.width
           params_h = params[:h] || params[:height]
           h = params_h || rect.size.height
           r = params[:r] || params[:right]
           b = params[:b] || params[:bottom]
+          fr = params[:from_right] || params[:fr]
+          fb = params[:from_bottom] || params[:fb]
 
-          if sv = view.superview
-            fr = params[:from_right] || params[:fr]
-            fb = params[:from_bottom] || params[:fb]
-
+          # From right, from_bottom
+          if (fr || fb) && (sv = view.superview)
             if fr
               if params_w
                 l = sv.bounds.size.width - w - fr
@@ -128,6 +129,15 @@ module RubyMotionQuery
             end
           end
 
+          # Right and bottom
+          if r && !fr && !params_l
+            l = r - w
+          end
+          if b && !fb && !params_t
+            t = b - h
+          end
+
+          # Done
           rect.origin.x = l
           rect.origin.y = t
           rect.size.width = w
@@ -162,7 +172,7 @@ module RubyMotionQuery
           update rmq.rootview.bounds
         end
       elsif params.is_a?(RubyMotionQuery::Rect)
-        @left, @top, @width, @height = point_or_rect.l, point_or_rect.t, point_or_rect.w, point_or_rect.h
+        @left, @top, @width, @height = params.l, params.t, params.w, params.h
       elsif params.is_a?(Hash)
         update hash_to_rect(params, grid), grid
       elsif grid && params.is_a?(String) 
@@ -215,6 +225,7 @@ module RubyMotionQuery
         sv.size.width - right
       end
     end
+    alias :fr :from_right
 
     def top
       @top
@@ -232,6 +243,7 @@ module RubyMotionQuery
         sv.size.height - bottom
       end
     end
+    alias :fb :from_bottom
 
     def width
       @width
@@ -254,7 +266,7 @@ module RubyMotionQuery
     end
 
     def size
-      to_cgpoint
+      to_cgsize
     end
 
     def z_position
