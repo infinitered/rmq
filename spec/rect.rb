@@ -126,7 +126,7 @@ describe 'rect' do
     end
 
     it 'should change l when fr and w are set' do
-      l = @view.frame.size.width
+      l = @view.frame.origin.x
       apply_frame fr: 110, w: 50
       new_l = @view.frame.origin.x
       l.should != new_l
@@ -183,17 +183,111 @@ describe 'rect' do
       @view.frame.origin.y.should == 66 - 60
     end
 
-    #it 'should change width when left and right are both changed' do
-    #end
+    it 'should change width when left and right are both changed (and width is not changed)' do
+      apply_frame l: 20 , t: 30, w: 300, h: 60
+      w = @view.frame.size.width
+      apply_frame r: 100, l: 49 
+      new_w = @view.frame.size.width
+      w.should != new_w
+      new_w.should == 100 - 49
+    end
 
-    #it 'should change height when top and bottom are both changed' do
-    #end
+    it 'should change height when top and bottom are both changed (and height is not changed)' do
+      apply_frame l: 20 , t: 30, w: 300, h: 60
+      h = @view.frame.size.height
+      apply_frame b: 100, t: 49 
+      new_h = @view.frame.size.height
+      h.should != new_h
+      new_h.should == 100 - 49
+    end
 
-    #it 'should use only top and height if top, height, and bottom are changed, ignoring bottom' do
-    #end
+    it 'should use only top and height if top, height, and bottom are changed, ignoring bottom' do
+      apply_frame l: 40 , t: 42, w: 43, h: 44
+      apply_frame t: 100, h: 200, b: 120 
+      @view.frame.origin.x.should == 40
+      @view.frame.origin.y.should == 100 
+      @view.frame.size.width.should == 43 
+      @view.frame.size.height.should == 200
+    end
 
-    #it 'should use only left and width if left, width, and right are changed, ignoring right' do
-    #end
+    it 'should use only left and width if left, width, and right are changed, ignoring right' do
+      apply_frame l: 40 , t: 42, w: 43, h: 44
+      apply_frame l: 100, w: 200, r: 120 
+      @view.frame.origin.x.should == 100
+      @view.frame.origin.y.should == 42 
+      @view.frame.size.width.should == 200 
+      @view.frame.size.height.should == 44 
+    end
+
+    it 'should set frame to full width and height with :full' do
+      apply_frame :full
+      @view.frame.should == @view.superview.bounds
+    end
+
+    it 'should set left when centering horizontally' do
+      # TODO
+      1.should == 1
+    end
+
+    it 'should set top when centering vertically' do
+      # TODO
+      1.should == 1
+    end
+
+    it 'should set top andleft when centering both' do
+      # TODO
+      1.should == 1
+    end
+
+    it 'should set frame given Rect instance' do
+      # TODO
+      1.should == 1
+    end
+
+    it 'should set frame given CGRect instance' do
+      # TODO
+      1.should == 1
+    end
+
+    it 'should set frame given CGSize instance' do
+      # TODO
+      1.should == 1
+    end
+
+    it 'should set frame given CGPoint instance' do
+      # TODO
+      1.should == 1
+    end
+
+    it 'should set frame given various' do
+      # TODO
+      1.should == 1
+
+      #apply_frame [1, 2, 3, 4]
+      #@view.frame.origin.x.should == 1
+      #@view.frame.origin.y.should == 2 
+      #@view.frame.size.width.should == 3
+      #@view.frame.size.height.should == 4 
+
+      #apply_frame [[5, 6], [7, 8]]
+      #@view.frame.origin.x.should == 5
+      #@view.frame.origin.y.should == 6 
+      #@view.frame.size.width.should == 7
+      #@view.frame.size.height.should == 8 
+    
+      #apply_frame [9, 10]
+      #@view.frame.origin.x.should == 9
+      #@view.frame.origin.y.should == 10 
+      #@view.frame.size.width.should == 7
+      #@view.frame.size.height.should == 8 
+    end
+  end
+
+  describe 'initialization' do
+    # TODO
+
+    # apply_to_frame
+    # apply_to_bounds
   end
 
   describe 'misc' do
@@ -265,8 +359,31 @@ describe 'rect' do
       @vc = UIViewController.alloc.init
       @view = @vc.rmq.append(UIView).get
     end
+    
+    it 'should set top to previous views bottom, plus margin, using below_prev' do
+      1.should == 1
+      # TODO
+    end
 
-    # TODO
+    it 'should set top to previous views top, minus margin, using above_prev' do
+      1.should == 1
+      # TODO
+    end
+
+    it 'should set left to previous views right, plus margin, using right_of_prev' do
+      1.should == 1
+      # TODO
+    end
+
+    it 'should set left to previous views left, minus margin, using left_of_prev' do
+      1.should == 1
+      # TODO
+    end
+
+    it 'should set left, top, width, height, right, bottom to previous views' do
+      1.should == 1
+      # TODO
+    end
   end
 
   describe 'and grid' do

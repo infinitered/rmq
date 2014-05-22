@@ -137,6 +137,15 @@ module RubyMotionQuery
             t = b - h
           end
 
+          # Left and right applied together
+          if params_l && r && !params_w
+            w = r - l
+          end
+          # Top and bottom applied together
+          if params_t && b && !params_h
+            h = b - t
+          end
+
           # Done
           rect.origin.x = l
           rect.origin.y = t
@@ -165,7 +174,11 @@ module RubyMotionQuery
     end
 
     def update(params, grid = nil)
-      if params == :full
+      # TODO, refactor
+      if params.is_a?(Hash)
+        # TODO
+        update hash_to_rect(params, grid), grid
+      elsif params == :full
         if @view
           update @view.superview.bounds
         else
@@ -173,8 +186,6 @@ module RubyMotionQuery
         end
       elsif params.is_a?(RubyMotionQuery::Rect)
         @left, @top, @width, @height = params.l, params.t, params.w, params.h
-      elsif params.is_a?(Hash)
-        update hash_to_rect(params, grid), grid
       elsif grid && params.is_a?(String) 
         if point_or_rect = grid[string]
           if point_or_rect.is_a?(CGPoint)
