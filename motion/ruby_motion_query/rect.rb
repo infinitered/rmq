@@ -85,78 +85,95 @@ module RubyMotionQuery
     class << self
 
       def update_view_frame(view, params)
-        view.frame = view_rect_updated(view, view.frame, params)
+        view.frame = object_to_cg_rect(params, view, view.frame)
       end
       def update_view_bounds(view, params)
-        view.bounds = view_rect_updated(view, view.bounds, params)
+        view.frame = object_to_cg_rect(params, view, view.bounds)
       end
 
+      # Used internally, don't use this
+      #
       # In singleton for performance # TODO, test if this is necessary
-      def view_rect_updated(view, rect, params)
-        if params == :full # Thanks teacup for the name
-          view.superview.bounds
-        elsif params.is_a?(Hash)
-
-          params_l = params[:l] || params[:left] || params[:x]
-          l = params_l || rect.origin.x
-          params_t = params[:t] || params[:top] || params[:y]
-          t = params_t || rect.origin.y
-          params_w = params[:w] || params[:width]
-          w = params_w || rect.size.width
-          params_h = params[:h] || params[:height]
-          h = params_h || rect.size.height
-          r = params[:r] || params[:right]
-          b = params[:b] || params[:bottom]
-          fr = params[:from_right] || params[:fr]
-          fb = params[:from_bottom] || params[:fb]
-
-          # From right, from_bottom
-          if (fr || fb) && (sv = view.superview)
-            if fr
-              if params_w
-                l = sv.bounds.size.width - w - fr
-              else
-                w = sv.bounds.size.width - l - fr
-              end
-            end
-
-            if fb
-              if params_h
-                t = sv.bounds.size.height - h - fb
-              else
-                h = sv.bounds.size.height - t - fb
-              end
-            end
+      def object_to_cg_rect(o, view = nil, existing_rect = nil, grid = nil)
+        if o.is_a?(Hash)
+          a = rect_hash_to_rect_array(view, existing_rect, o, grid)
+          CGRectMake(a[0], a[1], a[2], a[3])
+        elsif o == :full
+          if view
+            view.superview.bounds
+          else
+            rmq.rootview.bounds
           end
-
-          # Right and bottom
-          if r && !fr && !params_l
-            l = r - w
-          end
-          if b && !fb && !params_t
-            t = b - h
-          end
-
-          # Left and right applied together
-          if params_l && r && !params_w
-            w = r - l
-          end
-          # Top and bottom applied together
-          if params_t && b && !params_h
-            h = b - t
-          end
-
-          # Done
-          rect.origin.x = l
-          rect.origin.y = t
-          rect.size.width = w
-          rect.size.height = h
-          rect
-
-        elsif params.is_a?(String)
+        elsif o.is_a?(RubyMotionQuery::Rect)
+          o.to_cgrect
+        elsif grid && o.is_a?(String) 
+          #if point_or_rect = grid[string]
+            #if point_or_rect.is_a?(CGPoint)
+              #@left = point_or_rect.x
+              #@top = point_or_rect.y
+            #else
+              #update point_or_rect, grid
+            #end
+          #end
         else
-          params 
+          o # Arrays, CGRect, etc
         end
+      end
+
+      # Used internally, don't use this
+      #
+      # In singleton for performance # TODO, test if this is necessary
+      def rect_hash_to_rect_array(view, existing_rect, params, grid = nil)
+        params_l = params[:l] || params[:left] || params[:x]
+        l = params_l || existing_rect.origin.x
+        params_t = params[:t] || params[:top] || params[:y]
+        t = params_t || existing_rect.origin.y
+        params_w = params[:w] || params[:width]
+        w = params_w || existing_rect.size.width
+        params_h = params[:h] || params[:height]
+        h = params_h || existing_rect.size.height
+        r = params[:r] || params[:right]
+        b = params[:b] || params[:bottom]
+        fr = params[:from_right] || params[:fr]
+        fb = params[:from_bottom] || params[:fb]
+
+        # From right, from_bottom
+        if (fr || fb) && (sv = view.superview)
+          if fr
+            if params_w
+              l = sv.bounds.size.width - w - fr
+            else
+              w = sv.bounds.size.width - l - fr
+            end
+          end
+
+          if fb
+            if params_h
+              t = sv.bounds.size.height - h - fb
+            else
+              h = sv.bounds.size.height - t - fb
+            end
+          end
+        end
+
+        # Right and bottom
+        if r && !fr && !params_l
+          l = r - w
+        end
+        if b && !fb && !params_t
+          t = b - h
+        end
+
+        # Left and right applied together
+        if params_l && r && !params_w
+          w = r - l
+        end
+        # Top and bottom applied together
+        if params_t && b && !params_h
+          h = b - t
+        end
+
+        [l,t,w,h]
       end
 
       def frame_for_view(view)
@@ -169,44 +186,27 @@ module RubyMotionQuery
     end # << self
 
     def initialize(params, view = nil, grid = nil)
+      @left = @top = @width = @height = 0
       @view = view
       update params, grid
     end
 
     def update(params, grid = nil)
-      # TODO, refactor
-      if params.is_a?(Hash)
-        # TODO
-        update hash_to_rect(params, grid), grid
-      elsif params == :full
-        if @view
-          update @view.superview.bounds
-        else
-          update rmq.rootview.bounds
-        end
-      elsif params.is_a?(RubyMotionQuery::Rect)
-        @left, @top, @width, @height = params.l, params.t, params.w, params.h
-      elsif grid && params.is_a?(String) 
-        if point_or_rect = grid[string]
-          if point_or_rect.is_a?(CGPoint)
-            @left = point_or_rect.x
-            @top = point_or_rect.y
-          else
-            update point_or_rect, grid
-          end
-        end
-      elsif params.is_a?(CGRect)
-        @left, @top, @width, @height = params.origin.x, params.origin.y, params.size.width, params.size.height
-      elsif params.is_a?(NSArray)
-        @left, @top, @width, @height = params
-      else
-        @left, @top, @width, @height = params.to_a
-      end
+      # Doing all of the updates to the Rect in singleton for performance. 
+      # It would be better to be done inside an actual Rect instance, but that
+      # would require creating a lot of temporary objects.
+      # TODO performance and see if there is any real loss bringing 
+      # object_to_cg_rect into Rect instance
+      #
+      # If we did it that way, then we'd create a new instance, then appy the
+      # rect instance to the frame or bounds, like so:
+      # Rect.new(params, view, grid).apply_to_frame
+      cg_rect = Rect.object_to_cg_rect(params, @view, self.to_cgrect, grid)
 
-      @left = 0 unless @left
-      @top = 0 unless @top
-      @width = 0 unless @width
-      @height = 0 unless @height
+      @left = cg_rect.origin.x
+      @top = cg_rect.origin.y
+      @width = cg_rect.size.width
+      @height = cg_rect.size.height
     end
 
     def apply_to_frame
@@ -295,7 +295,7 @@ module RubyMotionQuery
     end
 
     def to_cgrect
-      CGRectMake(@left,@top, @width, @height)
+      CGRectMake(@left, @top, @width, @height)
     end
     def to_a
       [@left, @top, @width, @height]
