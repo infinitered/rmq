@@ -280,10 +280,7 @@ describe 'rect' do
       1.should == 1
     end
 
-    it 'should set frame given various' do
-      # TODO
-      1.should == 1
-
+    it 'should set frame given various arrays' do
       #apply_frame [1, 2, 3, 4]
       #@view.frame.origin.x.should == 1
       #@view.frame.origin.y.should == 2 
@@ -379,31 +376,35 @@ describe 'rect' do
     before do
       @vc = UIViewController.alloc.init
       @view = @vc.rmq.append(UIView).get
+      @view_2 = @vc.rmq.append(UIView).get
     end
     
     it 'should set top to previous views bottom, plus margin, using below_prev' do
-      1.should == 1
-      # TODO
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(l: 10, below_prev: 10, w: 30, h: 40)
+
+      @view_2.frame.origin.y.should == 20 + 40 + 10
     end
 
     it 'should set top to previous views top, minus margin, using above_prev' do
-      1.should == 1
-      # TODO
+      rmq(@view).layout(l: 10, t: 200, w: 30, h: 40)
+      rmq(@view_2).layout(l: 10, above_prev: 7, w: 30, h: 60)
+
+      @view_2.frame.origin.y.should == 200 - 60 - 7
     end
 
     it 'should set left to previous views right, plus margin, using right_of_prev' do
-      1.should == 1
-      # TODO
+      rmq(@view).layout(l: 10, t: 200, w: 30, h: 40)
+      rmq(@view_2).layout(t: 210, w: 30, h: 60, right_of_prev: 15)
+
+      @view_2.frame.origin.x.should == 10 + 30 + 15
     end
 
     it 'should set left to previous views left, minus margin, using left_of_prev' do
-      1.should == 1
-      # TODO
-    end
+      rmq(@view).layout(l: 250, t: 200, w: 30, h: 40)
+      rmq(@view_2).layout(t: 210, w: 40, h: 60, left_of_prev: 18)
 
-    it 'should set left, top, width, height, right, bottom to previous views' do
-      1.should == 1
-      # TODO
+      @view_2.frame.origin.x.should == 250 - 40 - 18
     end
   end
 

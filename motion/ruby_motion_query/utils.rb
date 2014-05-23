@@ -84,6 +84,13 @@ module RubyMotionQuery
         a == b
       end
 
+      # Gives you the value of a weakref, if the object it wraps no longer exists, returns nil
+      def weak_ref_value(o)
+        if o && o.weakref_alive?
+          o
+        end
+      end
+
       # Mainly used for console and logging
       #
       # @return [String]
