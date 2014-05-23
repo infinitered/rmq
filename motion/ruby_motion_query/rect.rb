@@ -178,21 +178,25 @@ module RubyMotionQuery
         # Previous view
         # TODO
 
+        if sv = view.superview
+          sv_size = sv.bounds.size
+        end
+
         # From right, from_bottom
-        if (fr || fb) && (sv = view.superview)
+        if (fr || fb) && sv
           if fr
             if params_w
-              l = sv.bounds.size.width - w - fr
+              l = sv_size.width - w - fr
             else
-              w = sv.bounds.size.width - l - fr
+              w = sv_size.width - l - fr
             end
           end
 
           if fb
             if params_h
-              t = sv.bounds.size.height - h - fb
+              t = sv_size.height - h - fb
             else
-              h = sv.bounds.size.height - t - fb
+              h = sv_size.height - t - fb
             end
           end
         end
@@ -215,7 +219,17 @@ module RubyMotionQuery
         end
 
         # Centered, :horizontal, :vertical, :both
-        # TODO
+        if sv && (centered = params[:centered])
+          case centered
+            when :horizontal
+              l = (sv_size.width / 2) - (w / 2)
+            when :vertical
+              t = (sv_size.height / 2) - (h / 2)
+            when :both
+              l = (sv_size.width / 2) - (w / 2)
+              t = (sv_size.height / 2) - (h / 2)
+          end
+        end
 
         [l,t,w,h]
       end

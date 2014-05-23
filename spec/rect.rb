@@ -225,18 +225,39 @@ describe 'rect' do
     end
 
     it 'should set left when centering horizontally' do
-      # TODO
-      1.should == 1
+      apply_frame l: 140 , t: 142, w: 143, h: 144, centered: :horizontal
+
+      @view.frame.origin.y.should == 142 
+      @view.frame.size.width.should == 143 
+      @view.frame.size.height.should == 144 
+
+      @view.frame.origin.x.should == (@view.superview.bounds.size.width / 2) - (143 / 2)
     end
 
     it 'should set top when centering vertically' do
-      # TODO
-      1.should == 1
+      apply_frame l: 140 , t: 142, w: 143, h: 144, centered: :vertical
+
+      @view.frame.origin.x.should == 140 
+      @view.frame.size.width.should == 143 
+      @view.frame.size.height.should == 144 
+
+      @view.frame.origin.y.should == (@view.superview.bounds.size.height / 2) - (144 / 2)
     end
 
-    it 'should set top andleft when centering both' do
-      # TODO
-      1.should == 1
+    it 'should set top and left when centering both' do
+      apply_frame l: 140 , t: 142, w: 143, h: 144
+
+      # We'll create a subview inside @view to test if all is good if superview isn't :full
+      view_2 = rmq(@view).append(UIView).layout(l: 5, t: 6, w: 7, h: 8, centered: :both).get
+
+      @view.frame.size.width.should == 143 
+      @view.frame.size.height.should == 144 
+
+      view_2.frame.size.width.should == 7 
+      view_2.frame.size.height.should == 8 
+
+      view_2.frame.origin.x.should == (@view.bounds.size.width / 2) - (7 / 2)
+      view_2.frame.origin.y.should == (@view.bounds.size.height / 2) - (8 / 2)
     end
 
     it 'should set frame given Rect instance' do
