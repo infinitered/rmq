@@ -64,11 +64,17 @@ describe 'device' do
           @_four_inch = nil
           @_height = value
         end
+
+        def reset_fake_caches
+          @_four_inch = nil
+          @_height = nil
+        end
       end
     end
 
     @rmq.device.fake_height(10)
     @rmq.device.four_inch?.should == false
+    @rmq.device.reset_fake_caches
   end
 
   describe 'retina?' do
