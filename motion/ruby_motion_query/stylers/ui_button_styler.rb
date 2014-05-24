@@ -45,7 +45,7 @@ module RubyMotionQuery
         @view.setBackgroundImage value, forState: UIControlStateHighlighted
       end
 
-      # Accepts UIEdgeInsetMake OR and array of values to be the inset.
+      # Accepts UIEdgeInsetsMake OR and array of values to be the inset.
       # st.title_edge_insets = UIEdgeInsetsMake(0, 10.0, 0, 0)
       # OR
       # st.title_edge_insets = [0, 10.0, 0, 0]
