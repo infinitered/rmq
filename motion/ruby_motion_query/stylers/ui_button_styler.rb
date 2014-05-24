@@ -50,8 +50,8 @@ module RubyMotionQuery
       # OR
       # st.title_edge_insets = [0, 10.0, 0, 0]
       def title_edge_insets=(value)
-        inset = UIEdgeInsetsMake(value[0], value[1], value[2], value[3]) if value.is_a? Array
-        @view.setTitleEdgeInsets(inset)
+        value = UIEdgeInsetsMake(value[0], value[1], value[2], value[3]) if value.is_a? Array
+        @view.setTitleEdgeInsets(value)
       end
 
       def title_edge_insets
