@@ -18,7 +18,7 @@ module RubyMotionQuery
       end
     end
 
-    # Always applied in this order, regardles of the hash order:
+    # Always applied in this order, regardless of the hash order:
     # l, t, w, h
     # grid
     # previous
@@ -37,7 +37,7 @@ module RubyMotionQuery
     # rmq(my_view).frame = {l: :prev, t: 20, w: 100, h: 150}
     # rmq(my_view).frame = {l: 10, below_prev: 10, w: prev, h: 150}
     # rmq(my_view).frame = {left: 10, top: 20, width: 100, height: 150}
-    # rmq(my_view).frame = {l: 10, t: 10, r: 10, b: 10}
+    # rmq(my_view).frame = {l: 10, t: 10, fr: 10, fb: 10}
     # rmq(my_view).frame = {width: 50, height: 20, centered: :both}
     # rmq(my_view).frame = "a1:b5"
     # rmq(my_view, my_other_view).frame = {grid: "b2", w: 100, h: 200}
@@ -73,14 +73,14 @@ module RubyMotionQuery
   #    *                   |         |                           *   integer
   #    *                   |         |                           *   signed integer
   #    *                  top        |                           *   float
-  #    *                   |         |                           *   :prev
+  #    *                   |         |                           *   
   #    *                   |         |                           *   'a1:b4' 
   #    *                  ---        |                           *   'a1' 
   #    *              ***************|*****   ---                *   'a'
   #    *              * view         |    *    |                 *   '1'
-  #    *              *              |    *    |                 *   ':b4'
+  #    *              *              |    *    |                 *   ':b4'           
   #    *              *           bottom  *    |                 *   
-  #    *              *              |    *    |                 *   additional size options 
+  #    *              *              |    *    |                 *   also 
   #    *|--- left ---|*              |    *    |                 *   -----------------------
   #    *              *              |    * height               *   :full
   #    *              *              |    *    |                 *   :right_of_prev  (:rop)
@@ -94,7 +94,7 @@ module RubyMotionQuery
   #    *              |------ width - + -|                       *   :r, :b
   #    *                              |                          *   :fr, fb
   #    *                              |                          *   
-  #    *                          from_bottom                    *   centered options
+  #    *                          from_bottom                    *   :centered options
   #    *                              |                          *   ---------
   #    *                              |                          *   :horizontal
   #    *                             ---                         *   :vertical
@@ -190,15 +190,15 @@ module RubyMotionQuery
 
         # Previous
         if prev_view = Rect.previous_view
-          if below_prev = params[:below_prev]
+          if below_prev = (params[:below_prev] || params[:bp])
             t = prev_view.frame.origin.y + prev_view.frame.size.height + below_prev
-          elsif above_prev = params[:above_prev]
+          elsif above_prev = (params[:above_prev] || params[:ap])
             t = prev_view.frame.origin.y - above_prev - h
           end
 
-          if right_of_prev = params[:right_of_prev]
+          if right_of_prev = (params[:right_of_prev] || params[:rop])
             l = prev_view.frame.origin.x + prev_view.frame.size.width + right_of_prev
-          elsif left_of_prev = params[:left_of_prev]
+          elsif left_of_prev = (params[:left_of_prev] || params[:lop])
             l = prev_view.frame.origin.x - left_of_prev - w
           end
         end

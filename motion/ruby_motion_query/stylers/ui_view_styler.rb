@@ -37,6 +37,7 @@ module RubyMotionQuery
 
       # Sets the frame using the Window's coordinates
       def absolute_frame=(value)
+        # TODO change to new rect system
         self.frame = value
 
         f = @view.frame
@@ -219,6 +220,7 @@ module RubyMotionQuery
         @view.center.y
       end
 
+      # @deprecated - use frame or bounds
       # param can be :horizontal, :vertical, :both
       def centered=(option)
         if parent = @view.superview

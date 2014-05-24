@@ -1,5 +1,5 @@
 module RubyMotionQuery
-  VERSION = "0.5.8"
+  VERSION = "0.6.0"
 
   class RMQ
     def version

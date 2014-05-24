@@ -201,6 +201,16 @@ describe 'rect' do
       new_h.should == 100 - 49
     end
 
+    it 'should change width when left and from_right are both changed (and width is not changed)' do
+      # TODO
+      1.should == 1
+    end
+
+    it 'should change height when top and from_bottom are both changed (and height is not changed)' do
+      # TODO
+      1.should == 1
+    end
+
     it 'should use only top and height if top, height, and bottom are changed, ignoring bottom' do
       apply_frame l: 40 , t: 42, w: 43, h: 44
       apply_frame t: 100, h: 200, b: 120 
@@ -377,6 +387,7 @@ describe 'rect' do
       @vc = UIViewController.alloc.init
       @view = @vc.rmq.append(UIView).get
       @view_2 = @vc.rmq.append(UIView).get
+      @view_3 = @vc.rmq.append(UIView).get
     end
     
     it 'should set top to previous views bottom, plus margin, using below_prev' do
@@ -384,6 +395,9 @@ describe 'rect' do
       rmq(@view_2).layout(l: 10, below_prev: 10, w: 30, h: 40)
 
       @view_2.frame.origin.y.should == 20 + 40 + 10
+
+      rmq(@view_3).layout(l: 10, bp: 11, w: 30, h: 40)
+      @view_3.frame.origin.y.should == @view_2.frame.origin.y + 40 + 11
     end
 
     it 'should set top to previous views top, minus margin, using above_prev' do
@@ -391,18 +405,21 @@ describe 'rect' do
       rmq(@view_2).layout(l: 10, above_prev: 7, w: 30, h: 60)
 
       @view_2.frame.origin.y.should == 200 - 60 - 7
+
+      rmq(@view_3).layout(l: 10, ap: 17, w: 30, h: 70)
+      @view_3.frame.origin.y.should == @view_2.frame.origin.y - 70 - 17
     end
 
     it 'should set left to previous views right, plus margin, using right_of_prev' do
       rmq(@view).layout(l: 10, t: 200, w: 30, h: 40)
-      rmq(@view_2).layout(t: 210, w: 30, h: 60, right_of_prev: 15)
+      rmq(@view_2).layout(t: 210, w: 30, h: 60, rop: 15)
 
       @view_2.frame.origin.x.should == 10 + 30 + 15
     end
 
     it 'should set left to previous views left, minus margin, using left_of_prev' do
       rmq(@view).layout(l: 250, t: 200, w: 30, h: 40)
-      rmq(@view_2).layout(t: 210, w: 40, h: 60, left_of_prev: 18)
+      rmq(@view_2).layout(t: 210, w: 40, h: 60, lop: 18)
 
       @view_2.frame.origin.x.should == 250 - 40 - 18
     end

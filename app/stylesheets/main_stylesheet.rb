@@ -48,14 +48,14 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def make_buttons_throb_button(st)
-    st.frame = {fr: PADDING, t: 205, w: 150, h: 20}
+    st.frame = {fr: PADDING, below_prev: 5, w: 150, h: 20}
     st.text = 'Throb buttons'
     st.color = color.black
   end
 
   def animate_move_button(st)
     st.scale = 1.0
-    st.frame = {from_right: PADDING, t: 230, w: 150, h: 20}
+    st.frame = {from_right: PADDING, below_prev: 5, w: 150, h: 20}
     st.text = 'Animate move and scale'
     st.font = font.system(10)
     st.color = color.white
@@ -65,14 +65,14 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def collection_button(st)
-    st.frame = {from_right: PADDING, t: 260, w: 150, h: 20}
+    st.frame = {from_right: PADDING, below_prev: 5, w: 150, h: 20}
     st.background_color = color.black
     st.font = font.small
     st.text = 'Collection View'
   end
 
   def table_button(st)
-    st.frame = {from_right: PADDING, t: 290, w: 150, h: 20}
+    st.frame = {from_right: PADDING, below_prev: 5 , w: 150, h: 20}
     st.background_color = color.black
     st.font = font.small
     st.text = 'Table View'
@@ -142,22 +142,22 @@ class MainStylesheet < ApplicationStylesheet
     st.color = color.white
   end
 
-  def benchmark_section(st)
+  def popup_section(st)
     t = (landscape? && iphone?) ? 100 : 180
     st.frame = {l: PADDING, t: t, w: 100 + (PADDING * 2), h: 60}
     st.background_color = color.from_hex('faa619')
   end
 
-  def run_benchmarks(st)
+  def open_popup(st)
     st.frame = {l: PADDING, t: 30, w: 100, h: 20}
-    st.text = 'Run benchmarks'
+    st.text = 'Open popup'
     st.font = font.system(11)
     st.color = color.from_hex('faa619')
     st.enabled = true
     st.background_color = color.white
   end
 
-  def run_benchmarks_disabled(st)
+  def open_popup_disabled(st)
     st.enabled = false
     st.color = color.from_hex('de8714')
   end
@@ -178,7 +178,7 @@ class MainStylesheet < ApplicationStylesheet
     st.z_position = 99
   end
 
-  def benchmarks_results_wrapper(st)
+  def popup_wrapper(st)
     st.hidden = true
     st.frame = {w: app_width - 20, h: 120}
     st.centered = :both
@@ -186,12 +186,13 @@ class MainStylesheet < ApplicationStylesheet
     st.z_position = 100
   end
 
-  def benchmarks_results_label(st)
+  def popup_text_label(st)
     label st
     st.padded = {l: 10, t: 10, b:10, r: 10}
     st.text_alignment = :left
     st.color = color.black
     st.font = font.system(10)
+    st.text = "This is a Popup, woot!"
 
     # If the styler doesn't have the method, you can add it or
     # just use st.view to get the actual object
