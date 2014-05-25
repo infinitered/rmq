@@ -175,8 +175,10 @@ module RubyMotionQuery
         params_h = params[:h] || params[:height]
 
         # Grid
-        params_g = params[:grid] || params[:g]
-        # TODO
+        if grid
+          params_g = params[:grid] || params[:g]
+          # TODO
+        end
 
         l = params_l || existing_rect.origin.x
         t = params_t || existing_rect.origin.y
@@ -188,8 +190,9 @@ module RubyMotionQuery
 
         fr = params[:from_right] || params[:fr]
         fb = params[:from_bottom] || params[:fb]
-     
 
+        centered = params[:centered]
+     
         # Previous
         if prev_view = previous_view
           if below_prev = (params[:below_prev] || params[:bp])
@@ -206,7 +209,21 @@ module RubyMotionQuery
         end
 
         if sv = view.superview
-          sv_size = sv.bounds.size
+          if (fr || fb || centered) # Needs size
+            vc = view.rmq_data.view_controller
+
+            # Horrible horrible hack, TODO fix. This is here because
+            # the root_view's height isn't changed until after viewDidLoad when
+            # vc.edgesForExtendedLayout = UIRectEdgeNone.
+            # Not sure how often people use UIRectEdgeNone as I never do, 
+            # perhaps an edge case that should be isolated in some wayo
+            # I hate to have to check and calc this every time
+            if vc && (vc.view == sv) && (vc.edgesForExtendedLayout == UIRectEdgeNone)
+              sv_size = CGSizeMake(sv.size.width, rmq.device.screen_height - 64)  
+            else
+              sv_size = sv.size
+            end
+          end
         end
 
         # From right, from_bottom
@@ -246,7 +263,7 @@ module RubyMotionQuery
         end
 
         # Centered, :horizontal, :vertical, :both
-        if sv && (centered = params[:centered])
+        if sv && centered
           case centered
             when :horizontal
               l = (sv_size.width / 2) - (w / 2)
@@ -260,7 +277,6 @@ module RubyMotionQuery
 
         [l,t,w,h]
       end
-
 
     end # << self
 

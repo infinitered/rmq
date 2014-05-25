@@ -1,3 +1,16 @@
+class RectTestController < UIViewController 
+  attr_reader :test_view
+
+  def viewDidLoad
+    super
+
+    # Sets top:0 starts below nav
+    self.edgesForExtendedLayout = UIRectEdgeNone
+
+    @test_view = rmq.append(UIView).layout(w: 20, h: 30, fb: 40).get
+  end
+end
+
 describe 'rect' do
 
   describe 'updating rect of view' do
@@ -80,14 +93,17 @@ describe 'rect' do
 
       apply_frame w: 20, fr: 20
       @view.frame.origin.x.should == rmq.device.width - 40
+      rmq(@view).frame.fr == 20
     end
 
     it 'should apply from_bottom and fb' do
       apply_frame height: 10, from_bottom: 10
       @view.frame.origin.y.should == rmq.device.height - 20
+      rmq(@view).frame.fb == 10
 
       apply_frame h: 20, fb: 20
       @view.frame.origin.y.should == rmq.device.height - 40
+      rmq(@view).frame.fb == 20
     end
 
     it 'should apply from_bottom with a height already set' do
@@ -103,7 +119,13 @@ describe 'rect' do
     end
 
     it 'should apply from_bottom correctly when self.edgesForExtendedLayout = UIRectEdgeNone is set' do
-      # TODO, this fails
+      #vc = RectTestController.new
+      # TODO, figure out how to test this, probably need to present the controller
+      #rect = vc.rmq.wrap(vc.test_view).frame
+      #rect.log
+      #rect.fb.should == 40
+      #recGt.b.should == rect.t + rect.h
+
       1.should == 1
     end
 
