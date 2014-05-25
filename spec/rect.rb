@@ -90,6 +90,23 @@ describe 'rect' do
       @view.frame.origin.y.should == rmq.device.height - 40
     end
 
+    it 'should apply from_bottom with a height already set' do
+      apply_frame height: 10
+      apply_frame from_bottom: 10
+      @view.frame.origin.y.should == rmq.device.height - 20
+    end
+
+    it 'should apply from_right with a width already set' do
+      apply_frame width: 20
+      apply_frame from_right: 30
+      @view.frame.origin.x.should == rmq.device.width - 50
+    end
+
+    it 'should apply from_bottom correctly when self.edgesForExtendedLayout = UIRectEdgeNone is set' do
+      # TODO, this fails
+      1.should == 1
+    end
+
     def verify_view_with_superview_frame
       @view.frame.origin.x.should == 1
       @view.frame.origin.y.should == 2

@@ -19,8 +19,8 @@ module RubyMotionQuery
     end
 
     # Always applied in this order, regardless of the hash order:
-    # l, t, w, h
     # grid
+    # l, t, w, h
     # previous
     # from_right, from_bottom
     # right, bottom
@@ -41,17 +41,18 @@ module RubyMotionQuery
     # rmq(my_view).frame = {width: 50, height: 20, centered: :both}
     # rmq(my_view).frame = "a1:b5"
     # rmq(my_view, my_other_view).frame = {grid: "b2", w: 100, h: 200}
+    # rmq(my_view, my_other_view).frame = {g: "b2", w: 100, h: 200}
     # rmq(my_view, my_other_view).frame = {left: "b", top: "2", right: "d", bottom: "3"}
     # rmq(my_other_view).frame = {left: "b", top: "2", right: 200, bottom: 300}
     def frame=(value)
       selected.each do |view| 
-        Rect.update_view_frame(view, value)
+        RubyMotionQuery::Rect.update_view_frame(view, value)
       end
     end
 
     def bounds
       if selected.length == 1
-        Rect.bounds_for_view(selected.first)
+        RubyMotionQuery::Rect.bounds_for_view(selected.first)
       else
         selected.map{|s| Rect.bounds_for_view(s)}
       end
@@ -59,7 +60,7 @@ module RubyMotionQuery
 
     def bounds=(value)
       selected.each do |view| 
-        Rect.bounds_for_view(view).update(value, self.grid).apply_to_bounds
+        RubyMotionQuery::Rect.bounds_for_view(view).update(value, self.grid).apply_to_bounds
       end
     end
 
@@ -70,35 +71,35 @@ module RubyMotionQuery
   #
   #    *******************---*******---***************************   value options
   #    *                   |         |                           *   -------------
-  #    *                   |         |                           *   integer
-  #    *                   |         |                           *   signed integer
-  #    *                  top        |                           *   float
+  #    *                   |         |                           *   Integer
+  #    *                   |         |                           *   signed Integer
+  #    *                  top        |                           *   Float
+  #    *                   |         |                           *   String
   #    *                   |         |                           *   
-  #    *                   |         |                           *   'a1:b4' 
-  #    *                  ---        |                           *   'a1' 
-  #    *              ***************|*****   ---                *   'a'
-  #    *              * view         |    *    |                 *   '1'
-  #    *              *              |    *    |                 *   ':b4'           
-  #    *              *           bottom  *    |                 *   
-  #    *              *              |    *    |                 *   also 
-  #    *|--- left ---|*              |    *    |                 *   -----------------------
-  #    *              *              |    * height               *   :full
-  #    *              *              |    *    |                 *   :right_of_prev  (:rop)
-  #    *              *              |    *    |                 *   :left_of_prev   (:lop)
-  #    *|-------------------- right -+---|*    |                 *   :below_prev     (:bp)                
-  #    *              *              |    *    |                 *   :above_prev     (:ap)
-  #    *              *              |    * |--+--from_right----|*   
-  #    *              *             ---   *    |                 *   abbreviations
-  #    *              ***************---***   ---                *   -----------------------
-  #    *                              |                          *   :l, :t, :w, :h      
-  #    *              |------ width - + -|                       *   :r, :b
-  #    *                              |                          *   :fr, fb
-  #    *                              |                          *   
-  #    *                          from_bottom                    *   :centered options
-  #    *                              |                          *   ---------
+  #    *                  ---        |                           *   also                    
+  #    *              ***************|*****   ---                *   -----------------------
+  #    *              * view         |    *    |                 *   :full
+  #    *              *              |    *    |                 *   :right_of_prev  (:rop)         
+  #    *              *           bottom  *    |                 *   :left_of_prev   (:lop)
+  #    *              *              |    *    |                 *   :below_prev     (:bp)  
+  #    *|--- left ---|*              |    *    |                 *   :above_prev     (:ap)
+  #    *              *              |    * height               *   :grid           (:g)
+  #    *              *              |    *    |                 *   
+  #    *              *              |    *    |                 *   abbreviations
+  #    *|-------------------- right -+---|*    |                 *   -----------------------              
+  #    *              *              |    *    |                 *   :l, :t, :w, :h          
+  #    *              *              |    * |--+--from_right----|*   :r, :b
+  #    *              *             ---   *    |                 *   :fr, fb
+  #    *              ***************---***   ---                *   
+  #    *                              |                          *   :centered options
+  #    *              |------ width - + -|                       *   -----------------------
   #    *                              |                          *   :horizontal
-  #    *                             ---                         *   :vertical
-  #    ***********************************************************   :both            
+  #    *                              |                          *   :vertical
+  #    *                          from_bottom                    *   :both                  
+  #    *                              |                          *   
+  #    *                              |                          *   
+  #    *                             ---                         *   
+  #    ***********************************************************       
   #
   class Rect
     attr_reader :view
@@ -127,11 +128,11 @@ module RubyMotionQuery
       end
 
       def frame_for_view(view)
-        Rect.new(view.frame, view)
+        new(view.frame, view)
       end
 
       def bounds_for_view(view)
-        Rect.new(view.bounds, view)
+        new(view.bounds, view)
       end
 
       # Used internally, don't use this
@@ -150,14 +151,15 @@ module RubyMotionQuery
         elsif o.is_a?(RubyMotionQuery::Rect)
           o.to_cgrect
         elsif grid && o.is_a?(String) 
-          #if point_or_rect = grid[string]
-            #if point_or_rect.is_a?(CGPoint)
-              #@left = point_or_rect.x
-              #@top = point_or_rect.y
-            #else
-              #update point_or_rect, grid
-            #end
-          #end
+          if point_or_rect = grid[string]
+            if point_or_rect.is_a?(CGPoint)
+              #CGRectMake(point_or_rect.x, point_or_rect.y, a[2], a[3])
+            else
+              point_or_rect
+            end
+          else
+            CGRectZero
+          end
         else
           o # Arrays, CGRect, etc
         end
@@ -168,15 +170,17 @@ module RubyMotionQuery
       # In singleton for performance # TODO, test if this is necessary
       def rect_hash_to_rect_array(view, existing_rect, params, grid = nil)
         params_l = params[:l] || params[:left] || params[:x]
-        l = params_l || existing_rect.origin.x
-
         params_t = params[:t] || params[:top] || params[:y]
-        t = params_t || existing_rect.origin.y
-
         params_w = params[:w] || params[:width]
-        w = params_w || existing_rect.size.width
-
         params_h = params[:h] || params[:height]
+
+        # Grid
+        params_g = params[:grid] || params[:g]
+        # TODO
+
+        l = params_l || existing_rect.origin.x
+        t = params_t || existing_rect.origin.y
+        w = params_w || existing_rect.size.width
         h = params_h || existing_rect.size.height
 
         r = params[:r] || params[:right]
@@ -184,12 +188,10 @@ module RubyMotionQuery
 
         fr = params[:from_right] || params[:fr]
         fb = params[:from_bottom] || params[:fb]
-
-        # Grid
-        # TODO
+     
 
         # Previous
-        if prev_view = Rect.previous_view
+        if prev_view = previous_view
           if below_prev = (params[:below_prev] || params[:bp])
             t = prev_view.frame.origin.y + prev_view.frame.size.height + below_prev
           elsif above_prev = (params[:above_prev] || params[:ap])
@@ -210,18 +212,18 @@ module RubyMotionQuery
         # From right, from_bottom
         if (fr || fb) && sv
           if fr
-            if params_w
-              l = sv_size.width - w - fr
-            else
+            if params_l
               w = sv_size.width - l - fr
+            else
+              l = sv_size.width - w - fr
             end
           end
 
           if fb
-            if params_h
-              t = sv_size.height - h - fb
-            else
+            if params_t
               h = sv_size.height - t - fb
+            else
+              t = sv_size.height - h - fb
             end
           end
         end
@@ -278,7 +280,7 @@ module RubyMotionQuery
       # If we did it that way, then we'd create a new instance, then appy the
       # rect instance to the frame or bounds, like so:
       # Rect.new(params, view, grid).apply_to_frame
-      cg_rect = Rect.object_to_cg_rect(params, @view, self.to_cgrect, grid)
+      cg_rect = RubyMotionQuery::Rect.object_to_cg_rect(params, @view, self.to_cgrect, grid)
 
       @left = cg_rect.origin.x
       @top = cg_rect.origin.y
