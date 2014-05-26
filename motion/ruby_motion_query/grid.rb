@@ -4,6 +4,9 @@ module RubyMotionQuery
       def grid
         @_app_grid ||= Grid.new(Grid::DEFAULT)
       end
+      def grid=(value)
+        @_app_grid = value
+      end
     end
   end
 
@@ -24,7 +27,7 @@ module RubyMotionQuery
   # grid will be used. rmq.stylesheet.grid (this will return app's if nil).
   # If you want to create a grid for your stylesheet, you can just dup the app one
   # like so (inside the stylesheet): self.grid = rmq.app.grid.dup
-  # Then you can mod it: self.grid.columns = 6
+  # Then you can mod it: self.grid.num_columns = 6
   #
   # @example If you want your view to be from b2 to d3, you can do any of the following:
   # 
@@ -52,21 +55,19 @@ module RubyMotionQuery
   #
   # @example Create a new grid inside a stylesheet by duping the app's grid
   #   self.grid = rmq.app.grid.dup
-  #   # Then change the number of columns
-  #   self.grid.columns = 6
+  #   # Then change the number of num_columns
+  #   self.grid.num_columns = 6
   #
   # @example Creating a new grid
   #   Grid.new({
-  #     columns: 10,
-  #     rows: 13,
+  #     num_columns: 10,
+  #     num_rows: 13,
   #     column_gutter: 10,
   #     row_gutter: 10,
   #     content_left_margin: 5,
   #     content_right_margin: 5,
   #     content_top_margin: 70,
-  #     content_bottom_margin: 5,
-  #     status_bar_bottom: 20,
-  #     nav_bar_bottom: 64
+  #     content_bottom_margin: 5
   #   })
   #
   # @example Align all your buttons left on the c column
@@ -75,7 +76,7 @@ module RubyMotionQuery
   # @example Log your grid
   #   rmq.app.grid.log
   #
-  #   #   {:columns=>10, :rows=>13, :column_gutter=>10, :content_left_margin=>5, 
+  #   #   {:num_columns=>10, :num_rows=>13, :column_gutter=>10, :content_left_margin=>5, 
   #   #   :content_right_margin=>5, :content_top_margin=>5, :content_bottom_margin=>5, 
   #   #   :row_gutter=>10, :status_bar_bottom=>20, :nav_bar_bottom=>64}
   #
@@ -95,31 +96,31 @@ module RubyMotionQuery
   #   #   12  .  .  .  .  .  .  .  .  .  .
   #
   class Grid
-    attr_reader :columns, :column_gutter, :content_left_margin, :content_right_margin, 
-                :content_bottom_margin, :content_top_margin, :rows, :row_gutter, 
+    attr_reader :num_columns, :column_gutter, :content_left_margin, :content_right_margin, 
+                :content_bottom_margin, :content_top_margin, :num_rows, :row_gutter, 
                 :status_bar_bottom, :nav_bar_bottom
-
-    DEFAULT = {
-      columns: 10,
-      column_gutter: 10,
-      content_left_margin: 5,
-      content_right_margin: 5,
-      content_top_margin: 70,
-      content_bottom_margin: 5,
-      rows: 13,
-      row_gutter: 10,
-      status_bar_bottom: 20,
-      nav_bar_bottom: 64
-    }
 
     MAX_COLUMNS = 26
     MAX_ROWS = 30
+    STATUS_BAR_BOTTOM = 20
+    NAV_BAR_BOTTOM = 64
+
+    DEFAULT = {
+      num_columns: 10,
+      column_gutter: 10,
+      content_left_margin: 5,
+      content_right_margin: 5,
+      content_top_margin: 5,
+      content_bottom_margin: 5,
+      num_rows: 13,
+      row_gutter: 10
+    }
 
     def initialize(params)
       @grid_hash = {}
 
-      self.columns = params[:columns]
-      self.rows = params[:rows]
+      self.num_columns = params[:num_columns]
+      self.num_rows = params[:num_rows]
 
       @column_gutter = params[:column_gutter]
       @content_left_margin = params[:content_left_margin]
@@ -127,18 +128,18 @@ module RubyMotionQuery
       @content_top_margin = params[:content_top_margin]
       @content_bottom_margin = params[:content_bottom_margin]
       @row_gutter = params[:row_gutter]
-      @status_bar_bottom = params[:status_bar_bottom]
-      @nav_bar_bottom = params[:nav_bar_bottom]
+      @status_bar_bottom = params[:status_bar_bottom] || STATUS_BAR_BOTTOM
+      @nav_bar_bottom = params[:nav_bar_bottom] || NAV_BAR_BOTTOM
     end
 
-    def columns=(value)
+    def num_columns=(value)
       value = MAX_COLUMNS if value > MAX_COLUMNS
-      @columns = value
+      @num_columns = value
       clear_cache
     end
-    def rows=(value)
+    def num_rows=(value)
       value = MAX_ROWS if value > MAX_ROWS
-      @rows = value
+      @num_rows = value
       clear_cache
     end
     def column_gutter=(value)
@@ -187,10 +188,10 @@ module RubyMotionQuery
     #   my_grid['1:4'] # Just height
     #   my_grid['a:4'] # Just width, and just height on the other end (interesting eh)
     #
-    # @return integer, CGPoint, or CGRect, depending
+    # @return hash with any combination of l:, t:, w:, or :h. Or nil if invalid
     def [](coord)
       @grid_hash[coord] ||= begin
-        if coord.is_a?(NSArray)
+        if coord.is_a?(Array)
 
           l = column_lefts[coord[0]]
           t = row_tops[coord[1]]
@@ -200,43 +201,52 @@ module RubyMotionQuery
           when 4
             RubyMotionQuery::Rect.new([l, t, coord[2], coord[3]])
           else
-            0
+            nil
           end
 
         else
+          return nil unless coord
 
           parts = coord.split(':')
           case parts.length
             when 0
-              0
+              nil
             when 1
-              p1 = parts.first
-              digits = p1.gsub(/\D/, '').to_i
-              letter = p1.gsub(/\d/, '')
-
               lefts = column_lefts
               tops = row_tops
 
-              left_i = if letter != ''
-                97 - letter.ord
+              p1 = parts.first
+              digits = p1.gsub(/\D/, '')
+              if digits == ''
+                digits = nil
+              else
+                top_i = digits.to_i
+              end
+
+              letter = p1.gsub(/\d/, '')
+              if letter == ''
+                letter = nil
+              else
+                letter.downcase!
+                left_i = (letter.ord - 97)
+              end
+
+              if digits && letter
+                if lefts.length > left_i && tops.length > top_i
+                  {l: lefts[left_i], t: tops[top_i]}
+                else
+                  nil 
+                end
+              elsif digits
+                {t: tops[top_i]}
+              elsif letter
+                {l: lefts[left_i]}
               else
                 nil
               end
-              top_i = digits
-
-              if left_i && lefts.length > left_i && tops.length > top_i
-                CGPointMake(column_lefts[left_i], row_tops[top_i])
-              elsif left_i && lefts.length > left_i
-                column_lefts[left_i]
-              elsif tops.length > top_i
-                row_tops[top_i]
-              else
-                0
-              end
             when 2
-              p1 = self[parts.first]
-              p2 = self[parts.last]
-              RubyMotionQuery::Rect.new([p1.x, p1.y], [p2.x - p1.x, p2.y - p1.y])
+              tl = self[parts.first]
+              br = self[parts.last]
           end
 
         end
@@ -254,8 +264,8 @@ module RubyMotionQuery
 
     def to_h
       {
-        columns: @columns,
-        rows: @rows,
+        num_columns: @num_columns,
+        num_rows: @num_rows,
         column_gutter: @column_gutter,
         content_left_margin: @content_left_margin,
         content_right_margin: @content_right_margin,
@@ -273,16 +283,16 @@ module RubyMotionQuery
       out = left_m.dup
       out << '      '
 
-      0.upto(@columns - 1).each do |c|
+      0.upto(@num_columns - 1).each do |c|
         out << "#{(c+97).chr}  "
       end
 
-      0.upto(@rows - 1).each do |r|
+      0.upto(@num_rows - 1).each do |r|
         out << "\n"
         out << left_m
         out << r.to_s.rjust(4)
 
-        0.upto(@columns - 1).each do |c|
+        0.upto(@num_columns - 1).each do |c|
           out << "  ."
         end
       end
@@ -302,17 +312,17 @@ module RubyMotionQuery
     end
 
     def usable_width
-      @_usable_width ||= (RMQ.device.screen_width - (@column_gutter * (@columns - 1)) - @content_left_margin - @content_right_margin)
+      @_usable_width ||= (RMQ.device.screen_width - (@column_gutter * (@num_columns - 1)) - @content_left_margin - @content_right_margin)
     end
 
     def column_width
-      @_column_width ||= usable_width / @columns
+      @_column_width ||= usable_width / @num_columns
     end
 
     def column_lefts
       out = []
-      if @columns
-        0.upto(@columns - 1) do |i|
+      if @num_columns
+        0.upto(@num_columns - 1) do |i|
           out << (@content_left_margin + (i * @column_gutter) + (i * column_width))
         end
       end
@@ -324,17 +334,17 @@ module RubyMotionQuery
     end
 
     def usable_height
-      @_usable_height ||= (RMQ.device.screen_height - (@row_gutter * (@rows - 1)) - @content_top_margin - @content_bottom_margin)
+      @_usable_height ||= (RMQ.device.screen_height - (@row_gutter * (@num_rows - 1)) - @content_top_margin - @content_bottom_margin)
     end
 
     def row_height
-      @_row_height ||= usable_height / @rows
+      @_row_height ||= usable_height / @num_rows
     end
 
     def row_tops
       out = []
-      if @rows
-        0.upto(@rows - 1) do |i|
+      if @num_rows
+        0.upto(@num_rows - 1) do |i|
           out << (@content_top_margin + (i * @row_gutter) + (i * row_height))
         end
       end

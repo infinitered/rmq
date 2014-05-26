@@ -330,23 +330,17 @@ describe 'rect' do
     end
 
     it 'should set frame given various arrays' do
-      #apply_frame [1, 2, 3, 4]
-      #@view.frame.origin.x.should == 1
-      #@view.frame.origin.y.should == 2 
-      #@view.frame.size.width.should == 3
-      #@view.frame.size.height.should == 4 
+      apply_frame [1, 2, 3, 4]
+      @view.frame.origin.x.should == 1
+      @view.frame.origin.y.should == 2 
+      @view.frame.size.width.should == 3
+      @view.frame.size.height.should == 4 
 
-      #apply_frame [[5, 6], [7, 8]]
-      #@view.frame.origin.x.should == 5
-      #@view.frame.origin.y.should == 6 
-      #@view.frame.size.width.should == 7
-      #@view.frame.size.height.should == 8 
-    
-      #apply_frame [9, 10]
-      #@view.frame.origin.x.should == 9
-      #@view.frame.origin.y.should == 10 
-      #@view.frame.size.width.should == 7
-      #@view.frame.size.height.should == 8 
+      apply_frame [[5, 6], [7, 8]]
+      @view.frame.origin.x.should == 5
+      @view.frame.origin.y.should == 6 
+      @view.frame.size.width.should == 7
+      @view.frame.size.height.should == 8 
     end
   end
 

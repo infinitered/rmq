@@ -160,8 +160,15 @@ module RubyMotionQuery
           else
             CGRectZero
           end
+        elsif o.is_a?(Array)
+          case o.length
+          when 4
+            CGRectMake(o[0], o[1], o[2], o[3])
+          when 2
+            o
+          end
         else
-          o # Arrays, CGRect, etc
+          o # CGRect, etc
         end
       end
 
