@@ -207,7 +207,12 @@ module RubyMotionQuery
         else
           return nil unless coord
 
+          # TODO this needs refactoring once the full tests are done
+          coord.gsub!(/\s/, '')
+          is_end_coord = coord.start_with?(':')
           parts = coord.split(':')
+          parts.reject!{|o| o == ''}
+        
           case parts.length
             when 0
               nil
@@ -233,20 +238,31 @@ module RubyMotionQuery
 
               if digits && letter
                 if lefts.length > left_i && tops.length > top_i
-                  {l: lefts[left_i], t: tops[top_i]}
+                  if is_end_coord
+                    {r: lefts[left_i] + column_width, b: tops[top_i] + row_height}
+                  else
+                    {l: lefts[left_i], t: tops[top_i]}
+                  end
                 else
                   nil 
                 end
               elsif digits
-                {t: tops[top_i]}
+                if is_end_coord
+                  {b: tops[top_i] + row_height}
+                else
+                  {t: tops[top_i]}
+                end
               elsif letter
-                {l: lefts[left_i]}
+                if is_end_coord
+                  {r: lefts[left_i] + column_width}
+                else
+                  {l: lefts[left_i]}
+                end
               else
                 nil
               end
             when 2
-              tl = self[parts.first]
-              br = self[parts.last]
+              self[parts.first].merge!(self[":#{parts.last}"])
           end
 
         end
@@ -353,32 +369,6 @@ module RubyMotionQuery
     def row_bottoms
       row_tops.map{|y| y + row_height}
     end
-
-    private
-
-    #def grid_hash
-      #@_grid_hash ||= begin
-        #h = {}
-
-        #column_lefts.each_with_index do |x, i|
-          #h["l#{(i+97).chr}".to_sym] = x 
-        #end
-
-        #column_rights.each_with_index do |x, i|
-          #h["r#{(i+97).chr}".to_sym] = x 
-        #end
-
-        #row_tops.each_with_index do |y, i|
-          #h["t#{(i)}".to_sym] = y 
-        #end
-
-        #row_bottoms.each_with_index do |y, i|
-          #h["b#{(i)}".to_sym] = y 
-        #end
-
-        #h
-      #end
-    #end
 
   end
 end

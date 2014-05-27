@@ -20,6 +20,14 @@ describe 'grid' do
     rmq.app.grid.should != nil
   end
 
+  should 'clear cache when changing settings' do
+    was_row = @grid['1:3']
+    was_column = @grid['a:d']
+    @grid.num_columns = 5
+    @grid['1:3'].should == was_row
+    @grid['a:d'].should != was_column
+  end
+
   should 'return usable width' do
     gaps_between_colums = (@grid.num_columns - 1) * @grid.column_gutter
     @grid.usable_width.should == (rmq.device.screen_width - gaps_between_colums - 15)
@@ -42,12 +50,16 @@ describe 'grid' do
     @grid[nil].should == nil
   end
 
-  should 'return integer if only row is specified' do
+  should 'return nil if empty string is specified' do
+    @grid[''].should == nil
+  end
+
+  should 'return 1 member hash if only 1 row is specified' do
     @grid['0'].should == {t: 5}
     @grid['1'].should == {t: 5 + @grid.row_height + @grid.row_gutter}
   end
 
-  should 'return integer if only column is specified' do
+  should 'return 1 member hash if only column is specified' do
     @grid['a'].should == {l: 7}
     @grid['b'].should == {l: 7 + @grid.column_width + @grid.column_gutter}
   end
@@ -57,17 +69,38 @@ describe 'grid' do
     @grid['A'].should == {l: 7}
   end
 
-  should 'return CGPoint if specifying 1 letter and digits' do
+  should 'return 2 member hash if specifying 1 letter and digits' do
     @grid['a0'].should == {l: 7, t: 5}
   end
 
-  should 'return valid hash when specifying a full grid' do
-    @grid['a0:b1'].should == {l: 7, t: 5}
+  should 'return 2 member hash if specifying 1 letter and digits with colon' do
+    @grid[':a0'].should == {r: 7 + @grid.column_width, b: 5 + @grid.row_height}
+    @grid[':b1'].should == {r: 61.5999755859375, b: 221.799987792969}
   end
 
-  # ':b2' 
-  # ':2'
-  # ':b'
-  # 'a:2'
-  # 'a0:3'
+  should 'return 4 member hash when specifying a full grid' do
+    @grid['a0:a0'].should == {l: 7, t: 5, r: 7 + @grid.column_width, b: 5 + @grid.row_height}
+    @grid['a0:b1'].should == {l: 7.0, t: 5.0, r: 61.5999755859375, b: 221.799987792969}
+  end
+
+  should 'return 1 member has when specifying colon and number' do
+    @grid[':0'].should == {b: 5 + @grid.row_height}
+  end
+
+  should 'return 1 member has when specifying colon and letter' do
+    @grid[':a'].should == {r: 7 + @grid.column_width}
+  end
+
+  should 'return 2 member hash when specifying only column:number' do
+    @grid['a:1'].should == {l: 7, b: 221.799987792969}
+    @grid['b:0'].should == {l: 7 + @grid.column_width + 8, b: 5 + @grid.row_height}
+  end
+
+  should 'return 3 member hash when specifying only column|row:number' do
+    @grid['a0:0'].should == {l: 7, t: 5, b: 5 + @grid.row_height}
+    @grid['a0:1'].should == {l: 7, t: 5, b: 5 + @grid.row_height + 10 + @grid.row_height}
+  end
+
+
+  # Finish other methods
 end

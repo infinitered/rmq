@@ -298,8 +298,8 @@ module RubyMotionQuery
       end
 
       if @draw_grid
-        0.upto(grid.rows - 1) do |r|
-          0.upto(grid.columns - 1) do |c|
+        0.upto(grid.num_rows - 1) do |r|
+          0.upto(grid.num_columns - 1) do |c|
             rec = grid[[c, r]]
             CGContextSetFillColorWithColor(context, @column_fill_color)
             CGContextFillRect(context, rec.to_cgrect) 
