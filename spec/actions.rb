@@ -121,4 +121,30 @@ describe 'actions' do
     @vc.rmq(UILabel).send("sizeToFit")
     labels.each { |label| label.frame.size.width.should.not == 0 }
   end
+
+  it 'should read and set data for UILabel' do
+    rmq.create(UILabel).data('foo').get.text.should == 'foo'
+    rmq.create(UILabel).data('bar').data.should == 'bar'
+  end
+
+  it 'should read and set data for UIButton' do
+    rmq.create(UIButton).data('foo').get.titleForState(UIControlStateNormal).should == 'foo'
+    rmq.create(UIButton).data('bar').data.should == 'bar'
+  end
+
+  it 'should read and set data for UIImageView' do
+    image = rmq.image.resource('logo')
+    rmq.create(UIImageView).data(image).get.image.should == image
+    rmq.create(UIImageView).data(image).data.should == image
+  end
+
+  it 'should read and set data for UITextView' do
+    rmq.create(UITextView).data('foo').get.text.should == 'foo'
+    rmq.create(UITextView).data('bar').data.should == 'bar'
+  end
+
+  it 'should read and set data for UITextField' do
+    rmq.create(UITextField).data('foo').get.text.should == 'foo'
+    rmq.create(UITextField).data('bar').data.should == 'bar'
+  end
 end
