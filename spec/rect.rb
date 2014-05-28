@@ -528,6 +528,17 @@ describe 'rect' do
       rect.l.should == 10 
       rect.r.should == @grid.content_left_margin + @grid.column_width + @grid.column_gutter + @grid.column_width
     end
+
+    should 'apply subview in same gridspace as superview, not in superviews bounds' do
+      rect1 = rmq(@view).layout('a0:d4').frame
+      rect2 = rmq(@view).append(UIView).layout('a0:d4').frame
+      rect2.l.should == 0
+      rect2.t.should == 0
+      rect2.w.should == rect1.w
+      rect2.h.should == rect1.h
+    end
+
+    # TODO test subviews more
   end
 
   describe 'rmq instance frame' do

@@ -149,12 +149,8 @@ module RubyMotionQuery
         elsif o.is_a?(RubyMotionQuery::Rect)
           o.to_cgrect
         elsif grid && o.is_a?(String) 
-          if h = grid[o]
-            a = rect_hash_to_rect_array(view, existing_rect, h, grid)
-            CGRectMake(a[0], a[1], a[2], a[3])
-          else
-            CGRectZero
-          end
+          a = rect_hash_to_rect_array(view, existing_rect, {grid: o}, grid)
+          CGRectMake(a[0], a[1], a[2], a[3])
         elsif o.is_a?(Array)
           case o.length
           when 4
@@ -171,6 +167,11 @@ module RubyMotionQuery
       #
       # In singleton for performance # TODO, test if this is necessary
       def rect_hash_to_rect_array(view, existing_rect, params, grid = nil)
+        # TODO check if this is performant, it should be
+        if (sv = view.superview) && (vc = view.rmq_data.view_controller)
+          not_in_root_view = !(vc.view == sv)
+        end
+
         # Grid
         if grid
           if params_g = params[:grid] || params[:g]
@@ -178,6 +179,30 @@ module RubyMotionQuery
             params.delete(:g)
 
             grid_h = grid[params_g]
+
+            if not_in_root_view # Change to root_view_space
+              # TODO, I don't think this is fully working correctly, plus
+              # needs refactoring. Test more
+
+              # Convert to width and height
+              if r = grid_h.delete(:r)
+                # TODO, do if there is no r
+                grid_h[:width] = r - grid_h[:l]
+              end
+
+              if b = grid_h.delete(:b)
+                # TODO, do if there is no T
+                grid_h[:height] = b - grid_h[:t]
+              end
+
+              # Convert to root_view space
+              new_point = CGPointMake(grid_h[:l] || 0, grid_h[:t] || 0)
+              sv_point = view.convertPoint(new_point, fromView: sv)
+              puts sv_point.inspect
+              grid_h[:l] -= sv_point.x
+              grid_h[:t] -= sv_point.y
+              puts grid_h.inspect
+            end
             params = grid_h.merge(params)
           end
         end
@@ -215,9 +240,8 @@ module RubyMotionQuery
           end
         end
 
-        if sv = view.superview
+        if sv
           if (fr || fb || centered) # Needs size
-            vc = view.rmq_data.view_controller
 
             # Horrible horrible hack, TODO fix. This is here because
             # the root_view's height isn't changed until after viewDidLoad when
@@ -225,7 +249,7 @@ module RubyMotionQuery
             # Not sure how often people use UIRectEdgeNone as I never do, 
             # perhaps an edge case that should be isolated in some wayo
             # I hate to have to check and calc this every time
-            if vc && (vc.view == sv) && (vc.edgesForExtendedLayout == UIRectEdgeNone)
+            if vc && !not_in_root_view && (vc.edgesForExtendedLayout == UIRectEdgeNone)
               sv_size = CGSizeMake(sv.size.width, rmq.device.screen_height - 64)  
             else
               sv_size = sv.size
@@ -283,6 +307,16 @@ module RubyMotionQuery
         end
 
         [l,t,w,h]
+      end
+
+      def convert_to_sv_point(view, sv)
+        # TODO refactor
+        f = view.frame
+        window_point = view.convertRect(f, fromView: sv)
+        puts window_point.inspect
+        #f.origin.x += window_point.x
+        #f.origin.y += window_point.y
+        {l: 0, t: 0}
       end
 
     end # << self
@@ -383,6 +417,8 @@ module RubyMotionQuery
         @view.layer.zPosition
       end
     end
+
+
 
     def to_cgpoint
       CGPointMake(@left, @top)
