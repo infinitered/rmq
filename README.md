@@ -11,6 +11,8 @@ A fast, non-polluting, chaining, front-end library. It’s like jQuery for [Ruby
 
 One of RMQ's goal is to have the best [documentation][1]documentation of any RubyMotion UI library.
 
+## v0.6.0
+
 <br />
 
 ----------
@@ -25,22 +27,13 @@ One of RMQ's goal is to have the best [documentation][1]documentation of any Rub
 
 ```
 gem install ruby_motion_query
-rmq create my_app
-cd my_app
+# Update your gem file to use RMQ-Edge
+gem ‘ruby_motion_query’, :git => ‘git@github.com:infinitered/rmq.git’
 bundle
 rake
 ```
 
-Or, if you use **rbenv**:
-
-```
-gem install ruby_motion_query
-rbenv rehash
-rmq create my_app
-cd my_app
-bundle
-rake
-```
+rbenv rehash after gem install if you use rbenv
 
 <br />
 
