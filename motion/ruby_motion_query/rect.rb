@@ -198,10 +198,10 @@ module RubyMotionQuery
               # Convert to root_view space
               new_point = CGPointMake(grid_h[:l] || 0, grid_h[:t] || 0)
               sv_point = view.convertPoint(new_point, fromView: sv)
-              puts sv_point.inspect
+              #puts sv_point.inspect
               grid_h[:l] -= sv_point.x
               grid_h[:t] -= sv_point.y
-              puts grid_h.inspect
+              #puts grid_h.inspect
             end
             params = grid_h.merge(params)
           end
@@ -307,16 +307,6 @@ module RubyMotionQuery
         end
 
         [l,t,w,h]
-      end
-
-      def convert_to_sv_point(view, sv)
-        # TODO refactor
-        f = view.frame
-        window_point = view.convertRect(f, fromView: sv)
-        puts window_point.inspect
-        #f.origin.x += window_point.x
-        #f.origin.y += window_point.y
-        {l: 0, t: 0}
       end
 
     end # << self
