@@ -9,7 +9,7 @@
 
 A fast, non-polluting, chaining, front-end library. It’s like jQuery for [RubyMotion](http://rubymotion.com) plus templates, stylesheets, events, animations, etc.
 
-One of RMQ's goal is to have the best [documentation][1]documentation of any RubyMotion UI library.
+One of RMQ's goal is to have the best [documentation][1] of any RubyMotion UI library.
 
 ## v0.6.0
 
@@ -64,7 +64,7 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 ### License
 
-RMQ is available under the MIT license. See the LICENSE file for more info.
+RMQ is available under the MIT license. See the [LICENSE](https://github.com/infinitered/rmq/blob/master/LICENSE) file for more info.
 
 
 <br />
