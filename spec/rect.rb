@@ -538,6 +538,17 @@ describe 'rect' do
       rect2.h.should == rect1.h
     end
 
+    should 'apply subview in same gridspace as superview, not in superviews bounds #2' do
+      grid_h = @grid['a0:c2'].dup
+
+      rect1 = rmq(@view).layout('b1:c2').frame
+      rect2 = rmq(@view).append(UIView).layout('a0:c2').frame
+      rect2.l.should ==  grid_h[:l] - rect1.l
+      rect2.t.should ==  grid_h[:t] - rect1.t
+      rect2.w.should == grid_h[:r] - grid_h[:l]
+      rect2.h.should == grid_h[:b] - grid_h[:t]
+    end
+
     # TODO test subviews more
   end
 

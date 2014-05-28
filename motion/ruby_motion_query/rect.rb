@@ -196,12 +196,12 @@ module RubyMotionQuery
               end
 
               # Convert to root_view space
-              new_point = CGPointMake(grid_h[:l] || 0, grid_h[:t] || 0)
-              sv_point = view.convertPoint(new_point, fromView: sv)
-              #puts sv_point.inspect
-              grid_h[:l] -= sv_point.x
-              grid_h[:t] -= sv_point.y
-              #puts grid_h.inspect
+              #new_point = CGPointMake(grid_h[:l] || 0, grid_h[:t] || 0)
+              #sv_point = vc.view.convertPoint(new_point, fromView: sv)
+              #grid_h[:l] -= sv_point.x
+              #grid_h[:t] -= sv_point.y
+              grid_h[:l] -= sv.frame.origin.x # TODO A hack for now, fix. Only works with 1 deep
+              grid_h[:t] -= sv.frame.origin.y 
             end
             params = grid_h.merge(params)
           end
@@ -402,13 +402,13 @@ module RubyMotionQuery
       to_cgsize
     end
 
+    # TODO add center
+
     def z_position
       if @view
         @view.layer.zPosition
       end
     end
-
-
 
     def to_cgpoint
       CGPointMake(@left, @top)
