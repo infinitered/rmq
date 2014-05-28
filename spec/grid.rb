@@ -1,9 +1,6 @@
 describe 'grid' do
 
   before do
-    #@vc = UIViewController.alloc.init
-    #@viewq = @vc.rmq.append(UIView)
-
     @grid = RubyMotionQuery::Grid.new({
       num_columns: 10,
       column_gutter: 8,
@@ -89,6 +86,15 @@ describe 'grid' do
 
   should 'return 1 member has when specifying colon and letter' do
     @grid[':a'].should == {r: 7 + @grid.column_width}
+  end
+
+  should 'work with a:a' do
+    @grid['a:a'].should == {l: @grid.content_left_margin, r: @grid.content_left_margin + @grid.column_width}
+  end
+
+  should 'work with a:b' do
+    r = @grid.content_left_margin + @grid.column_width + @grid.column_gutter + @grid.column_width
+    @grid['a:b'].should == {l: @grid.content_left_margin, r: r}
   end
 
   should 'return 2 member hash when specifying only column:number' do

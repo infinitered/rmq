@@ -223,7 +223,7 @@ describe 'rect' do
     end
 
     it 'should change width when left and right are both changed (and width is not changed)' do
-      apply_frame l: 20 , t: 30, w: 300, h: 60
+      apply_frame l: 20 , t: 30, r: 120, h: 60
       w = @view.frame.size.width
       apply_frame r: 100, l: 49 
       new_w = @view.frame.size.width
@@ -460,11 +460,74 @@ describe 'rect' do
 
   describe 'and grid' do
     before do
+      @original_app_grid = rmq.app.grid
+
       @vc = UIViewController.alloc.init
       @view = @vc.rmq.append(UIView).get
+
+      @grid = RubyMotionQuery::Grid.new({
+        num_columns: 10,
+        column_gutter: 8,
+        content_left_margin: 7,
+        content_right_margin: 8,
+        content_top_margin: 5,
+        content_bottom_margin: 6,
+        num_rows: 5,
+        row_gutter: 10
+      })
+      rmq.app.grid = @grid
     end
 
-    # TODO
+    after do
+      rmq.app.grid = @original_app_grid
+    end
+
+    should 'layout with full grid string' do
+      rect = rmq(@view).layout('a0:a0').frame
+      rect.l.should == 7
+      rect.t.should == 5
+      rect.r.should == 7 + @grid.column_width
+      rect.b.should == 5 + @grid.row_height
+    end
+
+    should 'layout with partial grid string' do
+      rect = rmq(@view).layout('a0').frame
+      rect.l.should == 7
+      rect.t.should == 5
+      rect.w.should == 0
+      rect.h.should == 0
+    end
+
+    should 'layout with partial grid string' do
+      rect = rmq(@view).layout(':a0').frame
+      rect.w.should == 0
+      rect.h.should == 0
+      rect.r.should == @grid.content_left_margin + @grid.column_width
+      rect.b.should == @grid.content_top_margin + @grid.row_height
+      rect.l.should == rect.r
+      rect.t.should == rect.t
+    end
+
+    should 'work with stylesheet grid if it exists' do 
+      # TODO
+      1.should == 1
+    end
+
+    should 'allow you to partially layout with a grid' do
+      rect = rmq(@view).layout(grid: 'a:b', t: 0, h: 20).frame
+      rect.t.should == 0
+      rect.h.should == 20 
+      rect.l.should == @grid.content_left_margin 
+      rect.r.should == @grid.content_left_margin + @grid.column_width + @grid.column_gutter + @grid.column_width
+    end
+
+    should 'override grid with specific settings' do
+      rect = rmq(@view).layout(grid: 'a:b', t: 0, h: 20, l: 10).frame
+      rect.t.should == 0
+      rect.h.should == 20 
+      rect.l.should == 10 
+      rect.r.should == @grid.content_left_margin + @grid.column_width + @grid.column_gutter + @grid.column_width
+    end
   end
 
   describe 'rmq instance frame' do

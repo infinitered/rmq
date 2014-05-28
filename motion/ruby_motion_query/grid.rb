@@ -47,8 +47,6 @@ module RubyMotionQuery
   #   st.frame = "b2:d3"
   #   st.origin = "b2:d3"
   #   st.frame = {grid: "b2", w: 100, h: 200}
-  #   st.frame = {left: "b", top: "2", right: "d", bottom: "3"}
-  #   st.origin = {l: "b", t: "2", r: "d", b: "3"}
   #   my_view.frame = some_grid['b2:d3']
   #   my_view.origin = some_grid['b2:d3']
   #   rmq.append(UIView).layout('b2:d3')                       
@@ -170,13 +168,6 @@ module RubyMotionQuery
       @nav_bar_bottom = value
       clear_cache
     end
-
-    # These are failing:
-    # (main)> rmq.app.grid['a0:a0']
-    #  => #<CGRect origin=#<CGPoint x=5.0 y=69.0> size=#<CGSize width=0.0 height=0.0>>
-    #  (main)> rmq.app.grid['a0:a1']
-    #  => #<CGRect origin=#<CGPoint x=5.0 y=69.0> size=#<CGSize width=0.0 height=38.7692260742188>>
-    #  (main)>
 
     # @example
     #   my_grid['a1']

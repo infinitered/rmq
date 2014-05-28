@@ -42,8 +42,6 @@ module RubyMotionQuery
     # rmq(my_view).frame = "a1:b5"
     # rmq(my_view, my_other_view).frame = {grid: "b2", w: 100, h: 200}
     # rmq(my_view, my_other_view).frame = {g: "b2", w: 100, h: 200}
-    # rmq(my_view, my_other_view).frame = {left: "b", top: "2", right: "d", bottom: "3"}
-    # rmq(my_other_view).frame = {left: "b", top: "2", right: 200, bottom: 300}
     def frame=(value)
       selected.each do |view| 
         RubyMotionQuery::Rect.update_view_frame(view, value)
@@ -107,12 +105,12 @@ module RubyMotionQuery
     class << self
 
       def update_view_frame(view, params)
-        view.frame = object_to_cg_rect(params, view, view.frame)
+        view.frame = object_to_cg_rect(params, view, view.frame, view.rmq.grid)
         @_previous_view = RubyMotionQuery::RMQ.weak_ref(view)
       end
 
       def update_view_bounds(view, params)
-        view.frame = object_to_cg_rect(params, view, view.bounds)
+        view.frame = object_to_cg_rect(params, view, view.bounds, view.rmq.grid)
         @_previous_view = RubyMotionQuery::RMQ.weak_ref(view)
       end
 
@@ -151,12 +149,9 @@ module RubyMotionQuery
         elsif o.is_a?(RubyMotionQuery::Rect)
           o.to_cgrect
         elsif grid && o.is_a?(String) 
-          if point_or_rect = grid[string]
-            if point_or_rect.is_a?(CGPoint)
-              #CGRectMake(point_or_rect.x, point_or_rect.y, a[2], a[3])
-            else
-              point_or_rect
-            end
+          if h = grid[o]
+            a = rect_hash_to_rect_array(view, existing_rect, h, grid)
+            CGRectMake(a[0], a[1], a[2], a[3])
           else
             CGRectZero
           end
@@ -176,16 +171,21 @@ module RubyMotionQuery
       #
       # In singleton for performance # TODO, test if this is necessary
       def rect_hash_to_rect_array(view, existing_rect, params, grid = nil)
+        # Grid
+        if grid
+          if params_g = params[:grid] || params[:g]
+            params.delete(:grid)
+            params.delete(:g)
+
+            grid_h = grid[params_g]
+            params = grid_h.merge(params)
+          end
+        end
+
         params_l = params[:l] || params[:left] || params[:x]
         params_t = params[:t] || params[:top] || params[:y]
         params_w = params[:w] || params[:width]
         params_h = params[:h] || params[:height]
-
-        # Grid
-        if grid
-          params_g = params[:grid] || params[:g]
-          # TODO
-        end
 
         l = params_l || existing_rect.origin.x
         t = params_t || existing_rect.origin.y
