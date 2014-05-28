@@ -361,6 +361,9 @@ module RubyMotionQuery
         @view.layer.masksToBounds
       end
 
+      def accessibility_label=(value)
+        @view.accessibilityLabel = value
+      end
     end
   end
 end

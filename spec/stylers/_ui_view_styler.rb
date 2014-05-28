@@ -188,4 +188,10 @@ describe 'ui_view_styler' do
     view.tintColor.class.should == UIColor.blueColor.class
     view.layer.cornerRadius.should == 5
   end
+
+  it 'should include the ability to set the accessibilityLabel' do
+    value = 'this is the value for the accessibilityLabel'
+    view = @vc.rmq.append(UIView).style { |st| st.accessibility_label = value }.get
+    view.accessibilityLabel.should == value
+  end
 end
