@@ -11,6 +11,68 @@ module RubyMotionQuery
       self
     end
 
+    # Get or set the most common data for a particuliar view(s) in a
+    # performant way (more performant than attr)
+    # For example, text for UILabel, image for UIImageView
+    #
+    # @return [RMQ]
+    def data(new_data = nil)
+      if new_data
+        selected.each do |view|
+          case view
+          when UILabel              then view.setText new_data # set is faster than =
+          when UIButton             then view.setTitle(new_data, forState: UIControlStateNormal)
+          when UIImageView          then view.image = new_data
+          #when UITableView          then 
+          #when UISwitch             then 
+          #when UIDatePicker         then 
+          #when UISegmentedControl   then 
+          #when UIRefreshControl     then 
+          #when UIPageControl        then 
+          #when UISlider             then 
+          #when UIStepper            then 
+          #when UITabBar             then 
+          #when UITableViewCell      then 
+          when UITextView           then view.setText new_data
+          when UITextField           then view.setText new_data
+          #when UINavigationBar      then 
+          #when UIScrollView         then 
+
+          # TODO, finish
+          end
+        end
+
+        self
+      else
+        out = selected.map do |view|
+          case view
+          when UILabel              then view.text
+          when UIButton             then view.titleForState(UIControlStateNormal)
+          when UIImageView          then view.image
+          #when UITableView          then 
+          #when UISwitch             then 
+          #when UIDatePicker         then 
+          #when UISegmentedControl   then 
+          #when UIRefreshControl     then 
+          #when UIPageControl        then 
+          #when UISlider             then 
+          #when UIStepper            then 
+          #when UITabBar             then 
+          #when UITableViewCell      then 
+          when UITextView           then view.text
+          when UITextField          then view.text
+          #when UINavigationBar      then 
+          #when UIScrollView         then 
+
+          # TODO, finish
+          end
+        end
+        
+        out = out.first if out.length == 1
+        out
+      end
+    end
+
     # @return [RMQ]
     def send(method, args = nil)
       selected.each do |view|

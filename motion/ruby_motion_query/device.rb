@@ -28,6 +28,14 @@ module RubyMotionQuery
         @_height ||= Device.screen.bounds.size.height
       end
 
+      def screen_width
+        portrait? ? screen.bounds.size.width : screen.bounds.size.height
+      end
+
+      def screen_height
+        portrait? ? screen.bounds.size.height : screen.bounds.size.width
+      end
+
       def ipad?
         @_ipad = (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) if @_ipad.nil?
         @_ipad

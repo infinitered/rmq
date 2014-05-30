@@ -23,7 +23,6 @@ describe 'position' do
   end
 
   it 'should move and resize multiple views' do
-
     view = @vc.rmq.append(UIView).get
     view2 = @vc.rmq.append(UIView).get
     view3 = @vc.rmq.append(UIView).get
@@ -111,5 +110,4 @@ describe 'position' do
 
     @vc.rmq(view, view_2).location_in_root_view.should == [CGPoint.new(10, 20),CGPoint.new(20, 40)]
   end
-
 end

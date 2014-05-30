@@ -31,6 +31,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.frame = {left: 1, top: 2, width: 3, height: 4}
     st.frame = {from_right: 1, from_bottom: 2, width: 3, height: 4}
     st.frame = {fr: 1, fb: 2, w: 3, h: 4}
+    st.frame = {l: 1, t: 2, fr: 3, fb: 4}
     st.left = 20
     st.top = 30
     st.width = 40

@@ -8,10 +8,11 @@ class <%= @name_camel_case %> < UIView
     # q.append(UILabel, :some_label)
     # -or-
     # @submit_button = q.append(UIButon, :submit).get
+    # -or-
+    # @submit_button = q.append! UIButon, :submit
   end
 
 end
-
 
 # To style this view include its stylesheet at the top of each controller's
 # stylesheet that is going to use it:

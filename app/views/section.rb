@@ -6,6 +6,7 @@ class Section < UIView
 
       q.append(UILabel, :section_title)
 
+
       q.append(UILabel, :section_enabled_title)
 
       q.append(UISwitch, :section_enabled).on(:change) do |sender|

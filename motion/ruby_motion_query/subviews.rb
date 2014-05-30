@@ -180,6 +180,8 @@ module RubyMotionQuery
       if (klass == UIButton) || klass < UIButton
         klass.buttonWithType(UIButtonTypeCustom).tap do |o|
           o.hidden = false
+          #o.setTitleColor(rmq.color.black, forState: UIControlStateNormal)
+          #o.setTitle('Ok', forState: UIControlStateNormal)
           o.opaque = true
         end
       elsif reuse_identifier = opts[:reuse_identifier]

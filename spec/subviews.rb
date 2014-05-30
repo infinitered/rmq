@@ -133,7 +133,7 @@ describe 'subviews' do
     @vc.view.subviews.first.should == view
   end
 
-  it 'should insert view to the beginning of a view\'s subviews' do
+  it 'should insert view to the beginning of a views subviews' do
     1.should == 1
     #TODO
   end

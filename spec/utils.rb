@@ -87,6 +87,22 @@ describe 'utils' do
     strong_s.is_a?(String).should == true
   end
 
+  it 'should give you the weakref value or nil' do
+    autorelease_pool do
+      @foo = 'foo'
+      @foo_weak = RubyMotionQuery::RMQ.weak_ref(@foo)
+      @foo_weak_in_weak = RubyMotionQuery::RMQ.weak_ref(@foo_weak)
+      @foo = nil
+    end
+
+    RubyMotionQuery::RMQ.weak_ref_value(@foo_weak).should == nil
+    RubyMotionQuery::RMQ.weak_ref_value(@foo_weak_in_weak).should == nil
+
+    @bar = 'bar'
+    @bar_weak = RubyMotionQuery::RMQ.weak_ref(@bar)
+    RubyMotionQuery::RMQ.weak_ref_value(@bar_weak).should == @bar
+  end
+
   describe 'utils - controller_for_view' do
     it 'should return nil if view is nil' do
       @rmq.controller_for_view(nil).should == nil

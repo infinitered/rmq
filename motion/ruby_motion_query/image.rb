@@ -67,6 +67,8 @@ module RubyMotionQuery
       #
       # @return [UIImage]
       def from_view(view, use_content_size = false)
+        #return nil if (view.origin.x == 0 || view.origin.y == 0)
+
         scale = UIScreen.mainScreen.scale
         if use_content_size
           UIGraphicsBeginImageContextWithOptions(view.contentSize, false, scale)

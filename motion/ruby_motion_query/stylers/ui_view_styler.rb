@@ -22,9 +22,36 @@ module RubyMotionQuery
       def view
         @view
       end
+      alias :get :view
 
       def view_has_been_styled?
         !@view.rmq_data.style_name.nil?
+      end
+
+      def frame=(value)
+        RubyMotionQuery::Rect.update_view_frame(view, value)
+      end
+      def frame
+        RubyMotionQuery::Rect.frame_for_view(@view)
+      end
+
+      # Sets the frame using the Window's coordinates
+      def absolute_frame=(value)
+        # TODO change to new rect system
+        self.frame = value
+
+        f = @view.frame
+        window_point = @view.convertPoint(f.origin, fromView: nil)
+        f.origin.x += window_point.x
+        f.origin.y += window_point.y
+        @view.frame = f
+      end
+
+      def bounds=(value)
+        RubyMotionQuery::Rect.update_view_bounds(view, value)
+      end
+      def bounds
+        RubyMotionQuery::Rect.bounds_for_view(@view)
       end
 
       def superview
@@ -41,51 +68,10 @@ module RubyMotionQuery
       end
 
       def tag(tags)
-        rmq(@view).tag(tags)
+        rmq.wrap(@view).tag(tags)
       end
 
-      def frame=(value)
-        if value == :full # Thanks teacup for the name
-          @view.frame = self.superview.bounds
-        elsif value.is_a?(Hash)
-          f = @view.frame
-          h = value
-
-          f.origin.x = h[:l] || h[:left] || f.origin.x
-          f.origin.y = h[:t] || h[:top] || f.origin.y
-          f.size.width = h[:w] || h[:width] || f.size.width
-          f.size.height = h[:h] || h[:height] || f.size.height
-
-          if sv = @view.superview
-            if fr = (h[:from_right] || h[:fr])
-              f.origin.x = sv.bounds.size.width - f.size.width - fr
-            end
-
-            if fb = (h[:from_bottom] || h[:fb])
-              f.origin.y = sv.bounds.size.height - f.size.height - fb
-            end
-          end
-
-          @view.frame = f
-        else
-          @view.frame = value
-        end
-      end
-      def frame
-        @view.frame
-      end
-
-      # Sets the frame using the Window's coordinates
-      def absolute_frame=(value)
-        self.frame = value
-
-        f = @view.frame
-        window_point = @view.convertPoint(f.origin, fromView: nil)
-        f.origin.x += window_point.x
-        f.origin.y += window_point.y
-        @view.frame = f
-      end
-
+      # @deprecated - use frame or bounds
       def padded=(value)
         if value.is_a?(Hash)
           h = value
@@ -107,74 +93,102 @@ module RubyMotionQuery
         end
       end
 
+      # @deprecated - use frame or bounds
       def left=(value)
         f = @view.frame
         f.origin.x = value
         @view.frame = f
       end
+
+      # @deprecated - use frame or bounds
       def left
         @view.origin.x
       end
+
+      # @deprecated - use frame or bounds
       alias :x :left
 
+      # @deprecated - use frame or bounds
       def top=(value)
         f = @view.frame
         f.origin.y = value
         @view.frame = f
       end
+
+      # @deprecated - use frame or bounds
       def top
         @view.origin.y
       end
+
+      # @deprecated - use frame or bounds
       alias :y :top
 
+      # @deprecated - use frame or bounds
       def width=(value)
         f = @view.frame
         f.size.width = value
         @view.frame = f
       end
+
+      # @deprecated - use frame or bounds
       def width
         @view.size.width
       end
 
+      # @deprecated - use frame or bounds
       def height=(value)
         f = @view.frame
         f.size.height = value
         @view.frame = f
       end
+
+      # @deprecated - use frame or bounds
       def height
         @view.size.height
       end
 
+      # @deprecated - use frame or bounds
       def bottom=(value)
         self.top = value - self.height
       end
+
+      # @deprecated - use frame or bounds
       def bottom
         self.top + self.height
       end
 
+      # @deprecated - use frame or bounds
       def from_bottom=(value)
         if sv = @view.superview
           self.top = sv.bounds.size.height - self.height - value
         end
       end
+
+      # @deprecated - use frame or bounds
       def from_bottom
         if sv = @view.superview
           sv.bounds.size.height - self.top
         end
       end
 
+      # @deprecated - use frame or bounds
       def right=(value)
         self.left = value - self.width
       end
+
+      # @deprecated - use frame or bounds
       def right
         self.left + self.width
       end
 
+      # @deprecated - use frame or bounds
       def from_right=(value)
         if superview = @view.superview
           self.left = superview.bounds.size.width - self.width - value
         end
       end
+
+      # @deprecated - use frame or bounds
       def from_right
         if superview = @view.superview
           superview.bounds.size.width - self.left
@@ -206,6 +220,7 @@ module RubyMotionQuery
         @view.center.y
       end
 
+      # @deprecated - use frame or bounds
       # param can be :horizontal, :vertical, :both
       def centered=(option)
         if parent = @view.superview

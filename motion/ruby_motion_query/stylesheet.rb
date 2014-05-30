@@ -129,6 +129,13 @@ module RubyMotionQuery
       attr_accessor :application_was_setup
     end
 
+    def grid
+      @grid || RMQ.app.grid
+    end
+    def grid=(value)
+      @grid = value
+    end
+
     # Convenience methods -------------------
     def rmq(*working_selectors)
       q = if @controller.nil?
@@ -174,10 +181,12 @@ module RubyMotionQuery
       RMQ.app.window
     end
 
+    # TODO, cache, then clear when orientation changes
     def app_width
       portrait? ? app_size.width : app_size.height
     end
 
+    # TODO, cache, then clear when orientation changes
     def app_height
       portrait? ? app_size.height : app_size.width
     end
@@ -186,10 +195,12 @@ module RubyMotionQuery
       device.screen.applicationFrame.size
     end
 
+    # TODO, cache, then clear when orientation changes
     def screen_width
       portrait? ? screen_size.width : screen_size.height
     end
 
+    # TODO, cache, then clear when orientation changes
     def screen_height
       portrait? ? screen_size.height : screen_size.width
     end
