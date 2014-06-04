@@ -422,6 +422,7 @@ describe 'rect' do
       @view_2 = @vc.rmq.append(UIView).get
       @view_3 = @vc.rmq.append(UIView).get
     end
+
     
     it 'should set top to previous views bottom, plus margin, using below_prev' do
       rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
@@ -463,6 +464,8 @@ describe 'rect' do
       @original_app_grid = rmq.app.grid
 
       @vc = UIViewController.alloc.init
+      @original_vc = rmq.window.rootViewController
+      rmq.window.rootViewController = @vc
       @view = @vc.rmq.append(UIView).get
 
       @grid = RubyMotionQuery::Grid.new({
@@ -480,6 +483,7 @@ describe 'rect' do
 
     after do
       rmq.app.grid = @original_app_grid
+      rmq.window.rootViewController = @original_vc
     end
 
     should 'layout with full grid string' do
@@ -530,12 +534,19 @@ describe 'rect' do
     end
 
     should 'apply subview in same gridspace as superview, not in superviews bounds' do
-      rect1 = rmq(@view).layout('a0:d4').frame
-      rect2 = rmq(@view).append(UIView).layout('a0:d4').frame
-      rect2.l.should == 0
-      rect2.t.should == 0
+      grid_h = @grid['a0:d4'].dup
+      rect1 = rmq(@view).tag(:parent).layout('a0:d4').frame
+      rect1.l.should == grid_h[:l]
+      rect1.t.should == grid_h[:t]
+
+      rect2 = rmq(@view).append(UIView).tag(:child).layout('a0:d4').frame
+      rect2.left_in_root_view.round(2).should == grid_h[:l].round(2)
+      rect2.top_in_root_view.round(2).should == grid_h[:t].round(2)
       rect2.w.should == rect1.w
       rect2.h.should == rect1.h
+
+      rect2.t.should == 0
+      rect2.l.should == 0
     end
 
     should 'apply subview in same gridspace as superview, not in superviews bounds #2' do
@@ -543,10 +554,23 @@ describe 'rect' do
 
       rect1 = rmq(@view).layout('b1:c2').frame
       rect2 = rmq(@view).append(UIView).layout('a0:c2').frame
-      rect2.l.should ==  grid_h[:l] - rect1.l
-      rect2.t.should ==  grid_h[:t] - rect1.t
+      rect2.left_in_root_view.round(2).should == grid_h[:l].round(2)
+      rect2.top_in_root_view.round(2).should == grid_h[:t].round(2)
       rect2.w.should == grid_h[:r] - grid_h[:l]
       rect2.h.should == grid_h[:b] - grid_h[:t]
+    end
+
+    should 'apply subview in same gridspace as root view when in grandchild of rootview' do
+      grid_h = @grid['a0:c2'].dup
+
+      rect1 = rmq(@view).layout('b1:c2').frame
+      view2 = rmq(@view).append(UIView).layout(l: 10, t: 80, w: 100, h: 200).get
+      rect2 = rmq(view2).frame
+      rect3 = rmq(view2).append(UIView).layout('a0:c2').frame
+      rect3.l.should == grid_h[:l] - (rect1.l + rect2.l)
+      rect3.t.should == grid_h[:t] - (rect1.t + rect2.t)
+      rect3.w.should == grid_h[:r] - grid_h[:l]
+      rect3.h.should == grid_h[:b] - grid_h[:t]
     end
 
     # TODO test subviews more

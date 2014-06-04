@@ -195,13 +195,9 @@ module RubyMotionQuery
                 grid_h[:height] = b - grid_h[:t]
               end
 
-              # Convert to root_view space
-              #new_point = CGPointMake(grid_h[:l] || 0, grid_h[:t] || 0)
-              #sv_point = vc.view.convertPoint(new_point, fromView: sv)
-              #grid_h[:l] -= sv_point.x
-              #grid_h[:t] -= sv_point.y
-              grid_h[:l] -= sv.frame.origin.x # TODO A hack for now, fix. Only works with 1 deep
-              grid_h[:t] -= sv.frame.origin.y 
+              root_view_point = vc.view.convertPoint(CGPointMake(grid_h[:l],grid_h[:t]), toView: sv)
+              grid_h[:l] = root_view_point.x
+              grid_h[:t] = root_view_point.y
             end
             params = grid_h.merge(params)
           end
@@ -402,6 +398,24 @@ module RubyMotionQuery
       to_cgsize
     end
 
+    def point_in_root_view
+      if @view && (sv = @view.superview)  && (vc = view.rmq.view_controller)
+        vc.view.convertPoint(CGPointMake(@left,@top), fromView: sv)
+      end
+    end
+
+    def left_in_root_view
+      if point = point_in_root_view
+        point.x
+      end
+    end
+
+    def top_in_root_view
+      if point = point_in_root_view
+        point.y
+      end
+    end
+
     # TODO add center
 
     def z_position
@@ -479,9 +493,9 @@ module RubyMotionQuery
  *            *              |    *    |                *    z_order: #{z_order}
  *            *       #{ r}  |    *    |                *    z_position: #{z_position}
  *|------------------ right -+---|*    |                *
- *            *              |    *    |    #{fr}       *
- *            *              |    * |--+--from_right---|*
- *            *             ---   *    |                *
+ *            *              |    *    |    #{fr}       *    Location in root view
+ *            *              |    * |--+--from_right---|*    {l: #{i_f_to_s(left_in_root_view)}, t: #{i_f_to_s(top_in_root_view)},
+ *            *             ---   *    |                *     w: #{w.strip}, h: #{h.strip}}
  *            ***************---***   ---               *
  *                            |                         *
  *            |------ width - + --|                     *
