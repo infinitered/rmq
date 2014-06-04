@@ -6,6 +6,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.color = color.red
     st.image_normal = image.resource('logo')
     st.image_highlighted = image.resource('logo')
+    st.title_edge_insets = [1.0, 0, 2.0, 3.0]
   end
 
 end
@@ -77,6 +78,29 @@ describe 'stylers/ui_button' do
         components[3].to_i.should == 1
       end
     end
+  end
+
+  describe "title edge insets" do
+    before { 
+      @view = @vc.rmq.append(@view_klass, :ui_button_kitchen_sink)
+      @view.style{|st| st.title_edge_insets = UIEdgeInsetsMake(0, 10.0, 0, 0)} 
+    }
+
+    it "returns the set inset" do
+      inset = nil
+      @view.style{|st| inset = st.title_edge_insets}
+      inset.should == UIEdgeInsetsMake(0, 10.0, 0, 0)
+    end
+
+    it "sets the inset of the button title" do
+      @view.get.titleEdgeInsets.should == UIEdgeInsetsMake(0, 10.0, 0, 0)
+    end
+
+    it "can be set with an array of inset values" do 
+      @view.style{|st| st.title_edge_insets = [1.0, 10.0, 0, 0]}
+      @view.get.titleEdgeInsets.should == UIEdgeInsetsMake(1.0, 10.0, 0, 0)
+    end
+
   end
 
 end
