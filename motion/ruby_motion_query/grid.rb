@@ -148,6 +148,10 @@ module RubyMotionQuery
       @content_left_margin = value
       clear_cache
     end
+    def content_right_margin=(value)
+      @content_right_margin = value
+      clear_cache
+    end
     def content_top_margin=(value)
       @content_top_margin = value
       clear_cache

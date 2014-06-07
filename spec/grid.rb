@@ -17,6 +17,29 @@ describe 'grid' do
     rmq.app.grid.should != nil
   end
 
+  should 'be able to change apps default grid' do
+    rmq.app.grid.tap do |g|
+      g.content_left_margin = 1
+      g.content_right_margin = 2
+      g.content_top_margin = 3
+      g.content_bottom_margin = 4
+      g.num_columns = 5
+      g.column_gutter = 6
+      g.num_rows = 7
+      g.row_gutter = 8
+
+      g.content_left_margin.should == 1
+      g.content_right_margin.should == 2
+      g.content_top_margin.should == 3
+      g.content_bottom_margin.should == 4
+
+      g.num_columns.should == 5
+      g.column_gutter.should == 6
+      g.num_rows.should == 7
+      g.row_gutter.should == 8
+    end
+  end
+
   should 'clear cache when changing settings' do
     was_row = @grid['1:3']
     was_column = @grid['a:d']
