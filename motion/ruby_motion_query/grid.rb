@@ -106,12 +106,12 @@ module RubyMotionQuery
     DEFAULT = {
       num_columns: 10,
       column_gutter: 10,
-      content_left_margin: 5,
-      content_right_margin: 5,
-      content_top_margin: 5,
-      content_bottom_margin: 5,
-      num_rows: 13,
-      row_gutter: 10
+      num_rows: 16,
+      row_gutter: 10,
+      content_left_margin: 10,
+      content_right_margin: 10,
+      content_top_margin: 70,
+      content_bottom_margin: 10
     }
 
     def initialize(params)
