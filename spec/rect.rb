@@ -457,6 +457,20 @@ describe 'rect' do
 
       @view_2.frame.origin.x.should == 250 - 40 - 18
     end
+
+    it 'should allow you to set below_prev and from_bottom at the same time' do
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(l: 10, bp: 3, w: 30, fb: 10)
+      @view_2.frame.origin.y.should == 20 + 40 + 3 
+      @view_2.frame.size.height.should == @vc.view.frame.size.height - 10 - 60 - 3
+    end
+
+    it 'should allow you to set right_of_prev and from_right at the same time' do
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(t: 10, rop: 6, w: 30, fr: 10)
+      @view_2.frame.origin.x.should == 10 + 30 + 6 
+      @view_2.frame.size.width.should == @vc.view.frame.size.width - 10 - 40 - 6
+    end
   end
 
   describe 'and grid' do

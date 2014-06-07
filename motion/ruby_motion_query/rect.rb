@@ -208,6 +208,11 @@ module RubyMotionQuery
         params_w = params[:w] || params[:width]
         params_h = params[:h] || params[:height]
 
+        below_prev = params[:below_prev] || params[:bp]
+        above_prev = params[:above_prev] || params[:ap]
+        right_of_prev = params[:right_of_prev] || params[:rop]
+        left_of_prev = params[:left_of_prev] || params[:lop]
+
         l = params_l || existing_rect.origin.x
         t = params_t || existing_rect.origin.y
         w = params_w || existing_rect.size.width
@@ -223,15 +228,15 @@ module RubyMotionQuery
      
         # Previous
         if prev_view = previous_view
-          if below_prev = (params[:below_prev] || params[:bp])
+          if below_prev
             t = prev_view.frame.origin.y + prev_view.frame.size.height + below_prev
-          elsif above_prev = (params[:above_prev] || params[:ap])
+          elsif above_prev
             t = prev_view.frame.origin.y - above_prev - h
           end
 
-          if right_of_prev = (params[:right_of_prev] || params[:rop])
+          if right_of_prev
             l = prev_view.frame.origin.x + prev_view.frame.size.width + right_of_prev
-          elsif left_of_prev = (params[:left_of_prev] || params[:lop])
+          elsif left_of_prev
             l = prev_view.frame.origin.x - left_of_prev - w
           end
         end
@@ -256,7 +261,7 @@ module RubyMotionQuery
         # From right, from_bottom
         if (fr || fb) && sv
           if fr
-            if params_l
+            if params_l || left_of_prev || right_of_prev
               w = sv_size.width - l - fr
             else
               l = sv_size.width - w - fr
@@ -264,7 +269,7 @@ module RubyMotionQuery
           end
 
           if fb
-            if params_t
+            if params_t || below_prev || above_prev
               h = sv_size.height - t - fb
             else
               t = sv_size.height - h - fb
