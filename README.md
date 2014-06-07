@@ -28,7 +28,7 @@ One of RMQ's goal is to have the best [documentation][1]documentation of any Rub
 ```
 gem install ruby_motion_query
 # Update your gem file to use RMQ-Edge
-gem ‘ruby_motion_query’, :git => ‘git@github.com:infinitered/rmq.git’
+gem 'ruby_motion_query', :git => 'git@github.com:infinitered/rmq.git'
 bundle
 rake
 ```
