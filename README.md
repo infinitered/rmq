@@ -9,7 +9,7 @@
 
 A fast, non-polluting, chaining, front-end library. It’s like jQuery for [RubyMotion](http://rubymotion.com) plus templates, stylesheets, events, animations, etc.
 
-One of RMQ's goal is to have the best [documentation][1]documentation of any RubyMotion UI library.
+One of RMQ's goal is to have the best [documentation][1] of any RubyMotion UI library.
 
 ## v0.6.0
 
