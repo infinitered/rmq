@@ -221,6 +221,7 @@ module RubyMotionQuery
                 digits = nil
               else
                 top_i = digits.to_i
+                top_i = (tops.length - 1) if top_i >= tops.length
               end
 
               letter = p1.gsub(/\d/, '')
@@ -229,6 +230,7 @@ module RubyMotionQuery
               else
                 letter.downcase!
                 left_i = (letter.ord - 97)
+                left_i = (lefts.length - 1) if left_i >= lefts.length
               end
 
               if digits && letter

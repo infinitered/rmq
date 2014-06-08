@@ -130,6 +130,15 @@ describe 'grid' do
     @grid['a0:1'].should == {l: 7, t: 5, b: 5 + @grid.row_height + 10 + @grid.row_height}
   end
 
+  should 'use last column if column specified is greater than max' do
+    last = @grid[':j9']
+    @grid[':z9'].should == last
+  end
 
-  # Finish other methods
+  should 'use last row if row specified is greater than max' do
+    last = @grid[':j9']
+    @grid[':j99'].should == last
+  end
+
+  # TODO Finish other methods
 end
