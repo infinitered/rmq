@@ -444,6 +444,23 @@ describe 'rect' do
       @view_3.frame.origin.y.should == @view_2.frame.origin.y - 70 - 17
     end
 
+    it 'should allow long aliases on prev' do
+      rmq(@view).layout(l: 10, t: 200, w: 30, h: 40)
+      rmq(@view_2).layout(l: 10, above_previous: 7, w: 30, h: 60)
+      @view_2.frame.origin.y.should == 200 - 60 - 7
+
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(l: 10, below_previous: 10, w: 30, h: 40)
+      @view_2.frame.origin.y.should == 20 + 40 + 10
+
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(t: 10, right_of_previous: 6, w: 30, fr: 10)
+      @view_2.frame.origin.x.should == 10 + 30 + 6 
+
+      #rmq(@view_2).layout(t: 210, w: 40, h: 60, left_of_previous: 18)
+      #@view_2.frame.origin.x.should == 250 - 40 - 18
+    end
+
     it 'should set left to previous views right, plus margin, using right_of_prev' do
       rmq(@view).layout(l: 10, t: 200, w: 30, h: 40)
       rmq(@view_2).layout(t: 210, w: 30, h: 60, rop: 15)
@@ -460,7 +477,7 @@ describe 'rect' do
 
     it 'should allow you to set below_prev and from_bottom at the same time' do
       rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
-      rmq(@view_2).layout(l: 10, bp: 3, w: 30, fb: 10)
+      rmq(@view_2).layout(l: 10, below_previous: 3, w: 30, fb: 10)
       @view_2.frame.origin.y.should == 20 + 40 + 3 
       @view_2.frame.size.height.should == @vc.view.frame.size.height - 10 - 60 - 3
     end

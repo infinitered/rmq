@@ -208,10 +208,10 @@ module RubyMotionQuery
         params_w = params[:w] || params[:width]
         params_h = params[:h] || params[:height]
 
-        below_prev = params[:below_prev] || params[:bp]
-        above_prev = params[:above_prev] || params[:ap]
-        right_of_prev = params[:right_of_prev] || params[:rop]
-        left_of_prev = params[:left_of_prev] || params[:lop]
+        below_prev = params[:below_prev] || params[:bp] || params[:below_previous]
+        above_prev = params[:above_prev] || params[:ap]  || params[:above_previous]
+        right_of_prev = params[:right_of_prev] || params[:rop] || params[:right_of_previous]
+        left_of_prev = params[:left_of_prev] || params[:lop] || params[:left_of_previous]
 
         l = params_l || existing_rect.origin.x
         t = params_t || existing_rect.origin.y
