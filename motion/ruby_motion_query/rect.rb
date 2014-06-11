@@ -179,24 +179,6 @@ module RubyMotionQuery
             params.delete(:g)
 
             grid_h = grid[params_g]
-
-            if not_in_root_view # Change to root_view_space
-              # TODO, I don't think this is fully working correctly, plus
-              # needs refactoring. Test more
-
-              # Convert to width and height
-              if (r = grid_h.delete(:r)) && (grid_l = grid_h[:l])
-                grid_h[:width] = r - grid_l
-              end
-
-              if (b = grid_h.delete(:b)) && (grid_t = grid_h[:t])
-                grid_h[:height] = b - grid_t
-              end
-
-              root_view_point = vc.view.convertPoint(CGPointMake(grid_h[:l],grid_h[:t]), toView: sv)
-              grid_h[:l] = root_view_point.x
-              grid_h[:t] = root_view_point.y
-            end
             params = grid_h.merge(params)
           end
         end
@@ -303,6 +285,22 @@ module RubyMotionQuery
               l = (sv_size.width / 2) - (w / 2)
               t = (sv_size.height / 2) - (h / 2)
           end
+        end
+
+        if params_g && not_in_root_view # Change to root_view_space
+          # Convert to width and height
+          #if (r = grid_h.delete(:r)) && (grid_l = grid_h[:l])
+            #grid_h[:width] = r - grid_l
+          #end
+
+          #if (b = grid_h.delete(:b)) && (grid_t = grid_h[:t])
+            #grid_h[:height] = b - grid_t
+          #end
+
+          point = CGPointMake(l,t)
+          root_view_point = vc.view.convertPoint(point, toView: sv)
+          l = root_view_point.x
+          t = root_view_point.y
         end
 
         [l,t,w,h]
