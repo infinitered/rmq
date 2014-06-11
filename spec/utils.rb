@@ -1,3 +1,11 @@
+module TestIsClassModule
+  class TestIsClassClass
+  end
+
+  class TestIsClassSubClass < TestIsClassClass
+  end
+end
+
 describe 'utils' do
   before do
     @rmq = RubyMotionQuery::RMQ
@@ -5,11 +13,23 @@ describe 'utils' do
 
   it 'should return true if class is passed to is_class?' do
     @rmq.is_class?(String).should == true
-    @rmq.is_class?('hi').should == false
+    @rmq.is_class?(UIView).should == true
+    @rmq.is_class?(TestIsClassModule::TestIsClassClass).should == true
+    @rmq.is_class?(TestIsClassModule::TestIsClassSubClass).should == true
+  end
+
+  it 'should return false if module is passed to is_class?' do
+    @rmq.is_class?(TestIsClassModule).should == false 
+  end
+
+  it 'should return false if non class is passed to is_class?' do
     FOO = :bar
     @rmq.is_class?(FOO).should == false
+    Bar = :foo
+    @rmq.is_class?(Bar).should == false
     @rmq.is_class?(nil).should == false
-    @rmq.is_class?(UIView).should == true
+    @rmq.is_class?('hi').should == false
+    @rmq.is_class?(1).should == false
   end
 
   it 'should return true if empty string is passed to is_blank?' do
