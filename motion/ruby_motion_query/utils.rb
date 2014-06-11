@@ -3,7 +3,7 @@ module RubyMotionQuery
     class << self
       # @return [Boolean]
       def is_class?(o)
-        o.is_a?(Class)
+        o.class == Class
       end
 
       # This is purposely not blank? as to not conflict with many libraries that
