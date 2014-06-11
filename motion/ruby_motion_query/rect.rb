@@ -185,14 +185,12 @@ module RubyMotionQuery
               # needs refactoring. Test more
 
               # Convert to width and height
-              if r = grid_h.delete(:r)
-                # TODO, do if there is no r
-                grid_h[:width] = r - grid_h[:l]
+              if (r = grid_h.delete(:r)) && (grid_l = grid_h[:l])
+                grid_h[:width] = r - grid_l
               end
 
-              if b = grid_h.delete(:b)
-                # TODO, do if there is no T
-                grid_h[:height] = b - grid_h[:t]
+              if (b = grid_h.delete(:b)) && (grid_t = grid_h[:t])
+                grid_h[:height] = b - grid_t
               end
 
               root_view_point = vc.view.convertPoint(CGPointMake(grid_h[:l],grid_h[:t]), toView: sv)

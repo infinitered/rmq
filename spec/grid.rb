@@ -111,6 +111,7 @@ describe 'grid' do
     @grid[':a'].should == {r: 7 + @grid.column_width}
   end
 
+
   should 'work with a:a' do
     @grid['a:a'].should == {l: @grid.content_left_margin, r: @grid.content_left_margin + @grid.column_width}
   end
@@ -138,6 +139,11 @@ describe 'grid' do
   should 'use last row if row specified is greater than max' do
     last = @grid[':j9']
     @grid[':j99'].should == last
+  end
+
+  should 'not return :t with a:z99' do
+    last = @grid[':j9']
+    @grid['a:z99'].should == {l: 7, r: last[:r], b: last[:b]}
   end
 
   # TODO Finish other methods

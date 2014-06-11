@@ -604,6 +604,15 @@ describe 'rect' do
       rect3.h.should == grid_h[:b] - grid_h[:t]
     end
 
+    should 'not throw exeption with {grid: "a:z99", height: 150}' do
+      grid_h = @grid['a:z99'].dup
+      rect1 = rmq(@view).layout(grid: 'a:z99', h: 150).frame
+      rect1.l.round(2).should == grid_h[:l].round(2)
+      rect1.t.round(0).should == rmq.device.height - 150 - @grid.content_bottom_margin
+      rect1.r.round(2).should == grid_h[:r].round(2)
+      rect1.h.should == 150
+    end
+
     # TODO test subviews more
   end
 
