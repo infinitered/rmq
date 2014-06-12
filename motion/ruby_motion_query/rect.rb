@@ -18,15 +18,19 @@ module RubyMotionQuery
       end
     end
 
+    # Same as layout:
+    #   rmq(my_view).layout(l: 10, t: 20, w: 100, h: 150)
+    #
     # Always applied in this order, regardless of the hash order:
-    # grid
-    # l, t, w, h
-    # previous
-    # from_right, from_bottom
-    # right, bottom
-    # left and right applied together (will change width)
-    # top and bottom applied together (will change height)
-    # centered
+    #   grid
+    #   l, t, w, h
+    #   previous
+    #   from_right, from_bottom
+    #   right, bottom
+    #   left and right applied together (will change width)
+    #   top and bottom applied together (will change height)
+    #   centered
+    #   padding
     #
     # @example
     # rmq(my_view).frame = :full
@@ -42,6 +46,10 @@ module RubyMotionQuery
     # rmq(my_view).frame = "a1:b5"
     # rmq(my_view, my_other_view).frame = {grid: "b2", w: 100, h: 200}
     # rmq(my_view, my_other_view).frame = {g: "b2", w: 100, h: 200}
+    # 
+    # @example with padding
+    # rmq(my_view).frame = {grid: "b2:d14", padding: 5}
+    # rmq(my_view).frame = {grid: "b2:d14", padding: {l: 5, t: 0, r: 5, b:0}}
     def frame=(value)
       selected.each do |view| 
         RubyMotionQuery::Rect.update_view_frame(view, value)
@@ -82,20 +90,20 @@ module RubyMotionQuery
   #    *              *              |    *    |                 *   :below_prev     (:bp)  
   #    *|--- left ---|*              |    *    |                 *   :above_prev     (:ap)
   #    *              *              |    * height               *   :grid           (:g)
-  #    *              *              |    *    |                 *   
-  #    *              *              |    *    |                 *   abbreviations
-  #    *|-------------------- right -+---|*    |                 *   -----------------------              
-  #    *              *              |    *    |                 *   :l, :t, :w, :h          
-  #    *              *              |    * |--+--from_right----|*   :r, :b
-  #    *              *             ---   *    |                 *   :fr, fb
-  #    *              ***************---***   ---                *   
+  #    *              *              |    *    |                 *   :padding        (:p)
+  #    *              *              |    *    |                 *     int or hash: l,t,b,r 
+  #    *|-------------------- right -+---|*    |                 *                 
+  #    *              *              |    *    |                 *   abbreviations           
+  #    *              *              |    * |--+--from_right----|*   -----------------------
+  #    *              *             ---   *    |                 *   :l, :t, :w, :h         
+  #    *              ***************---***   ---                *   :r, :b
+  #    *                              |                          *   :fr, fb
+  #    *              |------ width - + -|                       *   
   #    *                              |                          *   :centered options
-  #    *              |------ width - + -|                       *   -----------------------
-  #    *                              |                          *   :horizontal
+  #    *                              |                          *   -----------------------
+  #    *                          from_bottom                    *   :horizontal
   #    *                              |                          *   :vertical
-  #    *                          from_bottom                    *   :both                  
-  #    *                              |                          *   
-  #    *                              |                          *   
+  #    *                              |                          *   :both                  
   #    *                             ---                         *   
   #    ***********************************************************       
   #
@@ -284,6 +292,24 @@ module RubyMotionQuery
             when :both
               l = (sv_size.width / 2) - (w / 2)
               t = (sv_size.height / 2) - (h / 2)
+          end
+        end
+
+        if padding = params[:padding] || params[:p]
+          if padding.is_a?(Hash)
+            padding_l = padding[:l] || padding[:left]
+            padding_t = padding[:t] || padding[:top]
+            padding_r = padding[:r] || padding[:right]
+            padding_b = padding[:b] || padding[:bottom]
+            l += padding_l if padding_l
+            t += padding_t if padding_t
+            w -= padding_r if padding_r
+            h -= padding_b if padding_b
+          else
+            l += padding
+            t += padding
+            w -= padding
+            h -= padding
           end
         end
 

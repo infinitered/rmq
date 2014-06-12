@@ -621,7 +621,48 @@ describe 'rect' do
       rect1.to_h.should == rect3.to_h
     end
 
+    #should 'be able to use grid and below_prev in same layout in subviews' do
+      #rect1 = rmq(@view).append(UIView).layout('a1:c3').frame
+      #rect1 = rmq(@view).append(UIView).layout(grid: 'b:c5', below_prev: 5).frame
+    #end
+
     # TODO test subviews more
+  end
+
+  describe 'with padding' do
+    before do
+      @vc = UIViewController.alloc.init
+      @view = @vc.rmq.append(UIView).get
+    end
+
+    it 'should apply to all sides if only an integer or float is provided' do
+      rect = rmq(@view).layout(l: 10, t: 20, r: 40, b: 50, padding: 5).frame
+      rect.l.should == 15
+      rect.t.should == 25
+      rect.w.should == 25
+      rect.h.should == 25
+      rect.r.should == 40 
+      rect.b.should == 50
+    end
+
+    it 'should allow you to specify for all sides independently' do
+      rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, p: {l: 1, t: 2, r: 3, b: 4}).frame
+      rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, p: {left: 1, top: 2, right: 3, bottom: 4}).frame
+      rect.l.should == 11
+      rect.t.should == 22 
+      rect.w.should == 37 
+      rect.h.should == 46 
+    end
+
+    it 'should allow you to specify only some sides' do
+      rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, padding: {l: 1, r: 3}).frame
+      rect.l.should == 11
+      rect.t.should == 20 
+      rect.w.should == 37 
+      rect.h.should == 50 
+    end
+    
+    # TODO test with grid and a variety of other layout types
   end
 
   describe 'rmq instance frame' do
