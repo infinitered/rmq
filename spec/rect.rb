@@ -639,10 +639,10 @@ describe 'rect' do
       rect = rmq(@view).layout(l: 10, t: 20, r: 40, b: 50, padding: 5).frame
       rect.l.should == 15
       rect.t.should == 25
-      rect.w.should == 25
-      rect.h.should == 25
-      rect.r.should == 40 
-      rect.b.should == 50
+      rect.w.should == 20
+      rect.h.should == 20
+      rect.r.should == 35 
+      rect.b.should == 45 
     end
 
     it 'should allow you to specify for all sides independently' do
@@ -650,15 +650,15 @@ describe 'rect' do
       rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, p: {left: 1, top: 2, right: 3, bottom: 4}).frame
       rect.l.should == 11
       rect.t.should == 22 
-      rect.w.should == 37 
-      rect.h.should == 46 
+      rect.w.should == 36 
+      rect.h.should == 44 
     end
 
     it 'should allow you to specify only some sides' do
       rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, padding: {l: 1, r: 3}).frame
       rect.l.should == 11
       rect.t.should == 20 
-      rect.w.should == 37 
+      rect.w.should == 36 
       rect.h.should == 50 
     end
     

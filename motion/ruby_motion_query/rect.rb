@@ -297,19 +297,19 @@ module RubyMotionQuery
 
         if padding = params[:padding] || params[:p]
           if padding.is_a?(Hash)
-            padding_l = padding[:l] || padding[:left]
-            padding_t = padding[:t] || padding[:top]
-            padding_r = padding[:r] || padding[:right]
-            padding_b = padding[:b] || padding[:bottom]
-            l += padding_l if padding_l
-            t += padding_t if padding_t
-            w -= padding_r if padding_r
-            h -= padding_b if padding_b
+            padding_l = padding[:l] || padding[:left] || 0
+            padding_t = padding[:t] || padding[:top] || 0
+            padding_r = padding[:r] || padding[:right] || 0
+            padding_b = padding[:b] || padding[:bottom] || 0
+            l += padding_l
+            t += padding_t
+            w -= (padding_l + padding_r)
+            h -= (padding_t + padding_b)
           else
             l += padding
             t += padding
-            w -= padding
-            h -= padding
+            w -= (padding * 2)
+            h -= (padding * 2)
           end
         end
 
