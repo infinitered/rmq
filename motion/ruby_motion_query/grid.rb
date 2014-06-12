@@ -259,10 +259,9 @@ module RubyMotionQuery
                 nil
               end
             when 2
-              self[parts.first].merge!(self[":#{parts.last}"])
+              self[parts.first].merge(self[":#{parts.last}"])
           end
-
-        end
+        end.freeze
       end
     end
 

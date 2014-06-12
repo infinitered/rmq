@@ -613,6 +613,14 @@ describe 'rect' do
       rect1.h.should == 150
     end
 
+    should 'not modify grid when setting subviews' do
+      rect1 = rmq(@view).layout('a0:l11').frame
+      rect2 = rmq(@view).append(UIView).layout('a0:l0').frame
+      rect3 = rmq.append(UIView).layout('a0:l11').frame
+
+      rect1.to_h.should == rect3.to_h
+    end
+
     # TODO test subviews more
   end
 
