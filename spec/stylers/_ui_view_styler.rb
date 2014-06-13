@@ -202,4 +202,10 @@ describe 'ui_view_styler' do
     @vc.rmq.stylesheet.prev_view.should == view1
     @vc.rmq.stylesheet.prev_frame.to_h.should == rmq(view1).frame.to_h
   end
+
+  it 'should include the ability to set the accessibilityLabel' do
+    value = 'this is the value for the accessibilityLabel'
+    view = @vc.rmq.append(UIView).style { |st| st.accessibility_label = value }.get
+    view.accessibilityLabel.should == value
+  end
 end
