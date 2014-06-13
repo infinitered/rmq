@@ -64,7 +64,7 @@ for **bleeding edge**, add this to your `Gemfile`:
 
 ### License
 
-RMQ is available under the MIT license. See the LICENSE file for more info.
+RMQ is available under the MIT license. See the [LICENSE](https://github.com/infinitered/rmq/blob/master/LICENSE) file for more info.
 
 
 <br />
