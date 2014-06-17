@@ -6,10 +6,10 @@ require "ruby_motion_query/version"
 Gem::Specification.new do |spec|
   spec.name = 'ruby_motion_query'
   spec.summary = 'RubyMotionQuery - RMQ'
-  spec.description = 'RubyMotionQuery - RMQ - A fast, non-magical, non-polluting, jQuery-like library for RubyMotion' 
+  spec.description = 'RubyMotionQuery - RMQ - A fast, non-magical, non-polluting, jQuery-like front-end library for RubyMotion' 
   spec.authors = ["Todd Werth", "InfiniteRed"]
   spec.email = 'todd@infinitered.com'
-  spec.homepage = "http://infinitered.com/rmq"
+  spec.homepage = "http://rubymotionquery.com"
   spec.version = RubyMotionQuery::VERSION
   spec.license = 'MIT'
 

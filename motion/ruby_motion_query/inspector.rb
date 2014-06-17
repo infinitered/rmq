@@ -123,8 +123,10 @@ module RubyMotionQuery
     end
 
     def dim_nav
-      rmq(rmq.view_controller.navigationController.navigationBar).animate do |q|
-        q.style{|st| st.opacity = 0.0}
+      if nav_controller = rmq.view_controller.navigationController
+        rmq(nav_controller.navigationBar).animate do |q|
+          q.style{|st| st.opacity = 0.0}
+        end
       end
     end
 

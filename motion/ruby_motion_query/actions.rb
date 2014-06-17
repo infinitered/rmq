@@ -23,20 +23,20 @@ module RubyMotionQuery
           when UILabel              then view.setText new_data # set is faster than =
           when UIButton             then view.setTitle(new_data, forState: UIControlStateNormal)
           when UIImageView          then view.image = new_data
-          #when UITableView          then 
-          #when UISwitch             then 
-          #when UIDatePicker         then 
-          #when UISegmentedControl   then 
-          #when UIRefreshControl     then 
-          #when UIPageControl        then 
-          #when UISlider             then 
-          #when UIStepper            then 
-          #when UITabBar             then 
-          #when UITableViewCell      then 
+          #when UITableView          then
+          #when UISwitch             then
+          #when UIDatePicker         then
+          #when UISegmentedControl   then
+          #when UIRefreshControl     then
+          #when UIPageControl        then
+          #when UISlider             then
+          #when UIStepper            then
+          #when UITabBar             then
+          #when UITableViewCell      then
           when UITextView           then view.setText new_data
           when UITextField           then view.setText new_data
-          #when UINavigationBar      then 
-          #when UIScrollView         then 
+          #when UINavigationBar      then
+          #when UIScrollView         then
 
           # TODO, finish
           end
@@ -49,25 +49,25 @@ module RubyMotionQuery
           when UILabel              then view.text
           when UIButton             then view.titleForState(UIControlStateNormal)
           when UIImageView          then view.image
-          #when UITableView          then 
-          #when UISwitch             then 
-          #when UIDatePicker         then 
-          #when UISegmentedControl   then 
-          #when UIRefreshControl     then 
-          #when UIPageControl        then 
-          #when UISlider             then 
-          #when UIStepper            then 
-          #when UITabBar             then 
-          #when UITableViewCell      then 
+          #when UITableView          then
+          #when UISwitch             then
+          #when UIDatePicker         then
+          #when UISegmentedControl   then
+          #when UIRefreshControl     then
+          #when UIPageControl        then
+          #when UISlider             then
+          #when UIStepper            then
+          #when UITabBar             then
+          #when UITableViewCell      then
           when UITextView           then view.text
           when UITextField          then view.text
-          #when UINavigationBar      then 
-          #when UIScrollView         then 
+          #when UINavigationBar      then
+          #when UIScrollView         then
 
           # TODO, finish
           end
         end
-        
+
         out = out.first if out.length == 1
         out
       end
@@ -76,10 +76,12 @@ module RubyMotionQuery
     # @return [RMQ]
     def send(method, args = nil)
       selected.each do |view|
-        if args
-          view.__send__ method, args
-        else
-          view.__send__ method
+        if view.respond_to?(method)
+          if args
+            view.__send__ method, args
+          else
+            view.__send__ method
+          end
         end
       end
       self

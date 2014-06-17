@@ -58,6 +58,19 @@ module RubyMotionQuery
         @view.titleEdgeInsets
       end
 
+      # Accepts UIEdgeInsetsMake OR and array of values to be the inset.
+      # st.image_edge_insets = UIEdgeInsetsMake(0, 10.0, 0, 0)
+      # OR
+      # st.image_edge_insets = [0, 10.0, 0, 0]
+      def image_edge_insets=(value)
+        value = UIEdgeInsetsMake(value[0], value[1], value[2], value[3]) if value.is_a? Array
+        @view.setImageEdgeInsets(value)
+      end
+
+      def image_edge_insets
+        @view.imageEdgeInsets
+      end
+
     end
   end
 end

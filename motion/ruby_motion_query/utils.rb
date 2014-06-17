@@ -3,11 +3,7 @@ module RubyMotionQuery
     class << self
       # @return [Boolean]
       def is_class?(o)
-        # This line fails in spec, causes exit without message. It works fine in production
-        #(o.class == Class) && (defined?(o) == 'constant')
-
-        # So I'm doing this instead
-        !!(o.respond_to?(:name) && o.name.to_s[0] =~ /[A-Z]/)
+        o.class == Class
       end
 
       # This is purposely not blank? as to not conflict with many libraries that

@@ -1,4 +1,6 @@
 class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+  attr_accessor :prev_view, :prev_frame
+
   def my_style(st)
     st.frame = {l: 1, t: 2, w: 3, h: 4}
     st.background_color = RubyMotionQuery::Color.red
@@ -24,6 +26,11 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def array_frame(st)
     st.frame = [[5, 10], [20, 30]]
+  end
+
+  def set_prev(st)
+    @prev_view = st.prev_view
+    @prev_frame = st.prev_frame
   end
 
   def ui_view_kitchen_sink(st)
@@ -187,5 +194,18 @@ describe 'ui_view_styler' do
     view.contentMode.should == UIViewContentModeBottomLeft
     view.tintColor.class.should == UIColor.blueColor.class
     view.layer.cornerRadius.should == 5
+  end
+
+  it 'should get the previous view' do
+    view1 = @vc.rmq.append!(UIView, :my_style)
+    view2 = @vc.rmq.append!(UIView, :set_prev)
+    @vc.rmq.stylesheet.prev_view.should == view1
+    @vc.rmq.stylesheet.prev_frame.to_h.should == rmq(view1).frame.to_h
+  end
+
+  it 'should include the ability to set the accessibilityLabel' do
+    value = 'this is the value for the accessibilityLabel'
+    view = @vc.rmq.append(UIView).style { |st| st.accessibility_label = value }.get
+    view.accessibilityLabel.should == value
   end
 end

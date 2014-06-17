@@ -18,15 +18,19 @@ module RubyMotionQuery
       end
     end
 
+    # Same as layout:
+    #   rmq(my_view).layout(l: 10, t: 20, w: 100, h: 150)
+    #
     # Always applied in this order, regardless of the hash order:
-    # grid
-    # l, t, w, h
-    # previous
-    # from_right, from_bottom
-    # right, bottom
-    # left and right applied together (will change width)
-    # top and bottom applied together (will change height)
-    # centered
+    #   grid
+    #   l, t, w, h
+    #   previous
+    #   from_right, from_bottom
+    #   right, bottom
+    #   left and right applied together (will change width)
+    #   top and bottom applied together (will change height)
+    #   centered
+    #   padding
     #
     # @example
     # rmq(my_view).frame = :full
@@ -42,6 +46,10 @@ module RubyMotionQuery
     # rmq(my_view).frame = "a1:b5"
     # rmq(my_view, my_other_view).frame = {grid: "b2", w: 100, h: 200}
     # rmq(my_view, my_other_view).frame = {g: "b2", w: 100, h: 200}
+    # 
+    # @example with padding
+    # rmq(my_view).frame = {grid: "b2:d14", padding: 5}
+    # rmq(my_view).frame = {grid: "b2:d14", padding: {l: 5, t: 0, r: 5, b:0}}
     def frame=(value)
       selected.each do |view| 
         RubyMotionQuery::Rect.update_view_frame(view, value)
@@ -82,20 +90,20 @@ module RubyMotionQuery
   #    *              *              |    *    |                 *   :below_prev     (:bp)  
   #    *|--- left ---|*              |    *    |                 *   :above_prev     (:ap)
   #    *              *              |    * height               *   :grid           (:g)
-  #    *              *              |    *    |                 *   
-  #    *              *              |    *    |                 *   abbreviations
-  #    *|-------------------- right -+---|*    |                 *   -----------------------              
-  #    *              *              |    *    |                 *   :l, :t, :w, :h          
-  #    *              *              |    * |--+--from_right----|*   :r, :b
-  #    *              *             ---   *    |                 *   :fr, fb
-  #    *              ***************---***   ---                *   
+  #    *              *              |    *    |                 *   :padding        (:p)
+  #    *              *              |    *    |                 *     int or hash: l,t,b,r 
+  #    *|-------------------- right -+---|*    |                 *                 
+  #    *              *              |    *    |                 *   abbreviations           
+  #    *              *              |    * |--+--from_right----|*   -----------------------
+  #    *              *             ---   *    |                 *   :l, :t, :w, :h         
+  #    *              ***************---***   ---                *   :r, :b
+  #    *                              |                          *   :fr, fb
+  #    *              |------ width - + -|                       *   
   #    *                              |                          *   :centered options
-  #    *              |------ width - + -|                       *   -----------------------
-  #    *                              |                          *   :horizontal
+  #    *                              |                          *   -----------------------
+  #    *                          from_bottom                    *   :horizontal
   #    *                              |                          *   :vertical
-  #    *                          from_bottom                    *   :both                  
-  #    *                              |                          *   
-  #    *                              |                          *   
+  #    *                              |                          *   :both                  
   #    *                             ---                         *   
   #    ***********************************************************       
   #
@@ -179,30 +187,6 @@ module RubyMotionQuery
             params.delete(:g)
 
             grid_h = grid[params_g]
-
-            if not_in_root_view # Change to root_view_space
-              # TODO, I don't think this is fully working correctly, plus
-              # needs refactoring. Test more
-
-              # Convert to width and height
-              if r = grid_h.delete(:r)
-                # TODO, do if there is no r
-                grid_h[:width] = r - grid_h[:l]
-              end
-
-              if b = grid_h.delete(:b)
-                # TODO, do if there is no T
-                grid_h[:height] = b - grid_h[:t]
-              end
-
-              # Convert to root_view space
-              #new_point = CGPointMake(grid_h[:l] || 0, grid_h[:t] || 0)
-              #sv_point = vc.view.convertPoint(new_point, fromView: sv)
-              #grid_h[:l] -= sv_point.x
-              #grid_h[:t] -= sv_point.y
-              grid_h[:l] -= sv.frame.origin.x # TODO A hack for now, fix. Only works with 1 deep
-              grid_h[:t] -= sv.frame.origin.y 
-            end
             params = grid_h.merge(params)
           end
         end
@@ -211,6 +195,11 @@ module RubyMotionQuery
         params_t = params[:t] || params[:top] || params[:y]
         params_w = params[:w] || params[:width]
         params_h = params[:h] || params[:height]
+
+        below_prev = params[:below_prev] || params[:bp] || params[:below_previous]
+        above_prev = params[:above_prev] || params[:ap]  || params[:above_previous]
+        right_of_prev = params[:right_of_prev] || params[:rop] || params[:right_of_previous]
+        left_of_prev = params[:left_of_prev] || params[:lop] || params[:left_of_previous]
 
         l = params_l || existing_rect.origin.x
         t = params_t || existing_rect.origin.y
@@ -227,15 +216,15 @@ module RubyMotionQuery
      
         # Previous
         if prev_view = previous_view
-          if below_prev = (params[:below_prev] || params[:bp])
+          if below_prev
             t = prev_view.frame.origin.y + prev_view.frame.size.height + below_prev
-          elsif above_prev = (params[:above_prev] || params[:ap])
+          elsif above_prev
             t = prev_view.frame.origin.y - above_prev - h
           end
 
-          if right_of_prev = (params[:right_of_prev] || params[:rop])
+          if right_of_prev
             l = prev_view.frame.origin.x + prev_view.frame.size.width + right_of_prev
-          elsif left_of_prev = (params[:left_of_prev] || params[:lop])
+          elsif left_of_prev
             l = prev_view.frame.origin.x - left_of_prev - w
           end
         end
@@ -260,7 +249,7 @@ module RubyMotionQuery
         # From right, from_bottom
         if (fr || fb) && sv
           if fr
-            if params_l
+            if params_l || left_of_prev || right_of_prev
               w = sv_size.width - l - fr
             else
               l = sv_size.width - w - fr
@@ -268,7 +257,7 @@ module RubyMotionQuery
           end
 
           if fb
-            if params_t
+            if params_t || below_prev || above_prev
               h = sv_size.height - t - fb
             else
               t = sv_size.height - h - fb
@@ -304,6 +293,31 @@ module RubyMotionQuery
               l = (sv_size.width / 2) - (w / 2)
               t = (sv_size.height / 2) - (h / 2)
           end
+        end
+
+        if padding = params[:padding] || params[:p]
+          if padding.is_a?(Hash)
+            padding_l = padding[:l] || padding[:left] || 0
+            padding_t = padding[:t] || padding[:top] || 0
+            padding_r = padding[:r] || padding[:right] || 0
+            padding_b = padding[:b] || padding[:bottom] || 0
+            l += padding_l
+            t += padding_t
+            w -= (padding_l + padding_r)
+            h -= (padding_t + padding_b)
+          else
+            l += padding
+            t += padding
+            w -= (padding * 2)
+            h -= (padding * 2)
+          end
+        end
+
+        if params_g && not_in_root_view # Change to root_view_space
+          point = CGPointMake(l,t)
+          root_view_point = vc.view.convertPoint(point, toView: sv)
+          l = root_view_point.x
+          t = root_view_point.y
         end
 
         [l,t,w,h]
@@ -402,6 +416,24 @@ module RubyMotionQuery
       to_cgsize
     end
 
+    def point_in_root_view
+      if @view && (sv = @view.superview)  && (vc = view.rmq.view_controller)
+        vc.view.convertPoint(CGPointMake(@left,@top), fromView: sv)
+      end
+    end
+
+    def left_in_root_view
+      if point = point_in_root_view
+        point.x
+      end
+    end
+
+    def top_in_root_view
+      if point = point_in_root_view
+        point.y
+      end
+    end
+
     # TODO add center
 
     def z_position
@@ -479,9 +511,9 @@ module RubyMotionQuery
  *            *              |    *    |                *    z_order: #{z_order}
  *            *       #{ r}  |    *    |                *    z_position: #{z_position}
  *|------------------ right -+---|*    |                *
- *            *              |    *    |    #{fr}       *
- *            *              |    * |--+--from_right---|*
- *            *             ---   *    |                *
+ *            *              |    *    |    #{fr}       *    Location in root view
+ *            *              |    * |--+--from_right---|*    {l: #{i_f_to_s(left_in_root_view)}, t: #{i_f_to_s(top_in_root_view)},
+ *            *             ---   *    |                *     w: #{w.strip}, h: #{h.strip}}
  *            ***************---***   ---               *
  *                            |                         *
  *            |------ width - + --|                     *

@@ -422,6 +422,7 @@ describe 'rect' do
       @view_2 = @vc.rmq.append(UIView).get
       @view_3 = @vc.rmq.append(UIView).get
     end
+
     
     it 'should set top to previous views bottom, plus margin, using below_prev' do
       rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
@@ -443,6 +444,23 @@ describe 'rect' do
       @view_3.frame.origin.y.should == @view_2.frame.origin.y - 70 - 17
     end
 
+    it 'should allow long aliases on prev' do
+      rmq(@view).layout(l: 10, t: 200, w: 30, h: 40)
+      rmq(@view_2).layout(l: 10, above_previous: 7, w: 30, h: 60)
+      @view_2.frame.origin.y.should == 200 - 60 - 7
+
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(l: 10, below_previous: 10, w: 30, h: 40)
+      @view_2.frame.origin.y.should == 20 + 40 + 10
+
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(t: 10, right_of_previous: 6, w: 30, fr: 10)
+      @view_2.frame.origin.x.should == 10 + 30 + 6 
+
+      #rmq(@view_2).layout(t: 210, w: 40, h: 60, left_of_previous: 18)
+      #@view_2.frame.origin.x.should == 250 - 40 - 18
+    end
+
     it 'should set left to previous views right, plus margin, using right_of_prev' do
       rmq(@view).layout(l: 10, t: 200, w: 30, h: 40)
       rmq(@view_2).layout(t: 210, w: 30, h: 60, rop: 15)
@@ -456,6 +474,20 @@ describe 'rect' do
 
       @view_2.frame.origin.x.should == 250 - 40 - 18
     end
+
+    it 'should allow you to set below_prev and from_bottom at the same time' do
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(l: 10, below_previous: 3, w: 30, fb: 10)
+      @view_2.frame.origin.y.should == 20 + 40 + 3 
+      @view_2.frame.size.height.should == @vc.view.frame.size.height - 10 - 60 - 3
+    end
+
+    it 'should allow you to set right_of_prev and from_right at the same time' do
+      rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
+      rmq(@view_2).layout(t: 10, rop: 6, w: 30, fr: 10)
+      @view_2.frame.origin.x.should == 10 + 30 + 6 
+      @view_2.frame.size.width.should == @vc.view.frame.size.width - 10 - 40 - 6
+    end
   end
 
   describe 'and grid' do
@@ -463,6 +495,8 @@ describe 'rect' do
       @original_app_grid = rmq.app.grid
 
       @vc = UIViewController.alloc.init
+      @original_vc = rmq.window.rootViewController
+      rmq.window.rootViewController = @vc
       @view = @vc.rmq.append(UIView).get
 
       @grid = RubyMotionQuery::Grid.new({
@@ -480,6 +514,7 @@ describe 'rect' do
 
     after do
       rmq.app.grid = @original_app_grid
+      rmq.window.rootViewController = @original_vc
     end
 
     should 'layout with full grid string' do
@@ -530,12 +565,19 @@ describe 'rect' do
     end
 
     should 'apply subview in same gridspace as superview, not in superviews bounds' do
-      rect1 = rmq(@view).layout('a0:d4').frame
-      rect2 = rmq(@view).append(UIView).layout('a0:d4').frame
-      rect2.l.should == 0
-      rect2.t.should == 0
+      grid_h = @grid['a0:d4'].dup
+      rect1 = rmq(@view).tag(:parent).layout('a0:d4').frame
+      rect1.l.should == grid_h[:l]
+      rect1.t.should == grid_h[:t]
+
+      rect2 = rmq(@view).append(UIView).tag(:child).layout('a0:d4').frame
+      rect2.left_in_root_view.round(2).should == grid_h[:l].round(2)
+      rect2.top_in_root_view.round(2).should == grid_h[:t].round(2)
       rect2.w.should == rect1.w
       rect2.h.should == rect1.h
+
+      rect2.t.should == 0
+      rect2.l.should == 0
     end
 
     should 'apply subview in same gridspace as superview, not in superviews bounds #2' do
@@ -543,13 +585,84 @@ describe 'rect' do
 
       rect1 = rmq(@view).layout('b1:c2').frame
       rect2 = rmq(@view).append(UIView).layout('a0:c2').frame
-      rect2.l.should ==  grid_h[:l] - rect1.l
-      rect2.t.should ==  grid_h[:t] - rect1.t
+      rect2.left_in_root_view.round(2).should == grid_h[:l].round(2)
+      rect2.top_in_root_view.round(2).should == grid_h[:t].round(2)
       rect2.w.should == grid_h[:r] - grid_h[:l]
       rect2.h.should == grid_h[:b] - grid_h[:t]
     end
 
+    should 'apply subview in same gridspace as root view when in grandchild of rootview' do
+      grid_h = @grid['a0:c2'].dup
+
+      rect1 = rmq(@view).layout('b1:c2').frame
+      view2 = rmq(@view).append(UIView).layout(l: 10, t: 80, w: 100, h: 200).get
+      rect2 = rmq(view2).frame
+      rect3 = rmq(view2).append(UIView).layout('a0:c2').frame
+      rect3.l.should == grid_h[:l] - (rect1.l + rect2.l)
+      rect3.t.should == grid_h[:t] - (rect1.t + rect2.t)
+      rect3.w.should == grid_h[:r] - grid_h[:l]
+      rect3.h.should == grid_h[:b] - grid_h[:t]
+    end
+
+    should 'not throw exeption with {grid: "a:z99", height: 150}' do
+      grid_h = @grid['a:z99'].dup
+      rect1 = rmq(@view).append(UIView).layout(grid: 'a:z99', h: 150).frame
+      rect1.l.round(2).should == grid_h[:l].round(2)
+      rect1.t.round(0).should == rmq.device.height - 150 - @grid.content_bottom_margin
+      rect1.r.round(2).should == grid_h[:r].round(2)
+      rect1.h.should == 150
+    end
+
+    should 'not modify grid when setting subviews' do
+      rect1 = rmq(@view).layout('a0:l11').frame
+      rect2 = rmq(@view).append(UIView).layout('a0:l0').frame
+      rect3 = rmq.append(UIView).layout('a0:l11').frame
+
+      rect1.to_h.should == rect3.to_h
+    end
+
+    #should 'be able to use grid and below_prev in same layout in subviews' do
+      #rect1 = rmq(@view).append(UIView).layout('a1:c3').frame
+      #rect1 = rmq(@view).append(UIView).layout(grid: 'b:c5', below_prev: 5).frame
+    #end
+
     # TODO test subviews more
+  end
+
+  describe 'with padding' do
+    before do
+      @vc = UIViewController.alloc.init
+      @view = @vc.rmq.append(UIView).get
+    end
+
+    it 'should apply to all sides if only an integer or float is provided' do
+      rect = rmq(@view).layout(l: 10, t: 20, r: 40, b: 50, padding: 5).frame
+      rect.l.should == 15
+      rect.t.should == 25
+      rect.w.should == 20
+      rect.h.should == 20
+      rect.r.should == 35 
+      rect.b.should == 45 
+    end
+
+    it 'should allow you to specify for all sides independently' do
+      rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, p: {l: 1, t: 2, r: 3, b: 4}).frame
+      rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, p: {left: 1, top: 2, right: 3, bottom: 4}).frame
+      rect.l.should == 11
+      rect.t.should == 22 
+      rect.w.should == 36 
+      rect.h.should == 44 
+    end
+
+    it 'should allow you to specify only some sides' do
+      rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, padding: {l: 1, r: 3}).frame
+      rect.l.should == 11
+      rect.t.should == 20 
+      rect.w.should == 36 
+      rect.h.should == 50 
+    end
+    
+    # TODO test with grid and a variety of other layout types
   end
 
   describe 'rmq instance frame' do

@@ -106,12 +106,12 @@ module RubyMotionQuery
     DEFAULT = {
       num_columns: 10,
       column_gutter: 10,
-      content_left_margin: 5,
-      content_right_margin: 5,
-      content_top_margin: 5,
-      content_bottom_margin: 5,
-      num_rows: 13,
-      row_gutter: 10
+      num_rows: 16,
+      row_gutter: 10,
+      content_left_margin: 10,
+      content_right_margin: 10,
+      content_top_margin: 70,
+      content_bottom_margin: 10
     }
 
     def initialize(params)
@@ -146,6 +146,10 @@ module RubyMotionQuery
     end
     def content_left_margin=(value)
       @content_left_margin = value
+      clear_cache
+    end
+    def content_right_margin=(value)
+      @content_right_margin = value
       clear_cache
     end
     def content_top_margin=(value)
@@ -217,6 +221,7 @@ module RubyMotionQuery
                 digits = nil
               else
                 top_i = digits.to_i
+                top_i = (tops.length - 1) if top_i >= tops.length
               end
 
               letter = p1.gsub(/\d/, '')
@@ -225,6 +230,7 @@ module RubyMotionQuery
               else
                 letter.downcase!
                 left_i = (letter.ord - 97)
+                left_i = (lefts.length - 1) if left_i >= lefts.length
               end
 
               if digits && letter
@@ -253,10 +259,9 @@ module RubyMotionQuery
                 nil
               end
             when 2
-              self[parts.first].merge!(self[":#{parts.last}"])
+              self[parts.first].merge(self[":#{parts.last}"])
           end
-
-        end
+        end.freeze
       end
     end
 

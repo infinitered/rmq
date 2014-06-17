@@ -47,6 +47,16 @@ module RubyMotionQuery
         @view.frame = f
       end
 
+      def prev_frame
+        if pv = RubyMotionQuery::Rect.previous_view
+          RubyMotionQuery::Rect.frame_for_view(pv)
+        end
+      end
+
+      def prev_view
+        RubyMotionQuery::Rect.previous_view
+      end
+
       def bounds=(value)
         RubyMotionQuery::Rect.update_view_bounds(view, value)
       end
@@ -361,6 +371,9 @@ module RubyMotionQuery
         @view.layer.masksToBounds
       end
 
+      def accessibility_label=(value)
+        @view.accessibilityLabel = value
+      end
     end
   end
 end

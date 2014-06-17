@@ -122,6 +122,13 @@ describe 'actions' do
     labels.each { |label| label.frame.size.width.should.not == 0 }
   end
 
+  it 'should call method  on multiple views, ignoring any that do not implement the method' do
+    labels = [ UILabel.alloc.init, UILabel.alloc.init, UIView.alloc.init]
+    should.not.raise(NoMethodError) do
+      @vc.rmq(UIView).send("highlighted")
+    end
+  end
+
   it 'should read and set data for UILabel' do
     rmq.create(UILabel).data('foo').get.text.should == 'foo'
     rmq.create(UILabel).data('bar').data.should == 'bar'
