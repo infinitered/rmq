@@ -36,11 +36,10 @@ module RubyMotionQuery
     #
     # @return [Boolean] true if any selection views have tag provided
     def has_tag? tag
-      tag_exists = false
       selected.each do |view|
-        tag_exists ||= view.rmq_data.has_tag?(tag)
+        return true if view.rmq_data.has_tag?(tag)
       end
-      tag_exists
+      false # tag doesn't exist if we got here
     end
 
     # See /motion/data.rb for the rest of the tag stuff
