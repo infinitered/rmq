@@ -28,6 +28,20 @@ module RubyMotionQuery
       self
     end
 
+    # Check if any of the selected has a given tag
+    # @example
+    #   rmq(my_view).has_tag?(:your_tag) #false
+    #   rmq(my_view).tag(:your_tag)
+    #   rmq(my_view).has_tag?(:your_tag) #true
+    #
+    # @return [Boolean] true if any selection views have tag provided
+    def has_tag? tag
+      selected.each do |view|
+        return true if view.rmq_data.has_tag?(tag)
+      end
+      false # tag doesn't exist if we got here
+    end
+
     # See /motion/data.rb for the rest of the tag stuff
 
   end
