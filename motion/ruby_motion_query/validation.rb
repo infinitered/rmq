@@ -7,17 +7,34 @@ module RubyMotionQuery
     NUMBER = Regexp.new('^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$')
     DIGITS = Regexp.new('^\d+$')
 
+    @methods = {
+      email: -> { puts 'email got called'},
+      url: -> { puts 'url got called'}
+    }
+
     # Add tags
     # @example
     #    rmq.validation.valid?('test@test.com', :email)
-    #    rmq.validation.valid?(53, :number)
+    #    rmq.validation.valid?(53.8, :number)
+    #    rmq.validation.valid?(54, :digits)
+    #    rmq.validation.valid?('https://www.tacoland.com', :url)
+    #    rmq.validation.valid?('2014-03-02'), :dateiso)
     #
     # @return [Boolean]
     def valid?(value, *rule_or_rules)
-
+      rule_or_rules.each do |rule|
+        p "apply rule"
+        @methods[:email]
+        #return false if validation_failed
+      end
+      true
     end
 
 
+    private
 
+    def regex_match?(value, regex)
+      (value =~ regex) == 0
+    end
   end
 end
