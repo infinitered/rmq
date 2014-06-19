@@ -36,8 +36,10 @@ module RubyMotionQuery
       # @return [Boolean]
       def valid?(value, *rule_or_rules)
         rule_or_rules.each do |rule|
-          p @@validation_methods[rule].call(value)
+          # only supported validations
+          raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @@validation_methods.include?(rule)
           #return false if validation_failed
+          return false unless @@validation_methods[rule].call(value)
         end
         true
       end
