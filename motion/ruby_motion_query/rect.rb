@@ -213,19 +213,37 @@ module RubyMotionQuery
         fb = params[:from_bottom] || params[:fb]
 
         centered = params[:centered]
-     
+
         # Previous
         if prev_view = previous_view
-          if below_prev
-            t = prev_view.frame.origin.y + prev_view.frame.size.height + below_prev
-          elsif above_prev
-            t = prev_view.frame.origin.y - above_prev - h
-          end
+          if params_g && (prev_sv = prev_view.superview) 
 
-          if right_of_prev
-            l = prev_view.frame.origin.x + prev_view.frame.size.width + right_of_prev
-          elsif left_of_prev
-            l = prev_view.frame.origin.x - left_of_prev - w
+            previous_root_view_point = vc.view.convertPoint(prev_view.origin, fromView: prev_sv)
+
+            if below_prev
+              t = params_t = previous_root_view_point.y + prev_view.frame.size.height + below_prev
+            elsif above_prev
+              t = params_t = previous_root_view_point.y - above_prev - h
+            end
+
+            if right_of_prev
+              l = params_l = previous_root_view_point.x + prev_view.frame.size.width + right_of_prev
+            elsif left_of_prev
+              l = params_l = previous_root_view_point.x - left_of_prev - w
+            end
+
+          else
+            if below_prev
+              t = prev_view.frame.origin.y + prev_view.frame.size.height + below_prev
+            elsif above_prev
+              t = prev_view.frame.origin.y - above_prev - h
+            end
+
+            if right_of_prev
+              l = prev_view.frame.origin.x + prev_view.frame.size.width + right_of_prev
+            elsif left_of_prev
+              l = prev_view.frame.origin.x - left_of_prev - w
+            end
           end
         end
 
@@ -419,6 +437,13 @@ module RubyMotionQuery
     def point_in_root_view
       if @view && (sv = @view.superview)  && (vc = view.rmq.view_controller)
         vc.view.convertPoint(CGPointMake(@left,@top), fromView: sv)
+      end
+    end
+
+    def rect_in_root_view
+      if @view && (sv = @view.superview)  && (vc = view.rmq.view_controller)
+        point = vc.view.convertPoint(CGPointMake(@left,@top), fromView: sv)
+        RubyMotionQuery::Rect.new({l: point.x, t: point.y, w: @view.size.width, h: @view.size.height}, @view)
       end
     end
 
