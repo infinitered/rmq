@@ -9,8 +9,7 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def logo(st)
-    st.frame = {t: 77, w: 200, h: 95.5}
-    st.centered = :horizontal
+    st.frame = {t: 77, w: 200, h: 95.5, centered: :horizontal }
     st.image = image.resource('logo')
   end
 
@@ -83,9 +82,9 @@ class MainStylesheet < ApplicationStylesheet
     st.frame = {fb: PADDING, w: 270, h: 110}
 
     if landscape? && iphone?
-      st.left = PADDING
+      st.frame = {left: PADDING }
     else
-      st.centered = :horizontal
+      st.frame = {centered: :horizontal}
     end
 
     st.z_position = 1
@@ -128,7 +127,7 @@ class MainStylesheet < ApplicationStylesheet
 
   def stop_spinner(st)
     section_buttons st
-    st.from_right = PADDING
+    st.frame = {from_right: PADDING}
     st.text = 'Stop spinner'
   end
 
