@@ -22,7 +22,10 @@ module RubyMotionQuery
 
       @@validation_methods = {
         :email => lambda { |value| Validation.regex_match?(value, EMAIL)},
-        :url => lambda { |value| Validation.regex_match?(value, URL)}
+        :url => lambda { |value| Validation.regex_match?(value, URL)},
+        :dateiso => lambda { |value| Validation.regex_match?(value, DATEISO)},
+        :number => lambda { |value| Validation.regex_match?(value, NUMBER)},
+        :digits => lambda { |value| Validation.regex_match?(value, DIGITS)}
       }
 
       # Add tags
@@ -45,8 +48,9 @@ module RubyMotionQuery
       end
 
       def regex_match?(value, regex)
-        (value =~ regex) == 0
+        (value.to_s =~ regex) == 0
       end
+
     end
   end
 end
