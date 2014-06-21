@@ -51,4 +51,12 @@ describe 'tags' do
     end
   end
 
+  it 'should be able to check for tags' do
+    @vc.rmq.append(UIView).tap do |q|
+      q.has_tag?(:test).should == false
+      q.tag(:test)
+      q.has_tag?(:test).should == true
+    end
+  end
+
 end

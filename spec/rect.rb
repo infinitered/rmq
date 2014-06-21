@@ -613,7 +613,7 @@ describe 'rect' do
       rect1.h.should == 150
     end
 
-    should 'not modify grid when setting subviews' do
+    should 'not modify grid when setting subviews' do # This was a bug
       rect1 = rmq(@view).layout('a0:l11').frame
       rect2 = rmq(@view).append(UIView).layout('a0:l0').frame
       rect3 = rmq.append(UIView).layout('a0:l11').frame
@@ -621,10 +621,47 @@ describe 'rect' do
       rect1.to_h.should == rect3.to_h
     end
 
-    #should 'be able to use grid and below_prev in same layout in subviews' do
-      #rect1 = rmq(@view).append(UIView).layout('a1:c3').frame
-      #rect1 = rmq(@view).append(UIView).layout(grid: 'b:c5', below_prev: 5).frame
-    #end
+    should 'be able to use grid and below_prev in same layout in subviews' do
+      rmq(@view).layout l: 50, t: 100, w: 200, h: 300
+
+      subq = rmq(@view).append(UIView).tag{:test_tag}.layout('a0:c1')
+      RubyMotionQuery::Rect.previous_view.should == subq.get
+
+      rect1 = subq.frame
+      rect2 = rmq(@view).append(UIView).layout(grid: 'a:c3', below_prev: 5).frame
+
+      grid = @grid['a0:c3']
+
+      rect2.left.should == rect1.left
+      rect2.right.should == rect1.right
+      rect2.rect_in_root_view.bottom.round(2).should == grid[:b].round(2)
+
+      rect2.rect_in_root_view.top.should == rect1.rect_in_root_view.bottom + 5
+
+      rect2.height.should == (grid[:b] - (rect1.rect_in_root_view.bottom + 5))
+    end
+
+    should 'be able to use grid and right_of_prev in same layout in subviews' do
+      rmq(@view).layout l: 50, t: 100, w: 200, h: 300
+
+      rect1 = rmq(@view).append(UIView).layout('a0:b1').frame
+      rect2 = rmq(@view).append(UIView).layout(grid: '0:d3', right_of_prev: 5).frame
+
+      grid = @grid['a0:b1']
+
+      rect1.rect_in_root_view.l.round(2).should == grid[:l].round(2)
+      rect1.rect_in_root_view.t.round(2).should == grid[:t].round(2)
+      rect1.rect_in_root_view.r.round(2).should == grid[:r].round(2)
+      rect1.rect_in_root_view.b.round(2).should == grid[:b].round(2)
+
+      grid = @grid['a0:d3']
+
+      rect2.rect_in_root_view.top.round(2).should == grid[:t].round(2)
+      rect2.rect_in_root_view.bottom.round(2).should == grid[:b].round(2)
+
+      rect2.rect_in_root_view.right.round(2).should == grid[:r].round(2)
+      rect2.rect_in_root_view.left.round(2).should == (@grid['a0:b1'][:r] + 5).round(2)
+    end
 
     # TODO test subviews more
   end
