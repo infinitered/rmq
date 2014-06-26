@@ -2,6 +2,7 @@
 
 require "erb"
 require "rubygems"
+require 'open-uri'
 
 $:.unshift(File.join(File.dirname(__FILE__), "/../motion/ruby_motion_query"))
 require "version"
@@ -10,8 +11,9 @@ class RmqCommandLine
   HELP_TEXT = %{     rmq version #{RubyMotionQuery::VERSION}
 
      Some things you can do with the rmq command:
-     > rmq api
      > rmq docs
+     > rmq docs query
+     > rmq docs "background image"
 
      > rmq create my_new_app
 
@@ -161,14 +163,19 @@ unless ARGV.length > 0
 end
 
 action = ARGV[0]
+query = ARGV[1]
 
 case action
 when 'create'
   RmqCommandLine.create(ARGV[1], ARGV[2], ARGV[3])
-when 'api'
-  `open http://rdoc.info/github/infinitered/rmq`
 when 'docs'
-  `open http://infinitered.com/rmq`
+  if query
+    query = URI::encode(query)
+    url = "http://rubymotionquery.com?s=#{query}&post_type=document"
+    `open #{url}`
+  else
+    `open http://rubymotionquery.com/documentation`
+  end
 when '--help', '-h'
   puts RmqCommandLine::HELP_TEXT
 when '-v', '--version'
