@@ -15,9 +15,9 @@ describe 'stylesheet' do
     @vc.view.addSubview(view)
     view2 = UIView.alloc.initWithFrame(CGRectZero)
     @vc.view.addSubview(view2)
-    
+
     @vc.rmq(view,view2).style do |st|
-      st.left = 5
+      st.frame = {l: 5}
       st.z_position = 2
     end
 
@@ -156,12 +156,12 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
   end
 
   def style_one(st)
-    st.left = 1
+    st.frame = {l: 1}
     st.background_color = color.battleship_gray
   end
 
   def style_two(st)
-    st.left = 2
+    st.frame = {l: 2}
     st.background_color = color.panther_black
   end
 
