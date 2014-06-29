@@ -259,7 +259,7 @@ describe 'transversing' do
     @vc.rmq(test_view).next.length.should == 0
   end
 
-  it 'next should return empty rmq if it is at the end of the subviews' do
+  it 'next should return empty rmq if it is at the begnning of the subviews' do
     @vc.rmq(@v3_v2_v0).prev.length.should == 0
 
     test_view = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_0][:view]

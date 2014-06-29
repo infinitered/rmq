@@ -423,7 +423,10 @@ describe 'rect' do
       @view_3 = @vc.rmq.append(UIView).get
     end
 
-    
+    it 'should equal previous sibling' do
+      rmq(@view_2).prev.get.should == @view
+    end
+
     it 'should set top to previous views bottom, plus margin, using below_prev' do
       rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
       rmq(@view_2).layout(l: 10, below_prev: 10, w: 30, h: 40)
@@ -625,7 +628,7 @@ describe 'rect' do
       rmq(@view).layout l: 50, t: 100, w: 200, h: 300
 
       subq = rmq(@view).append(UIView).tag{:test_tag}.layout('a0:c1')
-      RubyMotionQuery::Rect.previous_view.should == subq.get
+      RubyMotionQuery::Rect.previous_view(subq.get).should == nil
 
       rect1 = subq.frame
       rect2 = rmq(@view).append(UIView).layout(grid: 'a:c3', below_prev: 5).frame

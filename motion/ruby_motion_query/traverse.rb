@@ -192,11 +192,12 @@ module RubyMotionQuery
     end
 
 
-    # @return [RMQ] Sibling above to the selected view(s)
+    # @return [RMQ] Sibling below the selected view(s) (in the subview array)
     #
     # @param selectors
     #
     # @example
+    #   rmq(my_view).next.hide
     #   rmq(my_view).next(UITextField).focus
     def next(*working_selectors)
       normalize_selectors(working_selectors)
@@ -210,20 +211,23 @@ module RubyMotionQuery
       end
     end
 
-    # @return [RMQ] Sibling below to the selected view(s)
+    # @return [RMQ] Sibling above the selected view(s) (in the subview array)
     #
     # @param selectors
     #
     # @example
+    #   rmq(my_view).prev.hid
     #   rmq(my_view).prev(UITextField).focus
     def prev(*working_selectors)
       normalize_selectors(working_selectors)
 
       filter do |view|
-        subs = view.superview.subviews
-        location = subs.index(view)
-        if location > 0
-          subs[location - 1]
+        if sv = view.superview
+          subs = sv.subviews
+          location = subs.index(view)
+          if location > 0
+            subs[location - 1]
+          end
         end
       end
     end

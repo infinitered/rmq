@@ -48,13 +48,20 @@ module RubyMotionQuery
       end
 
       def prev_frame
-        if pv = RubyMotionQuery::Rect.previous_view
+        if (pv = prev_view) && !RubyMotionQuery::RMQ.is_blank?(pv)
           RubyMotionQuery::Rect.frame_for_view(pv)
+        else
+          CGRectZero
         end
       end
 
       def prev_view
-        RubyMotionQuery::Rect.previous_view
+        pv = @view.rmq.prev.get
+        if RubyMotionQuery::RMQ.is_blank?(pv)
+          nil
+        else
+          pv
+        end
       end
 
       def bounds=(value)

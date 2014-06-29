@@ -114,23 +114,22 @@ module RubyMotionQuery
 
       def update_view_frame(view, params)
         view.frame = object_to_cg_rect(params, view, view.frame, view.rmq.grid)
-        @_previous_view = RubyMotionQuery::RMQ.weak_ref(view)
       end
 
       def update_view_bounds(view, params)
         view.frame = object_to_cg_rect(params, view, view.bounds, view.rmq.grid)
-        @_previous_view = RubyMotionQuery::RMQ.weak_ref(view)
       end
 
-      # The previous view is literally the last view that was layed out, not
-      # the sibling view, the last view layed out in this screen, etc, just 
-      # the last view.
-      # As styles and layouts are always applied in order, and there is only
-      # 1 UI thread, this should work just fine
-      def previous_view
-        # TODO, verify that there is actually a problem with circular reference here
-        # if not, we can just store the view and not create a weakref
-        RubyMotionQuery::RMQ.weak_ref_value(@_previous_view)
+      # Previous sibling
+      def previous_view(view)
+        if view
+          pv = view.rmq.prev.get
+          if RubyMotionQuery::RMQ.is_blank?(pv)
+            nil
+          else
+            pv
+          end
+        end
       end
 
       def frame_for_view(view)
@@ -215,7 +214,7 @@ module RubyMotionQuery
         centered = params[:centered]
 
         # Previous
-        if prev_view = previous_view
+        if prev_view = previous_view(view)
           if params_g && (prev_sv = prev_view.superview) 
 
             previous_root_view_point = vc.view.convertPoint(prev_view.origin, fromView: prev_sv)
