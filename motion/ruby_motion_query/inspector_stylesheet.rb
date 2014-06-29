@@ -1,5 +1,5 @@
 module RubyMotionQuery
-  class InspectorStylesheet < Stylesheet
+  class InspectorStylesheet < RubyMotionQuery::Stylesheet
     attr_reader :tree_node_background_color, :selected_border_color
 
     def setup
