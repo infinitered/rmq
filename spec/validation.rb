@@ -82,6 +82,14 @@ describe 'validation' do
       end
     end
 
+    it 'ignores validation checks if debugging is set to true' do
+      @rmq.validation.valid?('taco loco', :digits).should == false
+      RubyMotionQuery::RMQ.debugging = true
+      @rmq.validation.valid?('taco loco', :digits).should == true
+      RubyMotionQuery::RMQ.debugging = false
+      @rmq.validation.valid?('taco loco', :digits).should == false
+    end
+
   end
 
 end
