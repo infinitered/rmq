@@ -65,6 +65,7 @@ module RubyMotionQuery
         when UISegmentedControl   then Stylers::UISegmentedControlStyler.new(view)
         when UIRefreshControl     then Stylers::UIRefreshControlStyler.new(view)
         when UIPageControl        then Stylers::UIPageControlStyler.new(view)
+        when UIProgressView       then Stylers::UIProgressViewStyler.new(view)
         when UISlider             then Stylers::UISliderStyler.new(view)
         when UIStepper            then Stylers::UIStepperStyler.new(view)
         when UITabBar             then Stylers::UITabBarStyler.new(view)
