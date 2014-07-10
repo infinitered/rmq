@@ -2,6 +2,8 @@ class MainStylesheet < ApplicationStylesheet
   def setup
     # Add stylesheet specific setup stuff here.
     # Add application specific setup stuff in application_stylesheet.rb
+
+    @padding = 10
   end
 
   def root_view(st)
@@ -14,7 +16,7 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def make_labels_blink_button(st)
-    st.frame = {from_right: PADDING, t: 180, w: 150, h: 20}
+    st.frame = {from_right: @padding, t: 180, w: 150, h: 20}
 
     # ipad? (and landscape?, etc) is just a convenience methods for
     # rmq.device.ipad?
@@ -47,14 +49,14 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def make_buttons_throb_button(st)
-    st.frame = {fr: PADDING, below_prev: 5, w: 150, h: 20}
+    st.frame = {from_right: @padding, below_prev: 5, width: 150, height: 20}
     st.text = 'Throb buttons'
     st.color = color.black
   end
 
   def animate_move_button(st)
     st.scale = 1.0
-    st.frame = {from_right: PADDING, below_prev: 5, w: 150, h: 20}
+    st.frame = {from_right: @padding, below_prev: 5, width: 150, height: 20}
     st.text = 'Animate move and scale'
     st.font = font.system(10)
     st.color = color.white
@@ -64,14 +66,14 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def collection_button(st)
-    st.frame = {from_right: PADDING, below_prev: 5, w: 150, h: 20}
+    st.frame = {fr: @padding, bp: 5, w: 150, h: 20}
     st.background_color = color.black
     st.font = font.small
     st.text = 'Collection View'
   end
 
   def table_button(st)
-    st.frame = {from_right: PADDING, below_prev: 5 , w: 150, h: 20}
+    st.frame = {fr: @padding, bp: 5 , w: 150, h: 20}
     st.background_color = color.black
     st.font = font.small
     st.text = 'Table View'
@@ -79,10 +81,10 @@ class MainStylesheet < ApplicationStylesheet
 
 
   def section(st)
-    st.frame = {fb: PADDING, w: 270, h: 110}
+    st.frame = {fb: @padding, w: 270, h: 110}
 
     if landscape? && iphone?
-      st.frame = {left: PADDING }
+      st.frame = {left: @padding }
     else
       st.frame = {centered: :horizontal}
     end
@@ -98,13 +100,13 @@ class MainStylesheet < ApplicationStylesheet
 
   def section_title(st)
     section_label st
-    st.frame = {l: PADDING, t: PADDING, w: 150, h: 20}
+    st.frame = {l: @padding, t: @padding, w: 150, h: 20}
     st.text = 'Section title'
   end
 
   def section_enabled(st)
     label st
-    st.frame = {l: PADDING, t: 30}
+    st.frame = {l: @padding, t: 30}
     st.on = true
   end
 
@@ -115,7 +117,7 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def section_buttons(st)
-    st.frame = {l: PADDING, t: 64, w: 120, h: 40}
+    st.frame = {l: @padding, t: 64, w: 120, h: 40}
     st.background_color = color.black
     section_button_enabled st
   end
@@ -127,7 +129,7 @@ class MainStylesheet < ApplicationStylesheet
 
   def stop_spinner(st)
     section_buttons st
-    st.frame = {from_right: PADDING}
+    st.frame = {from_right: @padding}
     st.text = 'Stop spinner'
   end
 
@@ -143,12 +145,12 @@ class MainStylesheet < ApplicationStylesheet
 
   def popup_section(st)
     t = (landscape? && iphone?) ? 100 : 180
-    st.frame = {l: PADDING, t: t, w: 100 + (PADDING * 2), h: 60}
+    st.frame = {l: @padding, t: t, w: 100 + (@padding * 2), h: 60}
     st.background_color = color.from_hex('faa619')
   end
 
   def open_popup(st)
-    st.frame = {l: PADDING, t: 30, w: 100, h: 20}
+    st.frame = {l: @padding, t: 30, w: 100, h: 20}
     st.text = 'Open popup'
     st.font = font.system(11)
     st.color = color.from_hex('faa619')
@@ -163,7 +165,7 @@ class MainStylesheet < ApplicationStylesheet
 
   def title_label(st)
     label st # stack styles
-    st.frame = {l: PADDING, t: PADDING, w: 100, h: 15}
+    st.frame = {l: @padding, t: @padding, w: 100, h: 15}
 
     st.text = 'Test label'
     st.color = color.from_rgba(34, 132, 198, 1.0)

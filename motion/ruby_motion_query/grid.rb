@@ -104,13 +104,13 @@ module RubyMotionQuery
     NAV_BAR_BOTTOM = 64
 
     DEFAULT = {
-      num_columns: 10,
+      num_columns: 12,
       column_gutter: 10,
-      num_rows: 16,
+      num_rows: 18,
       row_gutter: 10,
       content_left_margin: 10,
       content_right_margin: 10,
-      content_top_margin: 70,
+      content_top_margin: 74,
       content_bottom_margin: 10
     }
 
