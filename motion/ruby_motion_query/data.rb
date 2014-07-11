@@ -12,6 +12,10 @@ module RubyMotionQuery
       tags.keys
     end
 
+    def validations
+      @_validations ||= []
+    end
+
     # *Do not* use this, use {RMQ#tag} instead: 
     # @example
     #   rmq(my_view).tag(:foo)
