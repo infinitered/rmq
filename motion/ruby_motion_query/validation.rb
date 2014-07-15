@@ -9,9 +9,45 @@ module RubyMotionQuery
     def validation
       Validation
     end
+
+    # @return [RMQ]
+    def validates(rule)
+      selected.each do |view|
+        view.rmq_data.validations << Validation.new(rule)
+      end
+      self
+    end
+
+    # @return [RMQ]
+    def clear_validations!
+      selected.each do |view|
+        view.rmq_data.validations = []
+      end
+      self
+    end
+
+    # @return [Boolean] false if any validations fail
+    def valid?
+      selected.each do |view|
+        view.rmq_data.validations.each do |validation|
+          return false unless validation.valid?(rmq(view).data)
+        end
+      end
+      return true
+    end
   end
 
   class Validation
+
+    def initialize(rule)
+      @rule = @@validation_methods[rule]
+      raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @rule
+    end
+
+    def valid?(data)
+      @rule.call data
+    end
+
     class << self
       # Validation Regex from jQuery validation -> https://github.com/jzaefferer/jquery-validation/blob/master/src/core.js#L1094-L1200
       EMAIL = Regexp.new('^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$')
@@ -53,10 +89,7 @@ module RubyMotionQuery
         #shortcircuit if debugging
         return true if RubyMotionQuery::RMQ.debugging?
         rule_or_rules.each do |rule|
-          # only supported validations
-          raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @@validation_methods.include?(rule)
-          #return false if validation_failed
-          return false unless @@validation_methods[rule].call(value)
+          return false unless Validation.new(rule).valid?(value)
         end
         true
       end

@@ -90,6 +90,30 @@ describe 'validation' do
       @rmq.validation.valid?('taco loco', :digits).should == false
     end
 
-  end
+    it 'can check validations based on selections' do
+      vc = UIViewController.alloc.init
 
+      vc.rmq.append(UITextField).validates(:digits).data('taco loco').tag(:one)
+      vc.rmq.append(UITextField).validates(:digits).data('123455').tag(:two)
+      vc.rmq.append(UITextField).validates(:digits).data('1234').tag(:three)
+
+      vc.rmq.all.valid?.should == false
+      vc.rmq(:one).valid?.should == false
+      vc.rmq(:one, :two).valid?.should == false
+      vc.rmq(:three, :two).valid?.should == true
+
+    end
+
+    it 'can clear all validations' do
+      vc = UIViewController.new
+
+      vc.rmq.all.valid?.should == true
+      vc.rmq.append(UITextField).validates(:digits).data('tacorama').tag(:one)
+      vc.rmq.append(UITextField).validates(:digits).data('not digits').tag(:two)
+      vc.rmq.all.valid?.should == false
+      vc.rmq.all.clear_validations!
+      vc.rmq.all.valid?.should == true
+
+    end
+  end
 end

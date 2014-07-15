@@ -12,7 +12,15 @@ module RubyMotionQuery
       tags.keys
     end
 
-    # *Do not* use this, use {RMQ#tag} instead: 
+    def validations
+      @_validations ||= []
+    end
+
+    def validations=(value)
+      @_validations = value
+    end
+
+    # *Do not* use this, use {RMQ#tag} instead:
     # @example
     #   rmq(my_view).tag(:foo)
     def tag(*tag_or_tags)
@@ -25,7 +33,7 @@ module RubyMotionQuery
         end
       elsif tag_or_tags.is_a?(Hash)
         tag_or_tags.each do |tag_name, tag_value|
-          tags[tag_name] = tag_value 
+          tags[tag_name] = tag_value
         end
       elsif tag_or_tags.is_a?(Symbol)
         tags[tag_or_tags] = 1
