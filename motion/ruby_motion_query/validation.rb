@@ -18,6 +18,14 @@ module RubyMotionQuery
       self
     end
 
+    # @return [RMQ]
+    def clear_validations!
+      selected.each do |view|
+        view.rmq_data.validations = []
+      end
+      self
+    end
+
     # @return [Boolean] false if any validations fail
     def valid?
       selected.each do |view|

@@ -103,5 +103,17 @@ describe 'validation' do
       vc.rmq(:three, :two).valid?.should == true
 
     end
+
+    it 'can clear all validations' do
+      vc = UIViewController.new
+
+      vc.rmq.all.valid?.should == true
+      vc.rmq.append(UITextField).validates(:digits).data('tacorama').tag(:one)
+      vc.rmq.append(UITextField).validates(:digits).data('not digits').tag(:two)
+      vc.rmq.all.valid?.should == false
+      vc.rmq.all.clear_validations!
+      vc.rmq.all.valid?.should == true
+
+    end
   end
 end
