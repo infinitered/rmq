@@ -129,6 +129,12 @@ describe 'actions' do
     end
   end
 
+  it 'lets you configure data with equals' do
+    test_label = rmq.create(UILabel)
+    test_label.data = 'test'
+    test_label.data.should == 'test'
+  end
+
   it 'should read and set data for UILabel' do
     rmq.create(UILabel).data('foo').get.text.should == 'foo'
     rmq.create(UILabel).data('bar').data.should == 'bar'
