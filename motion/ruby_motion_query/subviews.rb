@@ -50,7 +50,7 @@ module RubyMotionQuery
         end
 
         if created
-          new_view.rmq_did_create(self.wrap(new_view)) 
+          new_view.rmq_did_create(self.wrap(new_view))
           new_view.rmq_created
         end
         new_view.rmq_build
@@ -65,16 +65,16 @@ module RubyMotionQuery
     end
     alias :insert :add_subview
 
-    # Performs a create, then appends view to the end of the subview array of the 
+    # Performs a create, then appends view to the end of the subview array of the
     # views you have selected (or the rootview if you have nothing selected).
     #
     # When you build, create, or append a view, the method rmq_build is called
     # inside the view. If you are creating a your own subclass of a UIView, then
-    # that is a good place to do your initialization. Your view is created, then 
+    # that is a good place to do your initialization. Your view is created, then
     # appended, then rmq_build is called, then the style is applied (if it exists)
     #
-    # @example 
-    #   # Creating a new view instance then append it. Passing in the class 
+    # @example
+    #   # Creating a new view instance then append it. Passing in the class
     #   # to create
     #   rmq.append(UIButton, :my_button_style)
     #   @title = rmq.append(ULabel, :title).get
@@ -82,7 +82,7 @@ module RubyMotionQuery
     #   # You can also pass in an existing view
     #   my_view = UIView.alloc.initWithFrame([[0,0],[10,10]])
     #   rmq.append(my_view, :my_style)
-    # 
+    #
     #   # Stylename is optional
     #   rmq.append(UIImageView)
     #
@@ -121,21 +121,21 @@ module RubyMotionQuery
     end
     alias :prepend! :unshift!
 
-    # Creates a view then returns an rmq with that view in it. It does not add that 
+    # Creates a view then returns an rmq with that view in it. It does not add that
     # view to the view tree (append does this). This is useful for stuff like creating
-    # table cells. You can use the rmq_did_create method, just like you do when you 
+    # table cells. You can use the rmq_did_create method, just like you do when you
     # append a subview
     #
     # @return [RMQ] wrapping the view that was just create
     #
     # @example
     #   def tableView(table_view, cellForRowAtIndexPath: index_path)
-    #     cell = tableView.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin 
+    #     cell = tableView.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER) || begin
     #       rmq.create(StoreCell, :store_cell, reuse_identifier: CELL_IDENTIFIER)
     #     end
     #   end
     #
-    #   class StoreCell < UITableViewCell 
+    #   class StoreCell < UITableViewCell
     #     def rmq_did_create(self_in_rmq)
     #       self_in_rmq.append(UILabel, :title_label)
     #     end
@@ -160,7 +160,7 @@ module RubyMotionQuery
     # in collectionview cells for example
     #
     # @example
-    # # In your collectionview 
+    # # In your collectionview
     # rmq.build(cell) unless cell.reused
     #
     # # Then in your cell
@@ -173,6 +173,15 @@ module RubyMotionQuery
       opts[:style] = style
       add_subview view, opts
     end
+
+    # Same as build, but instantly returns the view, without having to use .get
+    #
+    # @example
+    #   @my_cell = rmq.build! cell
+    def build!(view, style = nil, opts = {})
+      build(view, style, opts).get
+    end
+
 
     protected
 
