@@ -241,6 +241,11 @@ describe 'subviews' do
       test_view.build_subview.rmq_data.style_name.should == :create_sub_view_style
       test_view.build_subview.backgroundColor.should == RubyMotionQuery::Color.orange
     end
+
+    it 'has the ability to build!' do
+      test = @vc.rmq.build!(UILabel)
+      test.is_a?(UILabel).should == true
+    end
   end
 end
 
