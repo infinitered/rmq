@@ -73,6 +73,16 @@ module RubyMotionQuery
       end
     end
 
+    # Allow users to set data with equals
+    #
+    # @return [RMQ]
+    #
+    # @example
+    #   rmq(my_view).data = 'some data'
+    def data=(new_data)
+      data(new_data)
+    end
+
     # @return [RMQ]
     def send(method, args = nil)
       selected.each do |view|
