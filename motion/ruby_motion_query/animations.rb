@@ -5,7 +5,7 @@ module RubyMotionQuery
     #
     # @return [RMQ]
     def animate(opts = {}, &block)
-      
+
       animations_callback = (block || opts[:animations] || opts[:changes])
       after_callback = (opts[:completion] || opts[:after])
       return self unless animations_callback
@@ -146,7 +146,7 @@ module RubyMotionQuery
       opts = {
         duration: 0.5,
         animations: ->(cq) {
-          cq.style do |st| 
+          cq.style do |st|
             st.opacity = 1.0
             st.scale = 0.8
           end
@@ -168,14 +168,14 @@ module RubyMotionQuery
         duration: 0.4 + (rand(8) / 10),
         options: UIViewAnimationOptionCurveEaseIn|UIViewAnimationOptionBeginFromCurrentState,
         animations: ->(cq) {
-          cq.style do |st| 
+          cq.style do |st|
             st.top = @rmq.device.height + st.height
-            st.rotation = 180 + rand(50) 
+            st.rotation = 180 + rand(50)
           end
         },
         completion: ->(did_finish, q) {
           if did_finish
-            q.style do |st| 
+            q.style do |st|
               st.rotation = 0
             end
 
@@ -197,6 +197,24 @@ module RubyMotionQuery
     end
 
     # @return [RMQ]
+    def slide_in(opts = {})
+      from_direction = opts[:from_direction]
+      start_frame = @rmq.get.frame
+      @rmq.move(l: @rmq.device.width)
+
+      opts = {
+        duration: 0.5,
+        options: UIViewAnimationOptionCurveEaseIn,
+        animations: ->(cq) {
+          cq.get.frame = start_frame
+        },
+        completion: nil
+      }.merge(opts)
+
+      @rmq.animate(opts)
+    end
+
+    # @return [RMQ]
     def start_spinner(style = UIActivityIndicatorViewStyleGray)
       spinner = Animations.window_spinner(style)
       spinner.startAnimating
@@ -210,7 +228,7 @@ module RubyMotionQuery
       @rmq.create_rmq_in_context(spinner)
     end
 
-    protected 
+    protected
 
     def self.window_spinner(style = UIActivityIndicatorViewStyleGray)
       @_window_spinner ||= begin
