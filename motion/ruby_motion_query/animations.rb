@@ -199,19 +199,26 @@ module RubyMotionQuery
     # @return [RMQ]
     def slide_in(opts = {})
       from_direction = opts[:from_direction]
-      start_frame = @rmq.get.frame
       @rmq.move(l: @rmq.device.width)
 
-      opts = {
-        duration: 0.5,
-        options: UIViewAnimationOptionCurveEaseIn,
-        animations: ->(cq) {
-          cq.get.frame = start_frame
-        },
-        completion: nil
-      }.merge(opts)
+      p @rmq.size
 
-      @rmq.animate(opts)
+      @rmq.each do |animated_item|
+
+        start_frame = animated_item.frame
+
+        opts = {
+          duration: 0.5,
+          options: UIViewAnimationOptionCurveEaseIn,
+          animations: ->(cq) {
+            cq.frame = start_frame
+          },
+          completion: nil
+        }.merge(opts)
+
+        rmq(animated_item).animate(opts)
+
+      end
     end
 
     # @return [RMQ]
