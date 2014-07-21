@@ -199,13 +199,12 @@ module RubyMotionQuery
     # @return [RMQ]
     def slide_in(opts = {})
       from_direction = opts[:from_direction]
-      @rmq.move(l: @rmq.device.width)
-
-      p @rmq.size
+      device_width = @rmq.device.width
 
       @rmq.each do |animated_item|
 
         start_frame = animated_item.frame
+        rmq(animated_item).move(l: device_width)
 
         opts = {
           duration: 0.5,
