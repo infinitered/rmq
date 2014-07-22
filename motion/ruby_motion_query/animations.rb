@@ -226,13 +226,52 @@ module RubyMotionQuery
             bq.move(l: -rmq.device.width)
           when :top
             bq.move(t: -rmq.device.height)
-          when :bottom
+          else :bottom
             bq.move(t: rmq.device.height)
           end
           start_frame
         },
         animations: ->(aq, return_var) {
           aq.frame = return_var
+        }
+      }.merge(opts)
+
+      @rmq.animate(opts)
+    end
+
+    # @return [RMQ]
+    def slide_out(opts = {})
+      remove_view = opts[:remove_view]
+      to_direction = opts[:to_direction] || :left
+
+      opts = {
+        duration: 0.5,
+        options: UIViewAnimationOptionCurveEaseIn,
+        before: ->(bq) {
+          start_frame = bq.get.frame
+          start_frame
+        },
+        animations: ->(aq, return_var) {
+          case to_direction
+          when :right
+            aq.move(l: rmq.device.width)
+          # TODO Rest
+          when :left
+            aq.move(l: -rmq.device.width)
+          when :top
+            aq.move(t: -rmq.device.height)
+          else :bottom
+            aq.move(t: rmq.device.height)
+          end
+        },
+        completion: ->(did_finish, q) {
+          if did_finish
+            if remove_view
+              q.remove
+            else
+              q.hide
+            end
+          end
         }
       }.merge(opts)
 

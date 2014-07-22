@@ -11,7 +11,7 @@ describe 'animations' do
   after do
     UIView.setAnimationsEnabled true
   end
-  
+
 
   it 'should animate' do
     @vc.rmq.animate(
@@ -20,7 +20,7 @@ describe 'animations' do
       RubyMotionQuery::RMQ.is_blank?(rmq).should == false
     },
     completion: -> (did_finish, rmq) {
-      rmq.animate( 
+      rmq.animate(
         duration: 0.0,
         animations: -> (rmq) {
           RubyMotionQuery::RMQ.is_blank?(rmq).should == false
@@ -73,6 +73,14 @@ describe 'animations' do
 
   it 'should land, sink, and throb' do
     @viewq.animations.land_and_sink_and_throb.is_a?(RubyMotionQuery::RMQ).should == true
+  end
+
+  it 'should slide in' do
+    @viewq.animations.slide_in.is_a?(RubyMotionQuery::RMQ).should == true
+  end
+
+  it 'should slide out' do
+    @viewq.animations.slide_out.is_a?(RubyMotionQuery::RMQ).should == true
   end
 
   it 'should start spinner' do
