@@ -5,11 +5,11 @@ module RubyMotionQuery
     #
     # @return [RMQ]
     def animate(opts = {}, &block)
-      
+
       animations_callback = (block || opts[:animations] || opts[:changes])
+      before_callback = opts[:before]
       after_callback = (opts[:completion] || opts[:after])
       return self unless animations_callback
-
 
       working_selected = self.selected
       self_rmq = self
@@ -17,9 +17,21 @@ module RubyMotionQuery
       working_selected.each do |view|
         view_rmq = self_rmq.wrap(view)
 
+        return_var = nil
+
+        if before_callback
+          return_var = before_callback.call(view_rmq)
+        end
+
         animations_lambda = -> do
-          # TODO, check arity and allow no params
-          animations_callback.call(view_rmq)
+          case animations_callback.arity
+          when 0
+            animations_callback.call
+          when 1
+            animations_callback.call(view_rmq)
+          when 2
+            animations_callback.call(view_rmq, return_var)
+          end
         end
 
         after_lambda = if after_callback
@@ -146,7 +158,7 @@ module RubyMotionQuery
       opts = {
         duration: 0.5,
         animations: ->(cq) {
-          cq.style do |st| 
+          cq.style do |st|
             st.opacity = 1.0
             st.scale = 0.8
           end
@@ -168,14 +180,14 @@ module RubyMotionQuery
         duration: 0.4 + (rand(8) / 10),
         options: UIViewAnimationOptionCurveEaseIn|UIViewAnimationOptionBeginFromCurrentState,
         animations: ->(cq) {
-          cq.style do |st| 
+          cq.style do |st|
             st.top = @rmq.device.height + st.height
-            st.rotation = 180 + rand(50) 
+            st.rotation = 180 + rand(50)
           end
         },
         completion: ->(did_finish, q) {
           if did_finish
-            q.style do |st| 
+            q.style do |st|
               st.rotation = 0
             end
 
@@ -197,6 +209,74 @@ module RubyMotionQuery
     end
 
     # @return [RMQ]
+    def slide_in(opts = {})
+      from_direction = opts[:from_direction] || :right
+
+      opts = {
+        duration: 0.5,
+        options: UIViewAnimationOptionCurveEaseIn,
+        before: ->(bq) {
+          start_frame = bq.get.frame
+
+          case from_direction
+          when :right
+            bq.move(l: rmq.device.width)
+          when :left
+            bq.move(l: -rmq.device.width)
+          when :top
+            bq.move(t: -rmq.device.height)
+          else :bottom
+            bq.move(t: rmq.device.height)
+          end
+          start_frame
+        },
+        animations: ->(aq, return_var) {
+          aq.frame = return_var
+        }
+      }.merge(opts)
+
+      @rmq.animate(opts)
+    end
+
+    # @return [RMQ]
+    def slide_out(opts = {})
+      remove_view = opts[:remove_view]
+      to_direction = opts[:to_direction] || :left
+
+      opts = {
+        duration: 0.5,
+        options: UIViewAnimationOptionCurveEaseIn,
+        before: ->(bq) {
+          start_frame = bq.get.frame
+          start_frame
+        },
+        animations: ->(aq, return_var) {
+          case to_direction
+          when :right
+            aq.move(l: rmq.device.width)
+          when :left
+            aq.move(l: -rmq.device.width)
+          when :top
+            aq.move(t: -rmq.device.height)
+          else :bottom
+            aq.move(t: rmq.device.height)
+          end
+        },
+        completion: ->(did_finish, q) {
+          if did_finish
+            if remove_view
+              q.remove
+            else
+              q.hide
+            end
+          end
+        }
+      }.merge(opts)
+
+      @rmq.animate(opts)
+    end
+
+    # @return [RMQ]
     def start_spinner(style = UIActivityIndicatorViewStyleGray)
       spinner = Animations.window_spinner(style)
       spinner.startAnimating
@@ -210,7 +290,7 @@ module RubyMotionQuery
       @rmq.create_rmq_in_context(spinner)
     end
 
-    protected 
+    protected
 
     def self.window_spinner(style = UIActivityIndicatorViewStyleGray)
       @_window_spinner ||= begin
