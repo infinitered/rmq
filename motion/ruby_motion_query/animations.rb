@@ -7,9 +7,9 @@ module RubyMotionQuery
     def animate(opts = {}, &block)
 
       animations_callback = (block || opts[:animations] || opts[:changes])
+      before_callback = opts[:before]
       after_callback = (opts[:completion] || opts[:after])
       return self unless animations_callback
-
 
       working_selected = self.selected
       self_rmq = self
@@ -17,9 +17,21 @@ module RubyMotionQuery
       working_selected.each do |view|
         view_rmq = self_rmq.wrap(view)
 
+        return_var = nil
+
+        if before_callback
+          return_var = before_callback.call(view_rmq) 
+        end
+
         animations_lambda = -> do
-          # TODO, check arity and allow no params
-          animations_callback.call(view_rmq)
+          case animations_callback.arity
+          when 0
+            animations_callback.call
+          when 1
+            animations_callback.call(view_rmq)
+          when 2
+            animations_callback.call(view_rmq, return_var)
+          end
         end
 
         after_lambda = if after_callback
@@ -198,26 +210,27 @@ module RubyMotionQuery
 
     # @return [RMQ]
     def slide_in(opts = {})
-      from_direction = opts[:from_direction]
-      device_width = @rmq.device.width
+      from_direction = opts[:from_direction] || :right
 
-      @rmq.each do |animated_item|
+      opts = {
+        duration: 0.5,
+        options: UIViewAnimationOptionCurveEaseIn,
+        before: ->(bq) {
+          start_frame = bq.get.frame
 
-        start_frame = animated_item.frame
-        rmq(animated_item).move(l: device_width)
+          case from_direction
+          when :right
+            bq.move(l: bq.parent.frame.width)
+          # TODO Rest
+          end
+          start_frame
+        },
+        animations: ->(aq, return_var) {
+          aq.frame = return_var
+        }
+      }.merge(opts)
 
-        opts = {
-          duration: 0.5,
-          options: UIViewAnimationOptionCurveEaseIn,
-          animations: ->(cq) {
-            cq.frame = start_frame
-          },
-          completion: nil
-        }.merge(opts)
-
-        rmq(animated_item).animate(opts)
-
-      end
+      @rmq.animate(opts)
     end
 
     # @return [RMQ]
