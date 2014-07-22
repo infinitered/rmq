@@ -221,7 +221,6 @@ module RubyMotionQuery
           case from_direction
           when :right
             bq.move(l: rmq.device.width)
-          # TODO Rest
           when :left
             bq.move(l: -rmq.device.width)
           when :top
@@ -255,7 +254,6 @@ module RubyMotionQuery
           case to_direction
           when :right
             aq.move(l: rmq.device.width)
-          # TODO Rest
           when :left
             aq.move(l: -rmq.device.width)
           when :top
