@@ -20,7 +20,7 @@ module RubyMotionQuery
         return_var = nil
 
         if before_callback
-          return_var = before_callback.call(view_rmq) 
+          return_var = before_callback.call(view_rmq)
         end
 
         animations_lambda = -> do
@@ -220,8 +220,14 @@ module RubyMotionQuery
 
           case from_direction
           when :right
-            bq.move(l: bq.parent.frame.width)
+            bq.move(l: rmq.device.width)
           # TODO Rest
+          when :left
+            bq.move(l: -rmq.device.width)
+          when :top
+            bq.move(t: -rmq.device.height)
+          when :bottom
+            bq.move(t: rmq.device.height)
           end
           start_frame
         },
