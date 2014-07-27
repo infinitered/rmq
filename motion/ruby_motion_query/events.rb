@@ -39,6 +39,9 @@ module RubyMotionQuery
     #  :application
     #  :system
     #  :all
+    #
+    #  :valid
+    #  :invalid
 
     # Gestures for UIView
     #  :tap
@@ -130,8 +133,8 @@ module RubyMotionQuery
     def on(view, event, args = {}, &block)
       raise "[RMQ Error]  Event already exists on this object: #{event}. Remove first, using .off" if @event_set[event]
 
-      if rmqe = RubyMotionQuery::Event.new(view, event, block)
-        rmqe.set_options(args)
+      if rmqe = event_instance(view, event, block)
+        rmqe.set_options(args) if rmqe.respond_to? :set_options
 
         @event_set[event] = rmqe
       end
@@ -152,5 +155,14 @@ module RubyMotionQuery
       self
     end
 
+    private
+
+    def event_instance(view, event, block)
+      if [:valid, :invalid].include? event
+        RubyMotionQuery::ValidationEvent.new(block)
+      else
+        RubyMotionQuery::Event.new(view, event, block)
+      end
+    end
   end
 end
