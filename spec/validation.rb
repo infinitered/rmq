@@ -115,5 +115,30 @@ describe 'validation' do
       vc.rmq.all.valid?.should == true
 
     end
+
+    it 'raises :invalid and :valid events that can be acted on' do
+      valid_text = "validation for field failed"
+      invalid_text = "validation for field success"
+
+      vc = UIViewController.alloc.init
+      vc.rmq.append(UILabel).tag(:validation_message)
+
+      vc.rmq.append(UITextField).validates(:digits).tag(:one).
+        on(:valid) do |valid|
+          vc.rmq(:validation_message).get.text = valid_text
+        end.
+        on(:invalid) do |valid|
+          vc.rmq(:validation_message).get.text = invalid_text
+        end
+
+      vc.rmq(:one).get.text = "abc"
+      vc.rmq.all.valid?
+
+      vc.rmq(:validation_message).get.text.should == invalid_text
+
+      vc.rmq(:one).get.text = "123"
+      vc.rmq.all.valid?
+      vc.rmq(:validation_message).get.text.should == valid_text
+    end
   end
 end

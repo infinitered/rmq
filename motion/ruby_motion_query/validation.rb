@@ -28,12 +28,26 @@ module RubyMotionQuery
 
     # @return [Boolean] false if any validations fail
     def valid?
+      result = true
+
       selected.each do |view|
         view.rmq_data.validations.each do |validation|
-          return false unless validation.valid?(rmq(view).data)
+
+          has_events = view.rmq_data.events
+
+          if validation.valid?(rmq(view).data)
+            if has_events && view.rmq_data.events.has_event?(:valid)
+              view.rmq_data.events[:valid].fire!
+            end
+          else
+            if has_events && view.rmq_data.events.has_event?(:invalid)
+              view.rmq_data.events[:invalid].fire!
+            end
+            result = false
+          end
         end
       end
-      return true
+      return result
     end
   end
 

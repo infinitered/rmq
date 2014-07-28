@@ -3,7 +3,9 @@ module RubyMotionQuery
     attr_accessor :block, :recognizer, :event, :sdk_event_or_recognizer, :gesture, :sender
 
     def initialize(sender, event, block)
-      if @sdk_event_or_recognizer = VIEW_GESTURES[event]
+      if CONTROL_EVENTS[event] == ValidationEvent
+        return ValidationEvent.new(block)
+      elsif @sdk_event_or_recognizer = VIEW_GESTURES[event]
         @gesture = true
       elsif sender.is_a?(UIControl)
         @gesture = false
@@ -127,7 +129,9 @@ module RubyMotionQuery
 
       application: UIControlEventApplicationReserved,
       system: UIControlEventSystemReserved,
-      all: UIControlEventAllEvents
+      all: UIControlEventAllEvents,
+      valid: ValidationEvent,
+      invalid: ValidationEvent
     }
 
     VIEW_GESTURES = {
