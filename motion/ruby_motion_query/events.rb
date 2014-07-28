@@ -56,17 +56,17 @@ module RubyMotionQuery
     #  :long_press
 
     # Options for gestures
-    #  :cancels_touches_in_view 
-    #  :delegate 
-    #  :taps_required 
-    #  :fingers_required 
-    #  :maximum_number_of_touches 
-    #  :minimum_number_of_touches 
-    #  :allowable_movement 
-    #  :minimum_press_duration 
-    #  :direction 
-    #  :rotation 
-    #  :scale 
+    #  :cancels_touches_in_view
+    #  :delegate
+    #  :taps_required
+    #  :fingers_required
+    #  :maximum_number_of_touches
+    #  :minimum_number_of_touches
+    #  :allowable_movement
+    #  :minimum_press_duration
+    #  :direction
+    #  :rotation
+    #  :scale
     #
     # @example
     # rmq.append(UIButton).on(:touch) do |sender|
@@ -89,7 +89,7 @@ module RubyMotionQuery
     # end
     def on(event, args = {}, &block)
       selected.each do |view|
-        events(view).on(view, event, args, &block) 
+        events(view).on(view, event, args, &block)
       end
 
       self
@@ -146,9 +146,9 @@ module RubyMotionQuery
       events.flatten!
       events = @event_set.keys if events.length == 0
 
-      events.each do |event| 
+      events.each do |event|
         if rm_event = @event_set.delete(event)
-          rm_event.remove 
+          rm_event.remove
         end
       end
 
@@ -159,7 +159,7 @@ module RubyMotionQuery
 
     def event_instance(view, event, block)
       if [:valid, :invalid].include? event
-        RubyMotionQuery::ValidationEvent.new(block)
+        RubyMotionQuery::ValidationEvent.new(view, event, block)
       else
         RubyMotionQuery::Event.new(view, event, block)
       end

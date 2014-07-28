@@ -173,7 +173,7 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def overlay(st)
-    st.frame = :full 
+    st.frame = :full
     st.background_color = color.translucent_black
     st.hidden = true
     st.z_position = 99
@@ -206,6 +206,43 @@ class MainStylesheet < ApplicationStylesheet
     st.text = 'foo'
     st.color = color.white
     st.left = 10
+  end
+
+  def validation_section(st)
+    st.background_color = color.yellow
+    st.frame = 'a7:e10'
+  end
+
+  def validation_title(st)
+    st.frame = 'a7:e7'
+    st.text = "Validations"
+    st.text_alignment = :center
+  end
+
+  def only_digits(st)
+    st.placeholder = "Only Digits"
+    st.frame = 'b8:d8'
+    st.background_color = color.white
+    st.font = rmq.font.small
+    st.corner_radius = 5
+  end
+
+  def only_email(st)
+    st.placeholder = "Valid Email"
+    st.frame = 'b9:d9'
+    st.background_color = color.white
+    st.font = rmq.font.small
+    st.corner_radius = 5
+  end
+
+  def invalid(st)
+    st.border_color = color.red
+    st.border_width = 1
+  end
+
+  def valid(st)
+    st.border_color = color.green
+    st.border_width = 1
   end
 
 end
