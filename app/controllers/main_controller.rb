@@ -132,7 +132,7 @@ class MainController < UIViewController
     # let's lay this out using the grid!
     rmq.append(UIView, :validation_section).tap do |q|
       q.append(UILabel, :validation_title)
-      q.append(UITextField, :only_digits).validates(:digits).on(:change) do |sender|
+      @digits_only = q.append(UITextField, :only_digits).validates(:digits).on(:change) do |sender|
         rmq(sender).valid?
       end.
       on(:valid) do |sender|
@@ -140,8 +140,30 @@ class MainController < UIViewController
       end.
       on(:invalid) do |sender|
         rmq(sender).apply_style :invalid
-      end
+      end.get
+
+      @email_only = q.append(UITextField, :only_email).validates(:email).on(:change) do |sender|
+        rmq(sender).valid?
+      end.
+      on(:valid) do |sender|
+        rmq(sender).apply_style :valid
+      end.
+      on(:invalid) do |sender|
+        rmq(sender).apply_style :invalid
+      end.get
+
     end
 
+    #set up keyboard dismissing
+    @digits_only.delegate = self
+    @digits_only.returnKeyType = UIReturnKeyDone
+    @email_only.delegate = self
+    @email_only.returnKeyType = UIReturnKeyDone
+
+  end
+
+  def textFieldShouldReturn(sender)
+    sender.resignFirstResponder
+    true
   end
 end

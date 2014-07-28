@@ -227,6 +227,14 @@ class MainStylesheet < ApplicationStylesheet
     st.corner_radius = 5
   end
 
+  def only_email(st)
+    st.placeholder = "Valid Email"
+    st.frame = 'b9:d9'
+    st.background_color = color.white
+    st.font = rmq.font.small
+    st.corner_radius = 5
+  end
+
   def invalid(st)
     st.border_color = color.red
     st.border_width = 1
