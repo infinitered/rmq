@@ -136,11 +136,9 @@ class MainController < UIViewController
         rmq(sender).valid?
       end.
       on(:valid) do |sender|
-        p sender
         rmq(sender).apply_style :valid
       end.
       on(:invalid) do |sender|
-        p sender
         rmq(sender).apply_style :invalid
       end
     end

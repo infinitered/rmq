@@ -1,11 +1,24 @@
 module RubyMotionQuery
   class ValidationEvent
-    def initialize(block)
+    def initialize(sender, event, block)
+      @sender = sender
+      @event = event
       @block = block
     end
 
     def fire!
-      @block.call if @block
+
+      if @block
+        case @block.arity
+        when 2
+          @block.call(@sender, self)
+        when 1
+          @block.call(@sender)
+        else
+          @block.call
+        end
+      end
     end
+
   end
 end
