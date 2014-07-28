@@ -1,4 +1,4 @@
-class MainController < UIViewController 
+class MainController < UIViewController
 
   def viewDidLoad
     super
@@ -13,6 +13,7 @@ class MainController < UIViewController
 
     init_buttons
     init_popup_section
+    init_validation_section
   end
 
   def init_nav
@@ -43,8 +44,8 @@ class MainController < UIViewController
   def willAnimateRotationToInterfaceOrientation(orientation, duration: duration)
     rmq.all.reapply_styles
   end
-  # You don't have to reapply styles to all UIViews, if you want to optimize, 
-  # another way to do it is tag the views you need to restyle in your stylesheet, 
+  # You don't have to reapply styles to all UIViews, if you want to optimize,
+  # another way to do it is tag the views you need to restyle in your stylesheet,
   # then only reapply the tagged views, like so:
   #
   # def logo(st)
@@ -68,10 +69,10 @@ class MainController < UIViewController
 
     rmq.append(UIButton, :animate_move_button).on(:tap) do |sender|
       rmq(sender).animate( duration: 0.5, animations: -> (rmq) {
-        # You really should create a new style in the stylesheet, 
+        # You really should create a new style in the stylesheet,
         # but you can do it inline too, like so
         rmq.style do |sv|
-          sv.top = rand(rmq.device.height) 
+          sv.top = rand(rmq.device.height)
           sv.scale = 10.0
         end
       },
@@ -79,7 +80,7 @@ class MainController < UIViewController
         rmq.animate( duration: 0.2, animations: -> (rmq) {
             rmq.style do |sv|
               sv.scale = 1.0
-              sv.top = 230 
+              sv.top = 230
             end
           })
       })
@@ -94,13 +95,13 @@ class MainController < UIViewController
       controller = TableController.new
       rmq.view_controller.navigationController.pushViewController(controller, animated: true)
     end
-    
+
   end
 
   def init_popup_section
 
     rmq.append(UIView, :popup_section).tap do |q|
-    
+
       @title_label = q.append!(UILabel, :title_label)
       q.append(UIButton, :open_popup).on(:touch_down) do |sender|
 
@@ -121,6 +122,26 @@ class MainController < UIViewController
         rmq(sender).apply_style(:open_popup)
         rmq.animations.stop_spinner
 
+      end
+    end
+
+  end
+
+  def init_validation_section
+
+    # let's lay this out using the grid!
+    rmq.append(UIView, :validation_section).tap do |q|
+      q.append(UILabel, :validation_title)
+      q.append(UITextField, :only_digits).validates(:digits).on(:change) do |sender|
+        rmq(sender).valid?
+      end.
+      on(:valid) do |sender|
+        p sender
+        rmq(sender).apply_style :valid
+      end.
+      on(:invalid) do |sender|
+        p sender
+        rmq(sender).apply_style :invalid
       end
     end
 
