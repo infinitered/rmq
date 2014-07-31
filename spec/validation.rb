@@ -77,7 +77,7 @@ describe 'validation' do
         @rmq.validation.valid?('test', :madeupthing)
       end
       should.not.raise(RuntimeError) do
-        @rmq.validation.valid?('test', :email, :url)
+        @rmq.validation.valid?('test', :email)
         @rmq.validation.valid?('test@test.com', :email)
       end
     end

@@ -58,8 +58,8 @@ module RubyMotionQuery
       raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @rule
     end
 
-    def valid?(data)
-      @rule.call data
+    def valid?(data, options={})
+      @rule.call(data, options)
     end
 
     class << self
@@ -79,15 +79,15 @@ module RubyMotionQuery
 
 
       @@validation_methods = {
-        :email => lambda { |value| Validation.regex_match?(value, EMAIL)},
-        :url => lambda { |value| Validation.regex_match?(value, URL)},
-        :dateiso => lambda { |value| Validation.regex_match?(value, DATEISO)},
-        :number => lambda { |value| Validation.regex_match?(value, NUMBER)},
-        :digits => lambda { |value| Validation.regex_match?(value, DIGITS)},
-        :ipv4 => lambda { |value| Validation.regex_match?(value, IPV4)},
-        :time => lambda { |value| Validation.regex_match?(value, TIME)},
-        :uszip => lambda { |value| Validation.regex_match?(value, USZIP)},
-        :usphone => lambda { |value| Validation.regex_match?(value, USPHONE)}
+        :email => lambda { |value, opts| Validation.regex_match?(value, EMAIL)},
+        :url => lambda { |value, opts| Validation.regex_match?(value, URL)},
+        :dateiso => lambda { |value, opts| Validation.regex_match?(value, DATEISO)},
+        :number => lambda { |value, opts| Validation.regex_match?(value, NUMBER)},
+        :digits => lambda { |value, opts| Validation.regex_match?(value, DIGITS)},
+        :ipv4 => lambda { |value, opts| Validation.regex_match?(value, IPV4)},
+        :time => lambda { |value, opts| Validation.regex_match?(value, TIME)},
+        :uszip => lambda { |value, opts| Validation.regex_match?(value, USZIP)},
+        :usphone => lambda { |value, opts| Validation.regex_match?(value, USPHONE)}
       }
 
       # Add tags
@@ -99,13 +99,10 @@ module RubyMotionQuery
       #    rmq.validation.valid?('2014-03-02'), :dateiso)
       #
       # @return [Boolean]
-      def valid?(value, *rule_or_rules)
+      def valid?(value, rule, options={})
         #shortcircuit if debugging
         return true if RubyMotionQuery::RMQ.debugging?
-        rule_or_rules.each do |rule|
-          return false unless Validation.new(rule).valid?(value)
-        end
-        true
+        Validation.new(rule).valid?(value, options)
       end
 
       def regex_match?(value, regex)
