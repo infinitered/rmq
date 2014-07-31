@@ -11,9 +11,9 @@ module RubyMotionQuery
     end
 
     # @return [RMQ]
-    def validates(rule)
+    def validates(rule, options={})
       selected.each do |view|
-        view.rmq_data.validations << Validation.new(rule)
+        view.rmq_data.validations << Validation.new(rule, options)
       end
       self
     end
@@ -53,13 +53,15 @@ module RubyMotionQuery
 
   class Validation
 
-    def initialize(rule)
+    def initialize(rule, options={})
       @rule = @@validation_methods[rule]
+      @options = options
       raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @rule
     end
 
     def valid?(data, options={})
-      @rule.call(data, options)
+      @options = options.merge(@options)
+      @rule.call(data, @options)
     end
 
     class << self

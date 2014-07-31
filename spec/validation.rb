@@ -128,11 +128,16 @@ describe 'validation' do
       vc.rmq.append(UITextField).validates(:digits).data('taco loco').tag(:one)
       vc.rmq.append(UITextField).validates(:digits).data('123455').tag(:two)
       vc.rmq.append(UITextField).validates(:digits).data('1234').tag(:three)
+      # selections with options
+      vc.rmq.append(UITextField).validates(:length, min_length: 2, max_length: 10).data('1234').tag(:four)
+      vc.rmq.append(UITextField).validates(:length, exact_length: 5).data('1234').tag(:five)
 
       vc.rmq.all.valid?.should == false
       vc.rmq(:one).valid?.should == false
       vc.rmq(:one, :two).valid?.should == false
       vc.rmq(:three, :two).valid?.should == true
+      vc.rmq(:four).valid?.should == true
+      vc.rmq(:five).valid?.should == false
 
     end
 
