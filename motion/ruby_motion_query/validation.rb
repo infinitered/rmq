@@ -76,7 +76,12 @@ module RubyMotionQuery
       USZIP = Regexp.new('^\d{5}(-\d{4})?$')
       # 7 or 10 digit number, delimiters are spaces, dashes, or periods
       USPHONE = Regexp.new('^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]‌​)\s*)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-‌​9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})$')
-
+      # Strong password (at least [8 chars, 1 upper, 1 lower, 1 number])
+      STRONGPW = Regexp.new('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$')
+      # Has at least 1 uppercase letter
+      HASUPPER = Regexp.new('^(?=.*[A-Z]).+$')
+      # Has at least 1 lowercase letter
+      HASLOWER = Regexp.new('^(?=.*[a-z]).+$')
 
       @@validation_methods = {
         :email => lambda { |value, opts| Validation.regex_match?(value, EMAIL)},
@@ -87,7 +92,22 @@ module RubyMotionQuery
         :ipv4 => lambda { |value, opts| Validation.regex_match?(value, IPV4)},
         :time => lambda { |value, opts| Validation.regex_match?(value, TIME)},
         :uszip => lambda { |value, opts| Validation.regex_match?(value, USZIP)},
-        :usphone => lambda { |value, opts| Validation.regex_match?(value, USPHONE)}
+        :usphone => lambda { |value, opts| Validation.regex_match?(value, USPHONE)},
+        :strong_pw => lambda { |value, opts| Validation.regex_match?(value, STRONGPW)},
+        :has_upper => lambda { |value, opts| Validation.regex_match?(value, HASUPPER)},
+        :has_lower => lambda { |value, opts| Validation.regex_match?(value, HASLOWER)},
+        :length => lambda { |value, opts|
+          opts = {
+            exact_length: nil,
+            max_length: Float::INFINITY,
+            min_length: 0
+          }.merge(opts)
+
+          # check length validation
+          v = if opts[:exact_length] then (value.length == opts[:exact_length]) else true end
+          v = v && value.length <= opts[:max_length]
+          v = v && value.length >= opts[:min_length]
+        }
       }
 
       # Add tags
