@@ -72,6 +72,38 @@ describe 'validation' do
       @rmq.validation.valid?('test', :usphone).should == false
     end
 
+    it 'can validate at least 1 uppercase US character' do
+      @rmq.validation.valid?('test', :has_upper).should == false
+      @rmq.validation.valid?('Test', :has_upper).should == true
+    end
+
+    it 'can validate at least 1 uppercase US character' do
+      @rmq.validation.valid?('TEST', :has_lower).should == false
+      @rmq.validation.valid?('Test', :has_lower).should == true
+    end
+
+    it 'can validate a strong password of at least 8 chars, 1 upper, 1 lower, and a number' do
+      @rmq.validation.valid?('PAss1', :strong_password).should == false # length
+      @rmq.validation.valid?('pass1word', :strong_password).should == false # no upper
+      @rmq.validation.valid?('PASS1WORD', :strong_password).should == false # no lower
+      @rmq.validation.valid?('PassworD', :strong_password).should == false # no number
+      @rmq.validation.valid?('Pass1word', :strong_password).should == true # just right
+    end
+
+    it 'can validate the length' do
+      @rmq.validation.valid?('test', :length, exact_length: 5).should == false
+      @rmq.validation.valid?('test', :length, exact_length: 4).should == true
+      @rmq.validation.valid?('test', :length, min_length: 5).should == false
+      @rmq.validation.valid?('test', :length, min_length: 4).should == true
+      @rmq.validation.valid?('test', :length, max_length: 3).should == false
+      @rmq.validation.valid?('test', :length, max_length: 4).should == true
+      # create a range both ways
+      @rmq.validation.valid?('test', :length, min_length: 2, max_length: 7).should == true
+      @rmq.validation.valid?('test', :length, min_length: 8, max_length: 16).should == false
+      @rmq.validation.valid?('test', :length, exact_length: 2..7).should == true
+      @rmq.validation.valid?('test', :length, exact_length: 8..16).should == false
+    end
+
     it 'raises an RuntimeError for missing validation methods' do
       should.raise(RuntimeError) do
         @rmq.validation.valid?('test', :madeupthing)

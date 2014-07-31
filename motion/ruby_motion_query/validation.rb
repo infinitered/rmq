@@ -93,7 +93,7 @@ module RubyMotionQuery
         :time => lambda { |value, opts| Validation.regex_match?(value, TIME)},
         :uszip => lambda { |value, opts| Validation.regex_match?(value, USZIP)},
         :usphone => lambda { |value, opts| Validation.regex_match?(value, USPHONE)},
-        :strong_pw => lambda { |value, opts| Validation.regex_match?(value, STRONGPW)},
+        :strong_password => lambda { |value, opts| Validation.regex_match?(value, STRONGPW)},
         :has_upper => lambda { |value, opts| Validation.regex_match?(value, HASUPPER)},
         :has_lower => lambda { |value, opts| Validation.regex_match?(value, HASLOWER)},
         :length => lambda { |value, opts|
@@ -102,6 +102,13 @@ module RubyMotionQuery
             max_length: Float::INFINITY,
             min_length: 0
           }.merge(opts)
+
+          # Range magic 8..16
+          if opts[:exact_length].is_a? Range
+            opts[:min_length] = opts[:exact_length].begin
+            opts[:max_length] = opts[:exact_length].end
+            opts[:exact_length] = nil
+          end
 
           # check length validation
           v = if opts[:exact_length] then (value.length == opts[:exact_length]) else true end
