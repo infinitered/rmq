@@ -11,9 +11,9 @@ module RubyMotionQuery
     end
 
     # @return [RMQ]
-    def validates(rule)
+    def validates(rule, options={})
       selected.each do |view|
-        view.rmq_data.validations << Validation.new(rule)
+        view.rmq_data.validations << Validation.new(rule, options)
       end
       self
     end
@@ -53,13 +53,15 @@ module RubyMotionQuery
 
   class Validation
 
-    def initialize(rule)
+    def initialize(rule, options={})
       @rule = @@validation_methods[rule]
+      @options = options
       raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @rule
     end
 
-    def valid?(data)
-      @rule.call data
+    def valid?(data, options={})
+      @options = options.merge(@options)
+      @rule.call(data, @options)
     end
 
     class << self
@@ -76,18 +78,45 @@ module RubyMotionQuery
       USZIP = Regexp.new('^\d{5}(-\d{4})?$')
       # 7 or 10 digit number, delimiters are spaces, dashes, or periods
       USPHONE = Regexp.new('^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]‌​)\s*)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-‌​9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})$')
-
+      # Strong password (at least [8 chars, 1 upper, 1 lower, 1 number])
+      STRONGPW = Regexp.new('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$')
+      # Has at least 1 uppercase letter
+      HASUPPER = Regexp.new('^(?=.*[A-Z]).+$')
+      # Has at least 1 lowercase letter
+      HASLOWER = Regexp.new('^(?=.*[a-z]).+$')
 
       @@validation_methods = {
-        :email => lambda { |value| Validation.regex_match?(value, EMAIL)},
-        :url => lambda { |value| Validation.regex_match?(value, URL)},
-        :dateiso => lambda { |value| Validation.regex_match?(value, DATEISO)},
-        :number => lambda { |value| Validation.regex_match?(value, NUMBER)},
-        :digits => lambda { |value| Validation.regex_match?(value, DIGITS)},
-        :ipv4 => lambda { |value| Validation.regex_match?(value, IPV4)},
-        :time => lambda { |value| Validation.regex_match?(value, TIME)},
-        :uszip => lambda { |value| Validation.regex_match?(value, USZIP)},
-        :usphone => lambda { |value| Validation.regex_match?(value, USPHONE)}
+        :email => lambda { |value, opts| Validation.regex_match?(value, EMAIL)},
+        :url => lambda { |value, opts| Validation.regex_match?(value, URL)},
+        :dateiso => lambda { |value, opts| Validation.regex_match?(value, DATEISO)},
+        :number => lambda { |value, opts| Validation.regex_match?(value, NUMBER)},
+        :digits => lambda { |value, opts| Validation.regex_match?(value, DIGITS)},
+        :ipv4 => lambda { |value, opts| Validation.regex_match?(value, IPV4)},
+        :time => lambda { |value, opts| Validation.regex_match?(value, TIME)},
+        :uszip => lambda { |value, opts| Validation.regex_match?(value, USZIP)},
+        :usphone => lambda { |value, opts| Validation.regex_match?(value, USPHONE)},
+        :strong_password => lambda { |value, opts| Validation.regex_match?(value, STRONGPW)},
+        :has_upper => lambda { |value, opts| Validation.regex_match?(value, HASUPPER)},
+        :has_lower => lambda { |value, opts| Validation.regex_match?(value, HASLOWER)},
+        :length => lambda { |value, opts|
+          opts = {
+            exact_length: nil,
+            max_length: Float::INFINITY,
+            min_length: 0
+          }.merge(opts)
+
+          # Range magic 8..16
+          if opts[:exact_length].is_a? Range
+            opts[:min_length] = opts[:exact_length].begin
+            opts[:max_length] = opts[:exact_length].end
+            opts[:exact_length] = nil
+          end
+
+          # check length validation
+          v = if opts[:exact_length] then (value.length == opts[:exact_length]) else true end
+          v = v && value.length <= opts[:max_length]
+          v = v && value.length >= opts[:min_length]
+        }
       }
 
       # Add tags
@@ -99,13 +128,10 @@ module RubyMotionQuery
       #    rmq.validation.valid?('2014-03-02'), :dateiso)
       #
       # @return [Boolean]
-      def valid?(value, *rule_or_rules)
+      def valid?(value, rule, options={})
         #shortcircuit if debugging
         return true if RubyMotionQuery::RMQ.debugging?
-        rule_or_rules.each do |rule|
-          return false unless Validation.new(rule).valid?(value)
-        end
-        true
+        Validation.new(rule).valid?(value, options)
       end
 
       def regex_match?(value, regex)
