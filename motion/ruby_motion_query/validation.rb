@@ -84,6 +84,8 @@ module RubyMotionQuery
       HASUPPER = Regexp.new('^(?=.*[A-Z]).+$')
       # Has at least 1 lowercase letter
       HASLOWER = Regexp.new('^(?=.*[a-z]).+$')
+      # Has some kind of value not just whitespace (doesn't require data to be stripped)
+      PRESENCE = Regexp.new('\S+')
 
       @@validation_methods = {
         :email => lambda { |value, opts| Validation.regex_match?(value, EMAIL)},
@@ -98,11 +100,13 @@ module RubyMotionQuery
         :strong_password => lambda { |value, opts| Validation.regex_match?(value, STRONGPW)},
         :has_upper => lambda { |value, opts| Validation.regex_match?(value, HASUPPER)},
         :has_lower => lambda { |value, opts| Validation.regex_match?(value, HASLOWER)},
+        :presence => lambda { |value, opts| Validation.regex_match?(value, PRESENCE)},
         :length => lambda { |value, opts|
           opts = {
             exact_length: nil,
             max_length: Float::INFINITY,
-            min_length: 0
+            min_length: 0,
+            strip: false
           }.merge(opts)
 
           # Range magic 8..16
@@ -111,6 +115,9 @@ module RubyMotionQuery
             opts[:max_length] = opts[:exact_length].end
             opts[:exact_length] = nil
           end
+
+          # allowing option to strip input before assessing length
+          value.strip! if opts[:strip]
 
           # check length validation
           v = if opts[:exact_length] then (value.length == opts[:exact_length]) else true end
@@ -135,7 +142,7 @@ module RubyMotionQuery
       end
 
       def regex_match?(value, regex)
-        (value.to_s =~ regex) == 0
+        (value.to_s =~ regex) != nil
       end
 
     end
