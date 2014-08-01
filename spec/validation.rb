@@ -90,6 +90,11 @@ describe 'validation' do
       @rmq.validation.valid?('Pass1word', :strong_password).should == true # just right
     end
 
+    it 'validates presence' do
+      @rmq.validation.valid?('       ', :presence).should == false
+      @rmq.validation.valid?('   x   ', :presence).should == true
+    end
+
     it 'can validate the length' do
       @rmq.validation.valid?('test', :length, exact_length: 5).should == false
       @rmq.validation.valid?('test', :length, exact_length: 4).should == true
@@ -102,6 +107,9 @@ describe 'validation' do
       @rmq.validation.valid?('test', :length, min_length: 8, max_length: 16).should == false
       @rmq.validation.valid?('test', :length, exact_length: 2..7).should == true
       @rmq.validation.valid?('test', :length, exact_length: 8..16).should == false
+      # ignore pre/post whitespace in length
+      @rmq.validation.valid?(' test ', :length, min_length: 5).should == true
+      @rmq.validation.valid?(' test ', :length, min_length: 5, strip: true).should == false
     end
 
     it 'raises an RuntimeError for missing validation methods' do
