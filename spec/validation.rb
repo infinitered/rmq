@@ -107,7 +107,7 @@ describe 'validation' do
       @rmq.validation.valid?('test', :length, min_length: 8, max_length: 16).should == false
       @rmq.validation.valid?('test', :length, exact_length: 2..7).should == true
       @rmq.validation.valid?('test', :length, exact_length: 8..16).should == false
-      # ignore pre/post whitespace in length
+      # Next 2 lines testing ignore pre/post whitespace in length
       @rmq.validation.valid?(' test ', :length, min_length: 5).should == true
       @rmq.validation.valid?(' test ', :length, min_length: 5, strip: true).should == false
     end
@@ -147,6 +147,30 @@ describe 'validation' do
       vc.rmq(:four).valid?.should == true
       vc.rmq(:five).valid?.should == false
 
+    end
+
+    it 'maintains what selected items are invalid' do
+      vc = UIViewController.alloc.init
+
+      vc.rmq.append(UITextField).validates(:digits).data('taco loco').tag(:one)
+      vc.rmq.append(UITextField).validates(:digits).data('123455').tag(:two)
+
+      #everything is valid by default
+      vc.rmq.all.invalid.should == []
+      vc.rmq.all.valid? # this flags the items
+      vc.rmq.all.invalid.should == [vc.rmq(:one).get]
+    end
+
+    it 'maintains what selected items are valid' do
+      vc = UIViewController.alloc.init
+
+      vc.rmq.append(UITextField).validates(:digits).data('taco loco').tag(:one)
+      vc.rmq.append(UITextField).validates(:digits).data('123455').tag(:two)
+
+      #everything is valid by default
+      vc.rmq.all.valid.size.should == 2
+      vc.rmq.all.valid? # this flags the items
+      vc.rmq.all.valid.should == [vc.rmq(:two).get]
     end
 
     it 'can clear all validations' do
