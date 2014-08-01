@@ -54,7 +54,7 @@ module RubyMotionQuery
       return result
     end
 
-    # @return [Array] of views where validations that have failed
+    # @return [Array] of views where validations have failed
     def invalid
       invalid = []
       selected.each do |view|
@@ -65,7 +65,7 @@ module RubyMotionQuery
       return invalid
     end
 
-    # @return [Array] of views where validations that have failed
+    # @return [Array] of views where validations have failed
     def valid
       invalid = []
       selected.each do |view|
