@@ -1,5 +1,7 @@
 module RubyMotionQuery
   class RMQ
+    attr_reader :valid, :invalid
+
     # @return [Validation]
     def self.validation
       Validation
@@ -26,9 +28,14 @@ module RubyMotionQuery
       self
     end
 
+    # This method validates all the selected and is responsible for filling
+    # invalid/valid arrays as well as calling invalid/valid events
+    #
     # @return [Boolean] false if any validations fail
     def valid?
       result = true
+      @invalid = []
+      @valid = []
 
       selected.each do |view|
         view.rmq_data.validations.each do |validation|
@@ -36,10 +43,12 @@ module RubyMotionQuery
           has_events = view.rmq_data.events
 
           if validation.valid?(rmq(view).data)
+            @valid << view
             if has_events && view.rmq_data.events.has_event?(:valid)
               view.rmq_data.events[:valid].fire!
             end
           else
+            @invalid << view
             if has_events && view.rmq_data.events.has_event?(:invalid)
               view.rmq_data.events[:invalid].fire!
             end

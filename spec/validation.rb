@@ -107,7 +107,7 @@ describe 'validation' do
       @rmq.validation.valid?('test', :length, min_length: 8, max_length: 16).should == false
       @rmq.validation.valid?('test', :length, exact_length: 2..7).should == true
       @rmq.validation.valid?('test', :length, exact_length: 8..16).should == false
-      # ignore pre/post whitespace in length
+      # Next 2 lines testing ignore pre/post whitespace in length
       @rmq.validation.valid?(' test ', :length, min_length: 5).should == true
       @rmq.validation.valid?(' test ', :length, min_length: 5, strip: true).should == false
     end
@@ -146,6 +146,10 @@ describe 'validation' do
       vc.rmq(:three, :two).valid?.should == true
       vc.rmq(:four).valid?.should == true
       vc.rmq(:five).valid?.should == false
+
+    end
+
+    it 'maintains what selected items are invalid' do
 
     end
 
