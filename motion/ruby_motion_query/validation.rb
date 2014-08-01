@@ -1,6 +1,5 @@
 module RubyMotionQuery
   class RMQ
-    attr_reader :valid, :invalid
 
     # @return [Validation]
     def self.validation
@@ -28,14 +27,12 @@ module RubyMotionQuery
       self
     end
 
-    # This method validates all the selected and is responsible for filling
-    # invalid/valid arrays as well as calling invalid/valid events
+    # This method validates all the selected and is responsible
+    # for calling invalid/valid events
     #
     # @return [Boolean] false if any validations fail
     def valid?
       result = true
-      @invalid = []
-      @valid = []
 
       selected.each do |view|
         view.rmq_data.validations.each do |validation|
@@ -43,12 +40,10 @@ module RubyMotionQuery
           has_events = view.rmq_data.events
 
           if validation.valid?(rmq(view).data)
-            @valid << view
             if has_events && view.rmq_data.events.has_event?(:valid)
               view.rmq_data.events[:valid].fire!
             end
           else
-            @invalid << view
             if has_events && view.rmq_data.events.has_event?(:invalid)
               view.rmq_data.events[:invalid].fire!
             end
@@ -58,19 +53,44 @@ module RubyMotionQuery
       end
       return result
     end
-  end
+
+    # @return [Array] of validations that have failed
+    def invalid
+      invalid = []
+      selected.each do |view|
+        view.rmq_data.validations.each do |validation|
+          invalid.push(view) unless validation.valid_status
+        end
+      end
+      return invalid
+    end
+
+    # @return [Array] of validations that have failed
+    def valid
+      invalid = []
+      selected.each do |view|
+        view.rmq_data.validations.each do |validation|
+          invalid.push(view) if validation.valid_status
+        end
+      end
+      return invalid
+    end
+
+  end # End RMQ
 
   class Validation
+    attr_reader :valid_status
 
     def initialize(rule, options={})
       @rule = @@validation_methods[rule]
       @options = options
+      @valid_status = true
       raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @rule
     end
 
     def valid?(data, options={})
       @options = options.merge(@options)
-      @rule.call(data, @options)
+      @valid_status = @rule.call(data, @options)
     end
 
     class << self
