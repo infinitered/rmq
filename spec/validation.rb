@@ -130,6 +130,11 @@ describe 'validation' do
       @rmq.validation.valid?('taco loco', :digits).should == false
     end
 
+    it 'can validate to true if allow_blank options is set' do
+      @rmq.validation.valid?('', :email).should == false
+      @rmq.validation.valid?('', :email, allow_blank: true).should == true
+    end
+
     it 'can check validations based on selections' do
       vc = UIViewController.alloc.init
 

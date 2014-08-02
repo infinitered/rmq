@@ -161,12 +161,16 @@ module RubyMotionQuery
       #    rmq.validation.valid?(53.8, :number)
       #    rmq.validation.valid?(54, :digits)
       #    rmq.validation.valid?('https://www.tacoland.com', :url)
-      #    rmq.validation.valid?('2014-03-02'), :dateiso)
+      #    rmq.validation.valid?('2014-03-02', :dateiso)
+      #    rmq.validation.valid?('', :email, allow_blank: true)
       #
       # @return [Boolean]
       def valid?(value, rule, options={})
-        #shortcircuit if debugging
+        # shortcircuit if debugging
         return true if RubyMotionQuery::RMQ.debugging?
+        # shortcircuit for optionals
+        return true if (options[:allow_blank] && (value.nil? || value.empty?))
+
         Validation.new(rule).valid?(value, options)
       end
 
