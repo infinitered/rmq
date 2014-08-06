@@ -253,13 +253,13 @@ module RubyMotionQuery
         animations: ->(aq, return_var) {
           case to_direction
           when :right
-            aq.move(l: rmq.device.width)
+            aq.move(l: rmq.device.screen_width)
           when :left
-            aq.move(l: -rmq.device.width)
+            aq.move(l: -rmq.device.screen_width)
           when :top
-            aq.move(t: -rmq.device.height)
+            aq.move(t: -rmq.device.screen_height)
           else :bottom
-            aq.move(t: rmq.device.height)
+            aq.move(t: rmq.device.screen_height)
           end
         },
         completion: ->(did_finish, q) {
