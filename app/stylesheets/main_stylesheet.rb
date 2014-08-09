@@ -225,6 +225,9 @@ class MainStylesheet < ApplicationStylesheet
     st.background_color = color.white
     st.font = rmq.font.small
     st.corner_radius = 5
+    st.validation_errors = {
+      digits: "Please only enter digits in this text field."
+    }
   end
 
   def only_email(st)

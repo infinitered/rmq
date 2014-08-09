@@ -381,6 +381,19 @@ module RubyMotionQuery
       def accessibility_label=(value)
         @view.accessibilityLabel = value
       end
+
+      def validation_errors=(values)
+        # set custom validation messages on rules
+        p values
+        values.keys.each do |key|
+          p key
+          $junk = @view
+          vrule = @view.rmq_data.validations.select { |validation_rule| validation_rule.rule_name == key}
+          p vrule
+          #vrule.first.custom_message = values[key]
+        end
+      end
+
     end
   end
 end
