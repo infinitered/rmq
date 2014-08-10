@@ -61,7 +61,7 @@ module RubyMotionQuery
         view.rmq_data.validations.each do |validation|
           unless validation.valid_status
             default_error = "Validation Error - input requires valid #{validation.rule_name.to_s}."
-            rule_message  = validation.custom_message || default_error
+            rule_message  = view.rmq_data.validation_errors[validation.rule_name] || default_error
             errors.push(rule_message)
           end
         end
@@ -95,7 +95,6 @@ module RubyMotionQuery
 
   class Validation
     attr_reader :valid_status, :rule_name
-    attr_accessor :custom_message
 
     def initialize(rule, options={})
       @rule = @@validation_methods[rule]
