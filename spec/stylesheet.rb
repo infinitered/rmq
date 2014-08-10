@@ -65,7 +65,7 @@ describe 'stylesheet' do
     ss1.is_a?(StyleSheetForStylesheetTests).should == true
     ss1.should == rmq1.stylesheet # seems silly, but it's not
 
-    rmq2 = rmq1.find(UIView) 
+    rmq2 = rmq1.find(UIView)
     rmq1.view_controller.should == @vc
     rmq2.view_controller.should == @vc
     rmq2.stylesheet.should == rmq2.view_controller.rmq_data.stylesheet
@@ -147,9 +147,9 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
     font_family = 'Helvetica Neue'
     font.add_named :large,    font_family, 36
     font.add_named :medium,   font_family, 24
-    font.add_named :small,    'Verdana', 18 
+    font.add_named :small,    'Verdana', 18
 
-    color.add_named :battleship_gray,   '#7F7F7F' 
+    color.add_named :battleship_gray,   '#7F7F7F'
   end
 
   def setup
@@ -168,6 +168,12 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
 
   def style_use_rmq(st)
     rmq(st.view).get.textColor = color.blue
+  end
+
+  def digits_field(st)
+    st.validation_errors = {
+      digits: "custom error messsage"
+    }
   end
 
   def self_rmq
