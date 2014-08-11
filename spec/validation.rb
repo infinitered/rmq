@@ -214,5 +214,43 @@ describe 'validation' do
       vc.rmq.all.valid?
       vc.rmq(:validation_message).get.text.should == valid_text
     end
+
+    it 'can return default error messages' do
+      vc = UIViewController.new
+
+      vc.rmq.append(UITextField).validates(:digits).data('123').tag(:one)
+      vc.rmq.append(UITextField).validates(:email).validates(:length, min_length: 7).data('test@test.com').tag(:two)
+      # all as expected?
+      vc.rmq.all.valid?.should == true
+      vc.rmq.all.validation_errors.should == []
+
+      #invalidate one of them, see what pops out
+      vc.rmq(:one).data('burrito')
+      vc.rmq.all.valid?.should == false
+      vc.rmq.all.validation_errors.length.should == 1
+
+      #invalidate the other
+      vc.rmq(:two).data('nachos')
+      vc.rmq.all.valid?.should == false
+      # should get 2 invalidations
+      vc.rmq.all.validation_errors.length.should == 3
+
+      #can get specific view messages
+      vc.rmq(:two).validation_errors.length.should == 2
+
+    end
+
+    it 'can return custom error messages' do
+      vc = UIViewController.new
+      vc.rmq.stylesheet = StyleSheetForStylesheetTests
+
+      vc.rmq.append(UITextField, :digits_field).validates(:digits).data('123').tag(:one)
+      vc.rmq.all.valid?.should == true
+
+      vc.rmq(:one).data('enchilada').valid?.should == false
+      vc.rmq.all.validation_errors.length.should == 1
+      vc.rmq.all.validation_errors.first.should == "custom error messsage"
+    end
+
   end
 end

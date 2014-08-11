@@ -381,6 +381,12 @@ module RubyMotionQuery
       def accessibility_label=(value)
         @view.accessibilityLabel = value
       end
+
+      def validation_errors=(values)
+        # set custom validation messages on rules
+        @view.rmq_data.validation_errors = values
+      end
+
     end
   end
 end

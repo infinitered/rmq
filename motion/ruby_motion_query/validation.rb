@@ -54,6 +54,21 @@ module RubyMotionQuery
       return result
     end
 
+    # @return [Array] of error messages for failed validations
+    def validation_errors
+      errors = []
+      selected.each do |view|
+        view.rmq_data.validations.each do |validation|
+          unless validation.valid_status
+            default_error = "Validation Error - input requires valid #{validation.rule_name.to_s}."
+            rule_message  = view.rmq_data.validation_errors[validation.rule_name] || default_error
+            errors.push(rule_message)
+          end
+        end
+      end
+      return errors
+    end
+
     # @return [Array] of views where validations have failed
     def invalid
       invalid = []
@@ -79,13 +94,14 @@ module RubyMotionQuery
   end # End RMQ
 
   class Validation
-    attr_reader :valid_status
+    attr_reader :valid_status, :rule_name
 
     def initialize(rule, options={})
       @rule = @@validation_methods[rule]
+      raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @rule
+      @rule_name = rule
       @options = options
       @valid_status = true
-      raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @rule
     end
 
     def valid?(data, options={})

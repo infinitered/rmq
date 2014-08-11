@@ -12,13 +12,10 @@ module RubyMotionQuery
       tags.keys
     end
 
-    def validations
-      @_validations ||= []
-    end
-
-    def validations=(value)
-      @_validations = value
-    end
+    def validation_errors; @_validation_errors ||= {}; end
+    def validation_errors=(value); @_validation_errors = value; end
+    def validations; @_validations ||= []; end
+    def validations=(value); @_validations = value; end
 
     # *Do not* use this, use {RMQ#tag} instead:
     # @example
