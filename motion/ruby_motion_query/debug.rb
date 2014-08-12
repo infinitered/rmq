@@ -13,7 +13,7 @@ module RubyMotionQuery
     end
 
     # @return [Debug]
-    def debug 
+    def debug
       Debug
     end
   end
@@ -48,7 +48,7 @@ module RubyMotionQuery
           Deep log - #{label}
           At: #{Time.now.to_s}
 
-          Callers: 
+          Callers:
           #{callers.join("\n - ")}
 
           Objects:
@@ -61,7 +61,7 @@ module RubyMotionQuery
         label
       end
 
-      # Warning, this is very slow to output log, checking truthy however is 
+      # Warning, this is very slow to output log, checking truthy however is
       # basically as performant as an if statement
       #
       # @example
