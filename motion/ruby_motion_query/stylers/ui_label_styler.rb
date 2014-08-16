@@ -23,6 +23,13 @@ module RubyMotionQuery
         end
       end
 
+      def line_break_mode=(value)
+        @view.lineBreakMode = value
+      end
+      def line_break_mode
+        @view.lineBreakMode
+      end
+
       def text_alignment=(value)
         @view.setTextAlignment(TEXT_ALIGNMENTS[value] || value)
       end
