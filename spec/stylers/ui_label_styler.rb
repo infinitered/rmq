@@ -9,6 +9,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.adjusts_font_size = true
     st.resize_to_fit_text
     st.size_to_fit
+    st.line_break_mode = NSLineBreakByWordWrapping
   end
 
 end
@@ -33,6 +34,7 @@ describe 'stylers/ui_label' do
       v.adjustsFontSizeToFitWidth.should == true
       v.size.width.should > 0
       v.numberOfLines.should == 0
+      v.lineBreakMode.should == NSLineBreakByWordWrapping
     end
   end
 
