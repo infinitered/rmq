@@ -105,6 +105,11 @@ module RubyMotionQuery
     end
 
     def valid?(data, options={})
+      # shortcircuit if debugging
+      return true if RubyMotionQuery::RMQ.debugging?
+      # shortcircuit for optionals
+      return true if (options[:allow_blank] && (data.nil? || data.empty?))
+
       @options = options.merge(@options)
       @valid_status = @rule.call(data, @options)
     end
@@ -182,11 +187,6 @@ module RubyMotionQuery
       #
       # @return [Boolean]
       def valid?(value, rule, options={})
-        # shortcircuit if debugging
-        return true if RubyMotionQuery::RMQ.debugging?
-        # shortcircuit for optionals
-        return true if (options[:allow_blank] && (value.nil? || value.empty?))
-
         Validation.new(rule).valid?(value, options)
       end
 
