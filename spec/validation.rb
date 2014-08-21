@@ -124,11 +124,20 @@ describe 'validation' do
     end
 
     it 'ignores validation checks if debugging is set to true' do
+      # Utility level
       @rmq.validation.valid?('taco loco', :digits).should == false
       RubyMotionQuery::RMQ.debugging = true
       @rmq.validation.valid?('taco loco', :digits).should == true
       RubyMotionQuery::RMQ.debugging = false
       @rmq.validation.valid?('taco loco', :digits).should == false
+
+      # Validation Selection level - (Added test because inital release of 0.7 didn't work)
+      vc = UIViewController.alloc.init
+      vc.rmq.append(UITextField).validates(:digits).data('taco loco').tag(:one)
+      RubyMotionQuery::RMQ.debugging = true
+      vc.rmq(:one).valid?.should == true
+      RubyMotionQuery::RMQ.debugging = false
+      vc.rmq(:one).valid?.should == false
     end
 
     it 'can validate to true if allow_blank options is set' do
