@@ -12,6 +12,9 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.line_break_mode = NSLineBreakByWordWrapping
   end
 
+  def ui_label_attributed_string(st)
+    st.attributed_text = NSAttributedString.alloc.initWithString("RMQ")
+  end
 end
 
 describe 'stylers/ui_label' do
@@ -36,7 +39,15 @@ describe 'stylers/ui_label' do
       v.numberOfLines.should == 0
       v.lineBreakMode.should == NSLineBreakByWordWrapping
     end
+
   end
 
+  it "applies an attributed string" do
+    view = @vc.rmq.append(@view_klass, :ui_label_attributed_string).get
+
+    view.tap do |v|
+      v.text.should == 'RMQ'
+    end
+  end
 end
 
