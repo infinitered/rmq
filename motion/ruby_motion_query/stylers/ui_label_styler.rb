@@ -5,6 +5,9 @@ module RubyMotionQuery
       def text=(value) ; @view.setText value ; end
       def text ; @view.text ; end
 
+      def attributed_text=(value) ; @view.attributedText = value ; end
+      def attributed_text ; @view.attributedText ; end
+
       def font=(value) ; @view.setFont value ; end
       def font ; @view.font ; end
 
@@ -21,6 +24,13 @@ module RubyMotionQuery
         else
           @view.numberOfLines
         end
+      end
+
+      def line_break_mode=(value)
+        @view.lineBreakMode = value
+      end
+      def line_break_mode
+        @view.lineBreakMode
       end
 
       def text_alignment=(value)
