@@ -23,15 +23,15 @@ module RubyMotionQuery
 
   # A grid for layout.
   # There is an app grid at: rmq.app.grid
-  # You can also have a grid per stylesheet. If none exists, the app 
+  # You can also have a grid per stylesheet. If none exists, the app
   # grid will be used. rmq.stylesheet.grid (this will return app's if nil).
   # If you want to create a grid for your stylesheet, you can just dup the app one
   # like so (inside the stylesheet): self.grid = rmq.app.grid.dup
   # Then you can mod it: self.grid.num_columns = 6
   #
   # @example If you want your view to be from b2 to d3, you can do any of the following:
-  # 
-  #   #        a   b   c   d   e   
+  #
+  #   #        a   b   c   d   e
   #   #      ....................
   #   #    1 . a1  b1  c1  d1  e1
   #   #      .....------------...
@@ -39,17 +39,17 @@ module RubyMotionQuery
   #   #      .....|          |...
   #   #    3 . a3 |b3  c3  d3| e3
   #   #      .....------------...
-  #   #    4 . a4  b4  c4  d4  e4 
-  #   #      ....................      
+  #   #    4 . a4  b4  c4  d4  e4
+  #   #      ....................
   #   #    5 . a5  b5  c5  d5  e5
-  #   #      ....................      
+  #   #      ....................
   #
   #   st.frame = "b2:d3"
   #   st.origin = "b2:d3"
   #   st.frame = {grid: "b2", w: 100, h: 200}
   #   my_view.frame = some_grid['b2:d3']
   #   my_view.origin = some_grid['b2:d3']
-  #   rmq.append(UIView).layout('b2:d3')                       
+  #   rmq.append(UIView).layout('b2:d3')
   #
   # @example Create a new grid inside a stylesheet by duping the app's grid
   #   self.grid = rmq.app.grid.dup
@@ -74,8 +74,8 @@ module RubyMotionQuery
   # @example Log your grid
   #   rmq.app.grid.log
   #
-  #   #   {:num_columns=>10, :num_rows=>13, :column_gutter=>10, :content_left_margin=>5, 
-  #   #   :content_right_margin=>5, :content_top_margin=>5, :content_bottom_margin=>5, 
+  #   #   {:num_columns=>10, :num_rows=>13, :column_gutter=>10, :content_left_margin=>5,
+  #   #   :content_right_margin=>5, :content_top_margin=>5, :content_bottom_margin=>5,
   #   #   :row_gutter=>10, :status_bar_bottom=>20, :nav_bar_bottom=>64}
   #
   #   #       a  b  c  d  e  f  g  h  i  j
@@ -94,8 +94,8 @@ module RubyMotionQuery
   #   #   12  .  .  .  .  .  .  .  .  .  .
   #
   class Grid
-    attr_reader :num_columns, :column_gutter, :content_left_margin, :content_right_margin, 
-                :content_bottom_margin, :content_top_margin, :num_rows, :row_gutter, 
+    attr_reader :num_columns, :column_gutter, :content_left_margin, :content_right_margin,
+                :content_bottom_margin, :content_top_margin, :num_rows, :row_gutter,
                 :status_bar_bottom, :nav_bar_bottom
 
     MAX_COLUMNS = 26
@@ -207,7 +207,7 @@ module RubyMotionQuery
           is_end_coord = coord.start_with?(':')
           parts = coord.split(':')
           parts.reject!{|o| o == ''}
-        
+
           case parts.length
             when 0
               nil
@@ -241,7 +241,7 @@ module RubyMotionQuery
                     {l: lefts[left_i], t: tops[top_i]}
                   end
                 else
-                  nil 
+                  nil
                 end
               elsif digits
                 if is_end_coord
@@ -319,6 +319,13 @@ module RubyMotionQuery
       to_h.inspect
     end
 
+    def show
+      rmq(rmq.window).append(GridHudView).attr(grid: self).layout(l: 0, t: 0, fr: 0, fb: 0).enable_interaction.on(:tap) do |sender|
+        rmq(sender).remove
+      end
+      puts '[RMQ] Tap to dismiss the grid overlay'
+    end
+
     def dup
       Grid.new(self.to_h)
     end
@@ -367,4 +374,43 @@ module RubyMotionQuery
     end
 
   end
+
+  class GridHudView < UIView
+    attr_accessor :grid
+
+    def rmq_build
+      @light_text_color = rmq.color.from_rgba(213,53,82,0.6).CGColor
+      @column_fill_color = rmq.color.from_rgba(213,53,82,0.1).CGColor
+      @background_color = rmq.color.from_rgba(255,255,255,0.4)
+
+      rmq(self).style do |st|
+        st.background_color = @background_color
+      end
+    end
+
+    def drawRect(rect)
+      super
+
+      return unless @grid
+
+      context = UIGraphicsGetCurrentContext()
+      screen_height = RMQ.device.screen_height
+      screen_width = RMQ.device.screen_width
+
+      CGContextSetTextMatrix(context, CGAffineTransformMake(1.0,0.0, 0.0, -1.0, 0.0, 0.0));
+      CGContextSelectFont(context, 'Courier New', 7, KCGEncodingMacRoman)
+
+      0.upto(@grid.num_rows - 1) do |r|
+        0.upto(@grid.num_columns - 1) do |c|
+          rec = @grid[[c, r]]
+          CGContextSetFillColorWithColor(context, @column_fill_color)
+          CGContextFillRect(context, rec.to_cgrect)
+          text = "#{(c+97).chr}#{r}"
+          CGContextSetFillColorWithColor(context, @light_text_color)
+          CGContextShowTextAtPoint(context, rec.origin.x + 1, rec.origin.y + 5, text, text.length)
+        end
+      end
+    end
+  end
+
 end
