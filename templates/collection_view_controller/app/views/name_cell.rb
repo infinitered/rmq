@@ -6,7 +6,7 @@ class <%= @name_camel_case %>Cell < UICollectionViewCell
 
     q = rmq(self.contentView)
     # Add your subviews, init stuff here
-    # @foo = q.append(UILabel, :foo).get
+    # @foo = q.append!(UILabel, :foo)
   end
 
   def prepareForReuse
