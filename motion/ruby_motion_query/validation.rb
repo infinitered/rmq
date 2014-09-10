@@ -120,7 +120,7 @@ module RubyMotionQuery
       # allow blank data if specified
       return true if (options[:allow_blank] && (data.nil? || data.empty?))
       # allow whitelist data if specified
-      return true if (options[:white_list].include? data)
+      return true if (options[:white_list] && options[:white_list].include?(data))
 
       false
     end

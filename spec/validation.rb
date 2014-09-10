@@ -91,7 +91,7 @@ describe 'validation' do
       @rmq.validation.valid?('Pass1word', :strong_password).should == true # just right
     end
 
-    it 'validates presence' do
+    it 'can validate presence' do
       @rmq.validation.valid?('       ', :presence).should == false
       @rmq.validation.valid?('   x   ', :presence).should == true
     end
@@ -140,12 +140,18 @@ describe 'validation' do
       vc.rmq(:one).valid?.should == false
     end
 
-    it 'can validate to true if allow_blank options is set' do
+    it 'validates to true if allow_blank options is set' do
       @rmq.validation.valid?('', :email).should == false
       @rmq.validation.valid?('', :email, allow_blank: true).should == true
     end
 
-    it 'can check validations based on selections' do
+    it 'accepts a whitelist of validation overrides' do
+      # Utility Level
+      @rmq.validation.valid?('http://localhost', :url).should == false
+      @rmq.validation.valid?('http://localhost', :url, white_list: ['http://localhost']).should == true
+    end
+
+    it 'checks validations based on selections' do
       vc = UIViewController.alloc.init
 
       vc.rmq.append(UITextField).validates(:digits).data('taco loco').tag(:one)
@@ -188,7 +194,7 @@ describe 'validation' do
       vc.rmq.all.valid.should == [vc.rmq(:two).get]
     end
 
-    it 'can clear all validations' do
+    it 'clears all validations on demand' do
       vc = UIViewController.new
 
       vc.rmq.all.valid?.should == true
