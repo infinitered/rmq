@@ -284,6 +284,12 @@ describe 'validation' do
       end
     end
 
+    it "should raise a ArgumentError when no block is given" do
+      should.raise(ArgumentError) do
+        @rmq.validation.add_validator(:no_block)
+      end
+    end
+
     it "should not raise a RuntimeError for a missing validation method" do
       should.not.raise(RuntimeError) do
         validation = @rmq.validation.new(:start_with)
