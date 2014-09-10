@@ -105,13 +105,23 @@ module RubyMotionQuery
     end
 
     def valid?(data, options={})
-      # shortcircuit if debugging
-      return true if RubyMotionQuery::RMQ.debugging?
-      # shortcircuit for optionals
-      return true if (options[:allow_blank] && (data.nil? || data.empty?))
+      # shortcircuit for universal validation options
+      return true if universal_validation_checks(data, options)
 
       @options = options.merge(@options)
       @valid_status = @rule.call(data, @options)
+    end
+
+    # this method shortcuts specific validation rules.  As such it should only be
+    # added to for universal validation needs.  It must be kept as efficient as possible.
+    def universal_validation_checks (data, options={})
+      # shortcircuit if debugging
+      return true if RubyMotionQuery::RMQ.debugging?
+      # allow blank data if specified
+      return true if (options[:allow_blank] && (data.nil? || data.empty?))
+
+
+      false
     end
 
     class << self
