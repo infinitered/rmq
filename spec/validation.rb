@@ -147,8 +147,15 @@ describe 'validation' do
 
     it 'accepts a whitelist of validation overrides' do
       # Utility Level
-      @rmq.validation.valid?('http://localhost', :url).should == false
-      @rmq.validation.valid?('http://localhost', :url, white_list: ['http://localhost']).should == true
+      @rmq.validation.valid?('http://localhost:3000', :url).should == false
+      @rmq.validation.valid?('http://localhost:3000', :url, white_list: ['http://localhost:8080', 'http://localhost:3000']).should == true
+
+      # Validation Selection level
+      vc = UIViewController.new
+      vc.rmq.append(UITextField).validates(:number).data('N/A').tag(:one)
+      vc.rmq(:one).valid?.should == false
+      vc.rmq.append(UITextField).validates(:number, white_list: ['N/A']).data('N/A').tag(:two)
+      vc.rmq(:two).valid?.should == true
     end
 
     it 'checks validations based on selections' do

@@ -105,10 +105,11 @@ module RubyMotionQuery
     end
 
     def valid?(data, options={})
-      # shortcircuit for universal validation options
-      return true if universal_validation_checks(data, options)
-
       @options = options.merge(@options)
+
+      # shortcircuit for universal validation parameters
+      return true if universal_validation_checks(data, @options)
+
       @valid_status = @rule.call(data, @options)
     end
 
