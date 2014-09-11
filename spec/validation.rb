@@ -276,4 +276,39 @@ describe 'validation' do
     end
 
   end
+
+  describe 'adding a custom validator' do
+    before do
+      @rmq.validation.add_validator(:start_with) do |value, opts|
+        value.start_with?(opts[:prefix])
+      end
+    end
+
+    it "should raise a ArgumentError when no block is given" do
+      should.raise(ArgumentError) do
+        @rmq.validation.add_validator(:no_block)
+      end
+    end
+
+    it "should not raise a RuntimeError for a missing validation method" do
+      should.not.raise(RuntimeError) do
+        validation = @rmq.validation.new(:start_with)
+      end
+    end
+
+    it "should validate at utility and selection level" do
+      # Utility Level
+      @rmq.validation.valid?('test', :start_with, {prefix: 'te'}).should == true
+      @rmq.validation.valid?('test', :start_with, {prefix: 'est'}).should == false
+
+      # Validation Selection level
+      vc = UIViewController.new
+      vc.rmq.append(UITextField).validates(:start_with, prefix: 'x').data('test').tag(:one)
+      vc.rmq(:one).valid?.should == false
+      vc.rmq.append(UITextField).validates(:start_with, prefix: 't').data('test').tag(:two)
+      vc.rmq(:two).valid?.should == true
+    end
+  end
+
+
 end

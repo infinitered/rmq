@@ -206,6 +206,12 @@ module RubyMotionQuery
         (value.to_s =~ regex) != nil
       end
 
+      def add_validator(rule, &block)
+        raise(ArgumentError, "add_validator requires a block") if block.nil?
+
+        @@validation_methods[rule] = block
+      end
+
     end
   end
 end
