@@ -113,6 +113,13 @@ describe 'validation' do
       @rmq.validation.valid?(' test ', :length, min_length: 5, strip: true).should == false
     end
 
+    it 'can validate custom regex' do
+      @rmq.validation.valid?('test', :custom, regex: /^test$/).should == true
+      @rmq.validation.valid?('test', :custom, regex: /^beach$/).should == false
+      # Regex not supplied
+      @rmq.validation.valid?('test', :custom).should == false
+    end
+
     it 'raises an RuntimeError for missing validation methods' do
       should.raise(RuntimeError) do
         @rmq.validation.valid?('test', :madeupthing)

@@ -185,7 +185,8 @@ module RubyMotionQuery
           v = if opts[:exact_length] then (value.length == opts[:exact_length]) else true end
           v = v && value.length <= opts[:max_length]
           v = v && value.length >= opts[:min_length]
-        }
+        },
+        :custom => lambda { |value, opts| Validation.regex_match?(value, opts[:regex])},
       }
 
       # Add tags
