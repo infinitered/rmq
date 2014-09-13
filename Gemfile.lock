@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    ruby_motion_query (0.7.0)
+    ruby_motion_query (0.7.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
     bacon (1.2.0)
-    motion_print (0.0.1)
-    rake (10.2.2)
+    motion_print (0.0.2)
+    rake (10.3.2)
 
 PLATFORMS
   ruby
