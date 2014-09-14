@@ -387,6 +387,9 @@ module RubyMotionQuery
         @view.rmq_data.validation_errors = values
       end
 
+      def alpha ; view.alpha ; end
+      def alpha=(v) ; view.alpha = v ; end
+
     end
   end
 end
