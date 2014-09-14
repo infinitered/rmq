@@ -57,6 +57,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.rotation = 45
     st.tint_color = color.blue
     st.layer.cornerRadius = 5
+    st.alpha = 1.0
   end
 
 end
