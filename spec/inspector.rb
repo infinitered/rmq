@@ -8,10 +8,10 @@ describe 'inspector' do
     UIView.setAnimationsEnabled true
   end
 
-  it 'should open inspector view' do
-    rmq.all.inspector
-    ivq = rmq(rmq.window).find(RubyMotionQuery::InspectorView)
-    ivq.length.should == 1
-    ivq.remove
-  end
+  #it 'should open inspector view' do
+    #rmq.all.inspector
+    #ivq = rmq(rmq.window).find(RubyMotionQuery::InspectorView)
+    #ivq.length.should == 1
+    #ivq.remove
+  #end
 end
