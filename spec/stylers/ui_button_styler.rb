@@ -4,9 +4,9 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.text = 'foo'
     st.font = font.system(12)
     st.color = color.red
+    st.color_highlighted = color.blue
     st.image_normal = image.resource('logo')
-    st.image_highlighted = image.resource('logo')
-    st.title_edge_insets = [1.0, 0, 2.0, 3.0]
+    st.image_highlighted = image.resource('Icon')
   end
 
 end
@@ -24,8 +24,12 @@ describe 'stylers/ui_button' do
     view = @vc.rmq.append(@view_klass, :ui_button_kitchen_sink).get
 
     view.tap do |v|
-      # TODO
-      1.should == 1
+      view.titleForState(UIControlStateNormal).should == "foo"
+      view.titleLabel.font.should == UIFont.systemFontOfSize(12)
+      view.titleColorForState(UIControlStateNormal).should == UIColor.redColor
+      view.titleColorForState(UIControlStateHighlighted).should == UIColor.blueColor
+      view.imageForState(UIControlStateNormal).should == @vc.rmq.image.resource('logo')
+      view.imageForState(UIControlStateHighlighted).should == @vc.rmq.image.resource('Icon')
     end
 
   end
