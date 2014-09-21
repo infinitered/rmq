@@ -16,8 +16,8 @@ module RubyMotionQuery
     # For example, text for UILabel, image for UIImageView
     #
     # @return [RMQ]
-    def data(new_data = nil)
-      if new_data
+    def data(new_data = :rmq_not_provided)
+      if new_data != :rmq_not_provided
         selected.each do |view|
           case view
           when UILabel              then view.setText new_data # set is faster than =
@@ -34,7 +34,7 @@ module RubyMotionQuery
           #when UITabBar             then
           #when UITableViewCell      then
           when UITextView           then view.setText new_data
-          when UITextField           then view.setText new_data
+          when UITextField          then view.setText new_data
           #when UINavigationBar      then
           #when UIScrollView         then
 

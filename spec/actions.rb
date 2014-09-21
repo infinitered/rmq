@@ -160,4 +160,13 @@ describe 'actions' do
     rmq.create(UITextField).data('foo').get.text.should == 'foo'
     rmq.create(UITextField).data('bar').data.should == 'bar'
   end
+
+  it 'should allow you to set data to nil' do
+    q = rmq.create(UILabel)
+    q.data(nil)
+    q.get.text.should == nil
+
+    # Again, chained
+    q = rmq.create(UILabel).data(nil).get.text.should == nil
+  end
 end
