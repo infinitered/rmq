@@ -33,8 +33,8 @@ module RubyMotionQuery
           #when UIStepper            then
           #when UITabBar             then
           #when UITableViewCell      then
-          when UITextView           then view.setText new_data
-          when UITextField          then view.setText new_data
+          when UITextView           then view.text = new_data
+          when UITextField          then view.text = new_data
           #when UINavigationBar      then
           #when UIScrollView         then
 
@@ -80,7 +80,7 @@ module RubyMotionQuery
     # @example
     #   rmq(my_view).data = 'some data'
     def data=(new_data)
-      data(new_data)
+      self.data(new_data)
     end
 
     # @return [RMQ]

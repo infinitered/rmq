@@ -169,4 +169,17 @@ describe 'actions' do
     # Again, chained
     q = rmq.create(UILabel).data(nil).get.text.should == nil
   end
+
+  it 'should allow the user to set data to nil using data =' do
+    q = rmq.create(UITextView)
+    q.data('hi')
+    q.get.text.should == 'hi'
+
+    q.data = nil
+    q.get.text.should == ""
+
+    q = rmq.create(UITextField)
+    q.data('there')
+    q.get.text.should == 'there'
+  end
 end
