@@ -19,6 +19,13 @@ module RubyMotionQuery
         @view.titleColor
       end
 
+      def color_highlighted=(value)
+        @view.setTitleColor(value, forState: UIControlStateHighlighted)
+      end
+      def color_highlighted
+        @view.titleColorforState(UIControlStateHighlighted)
+      end
+
       def tint_color=(value)
         @view.tintColor = value
       end
