@@ -1,3 +1,23 @@
+class RubyMotionQuery::Device
+  class << self
+    def fake_height(value)
+      @_three_point_five_inch = nil
+      @_four_inch = nil
+      @_four_point_seven_inch = nil
+      @_five_point_five_inch = nil
+      @_height = value
+    end
+
+    def reset_fake_caches
+      @_three_point_five_inch = nil
+      @_four_inch = nil
+      @_four_point_seven_inch = nil
+      @_five_point_five_inch = nil
+      @_height = nil
+    end
+  end
+end
+
 describe 'device' do
   before do
     @rmq = RubyMotionQuery::RMQ
@@ -55,25 +75,39 @@ describe 'device' do
     @rmq.device.simulator?.should == false
   end
 
+  it 'should return the right value for three_point_five_inch?' do
+    @rmq.device.fake_height(480)
+    @rmq.device.three_point_five_inch?.should == true
+
+    @rmq.device.fake_height(10)
+    @rmq.device.three_point_five_inch?.should == false
+    @rmq.device.reset_fake_caches
+  end
+
   it 'should return the right value for four_inch?' do
+    @rmq.device.fake_height(568)
     @rmq.device.four_inch?.should == true
-
-    class RubyMotionQuery::Device
-      class << self
-        def fake_height(value)
-          @_four_inch = nil
-          @_height = value
-        end
-
-        def reset_fake_caches
-          @_four_inch = nil
-          @_height = nil
-        end
-      end
-    end
 
     @rmq.device.fake_height(10)
     @rmq.device.four_inch?.should == false
+    @rmq.device.reset_fake_caches
+  end
+
+  it 'should return the right value for four_point_seven_inch?' do
+    @rmq.device.fake_height(667)
+    @rmq.device.four_point_seven_inch?.should == true
+
+    @rmq.device.fake_height(10)
+    @rmq.device.four_point_seven_inch?.should == false
+    @rmq.device.reset_fake_caches
+  end
+
+  it 'should return the right value for five_point_five_inch?' do
+    @rmq.device.fake_height(736)
+    @rmq.device.five_point_five_inch?.should == true
+
+    @rmq.device.fake_height(10)
+    @rmq.device.five_point_five_inch?.should == false
     @rmq.device.reset_fake_caches
   end
 

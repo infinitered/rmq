@@ -51,9 +51,24 @@ module RubyMotionQuery
         @_simulator
       end
 
+      def three_point_five_inch?
+        @_three_point_five_inch = (Device.height == 480.0) if @_three_point_five_inch.nil?
+        @_three_point_five_inch
+      end
+
       def four_inch?
         @_four_inch = (Device.height == 568.0) if @_four_inch.nil?
         @_four_inch
+      end
+
+      def four_point_seven_inch?
+        @_four_point_seven_inch = (Device.height == 667.0) if @_four_point_seven_inch.nil?
+        @_four_point_seven_inch
+      end
+
+      def five_point_five_inch?
+        @_five_point_five_inch = (Device.height == 736.0) if @_five_point_five_inch.nil?
+        @_five_point_five_inch
       end
 
       def retina?
