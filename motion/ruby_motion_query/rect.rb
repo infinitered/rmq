@@ -46,12 +46,12 @@ module RubyMotionQuery
     # rmq(my_view).frame = "a1:b5"
     # rmq(my_view, my_other_view).frame = {grid: "b2", w: 100, h: 200}
     # rmq(my_view, my_other_view).frame = {g: "b2", w: 100, h: 200}
-    # 
+    #
     # @example with padding
     # rmq(my_view).frame = {grid: "b2:d14", padding: 5}
     # rmq(my_view).frame = {grid: "b2:d14", padding: {l: 5, t: 0, r: 5, b:0}}
     def frame=(value)
-      selected.each do |view| 
+      selected.each do |view|
         RubyMotionQuery::Rect.update_view_frame(view, value)
       end
     end
@@ -65,7 +65,7 @@ module RubyMotionQuery
     end
 
     def bounds=(value)
-      selected.each do |view| 
+      selected.each do |view|
         RubyMotionQuery::Rect.bounds_for_view(view).update(value, self.grid).apply_to_bounds
       end
     end
@@ -73,7 +73,7 @@ module RubyMotionQuery
   end
 
 
-  # RMQ Rect   
+  # RMQ Rect
   #
   #    *******************---*******---***************************   value options
   #    *                   |         |                           *   -------------
@@ -81,31 +81,31 @@ module RubyMotionQuery
   #    *                   |         |                           *   signed Integer
   #    *                  top        |                           *   Float
   #    *                   |         |                           *   String
-  #    *                   |         |                           *   
-  #    *                  ---        |                           *   also                    
+  #    *                   |         |                           *
+  #    *                  ---        |                           *   also
   #    *              ***************|*****   ---                *   -----------------------
   #    *              * view         |    *    |                 *   :full
-  #    *              *              |    *    |                 *   :right_of_prev  (:rop)         
+  #    *              *              |    *    |                 *   :right_of_prev  (:rop)
   #    *              *           bottom  *    |                 *   :left_of_prev   (:lop)
-  #    *              *              |    *    |                 *   :below_prev     (:bp)  
+  #    *              *              |    *    |                 *   :below_prev     (:bp)
   #    *|--- left ---|*              |    *    |                 *   :above_prev     (:ap)
   #    *              *              |    * height               *   :grid           (:g)
   #    *              *              |    *    |                 *   :padding        (:p)
-  #    *              *              |    *    |                 *     int or hash: l,t,b,r 
-  #    *|-------------------- right -+---|*    |                 *                 
-  #    *              *              |    *    |                 *   abbreviations           
+  #    *              *              |    *    |                 *     int or hash: l,t,b,r
+  #    *|-------------------- right -+---|*    |                 *
+  #    *              *              |    *    |                 *   abbreviations
   #    *              *              |    * |--+--from_right----|*   -----------------------
-  #    *              *             ---   *    |                 *   :l, :t, :w, :h         
+  #    *              *             ---   *    |                 *   :l, :t, :w, :h
   #    *              ***************---***   ---                *   :r, :b
   #    *                              |                          *   :fr, fb
-  #    *              |------ width - + -|                       *   
+  #    *              |------ width - + -|                       *
   #    *                              |                          *   :centered options
   #    *                              |                          *   -----------------------
   #    *                          from_bottom                    *   :horizontal
   #    *                              |                          *   :vertical
-  #    *                              |                          *   :both                  
-  #    *                             ---                         *   
-  #    ***********************************************************       
+  #    *                              |                          *   :both
+  #    *                             ---                         *
+  #    ***********************************************************
   #
   class Rect
     attr_reader :view
@@ -155,7 +155,7 @@ module RubyMotionQuery
           end
         elsif o.is_a?(RubyMotionQuery::Rect)
           o.to_cgrect
-        elsif grid && o.is_a?(String) 
+        elsif grid && o.is_a?(String)
           a = rect_hash_to_rect_array(view, existing_rect, {grid: o}, grid)
           CGRectMake(a[0], a[1], a[2], a[3])
         elsif o.is_a?(Array)
@@ -215,7 +215,7 @@ module RubyMotionQuery
 
         # Previous
         if prev_view = previous_view(view)
-          if params_g && (prev_sv = prev_view.superview) 
+          if params_g && (prev_sv = prev_view.superview)
 
             previous_root_view_point = vc.view.convertPoint(prev_view.origin, fromView: prev_sv)
 
@@ -252,11 +252,11 @@ module RubyMotionQuery
             # Horrible horrible hack, TODO fix. This is here because
             # the root_view's height isn't changed until after viewDidLoad when
             # vc.edgesForExtendedLayout = UIRectEdgeNone.
-            # Not sure how often people use UIRectEdgeNone as I never do, 
+            # Not sure how often people use UIRectEdgeNone as I never do,
             # perhaps an edge case that should be isolated in some wayo
             # I hate to have to check and calc this every time
             if vc && !not_in_root_view && (vc.edgesForExtendedLayout == UIRectEdgeNone)
-              sv_size = CGSizeMake(sv.size.width, rmq.device.screen_height - 64)  
+              sv_size = CGSizeMake(sv.size.width, rmq.device.screen_height - 64)
             else
               sv_size = sv.size
             end
@@ -349,10 +349,10 @@ module RubyMotionQuery
     end
 
     def update(params, grid = nil)
-      # Doing all of the updates to the Rect in singleton for performance. 
+      # Doing all of the updates to the Rect in singleton for performance.
       # It would be better to be done inside an actual Rect instance, but that
       # would require creating a lot of temporary objects.
-      # TODO performance and see if there is any real loss bringing 
+      # TODO performance and see if there is any real loss bringing
       # object_to_cg_rect into Rect instance
       #
       # If we did it that way, then we'd create a new instance, then appy the
@@ -413,7 +413,7 @@ module RubyMotionQuery
       @width
     end
     alias :w :width
-    
+
     def height
       @height
     end
@@ -520,12 +520,12 @@ module RubyMotionQuery
       end
 
       out = %(
- *****************---*******---**************************  
+ *****************---*******---**************************
  *                 |         |                          *    window
  *          #{ t} top        |                          *    {w: #{ww}, h: #{wh}}
  *                 |         |                          *
- *                ---        |                          *    superview 
- *            ***************|*****   ---               *    {w: #{sw}, h: #{sh}} 
+ *                ---        |                          *    superview
+ *            ***************|*****   ---               *    {w: #{sw}, h: #{sh}}
  *            *              |    *    |                *
  *            *              |    *    |                *
  *            *     #{ b} bottom  *    |                *    view
