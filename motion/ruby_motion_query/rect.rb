@@ -256,9 +256,9 @@ module RubyMotionQuery
             # perhaps an edge case that should be isolated in some wayo
             # I hate to have to check and calc this every time
             if vc && !not_in_root_view && (vc.edgesForExtendedLayout == UIRectEdgeNone)
-              sv_size = CGSizeMake(sv.size.width, rmq.device.screen_height - 64)
+              sv_size = CGSizeMake(sv.bounds.size.width, rmq.device.screen_height - 64)
             else
-              sv_size = sv.size
+              sv_size = sv.bounds.size
             end
           end
         end
