@@ -5,7 +5,8 @@ class RubyMotionQuery::Device
       @_four_inch = nil
       @_four_point_seven_inch = nil
       @_five_point_five_inch = nil
-      @_height = value
+      s = size_a
+      @_size_a[1] = value
     end
 
     def reset_fake_caches
@@ -13,7 +14,7 @@ class RubyMotionQuery::Device
       @_four_inch = nil
       @_four_point_seven_inch = nil
       @_five_point_five_inch = nil
-      @_height = nil
+      @_size_a = nil
     end
   end
 end

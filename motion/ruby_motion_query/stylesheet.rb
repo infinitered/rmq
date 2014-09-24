@@ -171,52 +171,45 @@ module RubyMotionQuery
     end
 
     def four_inch?
-      RMQ.device.four_inch?
+      device.four_inch?
     end
 
     def retina?
-      RMQ.device.retina?
+      device.retina?
     end
 
     def window
       RMQ.app.window
     end
 
-    # TODO, cache, then clear when orientation changes
+    # @deprecated - use device_width
     def app_width
-      if device.screen.respond_to?(:coordinateSpace)
-        app_size.width
-      else
-        portrait? ? app_size.width : app_size.height
-      end
+      device.width
     end
+    alias :device_width :app_width
 
-    # TODO, cache, then clear when orientation changes
+    # @deprecated - use device_height
     def app_height
-      if device.screen.respond_to?(:coordinateSpace)
-        app_size.height
-      else
-        portrait? ? app_size.height : app_size.width
-      end
+      device.height
     end
+    alias :device_width :app_width
 
-    # TODO, cache, then clear when orientation changes
+    # @deprecated - use device_width and device_height in your stylesheets
     def app_size
-      device.screen.applicationFrame.size
+      CGSizeMake(device.width, device.height)
     end
 
-    # TODO, cache, then clear when orientation changes
     def screen_width
-      portrait? ? screen_size.width : screen_size.height
+      device.screen_width
     end
 
-    # TODO, cache, then clear when orientation changes
     def screen_height
-      portrait? ? screen_size.height : screen_size.width
+      device.screen_height
     end
 
+    # @deprecated - use screen_width and screen_height in your stylesheets
     def screen_size
-      device.screen.bounds.size
+      CGSizeMake(screen_width, screen_height)
     end
 
     def content_width
