@@ -13,25 +13,39 @@ module RubyMotionQuery
 
   class Device
     class << self
+      def ios_eight?
+        @_ios_eight ||= screen.respond_to?(:coordinateSpace)
+      end
+
       # @return [UIScreen]
       def screen
         UIScreen.mainScreen
       end
 
+      # Width is the width of the device, regardless of its orientation.
+      # This is static. If you want the width with the correct orientation, use
+      # screen_width
+      #
       # @return [Numeric]
       def width
         @_width ||= Device.screen.bounds.size.width
       end
 
+      # Height is the height of the device, regardless of its orientation.
+      # This is static. If you want the height with the correct orientation, use
+      # screen_height
+      #
       # @return [Numeric]
       def height
         @_height ||= Device.screen.bounds.size.height
       end
 
+      # @return [Numeric]
       def screen_width
         portrait? ? screen.bounds.size.width : screen.bounds.size.height
       end
 
+      # @return [Numeric]
       def screen_height
         portrait? ? screen.bounds.size.height : screen.bounds.size.width
       end
