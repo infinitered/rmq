@@ -85,11 +85,13 @@ module RubyMotionQuery
             root_view_controller.visibleViewController
           when UITabBarController
             current_view_controller(root_view_controller.selectedViewController)
-          else 
+          else
             if root_view_controller.respond_to?(:visibleViewController)
               current_view_controller(root_view_controller.visibleViewController)
             elsif root_view_controller.respond_to?(:topViewController)
               current_view_controller(root_view_controller.topViewController)
+            elsif root_view_controller.respond_to?(:frontViewController)
+              current_view_controller(root_view_controller.frontViewController)
             elsif root_view_controller.childViewControllers.count > 0
               current_view_controller(root_view_controller.childViewControllers.first)
             else

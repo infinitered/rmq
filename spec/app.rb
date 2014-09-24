@@ -124,6 +124,18 @@ describe 'app' do
       rmq.app.window.rootViewController = old_root
     end
 
+    it 'should return current_view_controller when root controller is container controller with a frontViewController method' do
+      controller = MyFrontViewControllerController.alloc.init
+      new_controller = UIViewController.new
+      controller.my_controller = new_controller
+      controller.my_controller.should == new_controller
+
+      old_root = rmq.app.window.rootViewController
+      rmq.app.window.rootViewController = controller
+      rmq.app.current_view_controller.should == new_controller
+      rmq.app.window.rootViewController = old_root
+    end
+
     it 'should return current_view_controller when root controller is container controller with more than one child controllers' do
       # TODO
       1.should == 1
@@ -144,6 +156,13 @@ end
 class MyVisibleViewController < UIViewController
   attr_accessor :my_controller
   def visibleViewController
+    @my_controller
+  end
+end
+
+class MyFrontViewControllerController < UIViewController
+  attr_accessor :my_controller
+  def frontViewController
     @my_controller
   end
 end
