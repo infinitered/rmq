@@ -404,7 +404,7 @@ module RubyMotionQuery
 
     def from_bottom
       if @view && (sv = @view.superview)
-        sv.size.height - bottom
+        sv.bounds.size.height - bottom
       end
     end
     alias :fb :from_bottom
@@ -515,8 +515,8 @@ module RubyMotionQuery
       wh = i_f_to_s(rmq.app.window.size.height.round(2))
 
       if @view && (sv = @view.superview)
-        sw = i_f_to_s(sv.size.width.round(2))
-        sh = i_f_to_s(sv.size.height.round(2))
+        sw = i_f_to_s(sv.bounds.size.width.round(2))
+        sh = i_f_to_s(sv.bounds.size.height.round(2))
       end
 
       out = %(
