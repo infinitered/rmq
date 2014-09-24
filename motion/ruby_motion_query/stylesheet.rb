@@ -184,14 +184,23 @@ module RubyMotionQuery
 
     # TODO, cache, then clear when orientation changes
     def app_width
-      portrait? ? app_size.width : app_size.height
+      if device.screen.respond_to?(:coordinateSpace)
+        app_size.width
+      else
+        portrait? ? app_size.width : app_size.height
+      end
     end
 
     # TODO, cache, then clear when orientation changes
     def app_height
-      portrait? ? app_size.height : app_size.width
+      if device.screen.respond_to?(:coordinateSpace)
+        app_size.height
+      else
+        portrait? ? app_size.height : app_size.width
+      end
     end
 
+    # TODO, cache, then clear when orientation changes
     def app_size
       device.screen.applicationFrame.size
     end
