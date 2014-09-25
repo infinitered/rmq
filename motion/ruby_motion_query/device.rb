@@ -17,6 +17,19 @@ module RubyMotionQuery
         @_ios_eight ||= screen.respond_to?(:coordinateSpace)
       end
 
+      # Find out what version of iOS you're using.
+      # `rmq.device.is_version? 8`
+      # `rmq.device.is_version? "7.1"`
+      #
+      # @return [Boolean]
+      def is_version? version
+        !!ios_version.match("^#{version}")
+      end
+
+      def ios_version
+        UIDevice.currentDevice.systemVersion
+      end
+
       # @return [UIScreen]
       def screen
         UIScreen.mainScreen
