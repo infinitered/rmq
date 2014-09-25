@@ -125,6 +125,20 @@ describe 'device' do
   end
 
   describe 'orientations' do
+    it 'should allow you to set your own orientation, that RMQ uses everywhere' do
+      @rmq.device.orientation.should == :portrait
+      @rmq.device.portrait?.should == true
+      @rmq.device.landscape?.should == false
+
+      @rmq.device.orientation = :landscape
+      @rmq.device.orientation.should == :landscape
+      @rmq.device.portrait?.should == false
+      @rmq.device.landscape?.should == true
+      @rmq.device.orientation = nil
+
+      @rmq.device.orientation.should == :portrait
+    end
+
     #TODO finish
   end
 

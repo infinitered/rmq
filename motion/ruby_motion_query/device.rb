@@ -34,6 +34,9 @@ module RubyMotionQuery
       def width
         size_a[0]
       end
+      def width_landscape
+        size_a[1]
+      end
 
       # Height is the height of the device, regardless of its orientation.
       # This is static. If you want the height with the correct orientation, use
@@ -43,15 +46,18 @@ module RubyMotionQuery
       def height
         size_a[1]
       end
+      def height_landscape
+        size_a[0]
+      end
 
       # @return [Numeric]
       def screen_width
-        portrait? ? size_a[0] : size_a[1]
+        portrait? ? width : width_landscape
       end
 
       # @return [Numeric]
       def screen_height
-        portrait? ? size_a[1] : size_a[0]
+        portrait? ? height : height_landscape
       end
 
       def ipad?
@@ -100,16 +106,31 @@ module RubyMotionQuery
 
       # @return :unknown or from ORIENTATIONS
       def orientation
-        orientation = UIApplication.sharedApplication.statusBarOrientation
-        ORIENTATIONS[orientation] || :unknown
+        if @custom_orientation
+          @custom_orientation
+        else
+          orientation = UIApplication.sharedApplication.statusBarOrientation
+          ORIENTATIONS[orientation] || :unknown
+        end
+      end
+
+      # You can manually set the orientation, if set it RMQ won't automatically get the
+      # orientation from the sharedApplication. If you want the automatic orientation to work again
+      # set this to nil
+      #
+      # For options of what to set it to, see RubyMotionQuery::Device::ORIENTATIONS
+      def orientation=(value)
+        @custom_orientation = value
       end
 
       def landscape?
-        Device.orientation == :landscape_left || Device.orientation == :landscape_right
+        orientated = orientation
+        orientated == :landscape || orientated == :landscape_left || orientated == :landscape_right
       end
 
       def portrait?
-        Device.orientation == :portrait || Device.orientation == :unknown
+        orientated = orientation
+        orientated == :portrait || orientated == :unknown
       end
 
       def orientations
