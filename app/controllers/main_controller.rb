@@ -9,11 +9,12 @@ class MainController < UIViewController
     init_nav
 
     rmq.append UIImageView, :logo
-    rmq.append Section
 
     init_buttons
     init_popup_section
     init_validation_section
+
+    rmq.append Section
   end
 
   def init_nav
@@ -96,6 +97,9 @@ class MainController < UIViewController
       rmq.view_controller.navigationController.pushViewController(controller, animated: true)
     end
 
+    rmq.append(UIButton, :present_button).on(:touch_up) do |sender|
+      rmq.view_controller.presentModalViewController(PresentedController.new, animated:true)
+    end
   end
 
   def init_popup_section

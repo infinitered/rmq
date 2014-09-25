@@ -13,4 +13,10 @@ class AppDelegate
     @window.makeKeyAndVisible
     true
   end
+
+  def application(application, willChangeStatusBarOrientation: new_orientation, duration: duration)
+    # Manualy set RMQ's orientation before the device is actually orientated
+    # So that we can do stuff like style views before the rotation begins
+    rmq.device.orientation = new_orientation
+  end
 end

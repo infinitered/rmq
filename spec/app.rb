@@ -40,7 +40,6 @@ describe 'app' do
     @app.document_path.should == NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)[0]
   end
 
-
   describe 'environment' do
     it 'should return environment as symbol, :test in this case' do
       @app.environment.should == :test
@@ -58,6 +57,7 @@ describe 'app' do
       @app.release?.should == false
       @app.production?.should == false
     end
+  end
 
   describe 'app - current_view_controller' do
     before do
@@ -142,7 +142,6 @@ describe 'app' do
     end
   end
 
-  end
 end
 
 

@@ -119,7 +119,17 @@ module RubyMotionQuery
       # set this to nil
       #
       # For options of what to set it to, see RubyMotionQuery::Device::ORIENTATIONS
+      #
+      # You can set this to :landscape, which isn't real option, but it will automatically
+      # get converted to :landscape_left
       def orientation=(value)
+        if value
+          if value == :landscape
+            value = :landscape_left
+          else
+            value = ORIENTATIONS[value] || :unknown
+          end
+        end
         @custom_orientation = value
       end
 

@@ -15,48 +15,28 @@ class MainStylesheet < ApplicationStylesheet
     st.image = image.resource('logo')
   end
 
+  def button_set_button(st)
+    st.frame = {fr: @padding, bp: 2 , w: 150, h: 15}
+  end
+
   def make_labels_blink_button(st)
-    st.frame = {from_right: @padding, t: 180, w: 150, h: 20}
+    st.frame = {fr: @padding, bp: 8, w: 150, h: 15}
 
-    # ipad? (and landscape?, etc) is just a convenience methods for
-    # rmq.device.ipad?
-
-    # Here is a complete example of different formatting for orientatinos
-    # and devices
-    #  if ipad?
-    #    if landscape?
-    #      st.frame = {l: 20, t: 120, w: 150, h: four_inch? ? 20 : 30}
-    #    else
-    #      st.frame = {l: 90, t: 120, w: 150, h: four_inch? ? 25 : 35}
-    #    end
-    #  else
-    #    if landscape?
-    #      st.frame = {l: 20, t: 20, w: 150, h: four_inch? ? 22 : 32}
-    #    else
-    #      st.frame = {l: 90, t: 20, w: 150, h: four_inch? ? 30 : 40}
-    #    end
-    #  end
-
-    # If you don't want something to be reapplied during orientation
-    # changes (assuming you're reapplying durring orientation changes
-    # in your controller, it's not automatic)
-    unless st.view_has_been_styled?
-      st.text = 'Blink labels'
-      st.font = font.system(10)
-      st.color = color.white
-      st.background_color = color.from_hex('ed1160')
-    end
+    st.text = 'Blink labels'
+    st.font = font.system(10)
+    st.color = color.white
+    st.background_color = color.from_hex('ed1160')
   end
 
   def make_buttons_throb_button(st)
-    st.frame = {from_right: @padding, below_prev: 5, width: 150, height: 20}
+    button_set_button st
     st.text = 'Throb buttons'
     st.color = color.black
   end
 
   def animate_move_button(st)
     st.scale = 1.0
-    st.frame = {from_right: @padding, below_prev: 5, width: 150, height: 20}
+    button_set_button st
     st.text = 'Animate move and scale'
     st.font = font.system(10)
     st.color = color.white
@@ -66,19 +46,25 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def collection_button(st)
-    st.frame = {fr: @padding, bp: 5, w: 150, h: 20}
+    button_set_button st
     st.background_color = color.black
     st.font = font.small
     st.text = 'Collection View'
   end
 
   def table_button(st)
-    st.frame = {fr: @padding, bp: 5 , w: 150, h: 20}
+    button_set_button st
     st.background_color = color.black
     st.font = font.small
     st.text = 'Table View'
   end
 
+  def present_button(st)
+    button_set_button st
+    st.background_color = color.purple
+    st.font = font.small
+    st.text = 'Present controller'
+  end
 
   def section(st)
     st.frame = {fb: @padding, w: 270, h: 110}
@@ -172,6 +158,7 @@ class MainStylesheet < ApplicationStylesheet
     st.font = font.small
   end
 
+
   def overlay(st)
     st.frame = :full
     st.background_color = color.translucent_black
@@ -181,7 +168,8 @@ class MainStylesheet < ApplicationStylesheet
 
   def popup_wrapper(st)
     st.hidden = true
-    st.frame = {w: app_width - 20, h: 120}
+
+    st.frame = {w: screen_width - 20, h: 120}
     st.centered = :both
     st.background_color = color.white
     st.z_position = 100

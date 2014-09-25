@@ -131,7 +131,7 @@ describe 'device' do
       @rmq.device.landscape?.should == false
 
       @rmq.device.orientation = :landscape
-      @rmq.device.orientation.should == :landscape
+      @rmq.device.orientation.should == :landscape_left
       @rmq.device.portrait?.should == false
       @rmq.device.landscape?.should == true
       @rmq.device.orientation = nil
