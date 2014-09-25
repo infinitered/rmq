@@ -146,5 +146,22 @@ describe 'grid' do
     @grid['a:z99'].should == {l: 7, r: last[:r], b: last[:b]}
   end
 
+  should 'perform quick and dirt tests on grid in landscape (TODO, add a lot more)' do
+    rmq.device.orientation = :portrait
+    @grid.row_height.should == @grid.usable_height / @grid.num_rows
+    @grid.column_width.should == @grid.usable_width / @grid.num_columns
+    @grid['a0:0'].should == {l: 7, t: 5, b: 5 + @grid.row_height}
+
+    rmq.device.orientation = :landscape_left
+    @grid.row_height.should == @grid.usable_height / @grid.num_rows
+    @grid.column_width.should == @grid.usable_width / @grid.num_columns
+    @grid['a0:0'].should == {l: 7, t: 5, b: 5 + @grid.row_height}
+
+    rmq.device.orientation = nil
+    @grid.row_height.should == @grid.usable_height / @grid.num_rows
+    @grid.row_height.should == @grid.usable_height / @grid.num_rows
+    @grid['a0:0'].should == {l: 7, t: 5, b: 5 + @grid.row_height}
+  end
+
   # TODO Finish other methods
 end

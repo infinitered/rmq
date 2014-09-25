@@ -116,6 +116,7 @@ module RubyMotionQuery
 
     def initialize(params)
       @grid_hash = {}
+      @grid_hash_landscape = {}
 
       self.num_columns = params[:num_columns]
       self.num_rows = params[:num_rows]
@@ -185,84 +186,90 @@ module RubyMotionQuery
     #
     # @return hash with any combination of l:, t:, w:, or :h. Or nil if invalid
     def [](coord)
-      @grid_hash[coord] ||= begin
-        if coord.is_a?(Array)
+      if Device.landscape?
+        @grid_hash_landscape[coord] ||= calc_coord(coord)
+      else
+        @grid_hash[coord] ||= calc_coord(coord)
+      end
+    end
 
-          l = column_lefts[coord[0]]
-          t = row_tops[coord[1]]
-          case coord.length
-          when 2
-            RubyMotionQuery::Rect.new([l, t, column_width, row_height])
-          when 4
-            RubyMotionQuery::Rect.new([l, t, coord[2], coord[3]])
-          else
-            nil
-          end
+    private def calc_coord(coord)
+      if coord.is_a?(Array)
 
+        l = column_lefts[coord[0]]
+        t = row_tops[coord[1]]
+        case coord.length
+        when 2
+          RubyMotionQuery::Rect.new([l, t, column_width, row_height])
+        when 4
+          RubyMotionQuery::Rect.new([l, t, coord[2], coord[3]])
         else
-          return nil unless coord
+          nil
+        end
 
-          # TODO this needs refactoring once the full tests are done
-          coord.gsub!(/\s/, '')
-          is_end_coord = coord.start_with?(':')
-          parts = coord.split(':')
-          parts.reject!{|o| o == ''}
+      else
+        return nil unless coord
 
-          case parts.length
-            when 0
-              nil
-            when 1
-              lefts = column_lefts
-              tops = row_tops
+        # TODO this needs refactoring once the full tests are done
+        coord.gsub!(/\s/, '')
+        is_end_coord = coord.start_with?(':')
+        parts = coord.split(':')
+        parts.reject!{|o| o == ''}
 
-              p1 = parts.first
-              digits = p1.gsub(/\D/, '')
-              if digits == ''
-                digits = nil
-              else
-                top_i = digits.to_i
-                top_i = (tops.length - 1) if top_i >= tops.length
-              end
+        case parts.length
+          when 0
+            nil
+          when 1
+            lefts = column_lefts
+            tops = row_tops
 
-              letter = p1.gsub(/\d/, '')
-              if letter == ''
-                letter = nil
-              else
-                letter.downcase!
-                left_i = (letter.ord - 97)
-                left_i = (lefts.length - 1) if left_i >= lefts.length
-              end
+            p1 = parts.first
+            digits = p1.gsub(/\D/, '')
+            if digits == ''
+              digits = nil
+            else
+              top_i = digits.to_i
+              top_i = (tops.length - 1) if top_i >= tops.length
+            end
 
-              if digits && letter
-                if lefts.length > left_i && tops.length > top_i
-                  if is_end_coord
-                    {r: lefts[left_i] + column_width, b: tops[top_i] + row_height}
-                  else
-                    {l: lefts[left_i], t: tops[top_i]}
-                  end
-                else
-                  nil
-                end
-              elsif digits
+            letter = p1.gsub(/\d/, '')
+            if letter == ''
+              letter = nil
+            else
+              letter.downcase!
+              left_i = (letter.ord - 97)
+              left_i = (lefts.length - 1) if left_i >= lefts.length
+            end
+
+            if digits && letter
+              if lefts.length > left_i && tops.length > top_i
                 if is_end_coord
-                  {b: tops[top_i] + row_height}
+                  {r: lefts[left_i] + column_width, b: tops[top_i] + row_height}
                 else
-                  {t: tops[top_i]}
-                end
-              elsif letter
-                if is_end_coord
-                  {r: lefts[left_i] + column_width}
-                else
-                  {l: lefts[left_i]}
+                  {l: lefts[left_i], t: tops[top_i]}
                 end
               else
                 nil
               end
-            when 2
-              self[parts.first].merge(self[":#{parts.last}"])
-          end
-        end.freeze
-      end
+            elsif digits
+              if is_end_coord
+                {b: tops[top_i] + row_height}
+              else
+                {t: tops[top_i]}
+              end
+            elsif letter
+              if is_end_coord
+                {r: lefts[left_i] + column_width}
+              else
+                {l: lefts[left_i]}
+              end
+            else
+              nil
+            end
+          when 2
+            self[parts.first].merge(self[":#{parts.last}"])
+        end
+      end.freeze
     end
 
     # TODO, do this when orientation changes
@@ -272,6 +279,12 @@ module RubyMotionQuery
       @_column_width = nil
       @_usable_height = nil
       @_row_height = nil
+
+      @grid_hash_landscape = {}
+      @_usable_width_landscape = nil
+      @_column_width_landscape = nil
+      @_usable_height_landscape = nil
+      @_row_height_landscape = nil
     end
 
     def to_h
@@ -331,11 +344,16 @@ module RubyMotionQuery
     end
 
     def usable_width
-      @_usable_width ||= (RMQ.device.screen_width - (@column_gutter * (@num_columns - 1)) - @content_left_margin - @content_right_margin)
+      unless @_usable_width
+        unusable = (@column_gutter * (@num_columns - 1)) + @content_left_margin + @content_right_margin
+        @_usable_width_landscape = Device.width_landscape - unusable
+        @_usable_width = Device.width - unusable
+      end
+      Device.landscape? ? @_usable_width_landscape : @_usable_width
     end
 
     def column_width
-      @_column_width ||= usable_width / @num_columns
+      usable_width / @num_columns
     end
 
     def column_lefts
@@ -353,11 +371,16 @@ module RubyMotionQuery
     end
 
     def usable_height
-      @_usable_height ||= (RMQ.device.screen_height - (@row_gutter * (@num_rows - 1)) - @content_top_margin - @content_bottom_margin)
+      unless @_usable_height
+        unusable = (@row_gutter * (@num_rows - 1)) + @content_top_margin + @content_bottom_margin
+        @_usable_height_landscape = Device.height_landscape - unusable
+        @_usable_height = Device.height - unusable
+      end
+      Device.landscape? ? @_usable_height_landscape : @_usable_height
     end
 
     def row_height
-      @_row_height ||= usable_height / @num_rows
+      usable_height / @num_rows
     end
 
     def row_tops
