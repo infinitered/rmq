@@ -126,7 +126,7 @@ module RubyMotionQuery
         if value
           if value == :landscape
             value = :landscape_left
-          else
+          elsif !value.is_a?(Symbol)
             value = ORIENTATIONS[value] || :unknown
           end
         end

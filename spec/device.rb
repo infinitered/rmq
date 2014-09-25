@@ -116,12 +116,16 @@ describe 'device' do
     #TODO finish
   end
 
-  describe 'landscape?' do
-    #TODO finish
-  end
+  it 'should report landscape? and portrait? correctly' do
+   @rmq.device.orientation = :portrait
+   @rmq.device.portrait?.should == true
+   @rmq.device.landscape?.should == false
 
-  describe 'portrait?' do
-    #TODO finish
+   @rmq.device.orientation = :landscape_left
+   @rmq.device.portrait?.should == false
+   @rmq.device.landscape?.should == true
+
+   @rmq.device.orientation = nil
   end
 
   describe 'orientations' do
@@ -130,13 +134,23 @@ describe 'device' do
       @rmq.device.portrait?.should == true
       @rmq.device.landscape?.should == false
 
+      @rmq.device.screen_width.should == @rmq.device.width
+      @rmq.device.screen_height.should == @rmq.device.height
+
       @rmq.device.orientation = :landscape
       @rmq.device.orientation.should == :landscape_left
       @rmq.device.portrait?.should == false
       @rmq.device.landscape?.should == true
-      @rmq.device.orientation = nil
 
+      @rmq.device.screen_width.should == @rmq.device.width_landscape
+      @rmq.device.screen_width.should == @rmq.device.height
+      @rmq.device.screen_height.should == @rmq.device.height_landscape
+      @rmq.device.screen_height.should == @rmq.device.width
+
+      @rmq.device.orientation = nil
       @rmq.device.orientation.should == :portrait
+      @rmq.device.screen_width.should == @rmq.device.width
+      @rmq.device.screen_height.should == @rmq.device.height
     end
 
     #TODO finish

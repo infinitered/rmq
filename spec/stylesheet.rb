@@ -42,89 +42,38 @@ describe 'stylesheet' do
     1.should == 1
   end
 
-  #describe 'getting app size, width, and height' do
-    #tests UIViewController
+  describe 'getting app and screen size, width, and height' do
+    before do
+      @screen = rmq.device.screen
+    end
 
-    #before do
-      #@screen = rmq.device.screen
-    #end
+    it 'should work for all orientations' do
+      size = @screen.bounds.size
 
-    #if UIScreen.mainScreen.respond_to?(:coordinateSpace)
-      #describe "  in iOS 8"do
-        #it 'should work for all orientations' do
-          #rotate_device to: :portrait, button: :bottom
-          #size = @screen.bounds.size
-          #@vc.rmq.stylesheet.app_size.should == size
-          #@vc.rmq.stylesheet.app_width.should == size.width
-          #@vc.rmq.stylesheet.app_height.should == size.height
+      rmq.device.orientation = :portrait
+      @vc.rmq.stylesheet.app_width.should == size.width
+      @vc.rmq.stylesheet.app_height.should == size.height
+      @vc.rmq.stylesheet.screen_width.should == size.width
+      @vc.rmq.stylesheet.screen_height.should == size.height
 
-          #rotate_device to: :portrait, button: :top
-          #size = @screen.bounds.size
-          #@vc.rmq.stylesheet.app_size.should == size
-          #@vc.rmq.stylesheet.app_width.should == size.width
-          #@vc.rmq.stylesheet.app_height.should == size.height
+      rmq.device.orientation = :landscape_left
+      @vc.rmq.stylesheet.app_width.should == size.width
+      @vc.rmq.stylesheet.app_height.should == size.height
+      @vc.rmq.stylesheet.screen_width.should == size.height
+      @vc.rmq.stylesheet.screen_height.should == size.width
 
-          #rotate_device to: :landscape, button: :left
-          #size = @screen.applicationFrame.size
-          #@vc.rmq.stylesheet.app_size.should == size
-          #@vc.rmq.stylesheet.app_width.should == size.width
-          #@vc.rmq.stylesheet.app_height.should == size.height
+      rmq.device.orientation = :landscape_right
+      @vc.rmq.stylesheet.app_width.should == size.width
+      @vc.rmq.stylesheet.app_height.should == size.height
+      @vc.rmq.stylesheet.screen_width.should == size.height
+      @vc.rmq.stylesheet.screen_height.should == size.width
 
-          #rotate_device to: :landscape, button: :right
-          #size = @screen.applicationFrame.size
-          #@vc.rmq.stylesheet.app_size.should == size
-          #@vc.rmq.stylesheet.app_width.should == size.width
-          #@vc.rmq.stylesheet.app_height.should == size.height
-
-          #rotate_device to: :portrait
-        #end
-      #end
-    #else
-      #describe "  pre-iOS 8" do
-        #it 'should work for all orientations' do
-          #rotate_device to: :portrait, button: :bottom
-          #size = @screen.bounds.size
-          #@vc.rmq.stylesheet.app_size.should == size
-          #@vc.rmq.stylesheet.app_width.should == size.width
-          #@vc.rmq.stylesheet.app_height.should == size.height
-
-          #rotate_device to: :portrait, button: :top
-          #size = @screen.bounds.size
-          #@vc.rmq.stylesheet.app_size.should == size
-          #@vc.rmq.stylesheet.app_width.should == size.width
-          #@vc.rmq.stylesheet.app_height.should == size.height
-
-          #rotate_device to: :landscape, button: :left
-          #size = @screen.applicationFrame.size
-          #@vc.rmq.stylesheet.app_size.should == size
-          #@vc.rmq.stylesheet.app_width.should == size.height
-          #@vc.rmq.stylesheet.app_height.should == size.width
-
-          #rotate_device to: :landscape, button: :right
-          #size = @screen.applicationFrame.size
-          #@vc.rmq.stylesheet.app_size.should == size
-          #@vc.rmq.stylesheet.app_width.should == size.height
-          #@vc.rmq.stylesheet.app_height.should == size.width
-
-          #rotate_device to: :portrait
-        #end
-      #end
-    #end
-  #end
-
-  it 'should get app_size, width, and height' do
-    # TODO
-    1.should == 1
-  end
-
-  it 'should get screen_size, width, and height' do
-    # TODO
-    1.should == 1
-  end
-
-  it 'should get content_size, width, and height' do
-    # TODO
-    1.should == 1
+      rmq.device.orientation = nil
+      @vc.rmq.stylesheet.app_width.should == size.width
+      @vc.rmq.stylesheet.app_height.should == size.height
+      @vc.rmq.stylesheet.screen_width.should == size.width
+      @vc.rmq.stylesheet.screen_height.should == size.height
+    end
   end
 
   it 'should use parent_rmq to get stylesheet if there is no view_controller for the rmq instance' do
