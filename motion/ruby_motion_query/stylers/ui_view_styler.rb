@@ -77,11 +77,19 @@ module RubyMotionQuery
       alias :parent :superview
 
       def super_height
-        @view.superview.frame.size.height
+        if @view.superview
+          @view.superview.frame.size.height
+        else
+          0
+        end
       end
 
       def super_width
-        @view.superview.frame.size.width
+        if @view.superview
+          @view.superview.frame.size.width
+        else
+          0
+        end
       end
 
       def tag(tags)
