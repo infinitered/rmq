@@ -37,7 +37,7 @@ describe 'device' do
     rmq.device.ios_version.match(/^(\d|\.)+$/).should.not == nil
   end
 
-  it 'can let you know if it is a version of iOS' do
+  it 'lets you know if a queried version of iOS is correct' do
     current_version = rmq.device.ios_version
     rmq.device.is_version?(current_version).should == true
     # fail condition
