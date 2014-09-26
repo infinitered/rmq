@@ -31,6 +31,21 @@ describe 'device' do
     rmq.device.should == RubyMotionQuery::Device
   end
 
+  it 'can detect what iOS version is in use' do
+    rmq.device.ios_version.should == UIDevice.currentDevice.systemVersion
+    #validate this is numbers and dots
+    rmq.device.ios_version.match(/^(\d|\.)+$/).should.not == nil
+  end
+
+  it 'lets you know if a queried version of iOS is correct' do
+    current_version = rmq.device.ios_version
+    rmq.device.is_version?(current_version).should == true
+    # fail condition
+    rmq.device.is_version?(2).should == false
+    # can check with just major version number like 7 for "7.1"
+    rmq.device.is_version?(current_version[0]).should == true
+  end
+
   it 'should have a screen' do
     @rmq.device.screen.should == UIScreen.mainScreen
   end
