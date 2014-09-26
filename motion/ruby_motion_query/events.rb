@@ -134,6 +134,8 @@ module RubyMotionQuery
       raise "[RMQ Error]  Event already exists on this object: #{event}. Remove first, using .off" if @event_set[event]
 
       if rmqe = event_instance(view, event, block)
+        view.userInteractionEnabled = true if view.respond_to?(:userInteractionEnabled=) && view.isUserInteractionEnabled == false
+
         rmqe.set_options(args) if rmqe.respond_to? :set_options
 
         @event_set[event] = rmqe
