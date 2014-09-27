@@ -46,7 +46,7 @@ module RubyMotionQuery
 
         UIView.animateWithDuration(
           opts[:duration] || 0.3,
-          delay: opts[:delay] || 0,
+          delay: opts[:delay] || 0.0,
           options: opts[:options] || UIViewAnimationOptionCurveEaseInOut,
           animations: animations_lambda,
           completion: after_lambda

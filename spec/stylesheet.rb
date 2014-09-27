@@ -158,6 +158,13 @@ describe 'stylesheet' do
       end
     end
 
+    it 'should return rmq_styler if the view supports a customer styler' do
+      v = TestClassWithCustomerStyler.new
+      styler = rmq.styler_for(v)
+      styler.is_a?(TestClassWithCustomerStyler).should == true
+      styler.view.should == v
+    end
+
   end
 end
 
@@ -197,5 +204,14 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
 
   def self_rmq
     rmq
+  end
+end
+
+class TestClassWithCustomerStyler
+  attr_accessor :view
+  def rmq_styler(view)
+    out = TestClassWithCustomerStyler.new
+    out.view = view
+    out
   end
 end
