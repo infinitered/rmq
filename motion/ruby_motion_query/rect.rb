@@ -151,7 +151,7 @@ module RubyMotionQuery
           if view && (sv = view.superview)
             sv.bounds
           else
-            rmq.rootview.bounds
+            rmq.root_view.bounds
           end
         elsif o.is_a?(RubyMotionQuery::Rect)
           o.to_cgrect
