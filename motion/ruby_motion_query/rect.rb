@@ -148,8 +148,8 @@ module RubyMotionQuery
           a = rect_hash_to_rect_array(view, existing_rect, o, grid)
           CGRectMake(a[0], a[1], a[2], a[3])
         elsif o == :full
-          if view
-            view.superview.bounds
+          if view && (sv = view.superview)
+            sv.bounds
           else
             rmq.rootview.bounds
           end
@@ -420,8 +420,8 @@ module RubyMotionQuery
     alias :h :height
 
     def z_order
-      if @view
-        @view.superview.subviews.to_a.index(@view) # is there a better way??
+      if @view && (sv = @view.superview)
+        sv.subviews.to_a.index(@view) # is there a better way??
       end
     end
 
