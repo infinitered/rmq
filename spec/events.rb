@@ -97,6 +97,17 @@ describe 'events on views' do
       control.allTargets.count.should == 0
     end
   end
+
+  it 'should enable user interaction for the view when attached' do
+    label = UILabel.alloc.init
+
+    label.isUserInteractionEnabled.should == false
+
+    @vc.rmq.append(label)
+    @vc.rmq(label).on(:tap){|o| ;}
+
+    label.isUserInteractionEnabled.should == true
+  end
 end
 
 describe 'events' do
