@@ -14,7 +14,7 @@ describe 'ext' do
     jesse_object = "I'm an object yo!"
     jesse_object.rmq.is_a?(RubyMotionQuery::RMQ).should == true
   end
-  
+
   it 'should auto create rmq_data on a view if it doesn\'t exist' do
     vc = UIViewController.alloc.init
     view = vc.rmq.append(UIView).get
@@ -87,10 +87,24 @@ describe 'ext' do
     rmq.build(v)
     v.built.should == true
   end
+
+  it 'should call rmq_style_applied when applying a style or appending' do
+    vc = UIViewController.alloc.init
+    vc.rmq.stylesheet = StyleSheetForExtTests
+
+    view = vc.rmq.append(ExtTestView, :style_one).get
+    view.style_applied.should == true
+
+    view2 = vc.rmq.append(ExtTestView).get
+    view2.style_applied.should != true
+
+    vc.rmq(view2).apply_style(:style_one)
+    view2.style_applied.should == true
+  end
 end
 
 class ExtTestView < UIView
-  attr_accessor :controller, :created, :appended, :built
+  attr_accessor :controller, :created, :appended, :built, :style_applied
   def rmq_did_create(rmq)
     @controller = rmq.view_controller
   end
@@ -110,7 +124,18 @@ class ExtTestView < UIView
     @built = true
   end
 
+  def rmq_style_applied
+    @controller = rmq.view_controller
+    @style_applied = true
+  end
+
   def get_context
     rmq.context
+  end
+end
+
+class StyleSheetForExtTests < RubyMotionQuery::Stylesheet
+  def style_one(st)
+    st.frame = {l: 1}
   end
 end

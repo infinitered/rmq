@@ -16,6 +16,7 @@ class UIView
   # @deprecated No longer needed, use rmq_build
   def rmq_did_create(self_in_rmq)
   end
+
   def rmq_created
   end
 
@@ -24,6 +25,9 @@ class UIView
   end
 
   def rmq_appended
+  end
+
+  def rmq_style_applied
   end
 
   # Technically my_view.rmq is the same as rmq(my_view), so it may seem enticing to use,
