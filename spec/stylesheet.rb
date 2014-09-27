@@ -149,6 +149,7 @@ describe 'stylesheet' do
     it 'should return a styler for various types of views' do
       @vc.rmq.tap do |q|
         q.styler_for(UIView.alloc.init).is_a?(RubyMotionQuery::Stylers::UIViewStyler).should == true
+        q.styler_for(UIControl.alloc.init).is_a?(RubyMotionQuery::Stylers::UIControlStyler).should == true
         q.styler_for(UIImageView.alloc.init).is_a?(RubyMotionQuery::Stylers::UIImageViewStyler).should == true
         q.styler_for(UILabel.alloc.init).is_a?(RubyMotionQuery::Stylers::UILabelStyler).should == true
         q.styler_for(UIButton.alloc.init).is_a?(RubyMotionQuery::Stylers::UIButtonStyler).should == true
@@ -207,7 +208,7 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
   end
 end
 
-class TestClassWithCustomerStyler
+class TestClassWithCustomerStyler < UIControl
   attr_accessor :view
   def rmq_styler(view)
     out = TestClassWithCustomerStyler.new

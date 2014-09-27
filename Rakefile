@@ -7,6 +7,9 @@ require "bundler/setup"
 Bundler.require
 
 Motion::Project::App.setup do |app|
+  app.sdk_version = '8.0'
+  app.deployment_target = '7.0'
+
   app.name = 'rmq'
   app.identifier = 'com.infinitered.rmq'
   app.device_family = [:iphone, :ipad]
@@ -14,4 +17,3 @@ Motion::Project::App.setup do |app|
   app.interface_orientations = [:portrait, :landscape_left, :landscape_right, :portrait_upside_down]
   app.frameworks += %w(QuartzCore CoreGraphics)
 end
-
