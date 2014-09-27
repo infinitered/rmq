@@ -21,6 +21,8 @@ One of RMQ's goal is to have the best [documentation][1] of any RubyMotion UI li
 
 <br />
 
+### Requires SDK 7 or higher, and iOS 7 or higher
+
 ## Quick Start
 
 ```

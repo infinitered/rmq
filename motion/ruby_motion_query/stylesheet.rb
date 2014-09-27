@@ -78,7 +78,7 @@ module RubyMotionQuery
         else
           if view.respond_to?(:rmq_styler)
             # If you're creating an RMQ plug-in that is a view you can set your styler by adding this method
-            view.rmq_styler(view)
+            view.rmq_styler
           else
             if view.is_a?(UIControl)
               Stylers::UIControlStyler.new(view)

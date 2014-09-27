@@ -210,9 +210,10 @@ end
 
 class TestClassWithCustomerStyler < UIControl
   attr_accessor :view
-  def rmq_styler(view)
+  def rmq_styler
+    # Just using self here for testing, normally you would create your styler class
     out = TestClassWithCustomerStyler.new
-    out.view = view
+    out.view = self
     out
   end
 end
