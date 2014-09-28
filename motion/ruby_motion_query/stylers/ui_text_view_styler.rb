@@ -14,6 +14,7 @@ module RubyMotionQuery
       def text_color ; view.textColor ; end
       def text_color=(v) ; view.textColor = v ; end
       alias :color :text_color
+      alias :color= :text_color=
 
     end
   end
