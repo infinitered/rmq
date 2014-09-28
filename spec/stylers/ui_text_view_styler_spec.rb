@@ -36,4 +36,16 @@ describe 'stylers/ui_text_view' do
       v.text.should == 'RMQ'
     end
   end
+
+  it "can also set the color using the 'color' alias" do
+    view = @vc.rmq.append(@view_klass, :ui_text_view_kitchen_sink).get
+
+    rmq(view).style do |st|
+      st.color = rmq.color.green
+    end
+
+    view.tap do |v|
+      view.textColor.should == UIColor.greenColor
+    end
+  end
 end
