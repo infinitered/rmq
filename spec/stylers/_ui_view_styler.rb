@@ -56,7 +56,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.scale = 1.5
     st.rotation = 45
     st.tint_color = color.blue
-    st.layer.cornerRadius = 5
+    st.corner_radius = 5
     st.alpha = 1.0
   end
 
@@ -176,7 +176,7 @@ describe 'ui_view_styler' do
 
   it 'should set attributes onto the view' do
     view = @vc.rmq.append(@view_klass, :ui_view_kitchen_sink).get
-    view.clipsToBounds.should == false
+    view.clipsToBounds.should == true
     view.isHidden.should == true
     view.contentMode.should == UIViewContentModeBottomLeft
     view.tintColor.class.should == UIColor.blueColor.class
