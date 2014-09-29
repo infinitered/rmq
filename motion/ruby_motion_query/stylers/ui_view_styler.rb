@@ -371,6 +371,7 @@ module RubyMotionQuery
       end
 
       def corner_radius=(value = 2)
+        @view.clipsToBounds = true
         @view.layer.cornerRadius = value
       end
 
