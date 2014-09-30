@@ -195,4 +195,19 @@ describe 'ui_view_styler' do
     view = @vc.rmq.append(UIView).style { |st| st.accessibility_label = value }.get
     view.accessibilityLabel.should == value
   end
+
+  it "should set the border width" do
+    view = @vc.rmq.append(UIView).style { |st| st.border_width= 12}.get
+    view.layer.borderWidth.should == 12
+  end
+
+  it "should set the border color" do
+    view = @vc.rmq.append(UIView).style { |st| st.border_color = rmq.color.red }.get
+    view.layer.borderColor.should == UIColor.redColor.CGColor
+  end
+
+  it "should set the border color for uncached colors" do
+    view = @vc.rmq.append(UIView).style { |st| st.border_color = rmq.color.from_rgba(0,0,255, 1) }.get
+    view.layer.borderColor.should == rmq.color.from_rgba(0, 0, 255, 1).CGColor
+  end
 end
