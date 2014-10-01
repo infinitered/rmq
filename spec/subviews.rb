@@ -240,11 +240,38 @@ describe 'subviews' do
 
       test_view.build_subview.rmq_data.style_name.should == :create_sub_view_style
       test_view.build_subview.backgroundColor.should == RubyMotionQuery::Color.orange
+
+      test_view.number_of_builds.should == 1
     end
 
     it 'has the ability to build!' do
       test = @vc.rmq.build!(UILabel)
       test.is_a?(UILabel).should == true
+    end
+
+    it 'should allow you to append a view, remove it, append it again, and only one rmq_build is called' do
+      view = @vc.rmq.append!(SubviewTestView)
+      view.number_of_builds.should == 1
+
+      @vc.rmq.wrap(view).remove
+      view.number_of_builds.should == 1
+
+      @vc.rmq.append(view)
+      view.number_of_builds.should == 1
+    end
+
+    it 'should allow you to create a view outside of RMQ, then append it with RMQ, the remove, then append, and only have rmq_build called once' do
+      view = SubviewTestView.alloc.initWithFrame(CGRectZero)
+      view.number_of_builds.should == nil
+
+      @vc.rmq.append(view)
+      view.number_of_builds.should == 1
+
+      @vc.rmq.wrap(view).remove
+      view.number_of_builds.should == 1
+
+      @vc.rmq.append(view)
+      view.number_of_builds.should == 1
     end
   end
 end
@@ -263,9 +290,15 @@ class SyleSheetForSubviewsTests < RubyMotionQuery::Stylesheet
 end
 
 class SubviewTestView < UIView
-  attr_accessor :subview, :build_subview
+  attr_accessor :subview, :build_subview, :number_of_builds
 
   def rmq_build
+    if @number_of_builds
+      @number_of_builds += 1
+    else
+      @number_of_builds = 1
+    end
+
     @build_subview = rmq.append(UIView, :create_sub_view_style).get
   end
 
