@@ -354,6 +354,7 @@ module RubyMotionQuery
       def border_width=(value)
         @view.layer.borderWidth = value
       end
+
       def border_width
         @view.layer.borderWidth
       end
@@ -368,6 +369,11 @@ module RubyMotionQuery
 
       def border_color
         @view.layer.borderColor
+      end
+
+      def border=(options)
+        self.border_width = options.fetch(:width)
+        self.border_color = options.fetch(:color)
       end
 
       def corner_radius=(value = 2)
