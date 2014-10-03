@@ -210,4 +210,43 @@ describe 'ui_view_styler' do
     view = @vc.rmq.append(UIView).style { |st| st.border_color = rmq.color.from_rgba(0,0,255, 1) }.get
     view.layer.borderColor.should == rmq.color.from_rgba(0, 0, 255, 1).CGColor
   end
+
+  it "should raise exception if you do not provide a width or color to border=" do
+    @view = UIView.alloc.init
+
+    should.raise(StandardError) do
+      rmq(@view).style do |st|
+        st.border = { width: 10 }
+      end
+    end
+
+    should.raise(StandardError) do
+      rmq(@view).style do |st|
+        st.border = { color: rmq.color.blue }
+      end
+    end
+  end
+
+  it "should set the border and color when using border=" do
+    @view = UIView.alloc.init
+
+    rmq(@view).style do |st|
+      st.border = { color: rmq.color.blue, width: 10 }
+    end
+
+    @view.layer.borderWidth.should == 10
+
+    CGColorGetNumberOfComponents(@view.layer.borderColor).should >= 4
+
+    color = nil
+    rmq(@view).style { |st| color = st.border_color }
+    components = CGColorGetComponents(color)
+
+    # R=0, G=0, B=1 A=1
+
+    components[0].to_i.should == 0
+    components[1].to_i.should == 0
+    components[2].to_i.should == 1
+    components[3].to_i.should == 1
+  end
 end
