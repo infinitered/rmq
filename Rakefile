@@ -7,8 +7,8 @@ require "bundler/setup"
 Bundler.require
 
 Motion::Project::App.setup do |app|
-  #app.sdk_version = '8.0'
-  #app.deployment_target = '7.0'
+  #app.sdk_version = '8.1'
+  #app.deployment_target = '7.1'
 
   app.name = 'rmq'
   app.identifier = 'com.infinitered.rmq'

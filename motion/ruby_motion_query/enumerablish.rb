@@ -1,6 +1,6 @@
-module RubyMotionQuery 
+module RubyMotionQuery
   class RMQ
-    # I'm purposly not including Enumerable, 
+    # I'm purposly not including Enumerable,
     # please use to_a if you want one
 
 
@@ -67,10 +67,12 @@ module RubyMotionQuery
 
     # @return [RMQ]
     def first
+      # TODO, check if it fails with nil
       RMQ.create_with_array_and_selectors([selected.first], @selectors, @context)
     end
     # @return [RMQ]
     def last
+      # TODO, check if it fails with nil
       RMQ.create_with_array_and_selectors([selected.last], @selectors, @context)
     end
 
