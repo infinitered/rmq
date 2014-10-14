@@ -68,10 +68,17 @@ class RmqCommandLine
       (main)> exit
 
       Then try these:
+      > rake device_name='iPhone 4s'
+      > rake device_name='iPhone 5s'
+      > rake device_name='iPhone 5s' target=7.1
+      > rake device_name='iPhone 6 Plus'
+      > rake device_name='iPad Retina'
+      > rake device
+
+      Or for XCode 5.1
       > rake retina=3.5
-      > rake retina=4 
-      > rake device_family=ipad 
-      > rake device }
+      > rake retina=4
+      > rake device_family=ipad}
 
     end
 
