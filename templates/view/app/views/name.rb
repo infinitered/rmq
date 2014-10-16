@@ -7,9 +7,9 @@ class <%= @name_camel_case %> < UIView
     # Add subviews here, like so:
     # q.append(UILabel, :some_label)
     # -or-
-    # @submit_button = q.append(UIButon, :submit).get
+    # @submit_button = q.append(UIButton, :submit).get
     # -or-
-    # @submit_button = q.append! UIButon, :submit
+    # @submit_button = q.append! UIButton, :submit
   end
 
 end
