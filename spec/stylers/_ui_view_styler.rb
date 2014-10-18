@@ -42,24 +42,15 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.center = st.superview.center
     st.center_x = 50
     st.center_y = 60
-    st.enabled = true
+    st.enabled = false
     st.hidden = false
     st.z_position = 66
-    st.opaque = false
-    st.clips_to_bounds = false
     st.hidden = true
     st.content_mode = UIViewContentModeBottomLeft
-
     st.background_color = color.red
-    # TODO test background_image
-
-    st.scale = 1.5
-    st.rotation = 45
     st.tint_color = color.blue
     st.corner_radius = 5
-    st.alpha = 1.0
   end
-
 end
 
 shared 'styler' do
@@ -113,11 +104,20 @@ shared 'styler' do
   # TODO, test super_height and super_width
 
   it 'should apply a style with every UIViewStyler wrapper method' do
-    view = @vc.rmq.append(@view_klass, :ui_view_kitchen_sink).get
+    view = @vc.rmq.append!(@view_klass, :ui_view_kitchen_sink)
 
     view.tap do |v|
-      # TODO check all the values set in ui_view_kitchen_sink
-      1.should == 1
+      view.backgroundColor.should == rmq.color.red
+      view.isHidden.should.be.true
+      view.tintColor.should == rmq.color.blue
+      view.layer.cornerRadius.should == 5
+      view.center.should == CGPointMake(50, 60)
+      view.center.x.should == 50
+      view.center.y.should == 60
+      view.isEnabled.should.be.false
+
+      view.layer.zPosition.should == 66
+      view.contentMode.should == UIViewContentModeBottomLeft
     end
   end
 end
@@ -196,6 +196,12 @@ describe 'ui_view_styler' do
     view.accessibilityLabel.should == value
   end
 
+  it "should set the background image properly" do
+    image = rmq.image.resource('logo')
+    view = @vc.rmq.append(UIView).style { |st| st.background_image = image }.get
+    view.backgroundColor.should == UIColor.colorWithPatternImage(image)
+  end
+
   it "should set the border width" do
     view = @vc.rmq.append(UIView).style { |st| st.border_width= 12}.get
     view.layer.borderWidth.should == 12
@@ -248,5 +254,42 @@ describe 'ui_view_styler' do
     components[1].to_i.should == 0
     components[2].to_i.should == 1
     components[3].to_i.should == 1
+  end
+
+  it "should set the value for alpha" do
+    view = @vc.rmq.append!(@view_klass, :ui_view_kitchen_sink)
+
+    view.alpha.should == 1.0
+  end
+
+  it "should set the value for opaque" do
+    view = @vc.rmq.append!(@view_klass, :ui_view_kitchen_sink)
+
+    view.layer.isOpaque.should.be.false
+  end
+
+  it "should set the value for clip to bounds" do
+    view = @vc.rmq.append(@view_klass).style do |st|
+      st.clips_to_bounds = false
+    end.get
+
+    view.clipsToBounds.should.be.false
+  end
+
+  it "should set the value for scale" do
+    view = @vc.rmq.append(@view_klass).style do |st|
+      st.scale = 1.5
+    end.get
+
+    view.transform.should == CGAffineTransformMakeScale(1.5, 1.5)
+  end
+
+  it "should set the value for rotation" do
+    view = @vc.rmq.append(@view_klass).style do |st|
+      st.rotation = 45
+    end.get
+
+    radians = 45 * Math::PI / 180
+    view.transform.should == CGAffineTransformMakeRotation(radians)
   end
 end
