@@ -101,7 +101,17 @@ shared 'styler' do
     view.layer.zPosition.should == 99
   end
 
-  # TODO, test super_height and super_width
+  it "should return the super height and width" do
+    super_view = @vc.rmq.append(UIView).style { |st| st.frame = {h: 10, w: 20 } }.get
+
+    rmq(super_view).append(@view_klass, :ui_view_kitchen_sink).style do |st|
+      @super_height = st.super_height
+      @super_width = st.super_width
+    end
+
+    @super_height.should == 10
+    @super_width.should == 20
+  end
 
   it 'should apply a style with every UIViewStyler wrapper method' do
     view = @vc.rmq.append!(@view_klass, :ui_view_kitchen_sink)
