@@ -292,4 +292,12 @@ describe 'ui_view_styler' do
     radians = 45 * Math::PI / 180
     view.transform.should == CGAffineTransformMakeRotation(radians)
   end
+
+  it "should return the correct value of enabled from the styler" do
+    view = UIView.alloc.init
+    view.setEnabled(false)
+    rmq(view).style { |st| @value = st.enabled }
+
+    @value.should.be.false
+  end
 end
