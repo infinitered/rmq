@@ -182,7 +182,7 @@ module RubyMotionQuery
     #   (main)> rmq.all
     #   => RMQ 172658240. 26 selected. selectors: []. .log for more info
     def inspect
-      out = "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors.to_s}. .log for more info"
+      out = "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
       out << "\n[#{selected.first}]" if self.count == 1
       out
     end
@@ -266,7 +266,7 @@ module RubyMotionQuery
         out << line unless wide
       end
 
-      out << "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors.to_s}"
+      out << "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}"
 
       puts out
     end
