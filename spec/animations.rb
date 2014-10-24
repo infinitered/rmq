@@ -1,3 +1,11 @@
+class RubyMotionQuery::Animations
+  class << self
+    def clear_spinner_class_value
+      @_window_spinner = nil
+    end
+  end
+end
+
 describe 'animations' do
   # These are hard to test, mainly I'm just smoke testing here
 
@@ -10,8 +18,8 @@ describe 'animations' do
 
   after do
     UIView.setAnimationsEnabled true
+    RubyMotionQuery::Animations.clear_spinner_class_value
   end
-
 
   it 'should animate' do
     @vc.rmq.animate(
@@ -83,9 +91,42 @@ describe 'animations' do
     @viewq.animations.slide_out.is_a?(RubyMotionQuery::RMQ).should == true
   end
 
-  it 'should start spinner' do
-    q = @vc.rmq.animations.start_spinner
-    q.first.get.is_a?(UIActivityIndicatorView).should == true
+  describe ".start_spinner" do
+    it 'should set the spinner' do
+      q = @vc.rmq.animations.start_spinner
+      q.first.get.is_a?(UIActivityIndicatorView).should == true
+    end
+
+    it 'should default style to UIActivityIndicatorViewStyleGray' do
+      q = @vc.rmq.animations.start_spinner
+      q.last.get.activityIndicatorViewStyle.should == UIActivityIndicatorViewStyleGray
+    end
+
+    it 'should set the view style from the style value' do
+      q = @vc.rmq.animations.start_spinner(UIActivityIndicatorViewStyleWhiteLarge)
+      q.last.get.activityIndicatorViewStyle.should == UIActivityIndicatorViewStyleWhiteLarge
+    end
+
+    it 'should override the style value if both a style and an options style is provided' do
+      q = @vc.rmq.animations.start_spinner(UIActivityIndicatorViewStyleWhiteLarge, { style: UIActivityIndicatorViewStyleWhite })
+      q.last.get.activityIndicatorViewStyle.should == UIActivityIndicatorViewStyleWhite
+    end
+
+    it 'should default to the window center' do
+      q = @vc.rmq.animations.start_spinner
+      q.last.get.center.should == @vc.rmq.app.window.center
+    end
+
+    it 'should allow you to provide the center for the spinner' do
+      q = @vc.rmq.animations.start_spinner(UIActivityIndicatorViewStyleWhiteLarge, { center: [10,10] })
+      q.last.get.center.should == CGPointMake(10, 10)
+    end
+
+    it 'should allows you to provide the parent for the spinner' do
+      parent = UIView.alloc.init
+      q = @vc.rmq.animations.start_spinner(UIActivityIndicatorViewStyleWhiteLarge, { parent: parent })
+      q.last.get.superview.should == parent
+    end
   end
 
   it 'should stop spinner' do

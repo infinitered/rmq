@@ -277,8 +277,8 @@ module RubyMotionQuery
     end
 
     # @return [RMQ]
-    def start_spinner(style = UIActivityIndicatorViewStyleGray)
-      spinner = Animations.window_spinner(style)
+    def start_spinner(style = UIActivityIndicatorViewStyleGray, opts = {})
+      spinner = Animations.window_spinner({ style: style }.merge(opts))
       spinner.startAnimating
       @rmq.create_rmq_in_context(spinner)
     end
@@ -292,14 +292,14 @@ module RubyMotionQuery
 
     protected
 
-    def self.window_spinner(style = UIActivityIndicatorViewStyleGray)
+    def self.window_spinner(opts={})
       @_window_spinner ||= begin
-        window = RMQ.app.window
-        UIActivityIndicatorView.alloc.initWithActivityIndicatorStyle(style).tap do |o|
-          o.center = window.center
+        parent = opts.fetch(:parent, RMQ.app.window)
+        UIActivityIndicatorView.alloc.initWithActivityIndicatorStyle(opts.fetch(:style, UIActivityIndicatorViewStyleGray)).tap do |o|
           o.hidesWhenStopped = true
+          o.center = opts.fetch(:center, RMQ.app.window.center)
           o.layer.zPosition = NSIntegerMax
-          window.addSubview(o)
+          parent.addSubview(o)
         end
       end
     end
