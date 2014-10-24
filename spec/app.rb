@@ -84,7 +84,7 @@ describe 'app' do
       controller.dismissViewControllerAnimated(false, completion: nil)
     end
 
-    # This isn't working in master... We need passing tests in master for those doing PRs.
+    # Disabling, this works, but isn't working in tests, TODO, fix
     # it 'should return current_view_controller when root controller is UINavigationController with multiple controllers' do
     #   cur = rmq.app.current_view_controller
     #   cur.class.should == MainController
