@@ -35,5 +35,7 @@ describe 'rmq_data' do
     u.rmq_data.view_controller.should == vc
   end
 
+  # Styles are tested in spec/stylesheet.rb
+
   # Tags are tested in spec/tags.rb
 end

@@ -125,6 +125,81 @@ describe 'stylesheet' do
       q.get.origin.x.should == 2
     end
 
+    it 'should apply multiple style_names with .apply_styles' do
+      view1_q = @vc.rmq.append(UIView).layout(l: 5, t: 5, w: 10, h: 15)
+      view2_q = view1_q.append(UIView).apply_style(:style_set_frame, :style_set_background)
+
+      view2_q.frame.size.should == view1_q.frame.size
+      view2_q.get.backgroundColor.should == rmq.color.yellow
+
+      # Also with alias
+      view2_q = view1_q.append(UIView).apply_styles(:style_set_frame, :style_set_background)
+      view2_q.frame.size.should == view1_q.frame.size
+      view2_q.get.backgroundColor.should == rmq.color.yellow
+    end
+
+    it 'should apply multiple style_names to a view, in order' do
+      q = @vc.rmq.append(UIView)
+      q.get.origin.x.should == 0
+      q.apply_style(:style_one, :style_two)
+      q.get.origin.x.should == 2
+      q.apply_style(:style_two, :style_one)
+      q.get.origin.x.should == 1
+    end
+
+    it 'should reapply multiple style_names to a view, in order' do
+      q = @vc.rmq.append(UIView)
+      q.apply_style(:style_two, :style_one, :style_set_background)
+      q.get.backgroundColor.should == rmq.color.yellow
+      q.get.origin.x.should == 1
+
+      q.style{|st| st.background_color = rmq.color.green}.layout(x: 10)
+      q.get.origin.x.should == 10
+      q.get.backgroundColor.should == rmq.color.green
+
+      q.reapply_styles
+      q.get.origin.x.should == 1
+      q.get.backgroundColor.should == rmq.color.yellow
+    end
+
+    it 'should respond if a view or set of views ALL have a particuliar style' do
+      q = @vc.rmq.append(UIView)
+      q2 = @vc.rmq.append(UIView)
+      q.apply_style(:style_two, :style_one)
+
+      # Apply the styles seperatly
+      q2.apply_style(:style_set_background)
+      q2.apply_style(:style_one)
+
+      both = rmq(q.get, q2.get)
+
+      q.has_style?(:style_one).should == true
+      q.has_style?(:style_two).should == true
+      q.has_style?(:style_set_background).should == false
+
+      both.has_style?(:style_one).should == true
+      both.has_style?(:style_two).should == false
+      both.has_style?(:style_set_background).should == false
+    end
+
+    it 'should return all the styles, in order, that is applied to a view or views' do
+      q = @vc.rmq.append(UIView)
+      q2 = @vc.rmq.append(UIView)
+      q.apply_style(:style_two, :style_one)
+
+      # Apply the styles seperatly
+      q2.apply_style(:style_set_background)
+      q2.apply_style(:style_one)
+
+      both = rmq(q.get, q2.get)
+
+      @vc.rmq.append(UIView).styles.should == []
+
+      q.styles.should == [:style_two, :style_one]
+      q2.styles.should == [:style_set_background, :style_one]
+      both.styles.should == [:style_two, :style_one, :style_set_background]
+    end
+
     it 'should reapply styles to views that have already had a style applied' do
 
       q = @vc.rmq.append(UIView, :style_one)
@@ -191,6 +266,14 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
   def style_two(st)
     st.frame = {l: 2}
     st.background_color = color.panther_black
+  end
+
+  def style_set_frame(st)
+    st.frame = :full
+  end
+
+  def style_set_background(st)
+    st.background_color = color.yellow
   end
 
   def style_use_rmq(st)

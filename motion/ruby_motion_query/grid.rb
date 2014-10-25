@@ -272,7 +272,7 @@ module RubyMotionQuery
       end.freeze
     end
 
-    # TODO, do this when orientation changes
+    # This typically is not needed anywhere
     def clear_cache
       @grid_hash = {}
       @_usable_width = nil

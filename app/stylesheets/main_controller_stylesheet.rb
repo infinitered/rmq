@@ -1,4 +1,4 @@
-class MainStylesheet < ApplicationStylesheet
+class MainControllerStylesheet < ApplicationStylesheet
   def setup
     # Add stylesheet specific setup stuff here.
     # Add application specific setup stuff in application_stylesheet.rb
@@ -29,7 +29,6 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def make_buttons_throb_button(st)
-    button_set_button st
     st.text = 'Throb buttons'
     st.color = color.black
   end

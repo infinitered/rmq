@@ -3,7 +3,7 @@ class MainController < UIViewController
   def viewDidLoad
     super
 
-    rmq.stylesheet = MainStylesheet
+    rmq.stylesheet = MainControllerStylesheet
     rmq(self.view).apply_style :root_view
 
     init_nav
@@ -64,7 +64,7 @@ class MainController < UIViewController
       rmq(UILabel).animations.blink
     end
 
-    rmq.append(UIButton.buttonWithType(UIButtonTypeRoundedRect), :make_buttons_throb_button).on(:tap) do |sender|
+    rmq.append(UIButton.buttonWithType(UIButtonTypeRoundedRect)).apply_style(:button_set_button, :make_buttons_throb_button).on(:tap) do |sender|
       rmq(UIButton).not(sender).animations.throb
     end
 
