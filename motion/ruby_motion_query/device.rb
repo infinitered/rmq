@@ -13,10 +13,6 @@ module RubyMotionQuery
 
   class Device
     class << self
-      def ios_eight?
-        @_ios_eight ||= screen.respond_to?(:coordinateSpace)
-      end
-
       # Find out what version of iOS you're using.
       # `rmq.device.is_version? 8`
       # `rmq.device.is_version? "7.1"`

@@ -85,10 +85,10 @@ describe 'app' do
     end
 
     # Disabling, this works, but isn't working in tests, TODO, fix
-    #it 'should return current_view_controller when root controller is UINavigationController with multiple controllers' do
-      #cur = rmq.app.current_view_controller
-      #cur.class.should == MainController
-    #end
+    # it 'should return current_view_controller when root controller is UINavigationController with multiple controllers' do
+    #   cur = rmq.app.current_view_controller
+    #   cur.class.should == MainController
+    # end
 
     it 'should return current_view_controller when root controller is UITabController with multiple controllers' do
       tabbar = UITabBarController.alloc.init

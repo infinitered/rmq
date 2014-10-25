@@ -297,7 +297,7 @@ module RubyMotionQuery
         @view.setEnabled value
       end
       def enabled
-        @view.enabled
+        @view.isEnabled
       end
 
       def scale=(amount)
