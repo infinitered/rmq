@@ -104,7 +104,7 @@ shared 'styler' do
   it "should return the super height and width" do
     super_view = @vc.rmq.append(UIView).style { |st| st.frame = {h: 10, w: 20 } }.get
 
-    rmq(super_view).append(@view_klass, :ui_view_kitchen_sink).style do |st|
+    @vc.rmq(super_view).append(@view_klass, :ui_view_kitchen_sink).style do |st|
       @super_height = st.super_height
       @super_width = st.super_width
     end
