@@ -24,7 +24,7 @@ describe 'enumerablish' do
   end
 
   it 'should return an RMQ instance when #each is called' do
-    ret = @rmq.each{|o|}  
+    ret = @rmq.each{|o|}
     ret.is_a?(RubyMotionQuery::RMQ).should == true
   end
 
@@ -47,7 +47,7 @@ describe 'enumerablish' do
     all.length.should == 5
 
     @view5 = UIView.alloc.initWithFrame([[0,0],[10,10]])
-    all << @view5 
+    all << @view5
     all.length.should == 6
     all.to_a[all.length - 1].should == @view5
 
@@ -60,6 +60,29 @@ describe 'enumerablish' do
     all.to_a[all.length - 1].should == @view5
   end
 
-  # TODO, lots more tests
+  describe "multi-argument and range array access" do
 
+    before do
+      @all = @rmq.find
+      @arr = @all.to_a
+    end
+
+    it 'should accept multi-argument forms of [] array access' do
+      v1, v2, v3, v4, v5 = *@arr
+      @all[1,1].to_a.should == [v2]
+      @all[2,2].to_a.should == [v3, v4]
+    end
+
+    it 'should accept range forms of [] array access' do
+      v1, v2, v3, v4, v5 = *@arr
+      @all[2..4].to_a.should == [v3, v4, v5]
+    end
+
+    it 'should accept negative array indices' do
+      v1, v2, v3, v4, v5 = *@arr
+      @all[-1].to_a.should == [v5]
+    end
+  end
+
+  # TODO, lots more tests
 end

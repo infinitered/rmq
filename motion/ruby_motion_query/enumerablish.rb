@@ -16,8 +16,10 @@ module RubyMotionQuery
     #   rmq(UILabel)[3]
     #   or
     #   rmq(UILabel)[1..5]
-    def [](i)
-      RMQ.create_with_array_and_selectors([selected[i]], @selectors, @context)
+    #   or
+    #   rmq(UILabel)[2,3]
+    def [](*args)
+      RMQ.create_with_array_and_selectors(Array(selected[*args]), @selectors, @context)
     end
     alias :eq :[]
 
