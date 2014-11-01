@@ -36,8 +36,12 @@ describe 'stylesheet' do
   end
 
   it 'should allow application setup, that should only be called once' do
-    # TODO
-    1.should == 1
+    RubyMotionQuery::Stylesheet.application_was_setup = nil
+
+    @vc.rmq.stylesheet = StyleSheetForStylesheetTests
+    @vc.rmq.stylesheet = StyleSheetForStylesheetTests
+    RubyMotionQuery::Stylesheet.application_was_setup.should.be.true
+    StyleSheetForStylesheetTests.app_setup_count.should == 1
   end
 
   it 'should allow stylesheet setup' do
@@ -248,6 +252,10 @@ describe 'stylesheet' do
 end
 
 class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
+  class << self
+    attr_accessor :app_setup_count
+  end
+
   def application_setup
     font_family = 'Helvetica Neue'
     font.add_named :large,    font_family, 36
@@ -255,6 +263,8 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
     font.add_named :small,    'Verdana', 18
 
     color.add_named :battleship_gray,   '#7F7F7F'
+    self.class.app_setup_count ||= 0
+    self.class.app_setup_count += 1
   end
 
   def setup
