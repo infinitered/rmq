@@ -45,8 +45,8 @@ describe 'stylesheet' do
   end
 
   it 'should allow stylesheet setup' do
-    # TODO
-    1.should == 1
+    @vc.rmq.stylesheet = StyleSheetForStylesheetTests
+    @vc.rmq.stylesheet.setup_called.should.be.true
   end
 
   describe 'getting app and screen size, width, and height' do
@@ -256,6 +256,8 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
     attr_accessor :app_setup_count
   end
 
+  attr_accessor :setup_called
+
   def application_setup
     font_family = 'Helvetica Neue'
     font.add_named :large,    font_family, 36
@@ -268,6 +270,7 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
   end
 
   def setup
+    self.setup_called = true
     color.add_named :panther_black, color.black
   end
 
