@@ -28,8 +28,11 @@ describe 'stylesheet' do
   end
 
   it 'should return various rmq objects in a stylesheet instance' do
-    # TODO, test all the methods such as Stylesheet#device, etc
-    1.should == 1
+    @vc.rmq.stylesheet.grid.is_a?(RubyMotionQuery::Grid).should.be.true
+    @vc.rmq.stylesheet.device.should == RubyMotionQuery::Device
+    @vc.rmq.stylesheet.image.should == RubyMotionQuery::ImageUtils
+    @vc.rmq.stylesheet.color.should == RubyMotionQuery::Color
+    @vc.rmq.stylesheet.font.should == RubyMotionQuery::Font
   end
 
   it 'should allow application setup, that should only be called once' do
