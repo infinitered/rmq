@@ -237,7 +237,20 @@ describe 'stylesheet' do
         q.styler_for(UIButton.alloc.init).is_a?(RubyMotionQuery::Stylers::UIButtonStyler).should == true
         q.styler_for(UIScrollView.alloc.init).is_a?(RubyMotionQuery::Stylers::UIScrollViewStyler).should == true
         q.styler_for(UIProgressView.alloc.initWithProgressViewStyle(UIProgressViewStyleDefault)).is_a?(RubyMotionQuery::Stylers::UIProgressViewStyler).should == true
-        # TODO, test the rest
+        q.styler_for(UITableView.alloc.init).is_a?(RubyMotionQuery::Stylers::UITableViewStyler).should.be.true
+        q.styler_for(UISwitch.alloc.init).is_a?(RubyMotionQuery::Stylers::UISwitchStyler).should.be.true
+        q.styler_for(UIDatePicker.alloc.init).is_a?(RubyMotionQuery::Stylers::UIDatePickerStyler).should.be.true
+        q.styler_for(UISegmentedControl.alloc.init).is_a?(RubyMotionQuery::Stylers::UISegmentedControlStyler).should.be.true
+        q.styler_for(UIRefreshControl.alloc.init).is_a?(RubyMotionQuery::Stylers::UIRefreshControlStyler).should.be.true
+        q.styler_for(UIPageControl.alloc.init).is_a?(RubyMotionQuery::Stylers::UIPageControlStyler).should.be.true
+        q.styler_for(UISlider.alloc.init).is_a?(RubyMotionQuery::Stylers::UISliderStyler).should.be.true
+        q.styler_for(UIStepper.alloc.init).is_a?(RubyMotionQuery::Stylers::UIStepperStyler).should.be.true
+        q.styler_for(UITabBar.alloc.init).is_a?(RubyMotionQuery::Stylers::UITabBarStyler).should.be.true
+        q.styler_for(UITableViewCell.alloc.init).is_a?(RubyMotionQuery::Stylers::UITableViewCellStyler).should.be.true
+        q.styler_for(UITextView.alloc.init).is_a?(RubyMotionQuery::Stylers::UITextViewStyler).should.be.true
+        q.styler_for(UITextField.alloc.init).is_a?(RubyMotionQuery::Stylers::UITextFieldStyler).should.be.true
+        q.styler_for(UINavigationBar.alloc.init).is_a?(RubyMotionQuery::Stylers::UINavigationBarStyler).should.be.true
+        q.styler_for(UIScrollView.alloc.init).is_a?(RubyMotionQuery::Stylers::UIScrollViewStyler).should.be.true
       end
     end
 
