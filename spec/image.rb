@@ -18,5 +18,23 @@ describe 'image' do
     image.scale.should == UIScreen.mainScreen.scale
   end
 
-  # TODO test resource with and without caching, resource_for_device, and resource_resizable
+  describe "resource_resizable" do
+    it "should return an image with the proper cap insets" do
+      opts = { top: 1, left: 1, bottom: 1, right: 1 }
+      image = @rmq.image.resource_resizable('logo', opts)
+
+      image.is_a?(UIImage).should.be.true
+      image.capInsets.should == UIEdgeInsetsMake(1.0, 1.0, 1.0, 1.0)
+    end
+
+    it "should accept the shortcut labels for position as well" do
+      opts = { t: 1, l: 1, b: 1, r: 1 }
+      image = @rmq.image.resource_resizable('logo', opts)
+
+      image.is_a?(UIImage).should.be.true
+      image.capInsets.should == UIEdgeInsetsMake(1.0, 1.0, 1.0, 1.0)
+    end
+  end
+
+  # TODO test resource with and without caching, resource_for_device
 end
