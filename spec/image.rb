@@ -1,3 +1,13 @@
+class RubyMotionQuery::Device
+  class << self
+    def fake_four_inch(value)
+      @_four_inch = value
+    end
+    def reset_fake_four_inch
+      @_four_inch = (RubyMotionQuery::Device.height == 568.0)
+    end
+  end
+end
 describe 'image' do
   before do
     @rmq = RubyMotionQuery::RMQ
@@ -18,6 +28,24 @@ describe 'image' do
     image.scale.should == UIScreen.mainScreen.scale
   end
 
+  describe "resource_for_device" do
+    it "should return the requested file as is if we arent on a 4 inch" do
+      @rmq.device.fake_four_inch(false)
+      image = @rmq.image.resource_for_device('Default')
+      @rmq.device.reset_fake_four_inch
+      image.is_a?(UIImage).should.be.true
+      image.size.height.should == 480
+    end
+
+    it "should get the -568h image on a four inch" do
+      @rmq.device.fake_four_inch(true)
+      image = @rmq.image.resource_for_device('Default')
+      @rmq.device.reset_fake_four_inch
+      image.is_a?(UIImage).should.be.true
+      image.size.height.should == 568
+    end
+  end
+
   describe "resource_resizable" do
     it "should return an image with the proper cap insets" do
       opts = { top: 1, left: 1, bottom: 1, right: 1 }
@@ -35,6 +63,5 @@ describe 'image' do
       image.capInsets.should == UIEdgeInsetsMake(1.0, 1.0, 1.0, 1.0)
     end
   end
-
-  # TODO test resource with and without caching, resource_for_device
+  # TODO test resource with and without caching
 end
