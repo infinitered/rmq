@@ -26,5 +26,20 @@ describe 'factory' do
     blank_rmq.to_a.should == []
   end
 
-  # TODO test create_rmq_in_context, create_with_array_and_selectors
+  it 'should create with array and selectors' do
+    array = [ UIView.alloc.init, UIView.alloc.init ]
+    view_controller = UIViewController.alloc.init
+    rmq = view_controller.rmq(UIView)
+    working_selectors = rmq.selectors
+    current_context = rmq.context
+    working_parent_rmq = rmq
+
+    q = RubyMotionQuery::RMQ.create_with_array_and_selectors(array, working_selectors, current_context, working_parent_rmq)
+
+    q.context.should == current_context
+    q.selectors.should == working_selectors
+    q.parent_rmq.should == working_parent_rmq
+    q.selected.should == array
+  end
+  # TODO test create_rmq_in_context
 end
