@@ -11,12 +11,12 @@ module RubyMotionQuery
     # @return [Array] The selectors, which is what you used for the query
     # @example
     #  (main)> rmq(UILabel, UIImageView).selectors
-    #  => [UILabel, UIImageView] 
+    #  => [UILabel, UIImageView]
     def selectors
       @_selectors
     end
 
-    protected 
+    protected
 
     def match_context(new_selectors)
       match(context_or_context_view, new_selectors)
@@ -30,7 +30,7 @@ module RubyMotionQuery
           return true if match_hash(view, selector)
         elsif selector.is_a?(Symbol)
           # TODO, make this faster
-          return true if (view.rmq_data.style_name == selector) || view.rmq_data.has_tag?(selector)
+          return true if (view.rmq_data.has_style?(selector)) || view.rmq_data.has_tag?(selector)
         elsif selector.is_a?(Integer)
           # TODO, make this hugely faster
           return true if view.object_id == selector
@@ -48,7 +48,7 @@ module RubyMotionQuery
     private
 
     def match_hash(view, hash)
-      # TODO, check speed, and do sub hashes for stuff like origin 
+      # TODO, check speed, and do sub hashes for stuff like origin
       # it's probably pretty slow
       hash.each do |k,v|
         return true if view.respond_to?(k) && (view.send(k) == v)

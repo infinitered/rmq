@@ -28,18 +28,25 @@ describe 'stylesheet' do
   end
 
   it 'should return various rmq objects in a stylesheet instance' do
-    # TODO, test all the methods such as Stylesheet#device, etc
-    1.should == 1
+    @vc.rmq.stylesheet.grid.is_a?(RubyMotionQuery::Grid).should.be.true
+    @vc.rmq.stylesheet.device.should == RubyMotionQuery::Device
+    @vc.rmq.stylesheet.image.should == RubyMotionQuery::ImageUtils
+    @vc.rmq.stylesheet.color.should == RubyMotionQuery::Color
+    @vc.rmq.stylesheet.font.should == RubyMotionQuery::Font
   end
 
   it 'should allow application setup, that should only be called once' do
-    # TODO
-    1.should == 1
+    RubyMotionQuery::Stylesheet.application_was_setup = nil
+
+    @vc.rmq.stylesheet = StyleSheetForStylesheetTests
+    @vc.rmq.stylesheet = StyleSheetForStylesheetTests
+    RubyMotionQuery::Stylesheet.application_was_setup.should.be.true
+    StyleSheetForStylesheetTests.app_setup_count.should == 1
   end
 
   it 'should allow stylesheet setup' do
-    # TODO
-    1.should == 1
+    @vc.rmq.stylesheet = StyleSheetForStylesheetTests
+    @vc.rmq.stylesheet.setup_called.should.be.true
   end
 
   describe 'getting app and screen size, width, and height' do
@@ -125,6 +132,81 @@ describe 'stylesheet' do
       q.get.origin.x.should == 2
     end
 
+    it 'should apply multiple style_names with .apply_styles' do
+      view1_q = @vc.rmq.append(UIView).layout(l: 5, t: 5, w: 10, h: 15)
+      view2_q = view1_q.append(UIView).apply_style(:style_set_frame, :style_set_background)
+
+      view2_q.frame.size.should == view1_q.frame.size
+      view2_q.get.backgroundColor.should == rmq.color.yellow
+
+      # Also with alias
+      view2_q = view1_q.append(UIView).apply_styles(:style_set_frame, :style_set_background)
+      view2_q.frame.size.should == view1_q.frame.size
+      view2_q.get.backgroundColor.should == rmq.color.yellow
+    end
+
+    it 'should apply multiple style_names to a view, in order' do
+      q = @vc.rmq.append(UIView)
+      q.get.origin.x.should == 0
+      q.apply_style(:style_one, :style_two)
+      q.get.origin.x.should == 2
+      q.apply_style(:style_two, :style_one)
+      q.get.origin.x.should == 1
+    end
+
+    it 'should reapply multiple style_names to a view, in order' do
+      q = @vc.rmq.append(UIView)
+      q.apply_style(:style_two, :style_one, :style_set_background)
+      q.get.backgroundColor.should == rmq.color.yellow
+      q.get.origin.x.should == 1
+
+      q.style{|st| st.background_color = rmq.color.green}.layout(x: 10)
+      q.get.origin.x.should == 10
+      q.get.backgroundColor.should == rmq.color.green
+
+      q.reapply_styles
+      q.get.origin.x.should == 1
+      q.get.backgroundColor.should == rmq.color.yellow
+    end
+
+    it 'should respond if a view or set of views ALL have a particuliar style' do
+      q = @vc.rmq.append(UIView)
+      q2 = @vc.rmq.append(UIView)
+      q.apply_style(:style_two, :style_one)
+
+      # Apply the styles seperatly
+      q2.apply_style(:style_set_background)
+      q2.apply_style(:style_one)
+
+      both = rmq(q.get, q2.get)
+
+      q.has_style?(:style_one).should == true
+      q.has_style?(:style_two).should == true
+      q.has_style?(:style_set_background).should == false
+
+      both.has_style?(:style_one).should == true
+      both.has_style?(:style_two).should == false
+      both.has_style?(:style_set_background).should == false
+    end
+
+    it 'should return all the styles, in order, that is applied to a view or views' do
+      q = @vc.rmq.append(UIView)
+      q2 = @vc.rmq.append(UIView)
+      q.apply_style(:style_two, :style_one)
+
+      # Apply the styles seperatly
+      q2.apply_style(:style_set_background)
+      q2.apply_style(:style_one)
+
+      both = rmq(q.get, q2.get)
+
+      @vc.rmq.append(UIView).styles.should == []
+
+      q.styles.should == [:style_two, :style_one]
+      q2.styles.should == [:style_set_background, :style_one]
+      both.styles.should == [:style_two, :style_one, :style_set_background]
+    end
+
     it 'should reapply styles to views that have already had a style applied' do
 
       q = @vc.rmq.append(UIView, :style_one)
@@ -155,7 +237,20 @@ describe 'stylesheet' do
         q.styler_for(UIButton.alloc.init).is_a?(RubyMotionQuery::Stylers::UIButtonStyler).should == true
         q.styler_for(UIScrollView.alloc.init).is_a?(RubyMotionQuery::Stylers::UIScrollViewStyler).should == true
         q.styler_for(UIProgressView.alloc.initWithProgressViewStyle(UIProgressViewStyleDefault)).is_a?(RubyMotionQuery::Stylers::UIProgressViewStyler).should == true
-        # TODO, test the rest
+        q.styler_for(UITableView.alloc.init).is_a?(RubyMotionQuery::Stylers::UITableViewStyler).should.be.true
+        q.styler_for(UISwitch.alloc.init).is_a?(RubyMotionQuery::Stylers::UISwitchStyler).should.be.true
+        q.styler_for(UIDatePicker.alloc.init).is_a?(RubyMotionQuery::Stylers::UIDatePickerStyler).should.be.true
+        q.styler_for(UISegmentedControl.alloc.init).is_a?(RubyMotionQuery::Stylers::UISegmentedControlStyler).should.be.true
+        q.styler_for(UIRefreshControl.alloc.init).is_a?(RubyMotionQuery::Stylers::UIRefreshControlStyler).should.be.true
+        q.styler_for(UIPageControl.alloc.init).is_a?(RubyMotionQuery::Stylers::UIPageControlStyler).should.be.true
+        q.styler_for(UISlider.alloc.init).is_a?(RubyMotionQuery::Stylers::UISliderStyler).should.be.true
+        q.styler_for(UIStepper.alloc.init).is_a?(RubyMotionQuery::Stylers::UIStepperStyler).should.be.true
+        q.styler_for(UITabBar.alloc.init).is_a?(RubyMotionQuery::Stylers::UITabBarStyler).should.be.true
+        q.styler_for(UITableViewCell.alloc.init).is_a?(RubyMotionQuery::Stylers::UITableViewCellStyler).should.be.true
+        q.styler_for(UITextView.alloc.init).is_a?(RubyMotionQuery::Stylers::UITextViewStyler).should.be.true
+        q.styler_for(UITextField.alloc.init).is_a?(RubyMotionQuery::Stylers::UITextFieldStyler).should.be.true
+        q.styler_for(UINavigationBar.alloc.init).is_a?(RubyMotionQuery::Stylers::UINavigationBarStyler).should.be.true
+        q.styler_for(UIScrollView.alloc.init).is_a?(RubyMotionQuery::Stylers::UIScrollViewStyler).should.be.true
       end
     end
 
@@ -170,6 +265,12 @@ describe 'stylesheet' do
 end
 
 class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
+  class << self
+    attr_accessor :app_setup_count
+  end
+
+  attr_accessor :setup_called
+
   def application_setup
     font_family = 'Helvetica Neue'
     font.add_named :large,    font_family, 36
@@ -177,9 +278,12 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
     font.add_named :small,    'Verdana', 18
 
     color.add_named :battleship_gray,   '#7F7F7F'
+    self.class.app_setup_count ||= 0
+    self.class.app_setup_count += 1
   end
 
   def setup
+    self.setup_called = true
     color.add_named :panther_black, color.black
   end
 
@@ -191,6 +295,14 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
   def style_two(st)
     st.frame = {l: 2}
     st.background_color = color.panther_black
+  end
+
+  def style_set_frame(st)
+    st.frame = :full
+  end
+
+  def style_set_background(st)
+    st.background_color = color.yellow
   end
 
   def style_use_rmq(st)

@@ -25,26 +25,67 @@ module RubyMotionQuery
       end
     end
 
+    # @example
+    #   rmq(view).apply_style(:style_name_here)
+    #   rmq(view).apply_style(:style_name_here, :another_style, :yet_another_style)
+    #   rmq(view).apply_styles(:style_name_here, :another_style, :yet_another_style) # Alias
+    #
     # @return [RMQ]
-    def apply_style(style_name)
-      selected.each do |selected_view|
-        apply_style_to_view selected_view, style_name
+    def apply_style(*style_names)
+      if style_names
+        selected.each do |selected_view|
+          style_names.each do |style_name|
+            apply_style_to_view selected_view, style_name
+          end
+        end
       end
       self
     end
+    alias :apply_styles :apply_style
 
+    # Pass a block to apply styles, an inline way of applynig a style
+    # @example
+    #   rmq(view).style{|st| st.background_color = rmq.color.blue}
     # @return [RMQ]
-    def style()
+    def style
       selected.each do |view|
         yield(styler_for(view))
       end
       self
     end
 
+    # @example
+    #   rmq(view).styles
+    #
+    # @return style_names as an array
+    def styles
+      out = selected.map do |view|
+        view.rmq_data.styles
+      end
+      out.flatten!.uniq!
+      out
+    end
+
+    # @example
+    #   foo = rmq(view).has_style?(:style_name_here)
+    #
+    # @return true if all selected views has the style
+    def has_style?(style_name)
+      selected.each do |view|
+        return false unless view.rmq_data.has_style?(style_name)
+      end
+      true
+    end
+
+    # Reapplies all styles in order. User rmq(view).styles to see the styles applied to a view(s)
+    # @example
+    #   rmq.all.reapply_styles
+    #   rmq(viewa, viewb, viewc).reapply_styles
+    #
     # @return [RMQ]
     def reapply_styles
       selected.each do |selected_view|
-        if style_name = selected_view.rmq_data.style_name
+        selected_view.rmq_data.styles.each do |style_name|
           apply_style_to_view selected_view, style_name
         end
       end
@@ -99,7 +140,7 @@ module RubyMotionQuery
     def apply_style_to_view(view, style_name)
       begin
         stylesheet.public_send(style_name, styler_for(view))
-        view.rmq_data.style_name = style_name
+        view.rmq_data.styles << style_name unless view.rmq_data.has_style?(style_name)
         view.rmq_style_applied
       rescue NoMethodError => e
         if e.message =~ /.*#{style_name.to_s}.*/

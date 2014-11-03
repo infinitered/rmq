@@ -1,6 +1,6 @@
 module RubyMotionQuery
   class ViewData
-    attr_accessor :events, :style_name, :built
+    attr_accessor :events, :built
 
     # @return [Hash] Array of tag names assigned to to this view
     def tags
@@ -11,11 +11,6 @@ module RubyMotionQuery
     def tag_names
       tags.keys
     end
-
-    def validation_errors; @_validation_errors ||= {}; end
-    def validation_errors=(value); @_validation_errors = value; end
-    def validations; @_validations ||= []; end
-    def validations=(value); @_validations = value; end
 
     # *Do not* use this, use {RMQ#tag} instead:
     # @example
@@ -48,6 +43,36 @@ module RubyMotionQuery
         RMQ.is_blank?(@_tags)
       end
     end
+
+    # @deprecated - use styles
+    def style_name
+      styles.first
+    end
+
+    # Sets first style name, this is only here for backwards compatibility and as
+    # a convenience method
+    def style_name=(value)
+      styles[0] = value
+    end
+
+    #view.rmq_data.styles
+    def styles
+      @_styles ||= []
+    end
+
+    #view.rmq_data.has_style?(:style_name_here)
+    def has_style?(name = nil)
+      if name
+        styles.include?(name)
+      else
+        RMQ.is_blank?(@_styles)
+      end
+    end
+
+    def validation_errors; @_validation_errors ||= {}; end
+    def validation_errors=(value); @_validation_errors = value; end
+    def validations; @_validations ||= []; end
+    def validations=(value); @_validations = value; end
 
     def view_controller=(value)
       #RubyMotionQuery::RMQ.debug.assert(value.is_a?(UIViewController), 'Invalid controller in ViewData', { controller: value })
