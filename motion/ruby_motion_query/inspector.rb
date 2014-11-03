@@ -5,7 +5,7 @@ module RubyMotionQuery
       if existing.length > 0
         existing.remove
       end
-      
+
       puts 'The currently selected views will be assigned to $q'
 
       rmq(window).append(InspectorView).get.update(selected)
@@ -14,8 +14,8 @@ module RubyMotionQuery
   end
 
   class InspectorView < UIView
-    # A note about this code. InspectorView will be sitting in the Window, not 
-    # the current controller. So when you do this rmq(UIButton), that is on the 
+    # A note about this code. InspectorView will be sitting in the Window, not
+    # the current controller. So when you do this rmq(UIButton), that is on the
     # current controller. rmq(self).find(UIButton) would be the buttons in the
     # inspector.
 
@@ -28,7 +28,7 @@ module RubyMotionQuery
 
       rmq.stylesheet = InspectorStylesheet
       @self_rmq.apply_style(:inspector_view)
-      
+
       @hud = @self_rmq.append(InspectorHud, :hud).on(:tap) do |sender, rmq_event|
         select_at rmq_event.location_in(sender)
       end.get
@@ -37,7 +37,7 @@ module RubyMotionQuery
 
       rmq(root_view).animate(
         animations: ->(q){ q.apply_style :root_view_scaled },
-        after: ->(finished, q) do 
+        after: ->(finished, q) do
           @self_rmq.animations.fade_in
           dim_nav
         end
@@ -45,12 +45,12 @@ module RubyMotionQuery
 
       @stats = @self_rmq.append! UILabel, :stats
 
-      @self_rmq.append(UIButton, :close_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :close_button).on(:touch) do
         rmq(root_view).animate(
           animations: ->(q){ q.apply_style(:root_view) },
           after: ->(finished, inner_q){ rmq.stylesheet = @puppets_stylesheet })
 
-        @self_rmq.animations.drop_and_spin(after: ->(finished, inner_q) do 
+        @self_rmq.animations.drop_and_spin(after: ->(finished, inner_q) do
           inner_q.remove
         end)
 
@@ -59,35 +59,35 @@ module RubyMotionQuery
         show_nav_in_all_its_glory
       end
 
-      @self_rmq.append(UIButton, :grid_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :grid_button).on(:touch) do
         @hud.draw_grid = !@hud.draw_grid
         redisplay
       end
 
-      @self_rmq.append(UIButton, :grid_x_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :grid_x_button).on(:touch) do
         @hud.draw_grid_x = !@hud.draw_grid_x
         redisplay
       end
 
-      @self_rmq.append(UIButton, :grid_y_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :grid_y_button).on(:touch) do
         @hud.draw_grid_y = !@hud.draw_grid_y
         redisplay
       end
 
-      @self_rmq.append(UIButton, :dim_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :dim_button).on(:touch) do
         @hud.dimmed = !@hud.dimmed
         redisplay
       end
 
-      @self_rmq.append(UIButton, :outline_button).on(:touch) do |sender|
+      @self_rmq.append(UIButton, :outline_button).on(:touch) do
         @hud.views_outlined = !@hud.views_outlined
         redisplay
       end
 
-      @self_rmq.find(UIButton).distribute :horizontal, margin: 5 
+      @self_rmq.find(UIButton).distribute :horizontal, margin: 5
 
       @tree_zoomed = false
-      @tree_q = @self_rmq.append(UIScrollView, :tree).on(:tap) do |sender|
+      @tree_q = @self_rmq.append(UIScrollView, :tree).on(:tap) do
         zoom_tree
       end
     end
@@ -111,7 +111,7 @@ module RubyMotionQuery
     end
 
     def zoom_tree
-      rmq.animate do |q|
+      rmq.animate do
         if @tree_zoomed
           @tree_q.apply_style(:tree)
         else
@@ -140,7 +140,7 @@ module RubyMotionQuery
 
       @hud.selected_views = []
       root_view = rmq.root_view
-      
+
       if tapped_at
         @hud.selected.each do |view|
           rect = view.convertRect(view.bounds, toView: root_view)
@@ -209,7 +209,7 @@ module RubyMotionQuery
         st.frame = {l: left, w: w, h: h}
 
         st.border_color = rmq.color.from_rgba(34,202,250,0.7).CGColor
-        st.border_width = 0.5 
+        st.border_width = 0.5
         st.background_color = rmq.stylesheet.tree_node_background_color
 
       end.enable_interaction.on(:tap) do |sender|
@@ -225,14 +225,14 @@ module RubyMotionQuery
       out = %(
         style_name: :#{view.rmq_data.style_name || ''}
         #{rmq(view).frame.inspect}
-        #{view.class.name} - object_id: #{view.object_id.to_s}
+        #{view.class.name} - object_id: #{view.object_id}
       ).strip
       rmq(@stats).show.get.text = out
     end
   end
 
   class InspectorHud < UIView
-    attr_accessor :selected, :selected_views, :dimmed, :views_outlined, 
+    attr_accessor :selected, :selected_views, :dimmed, :views_outlined,
       :draw_grid_x, :draw_grid, :draw_grid_y
 
     def rmq_build
@@ -273,7 +273,6 @@ module RubyMotionQuery
       # Fixes upside down issue
       CGContextSetTextMatrix(context, CGAffineTransformMake(1.0,0.0, 0.0, -1.0, 0.0, 0.0))
 
-      w = rmq.window
       grid = rmq.stylesheet.grid
       root_view = rmq.root_view
 
@@ -305,7 +304,7 @@ module RubyMotionQuery
           0.upto(grid.num_columns - 1) do |c|
             rec = grid[[c, r]]
             CGContextSetFillColorWithColor(context, @column_fill_color)
-            CGContextFillRect(context, rec.to_cgrect) 
+            CGContextFillRect(context, rec.to_cgrect)
             text = "#{(c+97).chr}#{r}"
             CGContextSetFillColorWithColor(context, @light_text_color)
             CGContextShowTextAtPoint(context, rec.origin.x + 1, rec.origin.y + 5, text, text.length)
@@ -319,7 +318,7 @@ module RubyMotionQuery
           rec = view.frame
           rec.origin = rmq(view).location_in(root_view)
           #rec.origin = view.origin
-          
+
           if @selected_views.include?(view)
             CGContextSetFillColorWithColor(context, @view_selected_background_color.CGColor)
             CGContextSetStrokeColorWithColor(context, @selected_outline_color)
@@ -327,7 +326,7 @@ module RubyMotionQuery
             CGContextSetFillColorWithColor(context, @view_background_color)
             CGContextSetStrokeColorWithColor(context, @outline_color)
           end
-          
+
           if @dimmed
             CGContextFillRect(context, rec)
           end
