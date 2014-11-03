@@ -79,25 +79,24 @@ class MainController < UIViewController
       },
       completion: -> (did_finish, rmq) {
         rmq.animate( duration: 0.2, animations: -> (rmq) {
-            rmq.style do |sv|
-              sv.scale = 1.0
-              sv.top = 230
-            end
-          })
+          rmq.style do |sv|
+            sv.scale = 1.0
+            sv.top = 230
+          end
+        })
       })
     end
 
-    rmq.append(UIButton, :collection_button).on(:touch_up) do |sender|
+    rmq.append(UIButton, :collection_button).on(:touch_up) do
       controller = CollectionController.new
       rmq.view_controller.navigationController.pushViewController(controller, animated: true)
     end
 
-    rmq.append(UIButton, :table_button).on(:touch_up) do |sender|
-      controller = TableController.new
+    rmq.append(UIButton, :table_button).on(:touch_up) do
       rmq.view_controller.navigationController.pushViewController(controller, animated: true)
     end
 
-    rmq.append(UIButton, :present_button).on(:touch_up) do |sender|
+    rmq.append(UIButton, :present_button).on(:touch_up) do
       rmq.view_controller.presentModalViewController(PresentedController.new, animated:true)
     end
   end

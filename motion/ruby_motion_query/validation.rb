@@ -60,7 +60,7 @@ module RubyMotionQuery
       selected.each do |view|
         view.rmq_data.validations.each do |validation|
           unless validation.valid_status
-            default_error = "Validation Error - input requires valid #{validation.rule_name.to_s}."
+            default_error = "Validation Error - input requires valid #{validation.rule_name}."
             rule_message  = view.rmq_data.validation_errors[validation.rule_name] || default_error
             errors.push(rule_message)
           end
