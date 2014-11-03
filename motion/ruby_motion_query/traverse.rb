@@ -27,7 +27,7 @@ module RubyMotionQuery
       if opts[:return_array]
         out
       else
-        RMQ.create_with_array_and_selectors(out, selectors, @context, self)
+        RMQ.create_with_array_and_selectors(selected: out, selectors: selectors, context: @context, parent_rmq: self)
       end
     end
 
@@ -79,7 +79,7 @@ module RubyMotionQuery
         out = self.parent_rmq.selected.dup
         out << selected
         out.flatten!
-        RMQ.create_with_array_and_selectors(out, selectors, @context, self)
+        RMQ.create_with_array_and_selectors(selected: out, selectors: selectors, context: @context, parent_rmq: self)
       else
         self
       end

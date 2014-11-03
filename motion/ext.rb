@@ -3,7 +3,7 @@ class Object
     if (app = RubyMotionQuery::RMQ.app) && (window = app.window) && (cvc = app.current_view_controller)
       cvc.rmq(working_selectors)
     else
-      RubyMotionQuery::RMQ.create_with_array_and_selectors([], working_selectors, self)
+      RubyMotionQuery::RMQ.create_with_array_and_selectors(selected: [], selectors: working_selectors, context: self)
     end
   end
 end

@@ -26,20 +26,54 @@ describe 'factory' do
     blank_rmq.to_a.should == []
   end
 
-  it 'should create with array and selectors' do
-    array = [ UIView.alloc.init, UIView.alloc.init ]
-    view_controller = UIViewController.alloc.init
-    rmq = view_controller.rmq(UIView)
-    working_selectors = rmq.selectors
-    current_context = rmq.context
-    working_parent_rmq = rmq
+  describe 'create_with_array_and_selectors' do
+    before do
+      @array = [ UIView.alloc.init, UIView.alloc.init ]
+      @view_controller = UIViewController.alloc.init
+      @rmq = @view_controller.rmq(UIView)
+      @working_selectors = rmq.selectors
+      @current_context = rmq.context
+      @working_parent_rmq = rmq
+    end
 
-    q = RubyMotionQuery::RMQ.create_with_array_and_selectors(array, working_selectors, current_context, working_parent_rmq)
+    it 'raises a KeyError if required options are not provided' do
+      should.raise(KeyError) do
+        RubyMotionQuery::RMQ.create_with_array_and_selectors(selectors: @working_selectors,
+                                                             context: @current_context,
+                                                             parent_rmq: @working_parent_rmq)
+      end
+      should.raise(KeyError) do
+        RubyMotionQuery::RMQ.create_with_array_and_selectors(selected: @array,
+                                                             context: @current_context,
+                                                             parent_rmq: @working_parent_rmq)
+      end
 
-    q.context.should == current_context
-    q.selectors.should == working_selectors
-    q.parent_rmq.should == working_parent_rmq
-    q.selected.should == array
+      should.raise(KeyError) do
+        @current_context = nil
+        RubyMotionQuery::RMQ.create_with_array_and_selectors(selected: @array,
+                                                             selectors: @working_selectors,
+                                                             parent_rmq: @working_parent_rmq)
+      end
+      should.not.raise(KeyError) do
+        @working_parent_rmq = nil
+        RubyMotionQuery::RMQ.create_with_array_and_selectors(selected: @array,
+                                                             selectors: @working_selectors,
+                                                             context: @current_context
+                                                            )
+      end
+    end
+
+    it 'should create with array and selectors' do
+      q = RubyMotionQuery::RMQ.create_with_array_and_selectors(selected: @array,
+                                                               selectors: @working_selectors,
+                                                               context: @current_context,
+                                                               parent_rmq: @working_parent_rmq)
+
+      q.context.should == @current_context
+      q.selectors.should == @working_selectors
+      q.parent_rmq.should == @working_parent_rmq
+      q.selected.should == @array
+    end
   end
   # TODO test create_rmq_in_context
 end
