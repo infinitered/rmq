@@ -53,11 +53,10 @@ module RubyMotionQuery
       #
       # @example
       #   font = rmq.font.font_with_name('Helvetica Neue', 18)
-      def font_with_name(name, size)
-        # TODO, should rename this to just with_name, so it's rmq.font.with_name
+      def with_name(name, size)
         UIFont.fontWithName(name, size: size)
       end
-      alias :with_name :font_with_name
+      alias :font_with_name :with_name #for backwards compatibility
 
       # Use this in the console to get a list of font families
       # @return [Array]
