@@ -42,10 +42,14 @@ module RubyMotionQuery
       #
       # @return [UIImage]
       def resource_resizable(file_base_name, opts)
-        # TODO, also alloow short syntax, t: instead of top: etc
-        ext = opts[:ext] || DEFAULT_IMAGE_EXT
         image = resource(file_base_name, opts)
-        image.resizableImageWithCapInsets([opts[:top], opts[:left], opts[:bottom], opts[:right]], resizingMode: UIImageResizingModeStretch) 
+
+        frame = [ opts[:top]    || opts[:t],
+                  opts[:left]   || opts[:l],
+                  opts[:bottom] || opts[:b],
+                  opts[:right]  || opts[:r]
+        ]
+        image.resizableImageWithCapInsets(frame, resizingMode: UIImageResizingModeStretch)
       end
 
       # Note: FROM Sugarcube, thanks Sugarcube
