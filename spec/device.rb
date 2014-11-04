@@ -127,8 +127,8 @@ describe 'device' do
     @rmq.device.reset_fake_caches
   end
 
-  describe 'retina?' do
-    #TODO finish
+  it 'detects if the device  is retina' do
+    (@rmq.device.screen.scale == 2).should == @rmq.device.retina?
   end
 
   it 'should report landscape? and portrait? correctly' do

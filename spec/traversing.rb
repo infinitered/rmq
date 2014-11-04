@@ -4,24 +4,25 @@ describe 'transversing' do
     @root_view = @vc.view
 
     @views_hash = {
-      v_0: { 
+      v_0: {
         klass: UIView,
         subs: {
-          v_0: { 
+          v_0: {
             klass: UIView,
             subs: {
               v_0: { klass: UIView, subs: { } },
               v_1: { klass: UIImageView, subs: { } },
-              v_2: { klass: UIView, subs: { } }
-            } 
+              v_2: { klass: UIView, subs: { } },
+              v_3: { klass: UILabel, subs: { } }
+            }
           },
           v_1: { klass: UILabel, subs: { } },
-          v_2: { klass: UIView, subs: { } } 
+          v_2: { klass: UIView, subs: { } }
         }
       },
       v_1: { klass: UILabel, subs: { } },
       v_2: { klass: UILabel, subs: { } },
-      v_3: { 
+      v_3: {
         klass: UIView,
         subs: {
           v_0: { klass: UIView, subs: { } },
@@ -34,7 +35,7 @@ describe 'transversing' do
                   v_0: { klass: UILabel, subs: { } },
                   v_1: { klass: UIView, subs: { } },
                   v_2: { klass: UIImageView, subs: { } }
-                } 
+                }
               }
             }
           }
@@ -46,7 +47,7 @@ describe 'transversing' do
     @v0 = @views_hash[:v_0][:view]
     @v3_v2_v0 = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:view]
     @last_image = @views_hash[:v_3][:subs][:v_2][:subs][:v_0][:subs][:v_2][:view]
-    @total_views = 17
+    @total_views = 18
   end
 
   it 'locate view given view' do
@@ -95,7 +96,7 @@ describe 'transversing' do
     q = @vc.rmq(UIView).filter do |view|
       @vc.rmq(view).find.get
     end
-    q.length.should == 23
+    q.length.should == 25
 
     q = @vc.rmq(UIView).filter(uniq: true) do |view|
       @vc.rmq(view).find.get
@@ -115,7 +116,8 @@ describe 'transversing' do
     all[2].should == @views_hash[:v_0][:subs][:v_0][:subs][:v_0][:view]
     all[3].should == @views_hash[:v_0][:subs][:v_0][:subs][:v_1][:view]
     all[4].should == @views_hash[:v_0][:subs][:v_0][:subs][:v_2][:view]
-    all[5].should == @views_hash[:v_0][:subs][:v_1][:view]
+    all[5].should == @views_hash[:v_0][:subs][:v_0][:subs][:v_3][:view]
+    all[6].should == @views_hash[:v_0][:subs][:v_1][:view]
 
     all.last.should == @last_image
     @last_image.is_a?(UIImageView).should == true
@@ -147,8 +149,14 @@ describe 'transversing' do
     q.length.should == 3
     q.and(UILabel).length.should == 1
     q.and(UILabel).get.is_a?(UILabel).should == true
+    q.and(UIView).length.should == 3
 
-    # TODO, a few more scenarios here woudl be good
+    s = @vc.rmq(@v0).children[0].children
+    s.length.should == 4
+    s.and(UILabel).length.should == 1
+    s.and(UILabel).get.is_a?(UILabel).should == true
+    s.and(UIImageView).length.should == 1
+    s.and(UIImageView).get.is_a?(UIImageView).should == true
   end
 
   it 'should add parent to selected when using .and_self' do
@@ -183,7 +191,7 @@ describe 'transversing' do
   it 'should return parents / superviews' do
     @vc.rmq(@last_image).parents.length.should == 4
 
-    @vc.rmq.all.parents.length.should == 6 # All views that have subviews 
+    @vc.rmq.all.parents.length.should == 6 # All views that have subviews
   end
 
   it 'should return children of a view' do
@@ -191,7 +199,7 @@ describe 'transversing' do
     q.length.should == 3
 
     q = @vc.rmq(@v0).find # children and sub children
-    q.length.should == 6
+    q.length.should == 7
 
     q = @vc.rmq(@views_hash[:v_1][:view]).children
     q.length.should == 0
@@ -209,18 +217,18 @@ describe 'transversing' do
   it 'should return children and sub-children of a view using .find' do
     @vc.rmq.find.length.should == @total_views
     @vc.rmq.all.find.length.should == @total_views - 4 # top views
-    @vc.rmq(@v0).find.length.should == 6
-    @vc.rmq(@v0).find(UILabel).length.should == 1
+    @vc.rmq(@v0).find.length.should == 7
+    @vc.rmq(@v0).find(UILabel).length.should == 2
     @vc.rmq(@v3_v2_v0).find(UIImageView).get.should == @last_image
   end
 
   it 'should return children and sub-children of multiple views using .find' do
-    @vc.rmq.all.length.should == @total_views 
-    @vc.rmq(UIView).length.should == @total_views 
-    @vc.rmq.find.length.should == @total_views 
-    @vc.rmq.find(UIView).length.should == @total_views 
+    @vc.rmq.all.length.should == @total_views
+    @vc.rmq(UIView).length.should == @total_views
+    @vc.rmq.find.length.should == @total_views
+    @vc.rmq.find(UIView).length.should == @total_views
 
-    @vc.rmq.children(UIView).find(UILabel).length.should == 2
+    @vc.rmq.children(UIView).find(UILabel).length.should == 3
   end
 
   it 'should return the siblings of a view' do
@@ -228,7 +236,7 @@ describe 'transversing' do
     q = @vc.rmq(test_view)
     q.get.should == test_view
     q = q.siblings
-    q.length.should == (test_view.superview.subviews.length - 1) 
+    q.length.should == (test_view.superview.subviews.length - 1)
     q.get.should.not.include(test_view)
   end
 
@@ -236,7 +244,7 @@ describe 'transversing' do
     q = @vc.rmq(UIImageView)
     q.length.should == 2
     qsiblings = q.siblings
-    qsiblings.length.should == 4
+    qsiblings.length.should == 5
     qsiblings.get.should.not.include(q.get)
 
     qsiblings.not(UILabel).length.should == 3
@@ -338,7 +346,7 @@ describe 'transversing' do
       RubyMotionQuery::RMQ.new.wrap(view_1).view_controller.should == @vc
       view_1.rmq_data.view_controller.should == @vc
       view_1.rmq.view_controller.should == @vc
-     
+
       view_2 = UIView.alloc.initWithFrame(CGRectZero)
       view_2.rmq_data.view_controller = @vc2
       RubyMotionQuery::RMQ.new.wrap(view_2).view_controller.should == @vc2

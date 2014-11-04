@@ -317,7 +317,7 @@ module RubyMotionQuery
         out << left_m
         out << r.to_s.rjust(4)
 
-        0.upto(@num_columns - 1).each do |c|
+        0.upto(@num_columns - 1).each do
           out << "  ."
         end
       end
@@ -417,8 +417,6 @@ module RubyMotionQuery
       return unless @grid
 
       context = UIGraphicsGetCurrentContext()
-      screen_height = RMQ.device.screen_height
-      screen_width = RMQ.device.screen_width
 
       CGContextSetTextMatrix(context, CGAffineTransformMake(1.0,0.0, 0.0, -1.0, 0.0, 0.0));
       CGContextSelectFont(context, 'Courier New', 7, KCGEncodingMacRoman)

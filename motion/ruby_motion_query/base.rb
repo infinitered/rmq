@@ -288,7 +288,7 @@ module RubyMotionQuery
 
         out << " #{view.class.name[0..21]}"
         out << "  ( #{view.rmq_data.style_name[0..23]} )" if view.rmq_data.style_name
-        out << "  #{view.object_id.to_s}"
+        out << "  #{view.object_id}"
         out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
 
         if view.origin
