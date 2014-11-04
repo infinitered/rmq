@@ -63,5 +63,18 @@ describe 'image' do
       image.capInsets.should == UIEdgeInsetsMake(1.0, 1.0, 1.0, 1.0)
     end
   end
-  # TODO test resource with and without caching
+
+  describe "resource" do
+    it "should return the image when cached" do
+      image = @rmq.image.resource('logo')
+
+      image.is_a?(UIImage).should.be.true
+    end
+
+    it "should return the image when cached is false" do
+      image = @rmq.image.resource('logo', {cache: false})
+
+      image.is_a?(UIImage).should.be.true
+    end
+  end
 end

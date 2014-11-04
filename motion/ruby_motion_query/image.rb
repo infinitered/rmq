@@ -27,7 +27,7 @@ module RubyMotionQuery
         cached = true if cached.nil?
 
         if cached
-          UIImage.imageNamed("#{file_base_name}.#{ext}") 
+          UIImage.imageNamed("#{file_base_name}.#{ext}")
         else
           file_base_name << '@2x' if RMQ.device.retina?
           file = NSBundle.mainBundle.pathForResource(file_base_name, ofType: ext)
