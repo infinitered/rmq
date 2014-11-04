@@ -54,10 +54,7 @@ describe 'actions' do
 
   describe 'focus' do
     before do
-      window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-      @vc = UIViewController.alloc.initWithNibName(nil, bundle: nil)
-      window.rootViewController = @vc
-      window.makeKeyAndVisible
+      @vc = rmq.app.window.rootViewController
 
       @tf_0 = @vc.rmq.append(UITextField).style do |st|
         st.frame = {l: 10, t: 10, w: 100, h: 30}
