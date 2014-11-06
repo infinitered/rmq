@@ -71,24 +71,16 @@ module RubyMotionQuery
 
     # @return [Array] of views where validations have failed
     def invalid
-      invalid = []
-      selected.each do |view|
-        view.rmq_data.validations.each do |validation|
-          invalid.push(view) unless validation.valid_status
-        end
+      selected.reject do |view|
+        view.rmq_data.validations.map{ |validation| validation.valid_status }.reduce(:&)
       end
-      return invalid
     end
 
-    # @return [Array] of views where validations have failed
+    # @return [Array] of views where validations have not failed
     def valid
-      invalid = []
-      selected.each do |view|
-        view.rmq_data.validations.each do |validation|
-          invalid.push(view) if validation.valid_status
-        end
+      selected.select do |view|
+        view.rmq_data.validations.map{ |validation| validation.valid_status }.reduce(:&)
       end
-      return invalid
     end
 
   end # End RMQ
