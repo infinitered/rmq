@@ -187,7 +187,7 @@ describe 'validation' do
     it 'maintains what selected items are invalid' do
       vc = UIViewController.alloc.init
 
-      vc.rmq.append(UITextField).validates(:digits).data('taco loco').tag(:one)
+      vc.rmq.append(UITextField).validates(:length, max_length: 1).validates(:digits).data('taco loco').tag(:one)
       vc.rmq.append(UITextField).validates(:digits).data('123455').tag(:two)
 
       #everything is valid by default
@@ -200,7 +200,7 @@ describe 'validation' do
       vc = UIViewController.alloc.init
 
       vc.rmq.append(UITextField).validates(:digits).data('taco loco').tag(:one)
-      vc.rmq.append(UITextField).validates(:digits).data('123455').tag(:two)
+      vc.rmq.append(UITextField).validates(:length, min_length: 1).validates(:digits).data('123455').tag(:two)
 
       #everything is valid by default
       vc.rmq.all.valid.size.should == 2
