@@ -1,9 +1,12 @@
 describe 'stylers/ui_text_view' do
   class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     def ui_text_view_kitchen_sink(st)
-    st.text = 'foo'
-    st.font = font.system(12)
-    st.text_color= color.red
+      st.text = 'foo'
+      st.font = font.system(12)
+      st.text_color = color.red
+      st.editable = true
+      st.selectable = true
+      st.data_detector_types = :all
     end
 
     def ui_text_view_attributed_string(st)
@@ -26,6 +29,9 @@ describe 'stylers/ui_text_view' do
       view.text.should == "foo"
       view.font.should == UIFont.systemFontOfSize(12)
       view.textColor.should == UIColor.redColor
+      view.isEditable.should == true
+      view.isSelectable.should == true
+      view.dataDetectorTypes.should == UIDataDetectorTypeAll
     end
   end
 
