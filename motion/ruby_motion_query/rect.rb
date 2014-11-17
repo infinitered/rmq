@@ -24,7 +24,7 @@ module RubyMotionQuery
     # Always applied in this order, regardless of the hash order:
     #   grid
     #   l, t, w, h
-    #   previous
+    #   prev, next
     #   from_right, from_bottom
     #   right, bottom
     #   left and right applied together (will change width)
