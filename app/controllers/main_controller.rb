@@ -88,12 +88,11 @@ class MainController < UIViewController
     end
 
     rmq.append(UIButton, :collection_button).on(:touch_up) do
-      controller = CollectionController.new
-      rmq.view_controller.navigationController.pushViewController(controller, animated: true)
+      rmq.view_controller.navigationController.pushViewController(CollectionController.new, animated: true)
     end
 
     rmq.append(UIButton, :table_button).on(:touch_up) do
-      rmq.view_controller.navigationController.pushViewController(controller, animated: true)
+      rmq.view_controller.navigationController.pushViewController(TableController.new, animated: true)
     end
 
     rmq.append(UIButton, :present_button).on(:touch_up) do

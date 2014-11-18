@@ -7,7 +7,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     bacon (1.2.0)
-    motion_print (0.0.3)
     rake (10.3.2)
 
 PLATFORMS
@@ -15,6 +14,5 @@ PLATFORMS
 
 DEPENDENCIES
   bacon
-  motion_print
   rake
   ruby_motion_query!
