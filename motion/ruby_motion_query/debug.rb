@@ -80,7 +80,7 @@ module RubyMotionQuery
     #   foo: foo,
     #   bar: bar
     # })
-    def assert(truthy, label = nil, objects = nil)
+    def self.assert(truthy, label = nil, objects = nil)
       if (RMQ.app.development? || RMQ.app.test?) && !truthy
         label ||= 'Assert failed'
         if block_given? && !objects
