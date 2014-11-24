@@ -9,7 +9,7 @@
 
 A fast, non-polluting, chaining, front-end library. It’s like jQuery for [RubyMotion](http://rubymotion.com) plus templates, stylesheets, events, animations, etc.
 
-One of RMQ's goal is to have the best [documentation][1] of any RubyMotion UI library.
+One of RMQ's goals is to have the best [documentation][1] of any RubyMotion UI library.
 
 <br />
 
@@ -35,7 +35,7 @@ bundle
 rake
 ```
 
-rbenv rehash after gem install if you use rbenv
+`rbenv rehash` after gem install if you use rbenv
 
 <br />
 
