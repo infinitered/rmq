@@ -68,7 +68,7 @@ module RubyMotionQuery
         end
       end
 
-      RMQ.create_with_array_and_selectors(subviews_added, selectors, @context, self)
+      RMQ.create_with_array_and_selectors(selected: subviews_added, selectors: selectors, context: @context, parent_rmq: self)
     end
     alias :insert :add_subview
 

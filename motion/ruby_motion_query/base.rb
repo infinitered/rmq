@@ -103,7 +103,7 @@ module RubyMotionQuery
     def wrap(*views)
       views.flatten!
       views.select!{ |v| v.is_a?(UIView) }
-      RMQ.create_with_array_and_selectors(views, views, views.first, self)
+      RMQ.create_with_array_and_selectors(selected: views, selectors: views, context: views.first, parent_rmq: self)
     end
 
 
