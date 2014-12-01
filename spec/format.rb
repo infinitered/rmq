@@ -51,4 +51,26 @@ describe 'format' do
 
     formatter.stringFromDate(time).should == formated_string
   end
+
+  it "should format a date with style symbols" do
+    date = Time.new(2013,1,2,12,15,30)
+
+    # date styles
+    rmq.format.date(date, :short_date).should == '1/2/13'
+    rmq.format.date(date, :medium_date).should == 'Jan 2, 2013'
+    rmq.format.date(date, :long_date).should == 'January 2, 2013'
+    rmq.format.date(date, :full_date).should == 'Wednesday, January 2, 2013'
+
+    # time styles
+    rmq.format.date(date, :short_time).should == '12:15 PM'
+    rmq.format.date(date, :medium_time).should == '12:15:30 PM'
+    # skipping due to variable locales
+    #rmq.format.date(date, :long_time).should == '12:15:30 PM EST'
+    #rmq.format.date(date, :full_time).should == '12:15:30 PM Eastern Standard Time'
+
+    # combos
+    rmq.format.date(date, :short_date, :medium_time).should == '1/2/13, 12:15:30 PM'
+    rmq.format.date(date, :medium_time, :short_date).should == '1/2/13, 12:15:30 PM'
+  end
+
 end
