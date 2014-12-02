@@ -86,30 +86,22 @@ module RubyMotionQuery
         end
       end
 
-      # Creates a color from a hex triplet
-      #
-      # Thanks bubblewrap for this method
+      # Creates a color from a hex triplet (rgb) or quartet (rgba)
       #
       # @param hex with or without the #
       # @return [UIColor]
       # @example
       #   color.from_hex('#ffffff')
       #   color.from_hex('ffffff')
-      def from_hex(hex_color)
-        hex_color = hex_color.gsub("#", "")
-        case hex_color.size
-          when 3
-            colors = hex_color.scan(%r{[0-9A-Fa-f]}).map{ |el| (el * 2).to_i(16) }
-          when 6
-            colors = hex_color.scan(%r<[0-9A-Fa-f]{2}>).map{ |el| el.to_i(16) }
-          else
-            raise ArgumentError
+      #   color.from_hex('#336699cc')
+      #   color.from_hex('369c')
+      def from_hex(str)
+        r,g,b,a = case (str =~ /^#?(\h{3,8})$/ && $1.size)
+          when 3, 4 then $1.scan(/./ ).map {|c| (c*2).to_i(16) }
+          when 6, 8 then $1.scan(/../).map {|c|     c.to_i(16) }
+          else raise ArgumentError
         end
-        if colors.size == 3
-          from_rgba(colors[0], colors[1], colors[2], 1.0)
-        else
-          raise ArgumentError
-        end
+        from_rgba(r, g, b, a ? (a/255.0) : 1.0)
       end
 
       # @return [UIColor]
