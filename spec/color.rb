@@ -46,25 +46,37 @@ describe 'color' do
 
   describe 'from_hex' do
     it 'translates the color properly' do
+      @rmq.color.from_hex('ffffff00').should == UIColor.colorWithRed(255, green: 255, blue: 255, alpha: 0)
       @rmq.color.from_hex('ffffff').should == UIColor.colorWithRed(255, green: 255, blue: 255, alpha: 1)
       @rmq.color.from_hex('000000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+      @rmq.color.from_hex('0000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0)
     end
 
     it 'ignores a leading "#"' do
+      @rmq.color.from_hex('#ffffff00').should == UIColor.colorWithRed(255, green: 255, blue: 255, alpha: 0)
       @rmq.color.from_hex('#ffffff').should == UIColor.colorWithRed(255, green: 255, blue: 255, alpha: 1)
       @rmq.color.from_hex('#000000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+      @rmq.color.from_hex('#0000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0)
     end
 
-    it 'raises an ArgumentError for lengths not 3 or 6' do
+    it 'raises an ArgumentError for lengths not 3, 4, 6 or 8' do
       should.raise(ArgumentError) do
         @rmq.color.from_hex('ffffffffffffffff')
+      end
+      should.raise(ArgumentError) do
+        @rmq.color.from_hex('fffffff')
+      end
+      should.raise(ArgumentError) do
+        @rmq.color.from_hex('fffff')
       end
       should.raise(ArgumentError) do
         @rmq.color.from_hex('f')
       end
       should.not.raise(ArgumentError) do
         @rmq.color.from_hex('fff')
+        @rmq.color.from_hex('ffff')
         @rmq.color.from_hex('ffffff')
+        @rmq.color.from_hex('ffffffff')
       end
     end
   end
