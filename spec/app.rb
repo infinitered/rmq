@@ -16,6 +16,10 @@ describe 'app' do
     @app.window.should == UIApplication.sharedApplication.keyWindow
   end
 
+  it 'should return app windows' do
+    @app.windows.should == UIApplication.sharedApplication.windows
+  end
+
   it 'should return app delegate' do
     @app.delegate.should == UIApplication.sharedApplication.delegate
   end

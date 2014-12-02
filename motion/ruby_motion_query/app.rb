@@ -21,8 +21,14 @@ module RubyMotionQuery
         end
       end
 
+      def windows
+        if shared_application = UIApplication.sharedApplication
+          shared_application.windows
+        end
+      end
+
       # @return [UIApplicationDelegate]
-      def delegate 
+      def delegate
         UIApplication.sharedApplication.delegate
       end
 
