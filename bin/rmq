@@ -123,13 +123,13 @@ class RmqCommandLine
         @in_app_path = File.dirname(template_file_path_and_name).gsub(@template_path, '')
         @ext = File.extname(template_file_path_and_name)
         @file_name = File.basename(template_file_path_and_name, @ext)
-        
+
         @new_file_name = @file_name.gsub('name', @name)
         @new_file_path_name = "#{Dir.pwd}/#{@in_app_path}/#{@new_file_name}#{@ext}"
 
         if @dry_run
           puts "\n     Instance vars:"
-          self.instance_variables.each{|var| puts "     #{var} = #{self.instance_variable_get(var)}"} 
+          self.instance_variables.each{|var| puts "     #{var} = #{self.instance_variable_get(var)}"}
           puts
         end
 
