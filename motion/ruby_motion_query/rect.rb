@@ -190,7 +190,7 @@ module RubyMotionQuery
           end
         end
 
-        params_l = params[:l] || params[:left] || params[:x]
+        params_l = params[:l] || params[:left] || params[:x] || params[:fl]
         params_t = params[:t] || params[:top] || params[:y]
         params_w = params[:w] || params[:width]
         params_h = params[:h] || params[:height]
