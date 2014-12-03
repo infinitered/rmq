@@ -179,6 +179,13 @@ module RubyMotionQuery
           not_in_root_view = !(vc.view == sv)
         end
 
+        # performant warn if hash has keys that are not whitelisted
+        white_list = [:grid, :g, :l, :left, :x, :fl, :t, :top, :y, :w, :width, :h, :height, :below_prev, :bp, :below_previous, :left_of_prev, :lop, :left_of_previous, :r, :right, :b, :bottom, :from_right, :fr, :from_bottom, :fb, :centered, :padding, :p, :above_prev, :ap, :above_previous, :rop, :right_of_prev, :right_of_previous, :left_of_prev, :lop, :left_of_previous]
+        unknown_keys = params.keys - white_list
+        unless unknown_keys.empty?
+          puts "\n[RMQ ERROR]  rect keys :#{unknown_keys} don't exist. Verify your hash for #{view.class.name} uses approved keys - #{white_list}\n\n"
+        end
+
         # Grid
         if grid
           if params_g = params[:grid] || params[:g]
