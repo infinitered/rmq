@@ -1,6 +1,8 @@
 module RubyMotionQuery
 
   class RMQ
+    RECT_WHITELIST = [:grid, :g, :l, :left, :x, :fl, :top, :t, :y, :w, :width, :h, :height, :below_prev, :bp, :below_previous, :left_of_prev, :lop, :left_of_previous, :r, :right, :b, :bottom, :from_right, :fr, :from_bottom, :fb, :centered, :padding, :p, :above_prev, :ap, :above_previous, :rop, :right_of_prev, :right_of_previous, :left_of_prev, :lop, :left_of_previous]
+
     # @return RubyMotionQuery::Rect or array of RubyMotionQuery::Rect
     #
     # @example
@@ -180,10 +182,9 @@ module RubyMotionQuery
         end
 
         # performant warn if hash has keys that are not whitelisted
-        white_list = [:grid, :g, :l, :left, :x, :fl, :t, :top, :y, :w, :width, :h, :height, :below_prev, :bp, :below_previous, :left_of_prev, :lop, :left_of_previous, :r, :right, :b, :bottom, :from_right, :fr, :from_bottom, :fb, :centered, :padding, :p, :above_prev, :ap, :above_previous, :rop, :right_of_prev, :right_of_previous, :left_of_prev, :lop, :left_of_previous]
-        unknown_keys = params.keys - white_list
+        unknown_keys = params.keys - RMQ::RECT_WHITELIST
         unless unknown_keys.empty?
-          puts "\n[RMQ ERROR]  rect keys :#{unknown_keys} don't exist. Verify your hash for #{view.class.name} uses approved keys - #{white_list}\n\n"
+          puts "\n[RMQ ERROR]  rect keys #{unknown_keys} don't exist. Verify your hash for #{view.class.name} uses approved keys - #{RMQ::RECT_WHITELIST}\n\n"
         end
 
         # Grid
