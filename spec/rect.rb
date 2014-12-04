@@ -1,4 +1,4 @@
-class RectTestController < UIViewController 
+class RectTestController < UIViewController
   attr_reader :test_view
 
   def viewDidLoad
@@ -23,13 +23,15 @@ describe 'rect' do
       RubyMotionQuery::Rect.update_view_frame(@view, new_frame)
     end
 
-    it 'should apply left or l or x' do
+    it 'should apply left or l or x or fl' do
       apply_frame l: 1
       @view.frame.origin.x.should == 1
       apply_frame left: 2
       @view.frame.origin.x.should == 2
       apply_frame x: 3
       @view.frame.origin.x.should == 3
+      apply_frame fl: 4
+      @view.frame.origin.x.should == 4
     end
 
     it 'should apply top or t or y' do
@@ -193,7 +195,7 @@ describe 'rect' do
 
       new_l = @view.frame.origin.x
       @view.frame.size.height.should == h
-      @view.frame.size.width.should == w 
+      @view.frame.size.width.should == w
       l.should != new_l
       new_l.should == 60 - 40
 
@@ -210,22 +212,22 @@ describe 'rect' do
       w.should == 50
       h.should == 60
 
-      apply_frame b: 76 
+      apply_frame b: 76
 
       @view.frame.size.height.should == h
-      @view.frame.size.width.should == w 
+      @view.frame.size.width.should == w
       new_t = @view.frame.origin.y
       t.should != new_t
       new_t.should == 76 - 60
 
-      apply_frame bottom: 66 
+      apply_frame bottom: 66
       @view.frame.origin.y.should == 66 - 60
     end
 
     it 'should change width when left and right are both changed (and width is not changed)' do
       apply_frame l: 20 , t: 30, r: 120, h: 60
       w = @view.frame.size.width
-      apply_frame r: 100, l: 49 
+      apply_frame r: 100, l: 49
       new_w = @view.frame.size.width
       w.should != new_w
       new_w.should == 100 - 49
@@ -234,7 +236,7 @@ describe 'rect' do
     it 'should change height when top and bottom are both changed (and height is not changed)' do
       apply_frame l: 20 , t: 30, w: 300, h: 60
       h = @view.frame.size.height
-      apply_frame b: 100, t: 49 
+      apply_frame b: 100, t: 49
       new_h = @view.frame.size.height
       h.should != new_h
       new_h.should == 100 - 49
@@ -252,20 +254,20 @@ describe 'rect' do
 
     it 'should use only top and height if top, height, and bottom are changed, ignoring bottom' do
       apply_frame l: 40 , t: 42, w: 43, h: 44
-      apply_frame t: 100, h: 200, b: 120 
+      apply_frame t: 100, h: 200, b: 120
       @view.frame.origin.x.should == 40
-      @view.frame.origin.y.should == 100 
-      @view.frame.size.width.should == 43 
+      @view.frame.origin.y.should == 100
+      @view.frame.size.width.should == 43
       @view.frame.size.height.should == 200
     end
 
     it 'should use only left and width if left, width, and right are changed, ignoring right' do
       apply_frame l: 40 , t: 42, w: 43, h: 44
-      apply_frame l: 100, w: 200, r: 120 
+      apply_frame l: 100, w: 200, r: 120
       @view.frame.origin.x.should == 100
-      @view.frame.origin.y.should == 42 
-      @view.frame.size.width.should == 200 
-      @view.frame.size.height.should == 44 
+      @view.frame.origin.y.should == 42
+      @view.frame.size.width.should == 200
+      @view.frame.size.height.should == 44
     end
 
     it 'should set frame to full width and height with :full' do
@@ -276,9 +278,9 @@ describe 'rect' do
     it 'should set left when centering horizontally' do
       apply_frame l: 140 , t: 142, w: 143, h: 144, centered: :horizontal
 
-      @view.frame.origin.y.should == 142 
-      @view.frame.size.width.should == 143 
-      @view.frame.size.height.should == 144 
+      @view.frame.origin.y.should == 142
+      @view.frame.size.width.should == 143
+      @view.frame.size.height.should == 144
 
       @view.frame.origin.x.should == (@view.superview.bounds.size.width / 2) - (143 / 2)
     end
@@ -286,9 +288,9 @@ describe 'rect' do
     it 'should set top when centering vertically' do
       apply_frame l: 140 , t: 142, w: 143, h: 144, centered: :vertical
 
-      @view.frame.origin.x.should == 140 
-      @view.frame.size.width.should == 143 
-      @view.frame.size.height.should == 144 
+      @view.frame.origin.x.should == 140
+      @view.frame.size.width.should == 143
+      @view.frame.size.height.should == 144
 
       @view.frame.origin.y.should == (@view.superview.bounds.size.height / 2) - (144 / 2)
     end
@@ -299,11 +301,11 @@ describe 'rect' do
       # We'll create a subview inside @view to test if all is good if superview isn't :full
       view_2 = rmq(@view).append(UIView).layout(l: 5, t: 6, w: 7, h: 8, centered: :both).get
 
-      @view.frame.size.width.should == 143 
-      @view.frame.size.height.should == 144 
+      @view.frame.size.width.should == 143
+      @view.frame.size.height.should == 144
 
-      view_2.frame.size.width.should == 7 
-      view_2.frame.size.height.should == 8 
+      view_2.frame.size.width.should == 7
+      view_2.frame.size.height.should == 8
 
       view_2.frame.origin.x.should == (@view.bounds.size.width / 2) - (7 / 2)
       view_2.frame.origin.y.should == (@view.bounds.size.height / 2) - (8 / 2)
@@ -332,15 +334,15 @@ describe 'rect' do
     it 'should set frame given various arrays' do
       apply_frame [1, 2, 3, 4]
       @view.frame.origin.x.should == 1
-      @view.frame.origin.y.should == 2 
+      @view.frame.origin.y.should == 2
       @view.frame.size.width.should == 3
-      @view.frame.size.height.should == 4 
+      @view.frame.size.height.should == 4
 
       apply_frame [[5, 6], [7, 8]]
       @view.frame.origin.x.should == 5
-      @view.frame.origin.y.should == 6 
+      @view.frame.origin.y.should == 6
       @view.frame.size.width.should == 7
-      @view.frame.size.height.should == 8 
+      @view.frame.size.height.should == 8
     end
   end
 
@@ -378,7 +380,7 @@ describe 'rect' do
       @rect.r.should == 110
 
       @rect.from_bottom.should == rmq.device.height - 132
-      @rect.fb.should ==  rmq.device.height - 132 
+      @rect.fb.should ==  rmq.device.height - 132
       @rect.from_right.should ==  rmq.device.width - 110
       @rect.fr.should ==  rmq.device.width - 110
 
@@ -458,7 +460,7 @@ describe 'rect' do
 
       rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
       rmq(@view_2).layout(t: 10, right_of_previous: 6, w: 30, fr: 10)
-      @view_2.frame.origin.x.should == 10 + 30 + 6 
+      @view_2.frame.origin.x.should == 10 + 30 + 6
 
       #rmq(@view_2).layout(t: 210, w: 40, h: 60, left_of_previous: 18)
       #@view_2.frame.origin.x.should == 250 - 40 - 18
@@ -481,14 +483,14 @@ describe 'rect' do
     it 'should allow you to set below_prev and from_bottom at the same time' do
       rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
       rmq(@view_2).layout(l: 10, below_previous: 3, w: 30, fb: 10)
-      @view_2.frame.origin.y.should == 20 + 40 + 3 
+      @view_2.frame.origin.y.should == 20 + 40 + 3
       @view_2.frame.size.height.should == @vc.view.frame.size.height - 10 - 60 - 3
     end
 
     it 'should allow you to set right_of_prev and from_right at the same time' do
       rmq(@view).layout(l: 10, t: 20, w: 30, h: 40)
       rmq(@view_2).layout(t: 10, rop: 6, w: 30, fr: 10)
-      @view_2.frame.origin.x.should == 10 + 30 + 6 
+      @view_2.frame.origin.x.should == 10 + 30 + 6
       @view_2.frame.size.width.should == @vc.view.frame.size.width - 10 - 40 - 6
     end
   end
@@ -546,7 +548,7 @@ describe 'rect' do
       rect.t.should == rect.t
     end
 
-    should 'work with stylesheet grid if it exists' do 
+    should 'work with stylesheet grid if it exists' do
       # TODO
       1.should == 1
     end
@@ -554,16 +556,16 @@ describe 'rect' do
     should 'allow you to partially layout with a grid' do
       rect = rmq(@view).layout(grid: 'a:b', t: 0, h: 20).frame
       rect.t.should == 0
-      rect.h.should == 20 
-      rect.l.should == @grid.content_left_margin 
+      rect.h.should == 20
+      rect.l.should == @grid.content_left_margin
       rect.r.should == @grid.content_left_margin + @grid.column_width + @grid.column_gutter + @grid.column_width
     end
 
     should 'override grid with specific settings' do
       rect = rmq(@view).layout(grid: 'a:b', t: 0, h: 20, l: 10).frame
       rect.t.should == 0
-      rect.h.should == 20 
-      rect.l.should == 10 
+      rect.h.should == 20
+      rect.l.should == 10
       rect.r.should == @grid.content_left_margin + @grid.column_width + @grid.column_gutter + @grid.column_width
     end
 
@@ -681,27 +683,27 @@ describe 'rect' do
       rect.t.should == 25
       rect.w.should == 20
       rect.h.should == 20
-      rect.r.should == 35 
-      rect.b.should == 45 
+      rect.r.should == 35
+      rect.b.should == 45
     end
 
     it 'should allow you to specify for all sides independently' do
       rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, p: {l: 1, t: 2, r: 3, b: 4}).frame
       rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, p: {left: 1, top: 2, right: 3, bottom: 4}).frame
       rect.l.should == 11
-      rect.t.should == 22 
-      rect.w.should == 36 
-      rect.h.should == 44 
+      rect.t.should == 22
+      rect.w.should == 36
+      rect.h.should == 44
     end
 
     it 'should allow you to specify only some sides' do
       rect = rmq(@view).layout(l: 10, t: 20, w: 40, h: 50, padding: {l: 1, r: 3}).frame
       rect.l.should == 11
-      rect.t.should == 20 
-      rect.w.should == 36 
-      rect.h.should == 50 
+      rect.t.should == 20
+      rect.w.should == 36
+      rect.h.should == 50
     end
-    
+
     # TODO test with grid and a variety of other layout types
   end
 

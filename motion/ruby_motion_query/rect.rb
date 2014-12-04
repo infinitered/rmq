@@ -1,6 +1,8 @@
 module RubyMotionQuery
 
   class RMQ
+    RECT_WHITELIST = [:grid, :g, :l, :left, :x, :fl, :top, :t, :y, :w, :width, :h, :height, :below_prev, :bp, :below_previous, :left_of_prev, :lop, :left_of_previous, :r, :right, :b, :bottom, :from_right, :fr, :from_bottom, :fb, :centered, :padding, :p, :above_prev, :ap, :above_previous, :rop, :right_of_prev, :right_of_previous, :left_of_prev, :lop, :left_of_previous]
+
     # @return RubyMotionQuery::Rect or array of RubyMotionQuery::Rect
     #
     # @example
@@ -179,6 +181,12 @@ module RubyMotionQuery
           not_in_root_view = !(vc.view == sv)
         end
 
+        # performant warn if hash has keys that are not whitelisted
+        unknown_keys = params.keys - RMQ::RECT_WHITELIST
+        unless unknown_keys.empty?
+          puts "\n[RMQ ERROR]  rect keys #{unknown_keys} don't exist. Verify your hash for #{view.class.name} uses approved keys - #{RMQ::RECT_WHITELIST}\n\n"
+        end
+
         # Grid
         if grid
           if params_g = params[:grid] || params[:g]
@@ -190,7 +198,7 @@ module RubyMotionQuery
           end
         end
 
-        params_l = params[:l] || params[:left] || params[:x]
+        params_l = params[:l] || params[:left] || params[:x] || params[:fl]
         params_t = params[:t] || params[:top] || params[:y]
         params_w = params[:w] || params[:width]
         params_h = params[:h] || params[:height]
