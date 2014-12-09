@@ -252,6 +252,18 @@ module RubyMotionQuery
               l = prev_view.frame.origin.x - left_of_prev - w
             end
           end
+        else
+          if below_prev
+            t = below_prev
+          elsif above_prev
+            t = above_prev - h
+          end
+
+          if right_of_prev
+            l = right_of_prev
+          elsif left_of_prev
+            l = left_of_prev - w
+          end
         end
 
         if sv
