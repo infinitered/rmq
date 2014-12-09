@@ -46,6 +46,15 @@ describe 'device' do
     rmq.device.is_version?(current_version[0]).should == true
   end
 
+  it 'lets you know if a minimum iOS version is in use' do
+    current_version = rmq.device.ios_version
+    rmq.device.ios_at_least?(current_version).should == true
+    # no one is using below iOS 2.1, so current version greater should always be true
+    rmq.device.ios_at_least?(2.1).should == true
+    # fail condition - hello person from the future!
+    rmq.device.ios_at_least?(999).should == false
+  end
+
   it 'should have a screen' do
     @rmq.device.screen.should == UIScreen.mainScreen
   end
