@@ -26,6 +26,16 @@ module RubyMotionQuery
         UIDevice.currentDevice.systemVersion
       end
 
+      # Identify if current version is at least that of what is passed.
+      # Will not work if apple ever does semantic versions like 8.2.1
+      # `rmq.device.ios_at_least? 8`
+      # `rmq.device.ios_at_least? 7.1`
+      #
+      # @return [Boolean]
+      def ios_at_least? version
+        version.to_f.round(3) <= ios_version.to_f.round(3)
+      end
+
       # @return [UIScreen]
       def screen
         UIScreen.mainScreen
