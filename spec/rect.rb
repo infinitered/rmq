@@ -439,6 +439,12 @@ describe 'rect' do
       @view_3.frame.origin.y.should == @view_2.frame.origin.y + 40 + 11
     end
 
+    it 'should set top using below_prev when no previous element exists' do
+      rmq(@view).layout(l: 10, below_prev: 10, w: 30, h: 40)
+
+      @view.frame.origin.y.should == 10
+    end
+
     it 'should set top to previous views top, minus margin, using above_prev' do
       rmq(@view).layout(l: 10, t: 200, w: 30, h: 40)
       rmq(@view_2).layout(l: 10, above_prev: 7, w: 30, h: 60)
@@ -447,6 +453,12 @@ describe 'rect' do
 
       rmq(@view_3).layout(l: 10, ap: 17, w: 30, h: 70)
       @view_3.frame.origin.y.should == @view_2.frame.origin.y - 70 - 17
+    end
+
+    it 'should set top to previous views top when no previous element exists, using above_prev' do
+      rmq(@view).layout(l: 10, above_prev: 7, w: 30, h: 60)
+
+      @view.frame.origin.y.should == 0 - 60 + 7
     end
 
     it 'should allow long aliases on prev' do
@@ -473,11 +485,23 @@ describe 'rect' do
       @view_2.frame.origin.x.should == 10 + 30 + 15
     end
 
+    it 'should set left to previous views right with no previous element, using right_of_prev' do
+      rmq(@view).layout(t: 210, w: 30, h: 60, rop: 15)
+
+      @view.frame.origin.x.should == 15
+    end
+
     it 'should set left to previous views left, minus margin, using left_of_prev' do
       rmq(@view).layout(l: 250, t: 200, w: 30, h: 40)
       rmq(@view_2).layout(t: 210, w: 40, h: 60, lop: 18)
 
       @view_2.frame.origin.x.should == 250 - 40 - 18
+    end
+
+    it 'should set left to previous views left with no previous element, using left_of_prev' do
+      rmq(@view).layout(t: 210, w: 40, h: 60, lop: 18)
+
+      @view.frame.origin.x.should == 0 - 40 + 18
     end
 
     it 'should allow you to set below_prev and from_bottom at the same time' do
