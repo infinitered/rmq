@@ -36,3 +36,4 @@ vendor/Pods/*
 .yardoc
 _yardoc
 doc/
+rm_spec_output

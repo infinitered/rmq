@@ -95,12 +95,16 @@ describe 'grid' do
 
   should 'return 2 member hash if specifying 1 letter and digits with colon' do
     @grid[':a0'].should == {r: 7 + @grid.column_width, b: 5 + @grid.row_height}
-    @grid[':b1'].should == {r: 61.5999755859375, b: 221.799987792969}
+    @grid[':b1'].should == {r: (@grid.content_left_margin + @grid.column_width + @grid.column_gutter + @grid.column_width),
+                            b: (@grid.content_top_margin + @grid.row_height + @grid.row_gutter + @grid.row_height)}
   end
 
   should 'return 4 member hash when specifying a full grid' do
     @grid['a0:a0'].should == {l: 7, t: 5, r: 7 + @grid.column_width, b: 5 + @grid.row_height}
-    @grid['a0:b1'].should == {l: 7.0, t: 5.0, r: 61.5999755859375, b: 221.799987792969}
+    @grid['a0:b1'].should == {l: @grid.content_left_margin,
+                              t: @grid.content_top_margin,
+                              r: (@grid.content_left_margin + @grid.column_width + @grid.column_gutter + @grid.column_width),
+                              b: (@grid.content_top_margin + @grid.row_height + @grid.row_gutter + @grid.row_height)}
   end
 
   should 'return 1 member has when specifying colon and number' do
@@ -122,7 +126,7 @@ describe 'grid' do
   end
 
   should 'return 2 member hash when specifying only column:number' do
-    @grid['a:1'].should == {l: 7, b: 221.799987792969}
+    @grid['a:1'].should == {l: 7, b: (@grid.content_top_margin + @grid.row_height + @grid.row_gutter + @grid.row_height)}
     @grid['b:0'].should == {l: 7 + @grid.column_width + 8, b: 5 + @grid.row_height}
   end
 
