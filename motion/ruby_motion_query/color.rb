@@ -1,13 +1,27 @@
 module RubyMotionQuery
   class RMQ
     # @return [Color]
-    def self.color
-      Color
+    def self.color(*params)
+      return Color if params.empty?
+
+      if params.count == 1
+        param = params.first
+        if param.is_a?(Hash)
+          color = Color.from_hex(param[:x] || param[:hex])
+          if alpha = param[:a] || param[:alpha]
+            color = color.colorWithAlphaComponent(alpha)
+          end
+
+          color
+        else
+          Color.from_hex(params.join)
+        end
+      end
     end
 
     # @return [Color]
     def color
-      Color
+      self.class.color
     end
   end
 

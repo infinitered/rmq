@@ -99,4 +99,69 @@ describe 'color' do
       @rmq.color.random.is_a?(UIColor).should == true
     end
   end
+
+  describe 'when passing parameters to color' do
+    it 'should return proper colors for values that have 3, 4, 6, and 8 character length strings representing a hex color' do
+      @rmq.color('000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+      @rmq.color('0000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0)
+      @rmq.color('ffffff').should == UIColor.colorWithRed(255, green: 255, blue: 255, alpha: 1)
+      @rmq.color('ffffff00').should == UIColor.colorWithRed(255, green: 255, blue: 255, alpha: 0)
+    end
+
+    it 'should ignore leading "#"`s when hex colors are provided' do
+      @rmq.color('#000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+      @rmq.color('#0000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0)
+      @rmq.color('#ffffff').should == UIColor.colorWithRed(255, green: 255, blue: 255, alpha: 1)
+      @rmq.color('#ffffff00').should == UIColor.colorWithRed(255, green: 255, blue: 255, alpha: 0)
+    end
+
+    it 'should return the correct color when a "x" key value is passed representing a hex color' do
+      @rmq.color(x: '#000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+      @rmq.color(x: '000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+    end
+
+    it 'should return the correct color when a "hex" key value is passed representing a hex color' do
+      @rmq.color(hex: '#000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+      @rmq.color(hex: '000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+    end
+
+    it 'should return the correct color when a hex color and alpha value is provided' do
+      @rmq.color(hex: '#000', alpha: 0.5).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0.5)
+      @rmq.color(hex: '#000', a: 0.5).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0.5)
+      @rmq.color(hex: '000', a: 0.5).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0.5)
+
+      @rmq.color(x: '000', a: 0.5).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0.5)
+      @rmq.color(x: '000', alpha: 0.5).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0.5)
+    end
+
+    it 'should return the correct color when `clean` values such as `#808080` are provided' do
+      #TODO
+      1.should.equal(1)
+    end
+
+    it 'raises an ArgumentError for lengths not 3, 4, 6 or 8' do
+      should.raise(ArgumentError) do
+        @rmq.color('ffffffffffffffff')
+      end
+      should.raise(ArgumentError) do
+        @rmq.color('fffffff')
+      end
+      should.raise(ArgumentError) do
+        @rmq.color('fffff')
+      end
+      should.raise(ArgumentError) do
+        @rmq.color('f')
+      end
+      should.not.raise(ArgumentError) do
+        @rmq.color('fff')
+        @rmq.color('ffff')
+        @rmq.color('ffffff')
+        @rmq.color('ffffffff')
+      end
+    end
+
+    #TODO 256 versus 255 line item
+    #TODO RGB(A)
+    #TODO HSL(A)
+  end
 end
