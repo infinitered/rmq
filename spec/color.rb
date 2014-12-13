@@ -171,6 +171,9 @@ describe 'color' do
       @rmq.color(red: 10, green: 10, blue: 10, alpha: 1).should == UIColor.colorWithRed(10/255.0, green: 10/255.0, blue: 10/255.0, alpha: 1)
     end
 
-    #TODO HSL(A)
+    it 'should allow hsva params in a hash' do
+      @rmq.color(h: 4, s: 3, b: 2, a: 1).should == UIColor.alloc.initWithHue(4, saturation: 3, brightness: 2, alpha: 1)
+      @rmq.color(hue: 4, saturation: 3, brightness: 2, alpha: 1).should == UIColor.alloc.initWithHue(4, saturation: 3, brightness: 2, alpha: 1)
+    end
   end
 end

@@ -13,6 +13,12 @@ module RubyMotionQuery
             b = param[:blue] || param[:b]
             a = param[:alpha] || param[:a]
             Color.new_from_rgba(r, g, b, a)
+          elsif (param.keys - [:h, :s, :b, :a, :hue, :saturation, :brightness, :alpha]).empty?
+            h = param[:hue] || param[:h]
+            s = param[:saturation] || param[:s]
+            b = param[:brightness] || param[:b]
+            a = param[:alpha] || param[:a]
+            Color.from_hsva(h, s, b, a)
           else
             color = Color.new_from_hex(param[:x] || param[:hex])
             if alpha = param[:a] || param[:alpha]
