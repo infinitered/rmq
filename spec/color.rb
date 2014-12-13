@@ -160,8 +160,17 @@ describe 'color' do
       end
     end
 
-    #TODO 256 versus 255 line item
-    #TODO RGB(A)
+    it 'should allow rgba params' do
+      @rmq.color(0,0,0,1).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+      @rmq.color(10,10,10,1).should == UIColor.colorWithRed(10/255.0, green: 10/255.0, blue: 10/255.0, alpha: 1)
+      @rmq.color(16,16,16,1).should == UIColor.colorWithRed(16/256.0, green: 16/256.0, blue: 16/256.0, alpha: 1)
+    end
+
+    it 'should allow rgba params in a hash' do
+      @rmq.color(r: 0, g: 0, b: 0, a: 1).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+      @rmq.color(red: 10, green: 10, blue: 10, alpha: 1).should == UIColor.colorWithRed(10/255.0, green: 10/255.0, blue: 10/255.0, alpha: 1)
+    end
+
     #TODO HSL(A)
   end
 end

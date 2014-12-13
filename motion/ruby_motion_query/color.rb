@@ -7,19 +7,29 @@ module RubyMotionQuery
       if params.count == 1
         param = params.first
         if param.is_a?(Hash)
-          color = Color.new_from_hex(param[:x] || param[:hex])
-          if alpha = param[:a] || param[:alpha]
-            color = color.colorWithAlphaComponent(alpha)
-          end
+          if (param.keys - [:r, :g, :b, :a, :red, :green, :blue, :alpha]).empty?
+            r = param[:red] || param[:r]
+            g = param[:green] || param[:g]
+            b = param[:blue] || param[:b]
+            a = param[:alpha] || param[:a]
+            Color.new_from_rgba(r, g, b, a)
+          else
+            color = Color.new_from_hex(param[:x] || param[:hex])
+            if alpha = param[:a] || param[:alpha]
+              color = color.colorWithAlphaComponent(alpha)
+            end
 
-          color
+            color
+          end
         else
           Color.new_from_hex(params.join)
         end
+      else
+        Color.new_from_rgba(*params)
       end
     end
 
-    # @return [Color]
+  # @return [Color]
     def color
       self.class.color
     end
