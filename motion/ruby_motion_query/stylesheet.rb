@@ -189,16 +189,14 @@ module RubyMotionQuery
 
     # Convenience methods -------------------
     def rmq(*working_selectors)
-      q = if @controller.nil?
-        RubyMotionQuery::RMQ.new
+      if @controller.nil?
+        if (app = RubyMotionQuery::RMQ.app) && (window = app.window) && (cvc = app.current_view_controller)
+          cvc.rmq(working_selectors)
+        else
+          RubyMotionQuery::RMQ.create_with_array_and_selectors([], working_selectors, self)
+        end
       else
-        @controller.rmq
-      end
-
-      if working_selectors.length > 0
-        q.wrap(working_selectors)
-      else
-        q
+        RubyMotionQuery::RMQ.create_with_selectors(working_selectors, @controller)
       end
     end
 

@@ -109,7 +109,7 @@ describe 'stylesheet' do
   end
 
   it 'should allow rmq in stylesheet as if it\'s in the controller' do
-    @vc.rmq.should == @vc.rmq.stylesheet.self_rmq
+    @vc.rmq.stylesheet.controller.should == @vc
 
     q = @vc.rmq.append(UILabel, :style_use_rmq)
     q.get.textColor.should == rmq.color.blue
@@ -119,6 +119,29 @@ describe 'stylesheet' do
     label = UILabel.alloc.initWithFrame(CGRectZero)
     ss.style_use_rmq(@vc.rmq.styler_for(label))
     label.textColor.should == rmq.color.blue
+  end
+
+  it 'should allow rmq in stylesheet to select any view in controller' do
+    @vc.rmq.append(UILabel, :style_use_rmq)
+    @vc.rmq.append(UILabel, :style_use_rmq)
+    @vc.rmq.append(UIView).append(UILabel)
+
+    vcs_stylesheet = @vc.rmq.stylesheet
+
+    vcs_stylesheet.rmq(:style_use_rmq).length.should == 2
+    vcs_stylesheet.rmq(UILabel).length.should == 3
+    vcs_stylesheet.rmq(UIButton).length.should == 0
+    vcs_stylesheet.rmq(UIView).length.should == 4
+    vcs_stylesheet.rmq.find(UIView).length.should == 4
+    vcs_stylesheet.rmq.all.length.should == 4
+    vcs_stylesheet.rmq.length.should == 1 # Only root_view
+
+    rmq(UIView).length.should != 4 # RMQ should use current controller, not the stylesheets
+  end
+
+  it 'should locate the current controller if the stylesheet doesn\'t have a controller assigned' do
+    ss = StyleSheetForStylesheetTests.new(nil)
+    ss.rmq(UIView).first.get.should == rmq(UIView).first.get # No controller assigned to styleshe
   end
 
   describe 'styles' do
