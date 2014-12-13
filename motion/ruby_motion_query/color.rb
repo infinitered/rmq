@@ -7,14 +7,14 @@ module RubyMotionQuery
       if params.count == 1
         param = params.first
         if param.is_a?(Hash)
-          color = Color.from_hex(param[:x] || param[:hex])
+          color = Color.new_from_hex(param[:x] || param[:hex])
           if alpha = param[:a] || param[:alpha]
             color = color.colorWithAlphaComponent(alpha)
           end
 
           color
         else
-          Color.from_hex(params.join)
+          Color.new_from_hex(params.join)
         end
       end
     end
@@ -118,12 +118,29 @@ module RubyMotionQuery
         from_rgba(r, g, b, a ? (a/255.0) : 1.0)
       end
 
+      def new_from_hex(str)
+        r,g,b,a = case (str =~ /^#?(\h{3,8})$/ && $1.size)
+          when 3, 4 then $1.scan(/./ ).map {|c| (c*2).to_i(16) }
+          when 6, 8 then $1.scan(/../).map {|c|     c.to_i(16) }
+          else raise ArgumentError
+        end
+        new_from_rgba(r, g, b, a ? (a/divisor(a)) : 1.0)
+      end
+
       # @return [UIColor]
       #
       # @example
       #   rmq.color.from_rgba(255,255,255,0.5)
       def from_rgba(r,g,b,a)
         UIColor.colorWithRed((r/255.0), green: (g/255.0), blue: (b/255.0), alpha: a)
+      end
+
+      def divisor(val)
+        val % 16 == 0 ? 256.0 : 255.0
+      end
+
+      def new_from_rgba(r,g,b,a)
+        UIColor.colorWithRed((r/divisor(r)), green: (g/divisor(g)), blue: (b/divisor(b)), alpha: a)
       end
 
       # @return [UIColor]

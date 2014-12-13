@@ -135,8 +135,8 @@ describe 'color' do
     end
 
     it 'should return the correct color when `clean` values such as `#808080` are provided' do
-      #TODO
-      1.should.equal(1)
+      @rmq.color('#808080').should == UIColor.colorWithRed(0.5, green: 0.5, blue: 0.5, alpha: 1)
+      @rmq.color('808080').should == UIColor.colorWithRed(0.5, green: 0.5, blue: 0.5, alpha: 1)
     end
 
     it 'raises an ArgumentError for lengths not 3, 4, 6 or 8' do
@@ -146,7 +146,7 @@ describe 'color' do
       should.raise(ArgumentError) do
         @rmq.color('fffffff')
       end
-      should.raise(ArgumentError) do
+   should.raise(ArgumentError) do
         @rmq.color('fffff')
       end
       should.raise(ArgumentError) do
