@@ -2,42 +2,16 @@ module RubyMotionQuery
   class RMQ
     # @return [Color]
     def self.color(*params)
-      return Color if params.empty?
-
-      if params.count == 1
-        param = params.first
-        if param.is_a?(Hash)
-          if (param.keys - [:r, :g, :b, :a, :red, :green, :blue, :alpha]).empty?
-            r = param[:red] || param[:r]
-            g = param[:green] || param[:g]
-            b = param[:blue] || param[:b]
-            a = param[:alpha] || param[:a]
-            Color.new_from_rgba(r, g, b, a)
-          elsif (param.keys - [:h, :s, :b, :a, :hue, :saturation, :brightness, :alpha]).empty?
-            h = param[:hue] || param[:h]
-            s = param[:saturation] || param[:s]
-            b = param[:brightness] || param[:b]
-            a = param[:alpha] || param[:a]
-            Color.from_hsva(h, s, b, a)
-          else
-            color = Color.new_from_hex(param[:x] || param[:hex])
-            if alpha = param[:a] || param[:alpha]
-              color = color.colorWithAlphaComponent(alpha)
-            end
-
-            color
-          end
-        else
-          Color.new_from_hex(params.join)
-        end
+      if params.empty?
+        Color
       else
-        Color.new_from_rgba(*params)
+        ColorFactory.build(params)
       end
     end
 
-  # @return [Color]
-    def color
-      self.class.color
+    # @return [Color]
+    def color(*params)
+      self.class.color(*params)
     end
   end
 
@@ -134,29 +108,12 @@ module RubyMotionQuery
         from_rgba(r, g, b, a ? (a/255.0) : 1.0)
       end
 
-      def new_from_hex(str)
-        r,g,b,a = case (str =~ /^#?(\h{3,8})$/ && $1.size)
-          when 3, 4 then $1.scan(/./ ).map {|c| (c*2).to_i(16) }
-          when 6, 8 then $1.scan(/../).map {|c|     c.to_i(16) }
-          else raise ArgumentError
-        end
-        new_from_rgba(r, g, b, a ? (a/divisor(a)) : 1.0)
-      end
-
       # @return [UIColor]
       #
       # @example
       #   rmq.color.from_rgba(255,255,255,0.5)
       def from_rgba(r,g,b,a)
         UIColor.colorWithRed((r/255.0), green: (g/255.0), blue: (b/255.0), alpha: a)
-      end
-
-      def divisor(val)
-        val % 16 == 0 ? 256.0 : 255.0
-      end
-
-      def new_from_rgba(r,g,b,a)
-        UIColor.colorWithRed((r/divisor(r)), green: (g/divisor(g)), blue: (b/divisor(b)), alpha: a)
       end
 
       # @return [UIColor]
@@ -171,6 +128,77 @@ module RubyMotionQuery
         from_rgba(rand(255), rand(255), rand(255), 1.0)
       end
     end
+  end
 
+  class ColorFactory
+    def self.build(params)
+      return Color if params.empty?
+      return from_rgba_with_precision(*params) if params.count > 1
+
+      param = params.first
+      return from_hex_with_precision(params.join) if param.is_a?(String)
+
+      return try_rgba(param) if rgba_values(param)
+      return try_hsva(param) if hsva_values(param)
+      return try_hex(param) if hex_values(param)
+    end
+
+    def self.try_rgba(values)
+      r = values[:red] || values[:r]
+      g = values[:green] || values[:g]
+      b = values[:blue] || values[:b]
+      a = values[:alpha] || values[:a] || 1.0
+      raise ArgumentError unless r && g && b && a
+
+      from_rgba_with_precision(r, g, b, a)
+    end
+
+    def self.try_hsva(values)
+      h = values[:hue] || values[:h]
+      s = values[:saturation] || values[:s]
+      v = values[:brightness] || values[:b]
+      a = values[:alpha] || values[:a] || 1.0
+      raise ArgumentError unless h && s && s && v && a
+
+      Color.from_hsva(h, s, v, a)
+    end
+
+    def self.try_hex(values)
+      hex = values[:hex] || values[:x]
+      alpha = values[:alpha] || values[:a]
+
+      color = from_hex_with_precision(hex)
+      color = color.colorWithAlphaComponent(alpha) if alpha
+      color
+    end
+
+    def self.rgba_values(values)
+      values[:red] || values[:r] || values[:green] || values[:g] || values[:blue]
+    end
+
+    def self.hsva_values(values)
+      values[:hue] || values[:h] || values[:saturation] || values[:s] || values[:brightness]
+    end
+
+    def self.hex_values(values)
+      values[:hex] || values[:x]
+    end
+
+    def self.divisor(val)
+      val % 16 == 0 ? 256.0 : 255.0
+    end
+
+    def self.from_rgba_with_precision(r,g,b,a)
+      UIColor.colorWithRed((r/divisor(r)), green: (g/divisor(g)), blue: (b/divisor(b)), alpha: a)
+    end
+
+    def self.from_hex_with_precision(str)
+      r,g,b,a = case (str =~ /^#?(\h{3,8})$/ && $1.size)
+                when 3, 4 then $1.scan(/./ ).map {|c| (c*2).to_i(16) }
+                when 6, 8 then $1.scan(/../).map {|c|     c.to_i(16) }
+                else raise ArgumentError
+                end
+      from_rgba_with_precision(r, g, b, a ? (a/divisor(a)) : 1.0)
+    end
   end
 end

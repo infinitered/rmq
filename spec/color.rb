@@ -101,6 +101,14 @@ describe 'color' do
   end
 
   describe 'when passing parameters to color' do
+
+    it 'should work on a RMQ class or instance' do
+      @rmq.color('000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+
+      rmq = RubyMotionQuery::RMQ.new
+      rmq.color('000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
+    end
+
     it 'should return proper colors for values that have 3, 4, 6, and 8 character length strings representing a hex color' do
       @rmq.color('000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
       @rmq.color('0000').should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0)
@@ -171,9 +179,33 @@ describe 'color' do
       @rmq.color(red: 10, green: 10, blue: 10, alpha: 1).should == UIColor.colorWithRed(10/255.0, green: 10/255.0, blue: 10/255.0, alpha: 1)
     end
 
+    it 'raises an ArgumentError when only a portion of the rgba params is provided' do
+      should.raise(ArgumentError) do
+        @rmq.color(r:0)
+      end
+    end
+
+    it 'defaults the alpha value when rgb(a) values are provided' do
+      should.not.raise(ArgumentError) do
+        @rmq.color(r: 0, g: 0, b: 0)
+      end
+    end
+
     it 'should allow hsva params in a hash' do
       @rmq.color(h: 4, s: 3, b: 2, a: 1).should == UIColor.alloc.initWithHue(4, saturation: 3, brightness: 2, alpha: 1)
       @rmq.color(hue: 4, saturation: 3, brightness: 2, alpha: 1).should == UIColor.alloc.initWithHue(4, saturation: 3, brightness: 2, alpha: 1)
+    end
+
+    it 'raises an ArgumentError when only a portion of the hsva params is provided' do
+      should.raise(ArgumentError) do
+        @rmq.color(h: 4)
+      end
+    end
+
+    it 'defaults the alpha value when hsv(a) values are provided' do
+      should.not.raise(ArgumentError) do
+        @rmq.color(h: 4, s: 3, b: 2)
+      end
     end
   end
 end
