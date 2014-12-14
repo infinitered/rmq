@@ -101,6 +101,13 @@ describe 'ext' do
     vc.rmq(view2).apply_style(:style_one)
     view2.style_applied.should == true
   end
+
+  it 'should allow you to create another color from color with options' do
+    color = UIColor.blueColor.with(alpha: 0.5)
+    color.should == UIColor.colorWithRed(0, green: 0, blue: 255, alpha: 0.5)
+    color = UIColor.blueColor.with(red: 255)
+    color.should == UIColor.colorWithRed(255, green: 0, blue: 255, alpha: 1.0)
+  end
 end
 
 class ExtTestView < UIView
