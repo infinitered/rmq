@@ -184,12 +184,8 @@ module RubyMotionQuery
       values[:hex] || values[:x]
     end
 
-    def self.divisor(val)
-      val % 16 == 0 ? 256.0 : 255.0
-    end
-
-    def self.from_rgba_with_precision(r,g,b,a)
-      UIColor.colorWithRed((r/divisor(r)), green: (g/divisor(g)), blue: (b/divisor(b)), alpha: a)
+    def self.from_rgba_with_precision(r,g,b,a=1.0)
+      UIColor.colorWithRed((r/255.0), green: (g/255.0), blue: (b/255.0), alpha: a)
     end
 
     def self.from_hex_with_precision(str)
@@ -198,7 +194,7 @@ module RubyMotionQuery
                 when 6, 8 then $1.scan(/../).map {|c|     c.to_i(16) }
                 else raise ArgumentError
                 end
-      from_rgba_with_precision(r, g, b, a ? (a/divisor(a)) : 1.0)
+      from_rgba_with_precision(r, g, b, a ? (a/255.0) : 1.0)
     end
   end
 end

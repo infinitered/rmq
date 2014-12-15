@@ -142,11 +142,6 @@ describe 'color' do
       @rmq.color(x: '000', alpha: 0.5).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 0.5)
     end
 
-    it 'should return the correct color when `clean` values such as `#808080` are provided' do
-      @rmq.color('#808080').should == UIColor.colorWithRed(0.5, green: 0.5, blue: 0.5, alpha: 1)
-      @rmq.color('808080').should == UIColor.colorWithRed(0.5, green: 0.5, blue: 0.5, alpha: 1)
-    end
-
     it 'raises an ArgumentError for lengths not 3, 4, 6 or 8' do
       should.raise(ArgumentError) do
         @rmq.color('ffffffffffffffff')
@@ -171,7 +166,6 @@ describe 'color' do
     it 'should allow rgba params' do
       @rmq.color(0,0,0,1).should == UIColor.colorWithRed(0, green: 0, blue: 0, alpha: 1)
       @rmq.color(10,10,10,1).should == UIColor.colorWithRed(10/255.0, green: 10/255.0, blue: 10/255.0, alpha: 1)
-      @rmq.color(16,16,16,1).should == UIColor.colorWithRed(16/256.0, green: 16/256.0, blue: 16/256.0, alpha: 1)
     end
 
     it 'should allow rgba params in a hash' do
