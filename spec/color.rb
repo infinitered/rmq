@@ -201,5 +201,11 @@ describe 'color' do
         @rmq.color(h: 4, s: 3, b: 2)
       end
     end
+    it 'should allow you to create another color from color with options' do
+      color = @rmq.color(base: UIColor.blueColor, alpha: 0.5)
+      color.should == UIColor.colorWithRed(0, green: 0, blue: 255, alpha: 0.5)
+      color = @rmq.color(base: color, red: 255)
+      color.should == UIColor.colorWithRed(255, green: 0, blue: 255, alpha: 0.5)
+    end
   end
 end
