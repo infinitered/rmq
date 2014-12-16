@@ -25,7 +25,7 @@ class MainControllerStylesheet < ApplicationStylesheet
     st.text = 'Blink labels'
     st.font = font.system(10)
     st.color = color.white
-    st.background_color = color.from_hex('ed1160')
+    st.background_color = color('ed1160')
   end
 
   def make_buttons_throb_button(st)
@@ -39,7 +39,7 @@ class MainControllerStylesheet < ApplicationStylesheet
     st.text = 'Animate move and scale'
     st.font = font.system(10)
     st.color = color.white
-    st.background_color = color.from_hex('ed1160')
+    st.background_color = color('ed1160')
     st.z_position = 99
     st.color = color.white
   end
@@ -131,21 +131,21 @@ class MainControllerStylesheet < ApplicationStylesheet
   def popup_section(st)
     t = (landscape? && iphone?) ? 100 : 180
     st.frame = {l: @padding, t: t, w: 100 + (@padding * 2), h: 60}
-    st.background_color = color.from_hex('faa619')
+    st.background_color = color('faa619')
   end
 
   def open_popup(st)
     st.frame = {l: @padding, t: 30, w: 100, h: 20}
     st.text = 'Open popup'
     st.font = font.system(11)
-    st.color = color.from_hex('faa619')
+    st.color = color('faa619')
     st.enabled = true
     st.background_color = color.white
   end
 
   def open_popup_disabled(st)
     st.enabled = false
-    st.color = color.from_hex('de8714')
+    st.color = color('de8714')
   end
 
   def title_label(st)
