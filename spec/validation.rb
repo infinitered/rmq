@@ -22,6 +22,7 @@ describe 'validation' do
       @rmq.validation.valid?('test@test', :email).should == false
       @rmq.validation.valid?('test@test.com', :email).should == true
       @rmq.validation.valid?('TEST@TEST.COM', :email).should == true
+      @rmq.validation.valid?('tEsTcAsE@tEsT.cOm', :email).should == true
       @rmq.validation.valid?('test', :email).should == false
     end
 
