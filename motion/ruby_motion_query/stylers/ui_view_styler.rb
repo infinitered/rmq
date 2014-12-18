@@ -25,6 +25,20 @@ module RubyMotionQuery
       alphabet: UIKeyboardTypeASCIICapable
     }
 
+    RETURN_KEY_TYPES = {
+      default: UIReturnKeyDefault,
+      go: UIReturnKeyGo,
+      google: UIReturnKeyGoogle,
+      join: UIReturnKeyJoin,
+      next: UIReturnKeyNext,
+      route: UIReturnKeyRoute,
+      search: UIReturnKeySearch,
+      send: UIReturnKeySend,
+      yahoo: UIReturnKeyYahoo,
+      done: UIReturnKeyDone,
+      emergency_call: UIReturnKeyEmergencyCall
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)

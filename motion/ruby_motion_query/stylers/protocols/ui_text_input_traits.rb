@@ -20,7 +20,7 @@ module RubyMotionQuery
         def keyboard_type=(v) ; view.setKeyboardType(KEYBOARD_TYPES[v] || v) ; end
 
         def return_key_type ; view.returnKeyType ; end
-        def return_key_type=(v) ; view.returnKeyType = v ; end
+        def return_key_type=(v) ; view.setReturnKeyType(RETURN_KEY_TYPES[v] || v) ; end
 
         def secure_text_entry ; view.secureTextEntry ; end
         def secure_text_entry=(v) ; view.secureTextEntry = v ; end
