@@ -58,26 +58,18 @@ describe 'stylesheet' do
       size = @screen.bounds.size
 
       rmq.device.orientation = :portrait
-      @vc.rmq.stylesheet.app_width.should == size.width
-      @vc.rmq.stylesheet.app_height.should == size.height
       @vc.rmq.stylesheet.screen_width.should == size.width
       @vc.rmq.stylesheet.screen_height.should == size.height
 
       rmq.device.orientation = :landscape_left
-      @vc.rmq.stylesheet.app_width.should == size.width
-      @vc.rmq.stylesheet.app_height.should == size.height
       @vc.rmq.stylesheet.screen_width.should == size.height
       @vc.rmq.stylesheet.screen_height.should == size.width
 
       rmq.device.orientation = :landscape_right
-      @vc.rmq.stylesheet.app_width.should == size.width
-      @vc.rmq.stylesheet.app_height.should == size.height
       @vc.rmq.stylesheet.screen_width.should == size.height
       @vc.rmq.stylesheet.screen_height.should == size.width
 
       rmq.device.orientation = nil
-      @vc.rmq.stylesheet.app_width.should == size.width
-      @vc.rmq.stylesheet.app_height.should == size.height
       @vc.rmq.stylesheet.screen_width.should == size.width
       @vc.rmq.stylesheet.screen_height.should == size.height
     end
@@ -100,7 +92,7 @@ describe 'stylesheet' do
     foo_view = UIView.alloc.initWithFrame(CGRectZero)
     rmq3 = rmq1.wrap(foo_view)
     rmq3.parent_rmq.should == rmq1
-    RubyMotionQuery::RMQ.weak_ref_is_same_object?(rmq3.view_controller, rmq1.view_controller).should == true
+    rmq3.view_controller.should == rmq1.view_controller
     rmq3.stylesheet.should == ss1
 
     bar_view = UIView.alloc.initWithFrame(CGRectZero)

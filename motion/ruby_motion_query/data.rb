@@ -44,7 +44,6 @@ module RubyMotionQuery
       end
     end
 
-    # @deprecated - use styles
     def style_name
       styles.first
     end

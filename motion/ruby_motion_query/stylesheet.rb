@@ -230,21 +230,12 @@ module RubyMotionQuery
       RMQ.app.window
     end
 
-    # @deprecated - use device_width
-    def app_width
+    def device_width
       device.width
     end
-    alias :device_width :app_width
 
-    # @deprecated - use device_height
-    def app_height
+    def device_height
       device.height
-    end
-    alias :device_width :app_width
-
-    # @deprecated - use device_width and device_height in your stylesheets
-    def app_size
-      CGSizeMake(device.width, device.height)
     end
 
     def screen_width
@@ -253,11 +244,6 @@ module RubyMotionQuery
 
     def screen_height
       device.screen_height
-    end
-
-    # @deprecated - use screen_width and screen_height in your stylesheets
-    def screen_size
-      CGSizeMake(screen_width, screen_height)
     end
 
     def content_width

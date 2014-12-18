@@ -29,13 +29,13 @@ module RubyMotionQuery
     # rmq(my_view).layout("a1:b5").show
     # rmq(my_view, my_other_view).layout grid: "b2", w: 100, h: 200
     # rmq(my_view, my_other_view).layout g: "b2", w: 100, h: 200
-    # 
+    #
     # @example with padding
     # mq(my_view).layout(grid: "b2:d14", padding: 5)
     # mq(my_view).layout(grid: "b2:d14", padding: {l: 5, t: 0, r: 5, b:0})
     #
     # @return [RMQ]
-    def layout(params) 
+    def layout(params)
       selected.each do |view|
         RubyMotionQuery::Rect.update_view_frame(view, params)
       end
@@ -47,7 +47,7 @@ module RubyMotionQuery
 
     # @return [RMQ]
     # TODO move nudge implementation into Rect
-    def nudge(params) 
+    def nudge(params)
       left = params[:left] || params[:l] || 0
       right = params[:right] || params[:r] || 0
       up = params[:up] || params[:u] || 0
@@ -79,12 +79,12 @@ module RubyMotionQuery
       current_end = nil
 
       selected.each_with_index do |view, i|
-        st = self.styler_for(view)
+        rect = view.rmq.frame
 
         if type == :vertical
-          next if st.height == 0
+          next if rect.height == 0
         else
-          next if st.width == 0
+          next if rect.width == 0
         end
 
         view_margin = if (margins && margins[i])
@@ -93,15 +93,20 @@ module RubyMotionQuery
           margin
         end
 
+        t = rect.top
+        l = rect.left
+
         if type == :vertical
-          current_end = (st.top - view_margin) unless current_end
-          st.top = current_end + view_margin
-          current_end = st.bottom
+          current_end = (rect.top - view_margin) unless current_end
+          t = current_end + view_margin
+          current_end = rect.bottom
         else
-          current_end = (st.left - view_margin) unless current_end
-          st.left = current_end + view_margin
-          current_end = st.right
+          current_end = (rect.left - view_margin) unless current_end
+          l = current_end + view_margin
+          current_end = rect.right
         end
+
+        view.rmq.layout(l: l, t: t)
       end
 
       self
@@ -109,19 +114,20 @@ module RubyMotionQuery
 
     def resize_to_fit_subviews
       selected.each do |view|
-        st = self.styler_for(view)
-
         w = 0
         h = 0
 
         view.subviews.each do |subview|
-          sub_st = self.styler_for(subview)
-          w = [sub_st.right, w].max
-          h = [sub_st.bottom, h].max
+          rect = subview.rmq.frame
+          w = [rect.right, w].max
+          h = [rect.bottom, h].max
         end
 
-        st.width = w if st.width < w
-        st.height = h if st.height < h
+        rect = view.rmq.frame
+        w = rect.width if w == 0
+        h = rect.height if h == 0
+
+        view.rmq.layout(w: w, h: h)
       end
 
       self

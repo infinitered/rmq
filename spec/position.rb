@@ -72,12 +72,26 @@ describe 'position' do
     origins.should == [ CGPoint.new(0,0),CGPoint.new(10,0) ]
   end
 
-  it 'should resize to fit subviews' do
-    view = @vc.rmq.append(UIView).get
-    view.rmq.append(UIButton).resize(height: 50, width: 10)
-    view.size.width.should == 0
+  it 'should resize to fit subviews by making the view smaller' do
+    view = @vc.rmq.append(UIView).layout(h: 100, w: 20).get
+    view.rmq.append(UIButton).layout(h: 50, w: 10)
+    view.rmq.append(UIButton).layout(h: 5, w: 1)
+    view.size.width.should == 20
     view.rmq.resize_to_fit_subviews
     view.size.width.should == 10
+    view.size.height.should == 50
+  end
+
+  it 'should resize to fit subviews by making the view larger' do
+    view = @vc.rmq.append(UIView).layout(h: 100, w: 20).get
+    view.rmq.append(UIButton).layout(h: 50, w: 10)
+    view.rmq.append(UILabel).layout(h: 500, w: 70)
+    view.rmq.append(UIView).layout(h: 5, w: 1)
+    view.size.width.should == 20
+    view.size.height.should == 100
+    view.rmq.resize_to_fit_subviews
+    view.size.width.should == 70
+    view.size.height.should == 500
   end
 
   it 'should nudge a view in various directions' do

@@ -72,14 +72,6 @@ module RubyMotionQuery
         o.respond_to?(:weakref_alive?) # This is the only way to do this currently
       end
 
-      # @deprecated this has been fixed in RubyMotion 2.17, so this method is no longer needed.
-      def weak_ref_is_same_object?(a, b)
-        # This was the workaround that isn't needed anymore, for your reference:
-        #(a.class == b.class) && (a.object_id == b.object_id)
-
-        a == b
-      end
-
       # Gives you the value of a weakref, if the object it wraps no longer exists, returns nil
       def weak_ref_value(o)
         if o && o.weakref_alive?

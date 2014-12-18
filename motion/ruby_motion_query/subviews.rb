@@ -57,7 +57,6 @@ module RubyMotionQuery
         end
 
         if created
-          new_view.rmq_did_create(self.wrap(new_view))
           new_view.rmq_created
         end
         new_view.rmq_build if built

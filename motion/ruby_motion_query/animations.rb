@@ -181,7 +181,7 @@ module RubyMotionQuery
         options: UIViewAnimationOptionCurveEaseIn|UIViewAnimationOptionBeginFromCurrentState,
         animations: ->(cq) {
           cq.style do |st|
-            st.top = @rmq.device.height + st.height
+            st.frame = {t: @rmq.device.height + st.frame.height}
             st.rotation = 180 + rand(50)
           end
         },

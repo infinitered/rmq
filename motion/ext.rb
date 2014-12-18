@@ -13,10 +13,6 @@ class UIView
     @_rmq_data ||= RubyMotionQuery::ViewData.new
   end
 
-  # @deprecated No longer needed, use rmq_build
-  def rmq_did_create(self_in_rmq)
-  end
-
   def rmq_created
   end
 

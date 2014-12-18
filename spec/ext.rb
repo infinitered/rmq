@@ -42,12 +42,6 @@ describe 'ext' do
     view.rmq.context.should == view
   end
 
-  it 'DEPRECATED - should call rmq_did_create after appending to view' do
-    vc = UIViewController.alloc.init
-    view = vc.rmq.append(ExtTestView).get
-    view.controller.should == vc
-  end
-
   it 'should call rmq_did_create after creating a view' do
     vc = UIViewController.alloc.init
     view = vc.rmq.create(ExtTestView).get
