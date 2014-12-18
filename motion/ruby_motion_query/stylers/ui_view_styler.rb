@@ -9,6 +9,22 @@ module RubyMotionQuery
       natural: NSTextAlignmentNatural
     }
 
+    KEYBOARD_TYPES = {
+      default: UIKeyboardTypeDefault,
+      ascii: UIKeyboardTypeASCIICapable,
+      numbers_punctuation: UIKeyboardTypeNumbersAndPunctuation,
+      url: UIKeyboardTypeURL,
+      number_pad: UIKeyboardTypeNumberPad,
+      phone_pad: UIKeyboardTypePhonePad,
+      name_phone_pad: UIKeyboardTypeNamePhonePad,
+      email_address: UIKeyboardTypeEmailAddress,
+      email: UIKeyboardTypeEmailAddress, # Duplicate to help developers
+      decimal_pad: UIKeyboardTypeDecimalPad,
+      twitter: UIKeyboardTypeTwitter,
+      web_search: UIKeyboardTypeWebSearch,
+      alphabet: UIKeyboardTypeASCIICapable
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)

@@ -6,6 +6,11 @@ describe 'stylers/ui_text_field' do
       st.placeholder = "placeholder"
       st.border_style = UITextBorderStyleRoundedRect
       st.autocapitalization_type = UITextAutocapitalizationTypeWords
+      st.keyboard_type = UIKeyboardTypeDefault
+    end
+
+    def ui_text_field_email(st)
+      st.keyboard_type = :email_address
     end
   end
 
@@ -28,5 +33,10 @@ describe 'stylers/ui_text_field' do
       v.autocapitalizationType.should == UITextAutocapitalizationTypeWords
       v.keyboardType.should == UIKeyboardTypeDefault
     end
+  end
+
+  it 'should allow setting a keyboard type via symbol' do
+    view = @vc.rmq.append(@view_klass, :ui_text_field_email).get
+    view.keyboardType.should == UIKeyboardTypeEmailAddress
   end
 end
