@@ -26,7 +26,7 @@ module RubyMotionQuery
         def secure_text_entry=(v) ; view.secureTextEntry = v ; end
 
         def spell_checking_type ; view.spellCheckingType ; end
-        def spell_checking_type=(v) ; view.spellCheckingType = v ; end
+        def spell_checking_type=(v) ; view.setSpellCheckingType(SPELL_CHECKING_TYPES[v] || v) ; end
       end
     end
   end

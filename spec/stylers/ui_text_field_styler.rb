@@ -8,6 +8,7 @@ describe 'stylers/ui_text_field' do
       st.autocapitalization_type = UITextAutocapitalizationTypeWords
       st.keyboard_type = UIKeyboardTypeDefault
       st.return_key_type = UIReturnKeyNext
+      st.spell_checking_type = UITextSpellCheckingTypeYes
     end
 
     def ui_text_field_email(st)
@@ -16,6 +17,10 @@ describe 'stylers/ui_text_field' do
 
     def ui_text_field_google(st)
       st.return_key_type = :google
+    end
+
+    def ui_text_field_no_spell_check(st)
+      st.spell_checking_type = :no
     end
   end
 
@@ -38,6 +43,7 @@ describe 'stylers/ui_text_field' do
       v.autocapitalizationType.should == UITextAutocapitalizationTypeWords
       v.keyboardType.should == UIKeyboardTypeDefault
       v.returnKeyType.should == UIReturnKeyNext
+      v.spellCheckingType.should == UITextSpellCheckingTypeYes
     end
   end
 
@@ -49,5 +55,10 @@ describe 'stylers/ui_text_field' do
   it 'should allow setting a return key via symbol' do
     view = @vc.rmq.append(@view_klass, :ui_text_field_google).get
     view.returnKeyType.should == UIReturnKeyGoogle
+  end
+
+  it 'should allow setting a spell checking type via symbol' do
+    view = @vc.rmq.append(@view_klass, :ui_text_field_no_spell_check).get
+    view.spellCheckingType.should == UITextSpellCheckingTypeNo
   end
 end

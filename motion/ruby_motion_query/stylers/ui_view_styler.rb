@@ -39,6 +39,12 @@ module RubyMotionQuery
       emergency_call: UIReturnKeyEmergencyCall
     }
 
+    SPELL_CHECKING_TYPES = {
+      default: UITextSpellCheckingTypeDefault,
+      no: UITextSpellCheckingTypeNo,
+      yes: UITextSpellCheckingTypeYes
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)
