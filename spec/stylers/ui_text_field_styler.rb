@@ -21,7 +21,12 @@ describe 'stylers/ui_text_field' do
     view = @vc.rmq.append(@view_klass, :ui_text_field_kitchen_sink).get
 
     view.tap do |v|
-      1.should == 1
+      v.text.should == 'foo'
+      v.textAlignment.should  == NSTextAlignmentCenter
+      v.placeholder.should == "placeholder"
+      v.borderStyle.should == UITextBorderStyleRoundedRect
+      v.autocapitalizationType.should == UITextAutocapitalizationTypeWords
+      v.keyboardType.should == UIKeyboardTypeDefault
     end
   end
 end
