@@ -45,6 +45,14 @@ module RubyMotionQuery
       yes: UITextSpellCheckingTypeYes
     }
 
+    BORDER_STYLES = {
+      none: UITextBorderStyleNone,
+      line: UITextBorderStyleLine,
+      bezel: UITextBorderStyleBezel,
+      rounded_rect: UITextBorderStyleRoundedRect,
+      rounded: UITextBorderStyleRoundedRect
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)

@@ -22,6 +22,10 @@ describe 'stylers/ui_text_field' do
     def ui_text_field_no_spell_check(st)
       st.spell_checking_type = :no
     end
+
+    def ui_text_field_line_border(st)
+      st.border_style = :line
+    end
   end
 
   before do
@@ -60,5 +64,10 @@ describe 'stylers/ui_text_field' do
   it 'should allow setting a spell checking type via symbol' do
     view = @vc.rmq.append(@view_klass, :ui_text_field_no_spell_check).get
     view.spellCheckingType.should == UITextSpellCheckingTypeNo
+  end
+
+  it 'should allow setting a border style via symbol' do
+    view = @vc.rmq.append(@view_klass, :ui_text_field_line_border).get
+    view.borderStyle.should == UITextBorderStyleLine
   end
 end
