@@ -54,7 +54,7 @@ module RubyMotionQuery
 
       # Setting the View's Background Appearance
       def border_style ; view.borderStyle ; end
-      def border_style=(v) ; view.borderStyle = v ; end
+      def border_style=(v) ; view.setBorderStyle(BORDER_STYLES[v] || v) ; end
 
       def background ; view.background ; end
       def background=(v) ; view.background = v ; end

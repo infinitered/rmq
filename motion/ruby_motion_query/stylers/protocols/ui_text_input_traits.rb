@@ -17,16 +17,16 @@ module RubyMotionQuery
         def keyboard_appearance=(v) ; view.keyboardAppearance = v ; end
 
         def keyboard_type ; view.keyboardType ; end
-        def keyboard_type=(v) ; view.keyboardType = v ; end
+        def keyboard_type=(v) ; view.setKeyboardType(KEYBOARD_TYPES[v] || v) ; end
 
         def return_key_type ; view.returnKeyType ; end
-        def return_key_type=(v) ; view.returnKeyType = v ; end
+        def return_key_type=(v) ; view.setReturnKeyType(RETURN_KEY_TYPES[v] || v) ; end
 
         def secure_text_entry ; view.secureTextEntry ; end
         def secure_text_entry=(v) ; view.secureTextEntry = v ; end
 
         def spell_checking_type ; view.spellCheckingType ; end
-        def spell_checking_type=(v) ; view.spellCheckingType = v ; end
+        def spell_checking_type=(v) ; view.setSpellCheckingType(SPELL_CHECKING_TYPES[v] || v) ; end
       end
     end
   end

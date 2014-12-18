@@ -9,6 +9,50 @@ module RubyMotionQuery
       natural: NSTextAlignmentNatural
     }
 
+    KEYBOARD_TYPES = {
+      default: UIKeyboardTypeDefault,
+      ascii: UIKeyboardTypeASCIICapable,
+      numbers_punctuation: UIKeyboardTypeNumbersAndPunctuation,
+      url: UIKeyboardTypeURL,
+      number_pad: UIKeyboardTypeNumberPad,
+      phone_pad: UIKeyboardTypePhonePad,
+      name_phone_pad: UIKeyboardTypeNamePhonePad,
+      email_address: UIKeyboardTypeEmailAddress,
+      email: UIKeyboardTypeEmailAddress, # Duplicate to help developers
+      decimal_pad: UIKeyboardTypeDecimalPad,
+      twitter: UIKeyboardTypeTwitter,
+      web_search: UIKeyboardTypeWebSearch,
+      alphabet: UIKeyboardTypeASCIICapable
+    }
+
+    RETURN_KEY_TYPES = {
+      default: UIReturnKeyDefault,
+      go: UIReturnKeyGo,
+      google: UIReturnKeyGoogle,
+      join: UIReturnKeyJoin,
+      next: UIReturnKeyNext,
+      route: UIReturnKeyRoute,
+      search: UIReturnKeySearch,
+      send: UIReturnKeySend,
+      yahoo: UIReturnKeyYahoo,
+      done: UIReturnKeyDone,
+      emergency_call: UIReturnKeyEmergencyCall
+    }
+
+    SPELL_CHECKING_TYPES = {
+      default: UITextSpellCheckingTypeDefault,
+      no: UITextSpellCheckingTypeNo,
+      yes: UITextSpellCheckingTypeYes
+    }
+
+    BORDER_STYLES = {
+      none: UITextBorderStyleNone,
+      line: UITextBorderStyleLine,
+      bezel: UITextBorderStyleBezel,
+      rounded_rect: UITextBorderStyleRoundedRect,
+      rounded: UITextBorderStyleRoundedRect
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)
