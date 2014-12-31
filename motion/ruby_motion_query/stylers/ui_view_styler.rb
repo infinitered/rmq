@@ -225,6 +225,13 @@ module RubyMotionQuery
         @view.transform = CGAffineTransformMakeRotation(radians)
       end
 
+      def transform=(transformation)
+        @view.transform = transformation
+      end
+      def transform
+        @view.transform
+      end
+
       def content_mode=(value)
         @view.setContentMode value
       end
