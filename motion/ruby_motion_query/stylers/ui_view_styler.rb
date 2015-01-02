@@ -309,6 +309,129 @@ module RubyMotionQuery
       def alpha ; view.alpha ; end
       def alpha=(v) ; view.alpha = v ; end
 
+
+
+
+      # @deprecated - use frame hashs
+      def left=(value)
+        f = @view.frame
+        f.origin.x = value
+        @view.frame = f
+      end
+
+      # @deprecated - use st.frame.left
+      def left
+        @view.origin.x
+      end
+
+      # @deprecated - use st.frame.x
+      alias :x :left
+
+      # @deprecated - use frame hash
+      def top=(value)
+        f = @view.frame
+        f.origin.y = value
+        @view.frame = f
+      end
+
+      # @deprecated - use st.frame.top
+      def top
+        @view.origin.y
+      end
+
+      # @deprecated - use st.frame.y
+      alias :y :top
+
+      # @deprecated - use frame hash
+      def width=(value)
+        f = @view.frame
+        f.size.width = value
+        @view.frame = f
+      end
+
+      # @deprecated - use st.frame.width
+      def width
+        @view.size.width
+      end
+
+      # @deprecated - use frame hash
+      def height=(value)
+        f = @view.frame
+        f.size.height = value
+        @view.frame = f
+      end
+
+      # @deprecated - use st.frame.height
+      def height
+        @view.size.height
+      end
+
+      # @deprecated - use frame hash
+      def bottom=(value)
+        self.top = value - self.height
+      end
+
+      # @deprecated - st.frame.bottom
+      def bottom
+        self.top + self.height
+      end
+
+      # @deprecated - use frame hash
+      def from_bottom=(value)
+        if sv = @view.superview
+          self.top = sv.bounds.size.height - self.height - value
+        end
+      end
+
+      # @deprecated - st.frame.from_bottom
+      def from_bottom
+        if sv = @view.superview
+          sv.bounds.size.height - self.top
+        end
+      end
+
+      # @deprecated - use frame hash
+      def right=(value)
+        self.left = value - self.width
+      end
+
+      # @deprecated - st.frame.right
+      def right
+        self.left + self.width
+      end
+
+      # @deprecated - use frame hash
+      def from_right=(value)
+        if superview = @view.superview
+          self.left = superview.bounds.size.width - self.width - value
+        end
+      end
+
+      # @deprecated - st.frame.from_right
+      def from_right
+        if superview = @view.superview
+          superview.bounds.size.width - self.left
+        end
+      end
+
+      # @deprecated - use frame hash
+      # param can be :horizontal, :vertical, :both
+      def centered=(option)
+        if parent = @view.superview
+          case option
+          when :horizontal
+            # Not using parent.center.x here for orientation
+            self.center_x = parent.bounds.size.width / 2
+          when :vertical
+            self.center_y = parent.bounds.size.height / 2
+          else
+            @view.center = [parent.bounds.size.width / 2, parent.bounds.size.height / 2]
+          end
+        end
+      end
+
+
+
       private
 
       def is_color(value)
