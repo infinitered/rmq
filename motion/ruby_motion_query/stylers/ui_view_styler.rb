@@ -314,6 +314,7 @@ module RubyMotionQuery
 
       # @deprecated - use frame hashs
       def left=(value)
+        Deprecation.warn(:left=, "Set `left` with the frame hash.")
         f = @view.frame
         f.origin.x = value
         @view.frame = f
@@ -321,6 +322,7 @@ module RubyMotionQuery
 
       # @deprecated - use st.frame.left
       def left
+        Deprecation.warn(:left, "Use `st.frame.left`.")
         @view.origin.x
       end
 
@@ -329,6 +331,7 @@ module RubyMotionQuery
 
       # @deprecated - use frame hash
       def top=(value)
+        Deprecation.warn(:top=, "Set `top` with the frame hash.")
         f = @view.frame
         f.origin.y = value
         @view.frame = f
@@ -336,6 +339,7 @@ module RubyMotionQuery
 
       # @deprecated - use st.frame.top
       def top
+        Deprecation.warn(:top, "Use `st.frame.top`.")
         @view.origin.y
       end
 
@@ -344,6 +348,7 @@ module RubyMotionQuery
 
       # @deprecated - use frame hash
       def width=(value)
+        Deprecation.warn(:width=, "Set `width` with the frame hash.")
         f = @view.frame
         f.size.width = value
         @view.frame = f
@@ -351,11 +356,13 @@ module RubyMotionQuery
 
       # @deprecated - use st.frame.width
       def width
+        Deprecation.warn(:width, "Use `st.frame.width`.")
         @view.size.width
       end
 
       # @deprecated - use frame hash
       def height=(value)
+        Deprecation.warn(:height=, "Set `height` with the frame hash.")
         f = @view.frame
         f.size.height = value
         @view.frame = f
@@ -363,21 +370,25 @@ module RubyMotionQuery
 
       # @deprecated - use st.frame.height
       def height
+        Deprecation.warn(:height, "Use `st.frame.height`.")
         @view.size.height
       end
 
       # @deprecated - use frame hash
       def bottom=(value)
+        Deprecation.warn(:bottom=, "Set `bottom` with the frame hash.")
         self.top = value - self.height
       end
 
       # @deprecated - st.frame.bottom
       def bottom
+        Deprecation.warn(:bottom, "Use `st.frame.bottom`.")
         self.top + self.height
       end
 
       # @deprecated - use frame hash
       def from_bottom=(value)
+        Deprecation.warn(:from_bottom=, "Set `from_bottom` with the frame hash.")
         if sv = @view.superview
           self.top = sv.bounds.size.height - self.height - value
         end
@@ -385,6 +396,7 @@ module RubyMotionQuery
 
       # @deprecated - st.frame.from_bottom
       def from_bottom
+        Deprecation.warn(:from_bottom, "Use `st.frame.from_bottom`.")
         if sv = @view.superview
           sv.bounds.size.height - self.top
         end
@@ -392,16 +404,19 @@ module RubyMotionQuery
 
       # @deprecated - use frame hash
       def right=(value)
+        Deprecation.warn(:right=, "Set `right` with the frame hash.")
         self.left = value - self.width
       end
 
       # @deprecated - st.frame.right
       def right
+        Deprecation.warn(:right, "Use `st.frame.right`.")
         self.left + self.width
       end
 
       # @deprecated - use frame hash
       def from_right=(value)
+        Deprecation.warn(:from_right=, "Set `from_right` with the frame hash.")
         if superview = @view.superview
           self.left = superview.bounds.size.width - self.width - value
         end
@@ -409,6 +424,7 @@ module RubyMotionQuery
 
       # @deprecated - st.frame.from_right
       def from_right
+        Deprecation.warn(:from_right, "Use `st.frame.from_right`.")
         if superview = @view.superview
           superview.bounds.size.width - self.left
         end
@@ -417,6 +433,7 @@ module RubyMotionQuery
       # @deprecated - use frame hash
       # param can be :horizontal, :vertical, :both
       def centered=(option)
+        Deprecation.warn(:centered=, "Use the frame hash to center a view.")
         if parent = @view.superview
           case option
           when :horizontal
@@ -429,8 +446,6 @@ module RubyMotionQuery
           end
         end
       end
-
-
 
       private
 
