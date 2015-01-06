@@ -81,12 +81,6 @@ module RubyMotionQuery
       selected.each_with_index do |view, i|
         rect = view.rmq.frame
 
-        if type == :vertical
-          next if rect.height == 0
-        else
-          next if rect.width == 0
-        end
-
         view_margin = if (margins && margins[i])
           margins[i]
         else
@@ -99,11 +93,11 @@ module RubyMotionQuery
         if type == :vertical
           current_end = (rect.top - view_margin) unless current_end
           t = current_end + view_margin
-          current_end = rect.bottom
+          current_end = t + rect.height
         else
           current_end = (rect.left - view_margin) unless current_end
           l = current_end + view_margin
-          current_end = rect.right
+          current_end = l + rect.width
         end
 
         view.rmq.layout(l: l, t: t)

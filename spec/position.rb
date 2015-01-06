@@ -50,27 +50,51 @@ describe 'position' do
     end
   end
 
-  it 'should distribute multiple views with each other' do
-    view = @vc.rmq.append(UIView).get
-    view.rmq.append(UIButton).resize(height: 50, width: 10)
-    view.rmq.append(UIButton).resize(height: 50, width: 10)
-    origins = view.rmq(UIButton).get.collect(&:origin)
-    origins.should == [ CGPoint.new(0,0),CGPoint.new(0,0) ]
+  it 'should distribute horizontally with margin set' do
+    q = @vc.rmq
+    a = q.append(UIView).layout(l: 5, t: 0, w: 10, h: 30).get
+    b = q.append(UIButton).layout(l: 120, t: 20, w: 70, h: 10).get
+    c = q.append(UILabel).layout(l: 22, t: 12, w: 0, h: 0).get
+    d = q.append(UILabel).layout(l: 60, t: 10, w: 40, h: 20).get
 
-    view.rmq.all.distribute
-    origins = view.rmq(UIButton).get.collect(&:origin)
-    origins.should == [ CGPoint.new(0,0),CGPoint.new(0,50) ]
-
-    view.rmq(UIButton).move(l:0, t:0)
-    view.rmq.all.distribute(:vertical, margin: 10)
-    origins = view.rmq(UIButton).get.collect(&:origin)
-    origins.should == [ CGPoint.new(0,0),CGPoint.new(0,60) ]
-
-    view.rmq(UIButton).move(l:0, t:0)
-    view.rmq.all.distribute(:horizontal)
-    origins = view.rmq(UIButton).get.collect(&:origin)
-    origins.should == [ CGPoint.new(0,0),CGPoint.new(10,0) ]
+    @vc.rmq(a, b, c, d).distribute(:horizontal, margin: 6)
+    a.rmq.frame.left.should == 5
+    b.rmq.frame.left.should == a.rmq.frame.right + 6
+    c.rmq.frame.left.should == b.rmq.frame.right + 6
+    d.rmq.frame.left.should == c.rmq.frame.right + 6
   end
+
+  it 'should distribute vertically with margin set' do
+    q = @vc.rmq
+
+    a = q.append(UIView).layout(l: 5, t: 0, w: 10, h: 30).get
+    b = q.append(UIButton).layout(l: 120, t: 20, w: 70, h: 10).get
+    c = q.append(UILabel).layout(l: 22, t: 12, w: 0, h: 0).get
+    d = q.append(UILabel).layout(l: 60, t: 10, w: 40, h: 20).get
+
+    @vc.rmq(a, b, c, d).distribute(:vertical, margin: 7)
+    a.rmq.frame.top.should == 0
+    b.rmq.frame.top.should == 30 + 7
+    c.rmq.frame.top.should == (30 + 7) + 10 + 7
+    d.rmq.frame.top.should == ((30 + 7) + 10 + 7) + 7
+  end
+
+  it 'should distribute vertically by default' do
+    q = @vc.rmq
+
+    a = q.append(UIView).layout(l: 5, t: 0, w: 10, h: 30).get
+    b = q.append(UIButton).layout(l: 120, t: 20, w: 70, h: 10).get
+    c = q.append(UILabel).layout(l: 22, t: 12, w: 0, h: 0).get
+    d = q.append(UILabel).layout(l: 60, t: 10, w: 40, h: 20).get
+
+    @vc.rmq(a, b, c, d).distribute
+    a.rmq.frame.top.should == 0
+    b.rmq.frame.top.should == 30
+    c.rmq.frame.top.should == 30 + 10
+    d.rmq.frame.top.should == 30 + 10
+  end
+
+  # TODO test distribute with [5,5,10,5,10,5,10,20]
 
   it 'should resize to fit subviews by making the view smaller' do
     view = @vc.rmq.append(UIView).layout(h: 100, w: 20).get
