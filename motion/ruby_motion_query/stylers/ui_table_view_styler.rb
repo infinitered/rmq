@@ -14,6 +14,10 @@ module RubyMotionQuery
       def allows_selection=(value) ; @view.allowsSelection = value ; end
       def allows_selection ; @view.allowsSelection ; end
 
+      def separator_inset=(value)
+        @view.separatorInset = value
+      end
+
       SEPARATOR_STYLES = {
         none: UITableViewCellSeparatorStyleNone,
         single: UITableViewCellSeparatorStyleSingleLine,
@@ -21,6 +25,5 @@ module RubyMotionQuery
       }
 
     end
-
   end
 end
