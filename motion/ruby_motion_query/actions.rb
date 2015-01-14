@@ -24,7 +24,7 @@ module RubyMotionQuery
           when UIButton             then view.setTitle(new_data, forState: UIControlStateNormal)
           when UIImageView          then view.image = new_data
           #when UITableView          then
-          #when UISwitch             then
+          when UISwitch             then view.setOn(new_data)
           #when UIDatePicker         then
           #when UISegmentedControl   then
           #when UIRefreshControl     then

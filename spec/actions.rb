@@ -158,6 +158,13 @@ describe 'actions' do
     rmq.create(UITextField).data('bar').data.should == 'bar'
   end
 
+  it 'reads and sets data for UISwitch' do
+    switchy = rmq.create(UISwitch).data(true)
+    switchy.get.isOn.should == true
+    switchy.data(false)
+    switchy.get.isOn.should == false
+  end
+
   it 'should allow you to set data to nil' do
     q = rmq.create(UILabel)
     q.data(nil)
