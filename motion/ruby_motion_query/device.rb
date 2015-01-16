@@ -176,6 +176,23 @@ module RubyMotionQuery
         UIDeviceOrientationFaceDown => :face_down
       }
 
+      def log
+        puts "Device Info:\n" << "-" * 12
+        [:simulator?, :orientation, :retina?, :screen_height, :screen_width, :ios_version].each do |method|
+          puts "#{method}: #{self.send(method)}"
+        end
+
+        if five_point_five_inch?
+          puts "screen size: 5.5\""
+        elsif four_point_seven_inch?
+          puts "screen size: 4.7\""
+        elsif four_inch?
+          puts "screen size: 4\""
+        elsif three_point_five_inch?
+          puts "screen size: 3.5\""
+        end
+      end
+
     end
   end
 end
