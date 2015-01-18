@@ -18,6 +18,10 @@ module RubyMotionQuery
         @view.separatorInset = value
       end
 
+      def row_height=(value)
+        @view.rowHeight = value
+      end
+
       SEPARATOR_STYLES = {
         none: UITableViewCellSeparatorStyleNone,
         single: UITableViewCellSeparatorStyleSingleLine,
