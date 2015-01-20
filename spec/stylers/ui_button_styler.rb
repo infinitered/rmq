@@ -7,6 +7,7 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.color_highlighted = color.blue
     st.image_normal = image.resource('logo')
     st.image_highlighted = image.resource('Icon')
+    st.text_highlighted = 'bar'
   end
 
 end
@@ -25,6 +26,7 @@ describe 'stylers/ui_button' do
 
     view.tap do |v|
       view.titleForState(UIControlStateNormal).should == "foo"
+      view.titleForState(UIControlStateHighlighted).should == 'bar'
       view.titleLabel.font.should == UIFont.systemFontOfSize(12)
       view.titleColorForState(UIControlStateNormal).should == UIColor.redColor
       view.titleColorForState(UIControlStateHighlighted).should == UIColor.blueColor
