@@ -7,8 +7,11 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.separator_color = st.separator_color
     st.separator_color = UIColor.redColor
 
+    st.separator_inset = [0, 46, 0, 0]
+
     st.allows_selection = st.allows_selection
     st.allows_selection = false
+    st.row_height = 20
   end
 
 end
@@ -29,6 +32,8 @@ describe 'stylers/ui_table_view' do
       v.separatorStyle.should == UITableViewCellSeparatorStyleNone
       v.separatorColor.should == UIColor.redColor
       v.allowsSelection.should == false
+      v.separatorInset.should == UIEdgeInsetsMake(0, 46, 0, 0)
+      v.rowHeight.should == 20
     end
   end
 end
