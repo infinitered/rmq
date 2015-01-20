@@ -303,6 +303,15 @@ describe 'ui_view_styler' do
     view.transform.should == CGAffineTransformMakeRotation(radians)
   end
 
+  it "should set a manual transformation" do
+    transform = CGAffineTransformMakeScale(-1, -1)
+    view = @vc.rmq.append(@view_klass).style do |st|
+      st.transform = transform
+    end.get
+
+    view.transform.should == transform
+  end
+
   it "should return the correct value of enabled from the styler" do
     view = UIView.alloc.init
     view.setEnabled(false)
