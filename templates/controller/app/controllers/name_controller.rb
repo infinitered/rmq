@@ -27,8 +27,7 @@ __END__
 # another way to do it is tag the views you need to restyle in your stylesheet,
 # then only reapply the tagged views, like so:
 def logo(st)
-  st.frame = {t: 10, w: 200, h: 96}
-  st.centered = :horizontal
+  st.frame = {t: 10, w: 200, h: 96, centered: :horizontal}
   st.image = image.resource('logo')
   st.tag(:reapply_style)
 end

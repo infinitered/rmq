@@ -73,7 +73,7 @@ class MainController < UIViewController
         # You really should create a new style in the stylesheet,
         # but you can do it inline too, like so
         rmq.style do |sv|
-          sv.top = rand(rmq.device.height)
+          sv.frame = {top: rand(rmq.device.height)}
           sv.scale = 10.0
         end
       },
@@ -81,7 +81,7 @@ class MainController < UIViewController
         rmq.animate( duration: 0.2, animations: -> (rmq) {
           rmq.style do |sv|
             sv.scale = 1.0
-            sv.top = 230
+            sv.frame = {top: 230}
           end
         })
       })
