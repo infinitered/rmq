@@ -168,15 +168,13 @@ class MainControllerStylesheet < ApplicationStylesheet
   def popup_wrapper(st)
     st.hidden = true
 
-    st.frame = {w: screen_width - 20, h: 120}
-    st.centered = :both
+    st.frame = {w: screen_width - 20, h: 120, centered: :both}
     st.background_color = color.white
     st.z_position = 100
   end
 
   def popup_text_label(st)
     label st
-    st.padded = {l: 10, t: 10, b:10, r: 10}
     st.text_alignment = :left
     st.color = color.black
     st.font = font.system(10)
