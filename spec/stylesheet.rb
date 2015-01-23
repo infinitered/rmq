@@ -49,6 +49,16 @@ describe 'stylesheet' do
     @vc.rmq.stylesheet.setup_called.should.be.true
   end
 
+  it 'should allow stylesheet to be changed and styles reapplied' do
+    @vc.rmq.stylesheet = StyleSheetForStylesheetTests
+    q_one = @vc.rmq.append(UIView, :style_one)
+    q_full = q_one.append(UIView, :style_full)
+    @vc.rmq(:style_full).frame.width.should == 16
+    @vc.rmq.stylesheet = StyleSheetForStylesheetTests
+    @vc.rmq.all.reapply_styles
+    @vc.rmq(:style_full).frame.width.should == 16
+  end
+
   describe 'getting app and screen size, width, and height' do
     before do
       @screen = rmq.device.screen
@@ -303,7 +313,7 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
   end
 
   def style_one(st)
-    st.frame = {l: 1}
+    st.frame = {l: 1, w: 16}
     st.background_color = color.battleship_gray
   end
 
@@ -322,6 +332,10 @@ class StyleSheetForStylesheetTests < RubyMotionQuery::Stylesheet
 
   def style_use_rmq(st)
     rmq(st.view).get.textColor = color.blue
+  end
+
+  def style_full(st)
+    st.frame = :full if st.view.superview
   end
 
   def digits_field(st)
