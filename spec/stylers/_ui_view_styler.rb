@@ -50,6 +50,12 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.background_color = color.red
     st.tint_color = color.blue
     st.corner_radius = 5
+
+    # Shadows
+    st.shadow_color = color.gray
+    st.shadow_offset = CGSizeMake(0, 5)
+    st.shadow_opacity = 0.5
+    st.shadow_path = UIBezierPath.bezierPathWithRect(st.view.bounds).CGPath
   end
 end
 
@@ -318,5 +324,14 @@ describe 'ui_view_styler' do
     rmq(view).style { |st| @value = st.enabled }
 
     @value.should.be.false
+  end
+
+  it "should set shadow values" do
+    view = @vc.rmq.append(@view_klass, :ui_view_kitchen_sink).get
+
+    view.layer.shadowColor.should == rmq.color.gray.CGColor
+    view.layer.shadowOffset.should == CGSizeMake(0.0, 5.0)
+    view.layer.shadowOpacity.should == 0.5
+    view.layer.shadowPath.should == UIBezierPath.bezierPathWithRect(view.bounds).CGPath
   end
 end

@@ -316,7 +316,26 @@ module RubyMotionQuery
       def alpha ; view.alpha ; end
       def alpha=(v) ; view.alpha = v ; end
 
+      def shadow_color=(c)
+        c = c.CGColor if c.kind_of?(UIColor)
+        @view.layer.shadowColor = c
+      end
+      def shadow_color ; @view.layer.shadowColor ; end
 
+      def shadow_offset=(offset)
+        @view.layer.shadowOffset = offset
+      end
+      def shadow_offset ; @view.layer.shadowOffset ; end
+
+      def shadow_opacity=(opacity)
+        @view.layer.shadowOpacity = opacity
+      end
+      def shadow_opacity ; @view.layer.shadowOpacity ; end
+
+      def shadow_path=(path)
+        @view.layer.shadowPath = path
+      end
+      def shadow_path ; @view.layer.shadowPath ; end
 
 
       # @deprecated - use frame hashs
