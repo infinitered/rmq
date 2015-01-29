@@ -31,9 +31,9 @@ describe 'stylers/ui_label' do
 
     view.tap do |v|
       v.text.should == 'rmq is awesome'
-      v.font = UIFont.systemFontOfSize(12)
-      v.color = UIColor.blackColor
-      v.textAlignment = NSTextAlignmentCenter
+      v.font.should == UIFont.systemFontOfSize(12)
+      v.color.should == UIColor.blackColor
+      v.textAlignment.should == NSTextAlignmentCenter
       v.adjustsFontSizeToFitWidth.should == true
       v.size.width.should > 0
       v.numberOfLines.should == 0
