@@ -20,6 +20,9 @@ module RubyMotionQuery
       def font ; view.font ; end
       def font=(v) ; view.font = v ; end
 
+      def text_alignment ; view.textAlignment ; end
+      def text_alignment=(v) ; view.textAlignment = TEXT_ALIGNMENTS[v] || v ; end
+
       def text_color ; view.textColor ; end
       def text_color=(v) ; view.textColor = v ; end
       alias :color :text_color
