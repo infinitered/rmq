@@ -7,7 +7,6 @@ describe 'stylers/ui_text_view' do
       st.text_color = color.red
       st.editable = true
       st.selectable = true
-      st.
       st.data_detector_types = :all
     end
 
