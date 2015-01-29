@@ -12,6 +12,11 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.line_break_mode = NSLineBreakByWordWrapping
   end
 
+  def ui_label_centered(st)
+    ui_label_kitchen_sink(st)
+    st.text_alignment = :centered
+  end
+
   def ui_label_attributed_string(st)
     st.attributed_text = NSAttributedString.alloc.initWithString("RMQ")
   end
@@ -40,6 +45,14 @@ describe 'stylers/ui_label' do
       v.lineBreakMode.should == NSLineBreakByWordWrapping
     end
 
+  end
+
+  it 'should use :centered as an alias for :center' do
+    view = @vc.rmq.append(@view_klass, :ui_label_centered).get
+
+    view.tap do |v|
+      v.textAlignment.should == NSTextAlignmentCenter
+    end
   end
 
   it "applies an attributed string" do
