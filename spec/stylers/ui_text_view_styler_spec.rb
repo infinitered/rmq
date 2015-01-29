@@ -3,6 +3,7 @@ describe 'stylers/ui_text_view' do
     def ui_text_view_kitchen_sink(st)
       st.text = 'foo'
       st.font = font.system(12)
+      st.text_alignment = :center
       st.text_color = color.red
       st.editable = true
       st.selectable = true
@@ -29,6 +30,7 @@ describe 'stylers/ui_text_view' do
       view.text.should == "foo"
       view.font.should == UIFont.systemFontOfSize(12)
       view.textColor.should == UIColor.redColor
+      view.textAlignment.should == NSTextAlignmentCenter
       view.isEditable.should == true
       view.isSelectable.should == true
       view.dataDetectorTypes.should == UIDataDetectorTypeAll
