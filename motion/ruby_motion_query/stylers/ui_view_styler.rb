@@ -4,6 +4,7 @@ module RubyMotionQuery
     TEXT_ALIGNMENTS = {
       left: NSTextAlignmentLeft,
       center: NSTextAlignmentCenter,
+      centered: NSTextAlignmentCenter,
       right: NSTextAlignmentRight,
       justified: NSTextAlignmentJustified,
       natural: NSTextAlignmentNatural
