@@ -37,6 +37,7 @@ module RubyMotionQuery
     #   rmq(my_view).untag(:foo, :bar)
     # Do nothing if no tag supplied or tag not present
     def untag(*tag_or_tags)
+      puts "untag method"
       tag_or_tags.each do |tag_name|
         tags.delete tag_name
       end
