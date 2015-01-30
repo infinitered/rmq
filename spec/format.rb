@@ -73,4 +73,13 @@ describe 'format' do
     rmq.format.date(date, :medium_time, :short_date).should == '1/2/13, 12:15:30 PM'
   end
 
+  it "should associate formats with custom styles" do
+    date = Time.new(2013,1,2,12,15,30)
+
+    rmq.format.add_datetime_style(:mon_year, "MMM yyyy")
+    rmq.format.date_formatter(:mon_year).class.should == NSDateFormatter
+    rmq.format.date_formatter(:mon_year).stringFromDate(date).should == 'Jan 2013'
+    rmq.format.date(date, :mon_year).should == 'Jan 2013'
+  end
+
 end

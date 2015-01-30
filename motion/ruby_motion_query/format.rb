@@ -24,7 +24,7 @@ module RubyMotionQuery
       #
       # See <http://www.unicode.org/reports/tr35/tr35-19.html#Date_Format_Patterns>
       # for more information about date format strings.
-      def date(date, *format_or_styles)
+      def date(date = nil, *format_or_styles)
         RubyMotionQuery::Format::Date.formatter(*format_or_styles).stringFromDate(date)
       end
 
@@ -34,6 +34,10 @@ module RubyMotionQuery
 
       def date_formatter(*format_or_styles)
         RubyMotionQuery::Format::Date.formatter(*format_or_styles)
+      end
+
+      def add_datetime_style(style, format)
+        RubyMotionQuery::Format::Date.add_datetime_style(style, format)
       end
     end
   end
@@ -120,6 +124,11 @@ module RubyMotionQuery
         end
       end
 
+      def add_datetime_style(style_name, format)
+        @_date_formatters ||= {}
+
+        @_date_formatters[[style_name].to_s] ||= formatter_from_format(format)
+      end
     end
   end
 end
