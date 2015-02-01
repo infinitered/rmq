@@ -4,19 +4,34 @@ describe 'tags' do
     @root_view = @vc.view
   end
 
-  it 'should tag a view with a single tag' do
+  it 'should tag and untag a view with a single tag' do
     @vc.rmq.append(UIView).tap do |q|
       q.tag(:foo)
       q.get.rmq_data.tags.should.include :foo
       q.get.rmq_data.tags.should.not.include :bar
+      q.untag(:foo)
+      q.get.rmq_data.tags.should.not.include :foo
     end
   end
 
-  it 'should tag a view with a multiple tags' do
+  it 'should tag and untag a view with a multiple tags' do
     @vc.rmq.append(UIView).tap do |q|
       q.tag(:foo, :bar)
       q.get.rmq_data.tags.should.include :foo
       q.get.rmq_data.tags.should.include :bar
+      q.untag(:foo, :bar)
+      q.get.rmq_data.tags.should.not.include :foo
+      q.get.rmq_data.tags.should.not.include :bar
+    end
+  end
+
+  it 'should only untag if tag exists' do
+    @vc.rmq.append(UIView).tap do |q|
+      q.tag(:foo)
+      q.untag(:bar)
+      q.untag(:bar, :baz)
+      q.untag
+      q.get.rmq_data.tag_names.should == [:foo]
     end
   end
 

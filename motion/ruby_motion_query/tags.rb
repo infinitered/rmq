@@ -20,6 +20,13 @@ module RubyMotionQuery
       self
     end
 
+    def untag(*tag_or_tags)
+      selected.each do |view|
+        view.rmq_data.untag(tag_or_tags)
+      end
+      self
+    end
+
     # @return [RMQ]
     def clear_tags
       selected.each do |view|
