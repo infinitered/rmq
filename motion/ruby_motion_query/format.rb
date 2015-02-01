@@ -112,6 +112,9 @@ module RubyMotionQuery
         @_date_formatters[styles.to_s] ||= begin
           date_formatter = NSDateFormatter.alloc.init
 
+          date_formatter.setDateStyle(NSDateFormatterNoStyle)
+          date_formatter.setDateStyle(NSDateFormatterNoStyle)
+
           styles.each do |style|
             if DATE_STYLES.has_key?(style)
               date_formatter.setDateStyle(DATE_STYLES.fetch(style))
