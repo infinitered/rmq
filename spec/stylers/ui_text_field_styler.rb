@@ -9,6 +9,7 @@ describe 'stylers/ui_text_field' do
       st.keyboard_type = UIKeyboardTypeDefault
       st.return_key_type = UIReturnKeyNext
       st.spell_checking_type = UITextSpellCheckingTypeYes
+      st.right_view_mode = :always
     end
 
     def ui_text_field_email(st)
@@ -26,10 +27,18 @@ describe 'stylers/ui_text_field' do
     def ui_text_field_line_border(st)
       st.border_style = :line
     end
+
+    def ui_text_field_right_mode(st)
+      st.right_view_mode = UITextFieldViewModeUnlessEditing
+    end
+
+    def ui_text_field_left_mode(st)
+      st.left_view_mode = :while_editing
+    end
   end
 
   before do
-    @vc = UIViewController.alloc.init
+    @vc = UIViewController.new
     @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
     @view_klass = UITextField
   end
@@ -48,6 +57,7 @@ describe 'stylers/ui_text_field' do
       v.keyboardType.should == UIKeyboardTypeDefault
       v.returnKeyType.should == UIReturnKeyNext
       v.spellCheckingType.should == UITextSpellCheckingTypeYes
+      v.rightViewMode == UITextFieldViewModeAlways
     end
   end
 
@@ -69,5 +79,12 @@ describe 'stylers/ui_text_field' do
   it 'should allow setting a border style via symbol' do
     view = @vc.rmq.append(@view_klass, :ui_text_field_line_border).get
     view.borderStyle.should == UITextBorderStyleLine
+  end
+
+  it 'allows setting right and left view modes with and without symbols' do
+    view1 = @vc.rmq.append(@view_klass, :ui_text_field_right_mode).get
+    view1.rightViewMode.should == UITextFieldViewModeUnlessEditing
+    view2 = @vc.rmq.append(@view_klass, :ui_text_field_left_mode).get
+    view2.leftViewMode.should == UITextFieldViewModeWhileEditing
   end
 end
