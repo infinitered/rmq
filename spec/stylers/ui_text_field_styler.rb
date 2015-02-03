@@ -2,6 +2,7 @@ describe 'stylers/ui_text_field' do
   class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     def ui_text_field_kitchen_sink(st)
       st.text = 'foo'
+      st.color = color.red
       st.text_alignment = :center
       st.placeholder = "placeholder"
       st.border_style = UITextBorderStyleRoundedRect
@@ -10,6 +11,10 @@ describe 'stylers/ui_text_field' do
       st.return_key_type = UIReturnKeyNext
       st.spell_checking_type = UITextSpellCheckingTypeYes
       st.right_view_mode = :always
+    end
+
+    def ui_text_field_color(st)
+      st.text_color = color.blue
     end
 
     def ui_text_field_email(st)
@@ -50,6 +55,7 @@ describe 'stylers/ui_text_field' do
 
     view.tap do |v|
       v.text.should == 'foo'
+      v.textColor.should == rmq.color.red
       v.textAlignment.should  == NSTextAlignmentCenter
       v.placeholder.should == "placeholder"
       v.borderStyle.should == UITextBorderStyleRoundedRect
@@ -59,6 +65,11 @@ describe 'stylers/ui_text_field' do
       v.spellCheckingType.should == UITextSpellCheckingTypeYes
       v.rightViewMode == UITextFieldViewModeAlways
     end
+  end
+
+  it 'allows color set with `text_color`' do
+    view = @vc.rmq.append!(@view_klass, :ui_text_field_color)
+    view.textColor.should == rmq.color.blue
   end
 
   it 'should allow setting a keyboard type via symbol' do

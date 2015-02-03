@@ -12,6 +12,10 @@ class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.line_break_mode = NSLineBreakByWordWrapping
   end
 
+  def ui_label_color(st)
+    st.text_color = color.blue
+  end
+
   def ui_label_centered(st)
     ui_label_kitchen_sink(st)
     st.text_alignment = :centered
@@ -45,6 +49,11 @@ describe 'stylers/ui_label' do
       v.lineBreakMode.should == NSLineBreakByWordWrapping
     end
 
+  end
+
+  it 'allows color set with `text_color`' do
+    view = @vc.rmq.append!(@view_klass, :ui_label_color)
+    view.textColor.should == rmq.color.blue
   end
 
   it 'should use :centered as an alias for :center' do
