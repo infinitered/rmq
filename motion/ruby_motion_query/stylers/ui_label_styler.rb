@@ -13,6 +13,8 @@ module RubyMotionQuery
 
       def color=(value) ; @view.setTextColor value ; end
       def color ; @view.textColor ; end
+      alias :text_color :color
+      alias :text_color= :color=
 
       def number_of_lines=(value)
         value = 0 if value == :unlimited
