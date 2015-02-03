@@ -70,13 +70,25 @@ module RubyMotionQuery
       def left_view=(v) ; view.leftView = v ; end
 
       def left_view_mode ; view.leftViewMode ; end
-      def left_view_mode=(v) ; view.leftViewMode = v ; end
+      def left_view_mode=(v)
+        if v.is_a? Symbol
+          view.rightViewMode = TEXT_FIELD_MODES[v]
+        else
+          view.rightViewMode = v
+        end
+      end
 
       def right_view ; view.rightView ; end
       def right_view=(v) ; view.rightView = v ; end
 
       def right_view_mode ; view.rightViewMode ; end
-      def right_view_mode=(v) ; view.rightViewMode = v ; end
+      def right_view_mode=(v)
+        if v.is_a? Symbol
+          view.rightViewMode = TEXT_FIELD_MODES[v]
+        else
+          view.rightViewMode = v
+        end
+      end
     end
   end
 end
