@@ -54,6 +54,13 @@ module RubyMotionQuery
       rounded: UITextBorderStyleRoundedRect
     }
 
+    TEXT_FIELD_MODES = {
+      never: UITextFieldViewModeNever,
+      while_editing: UITextFieldViewModeWhileEditing,
+      unless_editing: UITextFieldViewModeUnlessEditing,
+      always: UITextFieldViewModeAlways
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)
