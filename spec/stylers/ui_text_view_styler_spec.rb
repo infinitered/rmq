@@ -2,12 +2,17 @@ describe 'stylers/ui_text_view' do
   class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     def ui_text_view_kitchen_sink(st)
       st.text = 'foo'
+      st.color = color.red
       st.font = font.system(12)
       st.text_alignment = :center
       st.text_color = color.red
       st.editable = true
       st.selectable = true
       st.data_detector_types = :all
+    end
+
+    def ui_text_view_color(st)
+      st.text_color = color.blue
     end
 
     def ui_text_view_attributed_string(st)
@@ -28,6 +33,7 @@ describe 'stylers/ui_text_view' do
 
     view.tap do |v|
       view.text.should == "foo"
+      view.textColor.should == rmq.color.red
       view.font.should == UIFont.systemFontOfSize(12)
       view.textColor.should == UIColor.redColor
       view.textAlignment.should == NSTextAlignmentCenter
@@ -35,6 +41,11 @@ describe 'stylers/ui_text_view' do
       view.isSelectable.should == true
       view.dataDetectorTypes.should == UIDataDetectorTypeAll
     end
+  end
+
+  it 'allows color set with `text_color`' do
+    view = @vc.rmq.append!(@view_klass, :ui_text_view_color)
+    view.textColor.should == rmq.color.blue
   end
 
   it "applies an attributed string" do
