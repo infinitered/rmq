@@ -5,10 +5,10 @@ module RubyMotionQuery
       # UITExtInputTraits protocol
       module UITextInputTraits
         def autocapitalization_type ; view.autocapitalizationType ; end
-        def autocapitalization_type=(v) ; view.autocapitalizationType = v ; end
+        def autocapitalization_type=(v) ; view.autocapitalizationType = AUTO_CAPITALIZATION_TYPES[v] || v ; end
 
         def autocorrection_type ; view.autocorrectionType ; end
-        def autocorrection_type=(v) ; view.autocorrectionType = v ; end
+        def autocorrection_type=(v) ; view.autocorrectionType = AUTO_CORRECTION_TYPES[v] || v ; end
 
         def enables_return_key_automatically ; view.enablesReturnKeyAutomatically ; end
         def enables_return_key_automatically=(v) ; view.enablesReturnKeyAutomatically = v ; end

@@ -6,7 +6,8 @@ describe 'stylers/ui_text_field' do
       st.text_alignment = :center
       st.placeholder = "placeholder"
       st.border_style = UITextBorderStyleRoundedRect
-      st.autocapitalization_type = UITextAutocapitalizationTypeWords
+      st.autocapitalization_type = :words
+      st.autocorrection_type = :no
       st.keyboard_type = UIKeyboardTypeDefault
       st.return_key_type = UIReturnKeyNext
       st.spell_checking_type = UITextSpellCheckingTypeYes
@@ -60,6 +61,7 @@ describe 'stylers/ui_text_field' do
       v.placeholder.should == "placeholder"
       v.borderStyle.should == UITextBorderStyleRoundedRect
       v.autocapitalizationType.should == UITextAutocapitalizationTypeWords
+      v.autocorrectionType == UITextAutocorrectionTypeNo
       v.keyboardType.should == UIKeyboardTypeDefault
       v.returnKeyType.should == UIReturnKeyNext
       v.spellCheckingType.should == UITextSpellCheckingTypeYes

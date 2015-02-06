@@ -61,6 +61,19 @@ module RubyMotionQuery
       always: UITextFieldViewModeAlways
     }
 
+    AUTO_CORRECTION_TYPES = {
+      default: UITextAutocorrectionTypeDefault,
+      no: UITextAutocorrectionTypeNo,
+      yes: UITextAutocorrectionTypeYes,
+    }
+
+    AUTO_CAPITALIZATION_TYPES = {
+      none: UITextAutocapitalizationTypeNone,
+      words: UITextAutocapitalizationTypeWords,
+      sentences: UITextAutocapitalizationTypeSentences,
+      all: UITextAutocapitalizationTypeAllCharacters
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)
