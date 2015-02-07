@@ -65,6 +65,27 @@ describe 'validation' do
       @rmq.validation.valid?('K1A 0B1', :uszip).should == false
     end
 
+    it 'can validate ukzip' do
+      # Zips with spaces
+      ['TS4 2EP', 'DE55 7JW', 'DN31 3BL', 'KW9 6NQ', 'UB11 1FG', 'LS21 1FE', 'EC2P 2DS'].each do |code|
+        @rmq.validation.valid?(code, :ukzip).should == true
+      end
+
+      # Zips without spaces
+      ['CT54FG', 'TA100PF', 'OX29EF', 'SS95FB', 'BT411LA', 'NN126QP', 'CF991NA', 'NP167NH', 'PE57XG'].each do |code|
+        @rmq.validation.valid?(code, :ukzip).should == true
+      end
+
+      # Invalid Zips
+      ['32043', '90210-2344', 'OB29E', 'SS95B', 'BT11A'].each do |code|
+        @rmq.validation.valid?(code, :ukzip).should == false
+      end
+
+      # Lowercase zips
+      @rmq.validation.valid?('ts4 2ep', :ukzip).should == true
+      @rmq.validation.valid?('ct54fg', :ukzip).should == true
+    end
+
     it 'can validate usphone' do
       @rmq.validation.valid?('504 555 8989', :usphone).should == true
       @rmq.validation.valid?('555 8989', :usphone).should == true

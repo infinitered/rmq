@@ -130,6 +130,8 @@ module RubyMotionQuery
       TIME = Regexp.new('^(20|21|22|23|[01]\d|\d)((:[0-5]\d){1,2})$')
       # Future Password strength validations -> http://stackoverflow.com/questions/5142103/regex-for-password-strength
       USZIP = Regexp.new('^\d{5}(-\d{4})?$')
+      # UK Postal Code regex from: http://stackoverflow.com/a/7259020/814123
+      UKZIP = Regexp.new('^(GIR ?0AA|[A-PR-UWYZ]([0-9]{1,2}|([A-HK-Y][0-9]([0-9ABEHMNPRV-Y])?)|[0-9][A-HJKPS-UW]) ?[0-9][ABD-HJLNP-UW-Z]{2})$')
       # 7 or 10 digit number, delimiters are spaces, dashes, or periods
       USPHONE = Regexp.new('^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]‌​)\s*)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-‌​9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})$')
       # Strong password (at least [8 chars, 1 upper, 1 lower, 1 number])
@@ -150,6 +152,7 @@ module RubyMotionQuery
         :ipv4 => lambda { |value, opts| Validation.regex_match?(value, IPV4)},
         :time => lambda { |value, opts| Validation.regex_match?(value, TIME)},
         :uszip => lambda { |value, opts| Validation.regex_match?(value, USZIP)},
+        :ukzip => lambda { |value, opts| Validation.regex_match?(value.upcase, UKZIP)},
         :usphone => lambda { |value, opts| Validation.regex_match?(value, USPHONE)},
         :strong_password => lambda { |value, opts| Validation.regex_match?(value, STRONGPW)},
         :has_upper => lambda { |value, opts| Validation.regex_match?(value, HASUPPER)},
