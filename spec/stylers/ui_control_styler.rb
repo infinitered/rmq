@@ -1,4 +1,4 @@
-class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_control_kitchen_sink(st)
     st.content_vertical_alignment = UIControlContentVerticalAlignmentFill
@@ -12,7 +12,7 @@ end
 describe 'stylers/control' do
   before do
     @vc = UIViewController.alloc.init
-    @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
+    @vc.rmq.stylesheet = StyleSheetForUIViewStylerTests
     @view_klass = UIControl
   end
 

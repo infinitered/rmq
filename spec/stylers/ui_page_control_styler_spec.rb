@@ -1,4 +1,4 @@
-class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
   def ui_page_control_kitchen_sink(st)
     st.number_of_pages = 4
     st.current_page = 2
@@ -10,7 +10,7 @@ end
 describe 'stylers/ui_page_control_styler' do
   before do
     @vc = UIViewController.alloc.init
-    @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
+    @vc.rmq.stylesheet = StyleSheetForUIViewStylerTests
     @view_klass = UIPageControl
   end
 

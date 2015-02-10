@@ -1,5 +1,5 @@
 describe 'stylers/ui_text_field' do
-  class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+  class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     def ui_text_field_kitchen_sink(st)
       st.text = 'foo'
       st.color = color.red
@@ -45,7 +45,7 @@ describe 'stylers/ui_text_field' do
 
   before do
     @vc = UIViewController.new
-    @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
+    @vc.rmq.stylesheet = StyleSheetForUIViewStylerTests
     @view_klass = UITextField
   end
 
