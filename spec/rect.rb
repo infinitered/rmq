@@ -281,10 +281,30 @@ describe 'rect' do
       @view.frame.size.width.should == @view.superview.frame.size.width
     end
 
+    it 'should set width to :half' do
+      apply_frame w: :half
+      @view.frame.size.width.should == @view.superview.frame.size.width * (1.0/2.0)
+    end
+
+    it 'should set width to :quarter' do
+      apply_frame w: :quarter
+      @view.frame.size.width.should == @view.superview.frame.size.width * (1.0/4.0)
+    end
+
     it 'should set height to :full' do
       @view.frame.size.height.should != @view.superview.frame.size.height
       apply_frame h: :full
       @view.frame.size.height.should == @view.superview.frame.size.height
+    end
+
+    it 'should set height to :half' do
+      apply_frame h: :half
+      @view.frame.size.height.should == @view.superview.frame.size.height * (1.0/2.0)
+    end
+
+    it 'should set height to :quarter' do
+      apply_frame h: :quarter
+      @view.frame.size.height.should == @view.superview.frame.size.height * (1.0/4.0)
     end
 
     it 'should set a width to :full with padding' do
