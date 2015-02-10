@@ -208,6 +208,9 @@ module RubyMotionQuery
         right_of_prev = params[:right_of_prev] || params[:rop] || params[:right_of_previous]
         left_of_prev = params[:left_of_prev] || params[:lop] || params[:left_of_previous]
 
+        params_w = view.superview.frame.size.width if params_w == :full
+        params_h = view.superview.frame.size.height if params_h == :full
+
         l = params_l || existing_rect.origin.x
         t = params_t || existing_rect.origin.y
         w = params_w || existing_rect.size.width

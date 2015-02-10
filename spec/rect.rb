@@ -275,6 +275,25 @@ describe 'rect' do
       @view.frame.should == @view.superview.bounds
     end
 
+    it 'should set width to :full' do
+      @view.frame.size.width.should != @view.superview.frame.size.width
+      apply_frame w: :full
+      @view.frame.size.width.should == @view.superview.frame.size.width
+    end
+
+    it 'should set height to :full' do
+      @view.frame.size.height.should != @view.superview.frame.size.height
+      apply_frame h: :full
+      @view.frame.size.height.should == @view.superview.frame.size.height
+    end
+
+    it 'should set a width to :full with padding' do
+      padding = 5
+      apply_frame w: :full, padding: padding
+
+      @view.frame.size.width.should == @view.superview.frame.size.width - (padding * 2)
+    end
+
     it 'should set left when centering horizontally' do
       apply_frame l: 140 , t: 142, w: 143, h: 144, centered: :horizontal
 
