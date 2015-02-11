@@ -1,4 +1,4 @@
-class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_button_kitchen_sink(st)
     st.text = 'foo'
@@ -15,7 +15,7 @@ end
 describe 'stylers/ui_button' do
   before do
     @vc = UIViewController.alloc.init
-    @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
+    @vc.rmq.stylesheet = StyleSheetForUIViewStylerTests
     @view_klass = UIButton
   end
 

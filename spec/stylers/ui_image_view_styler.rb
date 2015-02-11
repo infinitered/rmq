@@ -1,4 +1,4 @@
-class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def u_image_view_kitchen_sink(st)
     st.image = image.resource('logo')
@@ -9,7 +9,7 @@ end
 describe 'stylers/ui_image_view' do
   before do
     @vc = UIViewController.alloc.init
-    @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
+    @vc.rmq.stylesheet = StyleSheetForUIViewStylerTests
     @view_klass = UIImageView 
   end
 

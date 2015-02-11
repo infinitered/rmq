@@ -1,4 +1,4 @@
-class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_scroll_view_kitchen_sink(st)
     st.paging = st.paging
@@ -26,7 +26,7 @@ end
 describe 'stylers/ui_scroll_view' do
   before do
     @vc = UIViewController.alloc.init
-    @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
+    @vc.rmq.stylesheet = StyleSheetForUIViewStylerTests
     @view_klass = UIScrollView
   end
 

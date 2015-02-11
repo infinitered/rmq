@@ -1,4 +1,4 @@
-class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
   def ui_progress_view_tints(st)
     st.progress_tint_color = UIColor.redColor
     st.track_tint_color = UIColor.blueColor
@@ -15,7 +15,7 @@ end
 describe 'stylers/ui_progress_view' do
   before do
     @vc = UIViewController.alloc.init
-    @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
+    @vc.rmq.stylesheet = StyleSheetForUIViewStylerTests
     @view_klass = UIProgressView.alloc.initWithProgressViewStyle(UIProgressViewStyleDefault)
   end
 

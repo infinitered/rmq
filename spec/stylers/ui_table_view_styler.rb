@@ -1,4 +1,4 @@
-class SyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
+class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_table_view_kitchen_sink(st)
     st.separator_style = st.separator_style
@@ -19,7 +19,7 @@ end
 describe 'stylers/ui_table_view' do
   before do
     @vc = UIViewController.alloc.init
-    @vc.rmq.stylesheet = SyleSheetForUIViewStylerTests
+    @vc.rmq.stylesheet = StyleSheetForUIViewStylerTests
     @view_klass = UITableView
   end
 

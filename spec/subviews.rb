@@ -39,7 +39,7 @@ describe 'subviews' do
   end
 
   it 'should append view and assign style_name' do
-    @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+    @vc.rmq.stylesheet = StyleSheetForSubviewsTests
     view = @vc.rmq.append(UIButton, :my_style).get
     view2 = @vc.rmq.append(UIButton).get
     view.rmq_data.style_name.should == :my_style
@@ -57,7 +57,7 @@ describe 'subviews' do
   end
 
   it 'should unshift a view and apply a style' do
-    @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+    @vc.rmq.stylesheet = StyleSheetForSubviewsTests
     view = @vc.rmq.unshift(UIView, :my_style).get
     @vc.view.subviews[0].should == view
     view.rmq_data.style_name.should == :my_style
@@ -81,7 +81,7 @@ describe 'subviews' do
   end
 
   it 'should add a subview at a specific index and apply a style' do
-    @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+    @vc.rmq.stylesheet = StyleSheetForSubviewsTests
     view = @vc.rmq.append(UIView).get
     view2 = @vc.rmq.append(UIView).get
     view3 = @vc.rmq.append(UIView).get
@@ -101,7 +101,7 @@ describe 'subviews' do
   end
 
   it 'should add a subview below another view and apply a style' do
-    @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+    @vc.rmq.stylesheet = StyleSheetForSubviewsTests
     view = @vc.rmq.append(UIView).get
     view2 = @vc.rmq.append(UIView).get
     view4 = @vc.rmq.insert(UIView, style: :my_style, below_view: view2).tag(:view4).get
@@ -149,14 +149,14 @@ describe 'subviews' do
     end
 
     it 'should allow you to create a view with a style, and it to use the stylesheet of view_controller that created it' do
-      @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+      @vc.rmq.stylesheet = StyleSheetForSubviewsTests
       test_view = @vc.rmq.create(UILabel, :create_view_style).get
       test_view.backgroundColor.should == RubyMotionQuery::Color.blue
     end
 
     it 'should allow you to create a view outside any view tree, then append subviews and those should use the stylesheet from the rmq that created the parent view' do
       q = @vc.rmq
-      q.stylesheet = SyleSheetForSubviewsTests
+      q.stylesheet = StyleSheetForSubviewsTests
       test_view_wrapped = q.create(SubviewTestView)
       test_view = test_view_wrapped.get
 
@@ -218,14 +218,14 @@ describe 'subviews' do
 
     it 'should allow you to build an existing view with a style, and it to use the stylesheet of view_controller that created it' do
       my_view = UILabel.alloc.initWithFrame(CGRectZero)
-      @vc.rmq.stylesheet = SyleSheetForSubviewsTests
+      @vc.rmq.stylesheet = StyleSheetForSubviewsTests
       test_view = @vc.rmq.build(my_view, :create_view_style).get
       test_view.backgroundColor.should == RubyMotionQuery::Color.blue
     end
 
     it 'should allow you to build a view outside any view tree, then append subviews and those should use the stylesheet from the rmq that created the parent view' do
       q = @vc.rmq
-      q.stylesheet = SyleSheetForSubviewsTests
+      q.stylesheet = StyleSheetForSubviewsTests
       my_view = SubviewTestView.alloc.initWithFrame(CGRectZero)
       test_view_wrapped = q.build(my_view)
       test_view = test_view_wrapped.get
@@ -276,7 +276,7 @@ describe 'subviews' do
   end
 end
 
-class SyleSheetForSubviewsTests < RubyMotionQuery::Stylesheet
+class StyleSheetForSubviewsTests < RubyMotionQuery::Stylesheet
   def my_style(st)
   end
 
