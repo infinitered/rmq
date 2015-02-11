@@ -494,6 +494,19 @@ module RubyMotionQuery
         end
       end
 
+      #param is a hash of locations and colors: { locations: [], colors: [] }
+      def background_gradient=(options)
+        colors = options.fetch(:colors).collect { |c| c.CGColor }
+        locations = options.fetch(:locations)
+
+        CAGradientLayer.alloc.init.tap do |layer|
+          layer.colors = colors
+          layer.locations = locations
+          view.layer.insertSublayer(layer, atIndex: 0)
+          view.layer.sublayers[0].frame = view.bounds
+        end
+      end
+
       private
 
       def is_color(value)

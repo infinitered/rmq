@@ -194,8 +194,11 @@ class MainControllerStylesheet < ApplicationStylesheet
   end
 
   def validation_section(st)
-    st.background_color = color.yellow
     st.frame = 'a7:e10'
+    st.background_gradient = {
+      colors: [color.yellow, color.black],
+      locations: [0.0, 1.0]
+    }
   end
 
   def validation_title(st)

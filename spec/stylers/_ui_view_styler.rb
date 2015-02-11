@@ -334,4 +334,33 @@ describe 'ui_view_styler' do
     view.layer.shadowOpacity.should == 0.5
     view.layer.shadowPath.should == UIBezierPath.bezierPathWithRect(view.bounds).CGPath
   end
+
+  describe "background_gradient" do
+    before do
+      @view = UIView.alloc.init
+    end
+
+    it "should raise if you do not provide colors and locations" do
+      should.raise(StandardError) do
+        rmq(@view).style do |st|
+          st.background_gradient = { locations: [0, 1] }
+        end
+      end
+
+      should.raise(StandardError) do
+        rmq(@view).style do |st|
+          st.background_gradient = { colors: [rmq.color.red, rmq.color.blue] }
+        end
+      end
+
+      should.not.raise(StandardError) do
+        rmq(@view).style do |st|
+          st.background_gradient = {
+            colors: [rmq.color.red, rmq.color.blue],
+            locations: [0.0, 1.0]
+          }
+        end
+      end
+    end
+  end
 end
