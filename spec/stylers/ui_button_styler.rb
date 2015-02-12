@@ -8,6 +8,8 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.image_normal = image.resource('logo')
     st.image_highlighted = image.resource('Icon')
     st.text_highlighted = 'bar'
+    st.adjust_image_when_highlighted = true
+    st.selected = true
   end
 
 end
@@ -32,6 +34,8 @@ describe 'stylers/ui_button' do
       view.titleColorForState(UIControlStateHighlighted).should == UIColor.blueColor
       view.imageForState(UIControlStateNormal).should == @vc.rmq.image.resource('logo')
       view.imageForState(UIControlStateHighlighted).should == @vc.rmq.image.resource('Icon')
+      view.adjustsImageWhenHighlighted.should == true
+      view.isSelected.should == true
     end
 
   end

@@ -52,6 +52,26 @@ module RubyMotionQuery
         @view.setBackgroundImage value, forState: UIControlStateHighlighted
       end
 
+      def background_image_selected=(value)
+        @view.setBackgroundImage value, forState: UIControlStateSelected
+      end
+
+      def adjust_image_when_highlighted=(value)
+        @view.adjustsImageWhenHighlighted = value
+      end
+
+      def adjust_image_when_highlighted
+        @view.adjustsImageWhenHighlighted
+      end
+
+      def selected=(value)
+        @view.setSelected(value)
+      end
+
+      def selected
+        @view.isSelected
+      end
+
       # Accepts UIEdgeInsetsMake OR and array of values to be the inset.
       # st.title_edge_insets = UIEdgeInsetsMake(0, 10.0, 0, 0)
       # OR
