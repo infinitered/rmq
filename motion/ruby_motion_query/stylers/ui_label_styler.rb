@@ -29,7 +29,7 @@ module RubyMotionQuery
       end
 
       def line_break_mode=(value)
-        @view.lineBreakMode = value
+        @view.lineBreakMode = LINE_BREAK_MODES[value] || value
       end
       def line_break_mode
         @view.lineBreakMode

@@ -9,7 +9,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.adjusts_font_size = true
     st.resize_to_fit_text
     st.size_to_fit
-    st.line_break_mode = NSLineBreakByWordWrapping
+    st.line_break_mode = :word_wrapping
   end
 
   def ui_label_color(st)
@@ -70,6 +70,21 @@ describe 'stylers/ui_label' do
     view.tap do |v|
       v.text.should == 'RMQ'
     end
+  end
+
+  it "allows setting line_break_mode to a symbol or constant" do
+    view = @vc.rmq.append(@view_klass, :ui_label_attributed_string)
+
+    view.style do |st|
+      st.line_break_mode = :char_wrapping
+    end
+    view.get.lineBreakMode.should == NSLineBreakByCharWrapping
+
+    view.style do |st|
+      st.line_break_mode = NSLineBreakByTruncatingHead
+    end
+    view.get.lineBreakMode.should == NSLineBreakByTruncatingHead
+
   end
 end
 
