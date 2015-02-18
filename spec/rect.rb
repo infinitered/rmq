@@ -13,6 +13,8 @@ end
 
 describe 'rect' do
 
+  DELTA = 0.001
+
   describe 'updating rect of view' do
     before do
       @vc = UIViewController.alloc.init
@@ -550,8 +552,8 @@ describe 'rect' do
       rect = rmq(@view).layout('a0:a0').frame
       rect.l.should == 7
       rect.t.should == 5
-      rect.r.should == 7 + @grid.column_width
-      rect.b.should == 5 + @grid.row_height
+      rect.r.should.be.close 7 + @grid.column_width, DELTA
+      rect.b.should.be.close 5 + @grid.row_height, DELTA
     end
 
     should 'layout with partial grid string' do
@@ -566,8 +568,8 @@ describe 'rect' do
       rect = rmq(@view).layout(':a0').frame
       rect.w.should == 0
       rect.h.should == 0
-      rect.r.should == @grid.content_left_margin + @grid.column_width
-      rect.b.should == @grid.content_top_margin + @grid.row_height
+      rect.r.should.be.close @grid.content_left_margin + @grid.column_width, DELTA
+      rect.b.should.be.close @grid.content_top_margin + @grid.row_height, DELTA
       rect.l.should == rect.r
       rect.t.should == rect.t
     end
@@ -614,10 +616,10 @@ describe 'rect' do
 
       rect1 = rmq(@view).layout('b1:c2').frame
       rect2 = rmq(@view).append(UIView).layout('a0:c2').frame
-      rect2.left_in_root_view.round(2).should == grid_h[:l].round(2)
-      rect2.top_in_root_view.round(2).should == grid_h[:t].round(2)
-      rect2.w.should == grid_h[:r] - grid_h[:l]
-      rect2.h.should == grid_h[:b] - grid_h[:t]
+      rect2.left_in_root_view.round(2).should.be.close grid_h[:l].round(2), DELTA
+      rect2.top_in_root_view.round(2).should.be.close grid_h[:t].round(2), DELTA
+      rect2.w.should.be.close grid_h[:r] - grid_h[:l], DELTA
+      rect2.h.should.be.close grid_h[:b] - grid_h[:t], DELTA
     end
 
     should 'apply subview in same gridspace as root view when in grandchild of rootview' do
@@ -627,10 +629,10 @@ describe 'rect' do
       view2 = rmq(@view).append(UIView).layout(l: 10, t: 80, w: 100, h: 200).get
       rect2 = rmq(view2).frame
       rect3 = rmq(view2).append(UIView).layout('a0:c2').frame
-      rect3.l.should == grid_h[:l] - (rect1.l + rect2.l)
-      rect3.t.should == grid_h[:t] - (rect1.t + rect2.t)
-      rect3.w.should == grid_h[:r] - grid_h[:l]
-      rect3.h.should == grid_h[:b] - grid_h[:t]
+      rect3.l.should.be.close grid_h[:l] - (rect1.l + rect2.l), DELTA
+      rect3.t.should.be.close grid_h[:t] - (rect1.t + rect2.t), DELTA
+      rect3.w.should.be.close grid_h[:r] - grid_h[:l], DELTA
+      rect3.h.should.be.close grid_h[:b] - grid_h[:t], DELTA
     end
 
     should 'not throw exeption with {grid: "a:z99", height: 150}' do
@@ -665,9 +667,9 @@ describe 'rect' do
       rect2.right.should == rect1.right
       rect2.rect_in_root_view.bottom.round(2).should == grid[:b].round(2)
 
-      rect2.rect_in_root_view.top.should == rect1.rect_in_root_view.bottom + 5
+      rect2.rect_in_root_view.top.should.be.close rect1.rect_in_root_view.bottom + 5, DELTA
 
-      rect2.height.should == (grid[:b] - (rect1.rect_in_root_view.bottom + 5))
+      rect2.height.should.be.close((grid[:b] - (rect1.rect_in_root_view.bottom + 5)), DELTA)
     end
 
     should 'be able to use grid and right_of_prev in same layout in subviews' do
