@@ -89,15 +89,32 @@ describe 'device' do
     @rmq.device.iphone?.should == false
   end
 
-  it 'should return the right value for simulator?' do
-    @rmq.device.simulator?.should == true
+  if !(UIDevice.currentDevice.model =~ /simulator/i).nil?
+    context "when run on simulator" do
+      it 'should return the right value for simulator?' do
+        @rmq.device.simulator?.should == true
 
-    class RubyMotionQuery::Device
-      def self.fake_simulator_value; @_simulator = false; end
+        class RubyMotionQuery::Device
+          def self.fake_simulator_value; @_simulator = false; end
+        end
+
+        @rmq.device.fake_simulator_value
+        @rmq.device.simulator?.should == false
+      end
     end
+  else
+    context "when run on the device" do
+      it 'should return the right value for simulator?' do
+        @rmq.device.simulator?.should == false
 
-    @rmq.device.fake_simulator_value
-    @rmq.device.simulator?.should == false
+        class RubyMotionQuery::Device
+          def self.fake_simulator_value; @_simulator = true; end
+        end
+
+        @rmq.device.fake_simulator_value
+        @rmq.device.simulator?.should == true
+      end
+    end
   end
 
   it 'should return the right value for three_point_five_inch?' do
