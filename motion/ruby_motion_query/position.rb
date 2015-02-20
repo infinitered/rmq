@@ -127,6 +127,30 @@ module RubyMotionQuery
       self
     end
 
+    def auto_set_content_size(padding = {})
+      selected.each do |view|
+        unless view.respond_to?(:contentSize)
+          puts "\n[RMQ ERROR]  auto_set_content_size must be called on a view that supports `contentSize`. Called on #{view}\n\n"
+          next
+        end
+
+        w = 0
+        h = 0
+
+        view.subviews.each do |subview|
+          rect = subview.rmq.frame
+          w = [rect.right, w].max
+          h = [rect.bottom, h].max
+        end
+
+        view.rmq.style do |st|
+          st.content_size = CGSizeMake(w + (padding[:right] || 0), h + (padding[:bottom] || 0))
+        end
+      end
+
+      self
+    end
+
     # @return [Array] or [CGSize]
     def location_in_root_view
       self.location_in(self.root_view)
