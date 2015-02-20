@@ -108,20 +108,7 @@ module RubyMotionQuery
 
     def resize_to_fit_subviews(padding = {})
       selected.each do |view|
-        w = 0
-        h = 0
-
-        view.subviews.each do |subview|
-          rect = subview.rmq.frame
-          w = [rect.right, w].max
-          h = [rect.bottom, h].max
-        end
-
-        rect = view.rmq.frame
-        w = rect.width if w == 0
-        h = rect.height if h == 0
-
-        view.rmq.layout(w: (w + (padding[:right] || 0)), h: (h + (padding[:bottom] || 0)))
+        view.rmq.layout(subviews_bottom_right(view, padding))
       end
 
       self
@@ -134,17 +121,9 @@ module RubyMotionQuery
           next
         end
 
-        w = 0
-        h = 0
-
-        view.subviews.each do |subview|
-          rect = subview.rmq.frame
-          w = [rect.right, w].max
-          h = [rect.bottom, h].max
-        end
-
         view.rmq.style do |st|
-          st.content_size = CGSizeMake(w + (padding[:right] || 0), h + (padding[:bottom] || 0))
+          bottom_right = subviews_bottom_right(view, padding)
+          st.content_size = CGSizeMake(bottom_right[:w], bottom_right[:h])
         end
       end
 
@@ -164,6 +143,28 @@ module RubyMotionQuery
       end
       out = out.first if out.length == 1
       out
+    end
+
+    private
+
+    # Calculates the bottom right of a view using its subviews
+    #
+    # @return [Hash]
+    def subviews_bottom_right(view, padding = {})
+      w = 0
+      h = 0
+
+      view.subviews.each do |subview|
+        rect = subview.rmq.frame
+        w = [rect.right, w].max
+        h = [rect.bottom, h].max
+      end
+
+      rect = view.rmq.frame
+      w = rect.width if w == 0
+      h = rect.height if h == 0
+
+      {w: (w + (padding[:right] || 0)), h: (h + (padding[:bottom] || 0))}
     end
 
   end
