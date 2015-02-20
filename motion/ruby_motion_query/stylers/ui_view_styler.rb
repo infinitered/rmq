@@ -61,6 +61,17 @@ module RubyMotionQuery
       always: UITextFieldViewModeAlways
     }
 
+    LINE_BREAK_MODES = {
+      word_wrapping: NSLineBreakByWordWrapping,
+      word_wrap: NSLineBreakByWordWrapping,
+      char_wrapping: NSLineBreakByCharWrapping,
+      char_wrap: NSLineBreakByCharWrapping,
+      clipping: NSLineBreakByClipping,
+      truncating_head: NSLineBreakByTruncatingHead,
+      truncating_tail: NSLineBreakByTruncatingTail,
+      truncating_middle: NSLineBreakByTruncatingMiddle
+    }
+
     AUTO_CORRECTION_TYPES = {
       default: UITextAutocorrectionTypeDefault,
       no: UITextAutocorrectionTypeNo,
