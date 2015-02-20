@@ -81,7 +81,7 @@ class MainController < UIViewController
         rmq.animate( duration: 0.2, animations: -> (rmq) {
           rmq.style do |sv|
             sv.scale = 1.0
-            sv.frame = {top: 230}
+            sv.frame = {top: 215}
           end
         })
       })
