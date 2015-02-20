@@ -106,7 +106,7 @@ module RubyMotionQuery
       self
     end
 
-    def resize_to_fit_subviews
+    def resize_to_fit_subviews(padding = {})
       selected.each do |view|
         w = 0
         h = 0
@@ -121,7 +121,7 @@ module RubyMotionQuery
         w = rect.width if w == 0
         h = rect.height if h == 0
 
-        view.rmq.layout(w: w, h: h)
+        view.rmq.layout(w: (w + (padding[:right] || 0)), h: (h + (padding[:bottom] || 0)))
       end
 
       self
