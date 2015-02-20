@@ -209,16 +209,16 @@ module RubyMotionQuery
         left_of_prev = params[:left_of_prev] || params[:lop] || params[:left_of_previous]
 
         width_height_symbols = {full: 1, half: 0.5, quarter: 0.25}
-        if params_w.is_a?(Symbol) && view.superview
+        if params_w.is_a?(Symbol) && sv
           if width_height_symbols.keys.include?(params_w)
-            params_w = view.superview.frame.size.width * width_height_symbols[params_w]
+            params_w = sv.frame.size.width * width_height_symbols[params_w]
           else
             puts "\n[RMQ ERROR] width symbol #{params_w} can't be parsed.\n\n"
           end
         end
-        if params_h.is_a?(Symbol) && view.superview
+        if params_h.is_a?(Symbol) && sv
           if width_height_symbols.keys.include?(params_h)
-            params_h = view.superview.frame.size.height * width_height_symbols[params_h]
+            params_h = sv.frame.size.height * width_height_symbols[params_h]
           else
             puts "\n[RMQ ERROR] height symbol #{params_h} can't be parsed.\n\n"
           end
