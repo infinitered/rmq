@@ -26,6 +26,13 @@ module RubyMotionQuery
       alphabet: UIKeyboardTypeASCIICapable
     }
 
+    KEYBOARD_APPEARANCES = {
+      default: UIKeyboardAppearanceDefault,
+      dark: UIKeyboardAppearanceDark,
+      light: UIKeyboardAppearanceLight,
+      alert: UIKeyboardAppearanceAlert
+    }
+
     RETURN_KEY_TYPES = {
       default: UIReturnKeyDefault,
       go: UIReturnKeyGo,
