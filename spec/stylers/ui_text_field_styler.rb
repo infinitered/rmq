@@ -9,6 +9,7 @@ describe 'stylers/ui_text_field' do
       st.autocapitalization_type = :words
       st.autocorrection_type = :no
       st.keyboard_type = UIKeyboardTypeDefault
+      st.keyboard_appearance = UIKeyboardAppearanceDark
       st.return_key_type = UIReturnKeyNext
       st.spell_checking_type = UITextSpellCheckingTypeYes
       st.right_view_mode = :always
@@ -20,6 +21,10 @@ describe 'stylers/ui_text_field' do
 
     def ui_text_field_email(st)
       st.keyboard_type = :email_address
+    end
+
+    def ui_text_field_alert(st)
+      st.keyboard_appearance = :alert
     end
 
     def ui_text_field_google(st)
@@ -63,6 +68,7 @@ describe 'stylers/ui_text_field' do
       v.autocapitalizationType.should == UITextAutocapitalizationTypeWords
       v.autocorrectionType == UITextAutocorrectionTypeNo
       v.keyboardType.should == UIKeyboardTypeDefault
+      v.keyboardAppearance.should == UIKeyboardAppearanceDark
       v.returnKeyType.should == UIReturnKeyNext
       v.spellCheckingType.should == UITextSpellCheckingTypeYes
       v.rightViewMode == UITextFieldViewModeAlways
@@ -77,6 +83,11 @@ describe 'stylers/ui_text_field' do
   it 'should allow setting a keyboard type via symbol' do
     view = @vc.rmq.append(@view_klass, :ui_text_field_email).get
     view.keyboardType.should == UIKeyboardTypeEmailAddress
+  end
+
+  it 'should allow setting a keyboard appearance via symbol' do
+    view = @vc.rmq.append(@view_klass, :ui_text_field_alert).get
+    view.keyboardAppearance.should == UIKeyboardAppearanceAlert
   end
 
   it 'should allow setting a return key via symbol' do
