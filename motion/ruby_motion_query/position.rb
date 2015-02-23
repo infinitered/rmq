@@ -106,18 +106,19 @@ module RubyMotionQuery
       self
     end
 
-    def resize_to_fit_subviews(padding = {})
+    def resize_frame_to_fit_subviews(padding = {})
       selected.each do |view|
         view.rmq.layout(subviews_bottom_right(view, padding))
       end
 
       self
     end
+    alias :resize_to_fit_subviews :resize_frame_to_fit_subviews
 
-    def auto_set_content_size(padding = {})
+    def resize_content_to_fit_subviews(padding = {})
       selected.each do |view|
         unless view.respond_to?(:contentSize)
-          puts "\n[RMQ ERROR]  auto_set_content_size must be called on a view that supports `contentSize`. Called on #{view}\n\n"
+          puts "\n[RMQ ERROR]  resize_content_to_fit_subviews must be called on a view that supports `contentSize`. Called on #{view}\n\n"
           next
         end
 
