@@ -520,7 +520,11 @@ module RubyMotionQuery
         CAGradientLayer.alloc.init.tap do |layer|
           layer.colors = colors
           layer.locations = locations
-          view.layer.insertSublayer(layer, atIndex: 0)
+          if view.layer.sublayers
+            view.layer.replaceSublayer(view.layer.sublayers[0], with: layer)
+          else
+            view.layer.insertSublayer(layer, atIndex: 0)
+          end
           view.layer.sublayers[0].frame = view.bounds
         end
       end
