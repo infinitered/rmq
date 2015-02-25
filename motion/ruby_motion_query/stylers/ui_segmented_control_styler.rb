@@ -8,7 +8,7 @@ module RubyMotionQuery
             @view.insertSegmentWithTitle(title, atIndex:index, animated:false)
           end
         elsif value.class == String
-          @view.insertSegmentWithTitle(title, atIndex:index, animated:false)
+          @view.insertSegmentWithTitle(value, atIndex:0, animated:false)
         else
           raise "#{__method__} takes an array or string."
         end
