@@ -101,7 +101,7 @@ describe 'position' do
     view.rmq.append(UIButton).layout(h: 50, w: 10)
     view.rmq.append(UIButton).layout(h: 5, w: 1)
     view.size.width.should == 20
-    view.rmq.resize_to_fit_subviews
+    view.rmq.resize_frame_to_fit_subviews
     view.size.width.should == 10
     view.size.height.should == 50
   end
@@ -113,7 +113,7 @@ describe 'position' do
     view.rmq.append(UIView).layout(h: 5, w: 1)
     view.size.width.should == 20
     view.size.height.should == 100
-    view.rmq.resize_to_fit_subviews
+    view.rmq.resize_frame_to_fit_subviews
     view.size.width.should == 70
     view.size.height.should == 500
   end
@@ -127,24 +127,118 @@ describe 'position' do
     view.size.height.should == 100
 
     # Just right
-    view.rmq.resize_to_fit_subviews({right: 101})
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({right: 101})
     view.size.width.should == 171
     view.size.height.should == 500
 
     # Just bottom
-    view.rmq.resize_to_fit_subviews({bottom: 13})
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({bottom: 13})
     view.size.width.should == 70
     view.size.height.should == 513
 
     # Both right & bottom
-    view.rmq.resize_to_fit_subviews({right: 101, bottom: 13})
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({right: 101, bottom: 13})
     view.size.width.should == 171
     view.size.height.should == 513
 
     # Negative values
-    view.rmq.resize_to_fit_subviews({right: -1, bottom: -1})
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({right: -1, bottom: -1})
     view.size.width.should == 69
     view.size.height.should == 499
+  end
+
+  it "should resize a view's frame without changing height if specified" do
+    view = @vc.rmq.append(UIView).layout(h: 100, w: 20).get
+    view.rmq.append(UIButton).layout(h: 50, w: 10)
+    view.rmq.append(UILabel).layout(h: 500, w: 70)
+    view.rmq.append(UIView).layout(h: 5, w: 1)
+    view.size.width.should == 20
+    view.size.height.should == 100
+
+    view.rmq.resize_frame_to_fit_subviews({only_height: true})
+    view.size.width.should == 20
+    view.size.height.should == 500
+
+    # With bottom padding
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({only_height: true, bottom: 10})
+    view.size.width.should == 20
+    view.size.height.should == 510
+
+    # With right padding
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({only_height: true, right: 10})
+    view.size.width.should == 30
+    view.size.height.should == 500
+
+    # With both padding
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({only_height: true, bottom:21, right: 10})
+    view.size.width.should == 30
+    view.size.height.should == 521
+  end
+
+  it "should resize a view's frame without changing width if specified" do
+    view = @vc.rmq.append(UIView).layout(h: 100, w: 20).get
+    view.rmq.append(UIButton).layout(h: 50, w: 10)
+    view.rmq.append(UILabel).layout(h: 500, w: 70)
+    view.rmq.append(UIView).layout(h: 5, w: 1)
+    view.size.width.should == 20
+    view.size.height.should == 100
+
+    view.rmq.resize_frame_to_fit_subviews({only_width: true})
+    view.size.width.should == 70
+    view.size.height.should == 100
+
+    # With bottom padding
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({only_width: true, bottom: 10})
+    view.size.width.should == 70
+    view.size.height.should == 110
+
+    # With right padding
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({only_width: true, right: 10})
+    view.size.width.should == 80
+    view.size.height.should == 100
+
+    # With both padding
+    view.rmq.layout(h:100, w:20)
+    view.rmq.resize_frame_to_fit_subviews({only_width: true, bottom:21, right: 10})
+    view.size.width.should == 80
+    view.size.height.should == 121
+  end
+
+  it "should set a UIScrollView's contentSize property automatically" do
+    view = @vc.rmq.append(UIScrollView).layout(h: 100, w: 20).get
+    view.rmq.append(UIButton).layout(h: 50, w: 10)
+    view.rmq.append(UILabel).layout(h: 500, w: 70)
+    view.rmq.append(UIView).layout(h: 5, w: 1)
+
+    view.contentSize.should == CGSizeZero
+
+    view.rmq.resize_content_to_fit_subviews
+    view.contentSize.should == CGSizeMake(70, 500)
+
+    # Right padding
+    view.rmq.resize_content_to_fit_subviews({right: 20})
+    view.contentSize.should == CGSizeMake(90, 500)
+
+    # Bottom padding
+    view.rmq.resize_content_to_fit_subviews({bottom: 21})
+    view.contentSize.should == CGSizeMake(70, 521)
+
+    # Right and bottom padding
+    view.rmq.resize_content_to_fit_subviews({right: 19, bottom: 2})
+    view.contentSize.should == CGSizeMake(89, 502)
+
+    # Negative padding
+    view.rmq.resize_content_to_fit_subviews({right: -2, bottom: -4})
+    view.contentSize.should == CGSizeMake(68, 496)
   end
 
   it 'should nudge a view in various directions' do
