@@ -23,7 +23,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.content_offset = CGPointMake(12, 12)
   end
 
-  def ui_scroll_view_white_indicators
+  def ui_scroll_view_white_indicators(st)
     st.indicator_style = :white
   end
 
