@@ -1,6 +1,14 @@
 module RubyMotionQuery
   module Stylers
 
+    INDICATOR_STYLES = {
+      default: UIScrollViewIndicatorStyleDefault,
+      black: UIScrollViewIndicatorStyleBlack,
+      dark: UIScrollViewIndicatorStyleBlack,
+      white: UIScrollViewIndicatorStyleWhite,
+      light: UIScrollViewIndicatorStyleWhite
+    }
+
     class UIScrollViewStyler < UIViewStyler
       def paging=(value) ; @view.pagingEnabled = value ; end
       def paging ; @view.isPagingEnabled ; end
@@ -32,6 +40,8 @@ module RubyMotionQuery
       def scroll_indicator_insets=(value); @view.scrollIndicatorInsets = value; end
       def scroll_indicator_insets; @view.scrollIndicatorInsets; end
 
+      def indicator_style=(value); @view.indicatorStyle = INDICATOR_STYLES[value] || value; end
+      def indicator_style; @view.indicatorStyle; end
 
     end
 
