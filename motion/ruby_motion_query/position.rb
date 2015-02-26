@@ -106,16 +106,16 @@ module RubyMotionQuery
       self
     end
 
-    def resize_frame_to_fit_subviews(padding = {})
+    def resize_frame_to_fit_subviews(args = {})
       selected.each do |view|
-        view.rmq.layout(subviews_bottom_right(view, padding))
+        view.rmq.layout(subviews_bottom_right(view, args))
       end
 
       self
     end
     alias :resize_to_fit_subviews :resize_frame_to_fit_subviews
 
-    def resize_content_to_fit_subviews(padding = {})
+    def resize_content_to_fit_subviews(args = {})
       selected.each do |view|
         unless view.respond_to?(:contentSize)
           puts "\n[RMQ ERROR]  resize_content_to_fit_subviews must be called on a view that supports `contentSize`. Called on #{view}\n\n"
@@ -123,7 +123,7 @@ module RubyMotionQuery
         end
 
         view.rmq.style do |st|
-          bottom_right = subviews_bottom_right(view, padding)
+          bottom_right = subviews_bottom_right(view, args)
           st.content_size = CGSizeMake(bottom_right[:w], bottom_right[:h])
         end
       end
@@ -151,7 +151,7 @@ module RubyMotionQuery
     # Calculates the bottom right of a view using its subviews
     #
     # @return [Hash]
-    def subviews_bottom_right(view, padding = {})
+    def subviews_bottom_right(view, args = {})
       w = 0
       h = 0
 
@@ -162,10 +162,10 @@ module RubyMotionQuery
       end
 
       rect = view.rmq.frame
-      w = rect.width if w == 0
-      h = rect.height if h == 0
+      w = rect.width if (w == 0 || args[:only_height])
+      h = rect.height if (h == 0 || args[:only_width])
 
-      {w: (w + (padding[:right] || 0)), h: (h + (padding[:bottom] || 0))}
+      {w: (w + (args[:right] || 0)), h: (h + (args[:bottom] || 0))}
     end
 
   end
