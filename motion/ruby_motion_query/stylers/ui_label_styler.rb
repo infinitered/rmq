@@ -56,6 +56,17 @@ module RubyMotionQuery
       def adjusts_font_size
         @view.adjustsFontSizeToFitWidth
       end
+
+      def resize_height_to_fit
+        @view.lineBreakMode = UILineBreakModeWordWrap
+        @view.numberOfLines = 0
+
+        attributed_text = NSAttributedString.alloc.initWithString(@view.text, attributes:{NSFontAttributeName => @view.font})
+        rect = attributed_text.boundingRectWithSize([@view.frame.size.width, Float::MAX], options:NSStringDrawingUsesLineFragmentOrigin, context:nil)
+
+        expected_label_size = [@view.frame.size.width, rect.size.height.ceil]
+        @view.frame = [@view.frame.origin, expected_label_size]
+      end
     end
 
   end
