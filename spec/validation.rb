@@ -96,6 +96,20 @@ describe 'validation' do
       @rmq.validation.valid?('test', :usphone).should == false
     end
 
+    it 'can validate intlphone' do
+      @rmq.validation.valid?('(+44)(0)20-12341234', :intlphone).should == true
+      @rmq.validation.valid?('02012341234', :intlphone).should == true
+      @rmq.validation.valid?('+44 (0) 1234-1234', :intlphone).should == true
+      @rmq.validation.valid?('+44 0 1234-1234', :intlphone).should == true
+      @rmq.validation.valid?('+44012341234', :intlphone).should == true
+      @rmq.validation.valid?('+44 7890 123 456', :intlphone).should == true
+      @rmq.validation.valid?('447890123456', :intlphone).should == true
+      @rmq.validation.valid?('44 0 1234 1234', :intlphone).should == true
+      @rmq.validation.valid?('(44+)020-12341234', :intlphone).should == false
+      @rmq.validation.valid?('12341234(+020)', :intlphone).should == false
+      @rmq.validation.valid?('test', :intlphone).should == false
+    end
+
     it 'can validate at least 1 uppercase US character' do
       @rmq.validation.valid?('test', :has_upper).should == false
       @rmq.validation.valid?('Test', :has_upper).should == true
