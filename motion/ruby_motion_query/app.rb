@@ -83,6 +83,17 @@ module RubyMotionQuery
         NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)[0]
       end
 
+      # @return [NSTimer] NSTimer instance, fires once after <seconds>
+      def after(seconds, &callback)
+        NSTimer.scheduledTimerWithTimeInterval(seconds, target: callback, selector: 'call:', userInfo: nil, repeats: false)
+      end
+      alias delay after
+
+      # @return [NSTimer] NSTimer instance, set to repeat every <seconds>
+      def every(seconds, &callback)
+        NSTimer.scheduledTimerWithTimeInterval(seconds, target: callback, selector: 'call:', userInfo: nil, repeats: true)
+      end
+
       # Returns the current view controller in the app. If the current controller is a tab or
       # navigation controller, then it gets the current tab or topmost controller in the nav, etc
       #
