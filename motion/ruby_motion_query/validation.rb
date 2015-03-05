@@ -134,6 +134,8 @@ module RubyMotionQuery
       UKZIP = Regexp.new('^(GIR ?0AA|[A-PR-UWYZ]([0-9]{1,2}|([A-HK-Y][0-9]([0-9ABEHMNPRV-Y])?)|[0-9][A-HJKPS-UW]) ?[0-9][ABD-HJLNP-UW-Z]{2})$')
       # 7 or 10 digit number, delimiters are spaces, dashes, or periods
       USPHONE = Regexp.new('^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]‌​)\s*)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-‌​9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})$')
+      # International Phone numbers
+      INTLPHONE = Regexp.new('^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$')
       # Strong password (at least [8 chars, 1 upper, 1 lower, 1 number])
       STRONGPW = Regexp.new('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$')
       # Has at least 1 uppercase letter
@@ -154,6 +156,7 @@ module RubyMotionQuery
         :uszip => lambda { |value, opts| Validation.regex_match?(value, USZIP)},
         :ukzip => lambda { |value, opts| Validation.regex_match?(value.upcase, UKZIP)},
         :usphone => lambda { |value, opts| Validation.regex_match?(value, USPHONE)},
+        :intlphone => lambda { |value, opts| Validation.regex_match?(value, INTLPHONE)},
         :strong_password => lambda { |value, opts| Validation.regex_match?(value, STRONGPW)},
         :has_upper => lambda { |value, opts| Validation.regex_match?(value, HASUPPER)},
         :has_lower => lambda { |value, opts| Validation.regex_match?(value, HASLOWER)},

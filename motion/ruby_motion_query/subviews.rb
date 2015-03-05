@@ -199,6 +199,11 @@ module RubyMotionQuery
           #o.setTitle('Ok', forState: UIControlStateNormal)
           o.opaque = true
         end
+      elsif (klass == UIActivityIndicatorView) || klass < UIActivityIndicatorView
+        klass.alloc.initWithActivityIndicatorStyle(UIActivityIndicatorViewStyleWhite).tap do |o|
+          o.hidden = false
+          o.opaque = true
+        end
       elsif reuse_identifier = opts[:reuse_identifier]
         style = opts[:cell_style] || UITableViewCellStyleDefault
         klass.alloc.initWithStyle(style, reuseIdentifier: reuse_identifier).tap do |o|
