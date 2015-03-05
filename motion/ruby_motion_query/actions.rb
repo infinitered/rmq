@@ -155,5 +155,21 @@ module RubyMotionQuery
       self
     end
 
+    # For UIActivityIndicatorViews
+    def start_animating
+      selected.each do |view|
+        view.startAnimating if view.respond_to?(:startAnimating)
+      end
+      self
+    end
+
+    # For UIActivityIndicatorViews
+    def stop_animating
+      selected.each do |view|
+        view.stopAnimating if view.respond_to?(:startAnimating)
+      end
+      self
+    end
+
   end
 end
