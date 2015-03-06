@@ -86,5 +86,58 @@ describe 'stylers/ui_label' do
     view.get.lineBreakMode.should == NSLineBreakByTruncatingHead
 
   end
+
+  it "should resize height larger when asked" do
+    view = @vc.rmq.append(@view_klass, :ui_label_kitchen_sink)
+
+    view.style do |st|
+      st.frame = {
+        w: 200,
+        h: 5
+      }
+      st.text = "Testing this thing with a really long string so that it clips but then will resize to fit properly."
+    end
+
+    old_size = view.get.frame.size
+    old_size.should == CGSizeMake(200,5)
+
+    view.style {|st| st.resize_height_to_fit}
+
+    size = view.get.frame.size
+    size.width.should == 200
+    size.height.should > 5
+    size.height.should < Float::MAX
+
+    # Set the height to zero and try again
+    view.style do |st|
+      st.frame = {
+        h: 0
+      }
+    end
+    view.style {|st| st.resize_height_to_fit}
+    view.get.frame.size.height.should > 0
+  end
+
+  it "should resize height smaller when asked" do
+    view = @vc.rmq.append(@view_klass, :ui_label_kitchen_sink)
+
+    view.style do |st|
+      st.frame = {
+        w: 150,
+        h: 5000
+      }
+      st.text = "This is a small label."
+    end
+
+    old_size = view.get.frame.size
+    old_size.should == CGSizeMake(150,5000)
+
+    view.style {|st| st.resize_height_to_fit}
+
+    size = view.get.frame.size
+    size.width.should == 150
+    size.height.should < 5000
+    size.height.should > 0
+  end
 end
 
