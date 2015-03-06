@@ -44,26 +44,26 @@ describe 'app' do
     @app.document_path.should == NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)[0]
   end
 
-  it 'should delay 0.1 second then fire callback' do
-    before = Time.now
-    @app.after 0.1 do
-      after = Time.now
-      (after - before).should.be > 0.09
-      (after - before).should.be < 0.11
+  it 'should delay 0.01 second then fire callback' do
+    before_time = Time.now
+    @app.after 0.01 do
+      after_time = Time.now
+      (after_time - before_time).should.be > 0.009
+      (after_time - before_time).should.be < 0.011
       resume
     end
     wait {}
   end
 
   it 'should fire twice 0.01 seconds apart' do
-    before = Time.now
+    before_time = Time.now
     count = 0
     timer = @app.every 0.01 do
-      after = Time.now
-      (after - before).should.be > 0.009
-      (after - before).should.be < 0.011
+      after_time = Time.now
+      (after_time - before_time).should.be > 0.009
+      (after_time - before_time).should.be < 0.011
       count += 1
-      before = after # reset
+      before_time = after_time # reset
       resume if count >= 2
     end
     wait { timer.invalidate }
