@@ -62,7 +62,7 @@ module RubyMotionQuery
         @view.numberOfLines = 0
 
         attributed_text = NSAttributedString.alloc.initWithString(@view.text, attributes:{NSFontAttributeName => @view.font})
-        rect = attributed_text.boundingRectWithSize([@view.frame.size.width, Float::MAX], options:NSStringDrawingUsesLineFragmentOrigin, context:nil)
+        rect = attributed_text.boundingRectWithSize([@view.frame.size.width, Float::MAX], options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading), context:nil)
 
         expected_label_size = [@view.frame.size.width, rect.size.height.ceil]
         @view.frame = [@view.frame.origin, expected_label_size]
