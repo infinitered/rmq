@@ -44,6 +44,31 @@ describe 'app' do
     @app.document_path.should == NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)[0]
   end
 
+  it 'should delay 0.01 second then fire callback' do
+    before_time = Time.now
+    @app.after 0.01 do
+      after_time = Time.now
+      (after_time - before_time).should.be >= 0.01
+      (after_time - before_time).should.be.close 0.01, 0.005
+      resume
+    end
+    wait {}
+  end
+
+  it 'should fire twice 0.01 seconds apart' do
+    before_time = Time.now
+    count = 0
+    timer = @app.every 0.01 do
+      after_time = Time.now
+      (after_time - before_time).should.be >= 0.01
+      (after_time - before_time).should.be.close 0.01, 0.005
+      count += 1
+      before_time = after_time # reset
+      resume if count >= 2
+    end
+    wait { timer.invalidate }
+  end
+
   describe 'environment' do
     it 'should return environment as symbol, :test in this case' do
       @app.environment.should == :test
