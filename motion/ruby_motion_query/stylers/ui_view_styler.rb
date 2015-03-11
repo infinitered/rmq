@@ -310,10 +310,10 @@ module RubyMotionQuery
       end
 
       def border_color=(value)
-        if is_color(value)
+        if value.is_a?(UIColor)
           @view.layer.setBorderColor(value.CGColor)
         else
-          @view.layer.setBorderColor value
+          @view.layer.setBorderColor(value)
         end
       end
 
@@ -529,11 +529,6 @@ module RubyMotionQuery
         end
       end
 
-      private
-
-      def is_color(value)
-        [UICachedDeviceRGBColor, UIDeviceRGBColor].include?(value.class)
-      end
     end
   end
 end
