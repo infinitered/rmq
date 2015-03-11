@@ -48,8 +48,8 @@ describe 'app' do
     before_time = Time.now
     @app.after 0.01 do
       after_time = Time.now
-      (after_time - before_time).should.be > 0.009
-      (after_time - before_time).should.be < 0.011
+      (after_time - before_time).should.be >= 0.01
+      (after_time - before_time).should.be.close 0.01, 0.005
       resume
     end
     wait {}
@@ -60,8 +60,8 @@ describe 'app' do
     count = 0
     timer = @app.every 0.01 do
       after_time = Time.now
-      (after_time - before_time).should.be > 0.009
-      (after_time - before_time).should.be < 0.011
+      (after_time - before_time).should.be >= 0.01
+      (after_time - before_time).should.be.close 0.01, 0.005
       count += 1
       before_time = after_time # reset
       resume if count >= 2
