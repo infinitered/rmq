@@ -23,7 +23,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_label_text_align(st)
     ui_label_kitchen_sink(st)
-    st.text_align = :left
+    st.text_align = :right
   end
 
   def ui_label_attributed_string(st)
@@ -73,7 +73,7 @@ describe 'stylers/ui_label' do
     view = @vc.rmq.append(@view_klass, :ui_label_text_align).get
 
     view.tap do |v|
-      v.textAlignment.should == NSTextAlignmentLeft
+      v.textAlignment.should == NSTextAlignmentRight
     end
   end
 
