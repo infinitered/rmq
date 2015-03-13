@@ -22,6 +22,17 @@ module RubyMotionQuery
         @view.rowHeight = value
       end
 
+      def background_image=(value)
+        @view.backgroundView = UIImageView.alloc.initWithImage(value)
+      end
+      def background_image
+        if @view.backgroundView
+          @view.backgroundView.image
+        else
+          nil
+        end
+      end
+
       SEPARATOR_STYLES = {
         none: UITableViewCellSeparatorStyleNone,
         single: UITableViewCellSeparatorStyleSingleLine,
