@@ -21,6 +21,11 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.text_alignment = :centered
   end
 
+  def ui_label_text_align(st)
+    ui_label_kitchen_sink(st)
+    st.text_align = :right
+  end
+
   def ui_label_attributed_string(st)
     st.attributed_text = NSAttributedString.alloc.initWithString("RMQ")
   end
@@ -61,6 +66,14 @@ describe 'stylers/ui_label' do
 
     view.tap do |v|
       v.textAlignment.should == NSTextAlignmentCenter
+    end
+  end
+
+  it 'should use text_align as an alias for ui_label_text_align' do
+    view = @vc.rmq.append(@view_klass, :ui_label_text_align).get
+
+    view.tap do |v|
+      v.textAlignment.should == NSTextAlignmentRight
     end
   end
 

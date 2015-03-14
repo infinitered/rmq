@@ -41,6 +41,8 @@ module RubyMotionQuery
       def text_alignment
         @view.textAlignment
       end
+      alias :text_align= :text_alignment=
+      alias :text_align :text_alignment
 
       def resize_to_fit_text
         @view.sizeToFit
