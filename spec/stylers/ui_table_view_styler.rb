@@ -36,4 +36,16 @@ describe 'stylers/ui_table_view' do
       v.rowHeight.should == 20
     end
   end
+
+  it 'should allow getting and setting the background image' do
+
+    view = @vc.rmq.append(@view_klass, :ui_table_view_kitchen_sink)
+
+    view.style do |st|
+      st.background_image.should == nil
+      background = rmq.image.resource("Default")
+      st.background_image = background
+      st.background_image.should == background
+    end
+  end
 end
