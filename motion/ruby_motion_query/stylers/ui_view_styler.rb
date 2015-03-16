@@ -92,6 +92,22 @@ module RubyMotionQuery
       all: UITextAutocapitalizationTypeAllCharacters
     }
 
+    CONTENT_MODE_TYPES = {
+      scale_to_fill: UIViewContentModeScaleToFill,
+      scale_aspect_fit: UIViewContentModeScaleAspectFit,
+      scale_aspect_fill: UIViewContentModeScaleAspectFill,
+      redraw: UIViewContentModeRedraw,
+      center: UIViewContentModeCenter,
+      top: UIViewContentModeTop,
+      bottom: UIViewContentModeBottom,
+      left: UIViewContentModeLeft,
+      right: UIViewContentModeRight,
+      top_left: UIViewContentModeTopLeft,
+      top_right: UIViewContentModeTopRight,
+      bottom_left: UIViewContentModeBottomLeft,
+      bottom_right: UIViewContentModeBottomRight
+    }
+
     # When you create a styler, always inherit UIViewStyler
     class UIViewStyler
       def initialize(view)
@@ -272,7 +288,7 @@ module RubyMotionQuery
       end
 
       def content_mode=(value)
-        @view.setContentMode value
+        @view.setContentMode(CONTENT_MODE_TYPES[value] || value)
       end
       def content_mode
         @view.contentMode
