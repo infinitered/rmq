@@ -33,6 +33,11 @@ module RubyMotionQuery
         end
       end
 
+      def background_color=(value)
+        @view.backgroundView = nil if @view.backgroundView
+        @view.setBackgroundColor value
+      end
+
       SEPARATOR_STYLES = {
         none: UITableViewCellSeparatorStyleNone,
         single: UITableViewCellSeparatorStyleSingleLine,
