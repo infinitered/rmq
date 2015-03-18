@@ -6,6 +6,8 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.selection_style = UITableViewCellSelectionStyleBlue
     st.detail_text_color = rmq.color.green
     st.detail_font = rmq.font.system(11)
+    st.separator_inset = UIEdgeInsetsMake(0, 10, 0, -20)
+
   end
 end
 
@@ -27,6 +29,7 @@ describe 'stylers/ui_table_view_cell' do
       c.selectionStyle.should.equal(UITableViewCellSelectionStyleBlue)
       c.detailTextLabel.textColor.should.equal(rmq.color.green)
       c.detailTextLabel.font.should.equal(rmq.font.system(11))
+      c.separatorInset.should.equal(UIEdgeInsetsMake(0, 10, 0, -20))
     end
 
     @vc.rmq(cell).style do |st|
@@ -34,6 +37,7 @@ describe 'stylers/ui_table_view_cell' do
       st.detail_text_color.should.equal(rmq.color.green)
       st.font.should.equal(rmq.font.system(15))
       st.detail_font.should.equal(rmq.font.system(11))
+      st.separator_inset.should.equal(UIEdgeInsetsMake(0, 10, 0, -20))
     end
   end
 
