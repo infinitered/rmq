@@ -56,6 +56,8 @@ module RubyMotionQuery
       def adjusts_font_size
         @view.adjustsFontSizeToFitWidth
       end
+      alias :adjusts_font_size_to_fit_width= :adjusts_font_size=
+      alias :adjusts_font_size_to_fit_width :adjusts_font_size
 
       def resize_height_to_fit
         @view.lineBreakMode = UILineBreakModeWordWrap

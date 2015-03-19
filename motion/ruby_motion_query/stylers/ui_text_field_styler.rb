@@ -36,6 +36,8 @@ module RubyMotionQuery
       # Sizing the Text Field's Text
       def adjusts_font_size_to_fit_width ; view.adjustsFontSizeToFitWidth ; end
       def adjusts_font_size_to_fit_width=(v) ; view.adjustsFontSizeToFitWidth = v ; end
+      alias :adjusts_font_size= :adjusts_font_size_to_fit_width=
+      alias :adjusts_font_size :adjusts_font_size_to_fit_width
 
       def minimum_font_size ; view.minimumFontSize ; end
       def minimum_font_size=(v) ; view.minimumFontSize = v ; end
