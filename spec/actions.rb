@@ -165,6 +165,13 @@ describe 'actions' do
     switchy.get.isOn.should == false
   end
 
+  it 'reads and sets data for UIProgressView' do
+    progress_bar = rmq.create(UIProgressView).data(0.5)
+    progress_bar.get.progress.should == 0.5
+    progress_bar.data(1)
+    progress_bar.get.progress.should == 1.0
+  end
+
   it 'should allow you to set data to nil' do
     q = rmq.create(UILabel)
     q.data(nil)
