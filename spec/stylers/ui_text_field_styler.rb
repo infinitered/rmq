@@ -13,6 +13,7 @@ describe 'stylers/ui_text_field' do
       st.return_key_type = UIReturnKeyNext
       st.spell_checking_type = UITextSpellCheckingTypeYes
       st.right_view_mode = :always
+      st.adjusts_font_size_to_fit_width = true
     end
 
     def ui_text_field_color(st)
@@ -71,7 +72,20 @@ describe 'stylers/ui_text_field' do
       v.keyboardAppearance.should == UIKeyboardAppearanceDark
       v.returnKeyType.should == UIReturnKeyNext
       v.spellCheckingType.should == UITextSpellCheckingTypeYes
-      v.rightViewMode == UITextFieldViewModeAlways
+      v.rightViewMode.should == UITextFieldViewModeAlways
+      v.adjustsFontSizeToFitWidth.should == true
+    end
+  end
+
+  it 'allows adjusts_font_size alias' do
+    view = @vc.rmq.append(@view_klass, :ui_text_field_kitchen_sink)
+    view.style do |st|
+      st.adjusts_font_size_to_fit_width.should == true
+
+      st.adjusts_font_size = false
+
+      st.adjusts_font_size.should == false
+      st.adjusts_font_size_to_fit_width.should == false
     end
   end
 

@@ -56,6 +56,18 @@ describe 'stylers/ui_label' do
 
   end
 
+  it 'allows adjusts_font_size_to_fit_width alias' do
+    view = @vc.rmq.append(@view_klass, :ui_label_kitchen_sink)
+    view.style do |st|
+      st.adjusts_font_size.should == true
+
+      st.adjusts_font_size_to_fit_width = false
+
+      st.adjusts_font_size_to_fit_width.should == false
+      st.adjusts_font_size.should == false
+    end
+  end
+
   it 'allows color set with `text_color`' do
     view = @vc.rmq.append!(@view_klass, :ui_label_color)
     view.textColor.should == rmq.color.blue
