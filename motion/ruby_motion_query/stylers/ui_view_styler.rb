@@ -392,6 +392,12 @@ module RubyMotionQuery
       end
       def shadow_path ; @view.layer.shadowPath ; end
 
+      def user_interaction_enabled=(value)
+        @view.setUserInteractionEnabled(!!value)
+      end
+      def user_interaction_enabled
+        @view.isUserInteractionEnabled
+      end
 
       # @deprecated - use frame hashs
       def left=(value)
