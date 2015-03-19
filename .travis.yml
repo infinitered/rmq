@@ -8,6 +8,9 @@ before_install:
 gemfile:
   - Gemfile
 script:
+  - /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/simctl create five com.apple.CoreSimulator.SimDeviceType.iPhone-5 com.apple.CoreSimulator.SimRuntime.iOS-8-1
+
   - bundle install
   - bundle exec rake clean
   - bundle exec rake spec
+  - bundle exec rake spec device_name=five
