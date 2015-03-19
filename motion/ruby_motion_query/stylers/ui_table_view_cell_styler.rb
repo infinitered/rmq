@@ -54,6 +54,13 @@ module RubyMotionQuery
       def selection_style ; @view.selectionStyle ; end
       def selection_style=(v) ; @view.selectionStyle = v ; end
 
+      def separator_inset=(value)
+        @view.separatorInset = value
+      end
+      def separator_inset
+        @view.separatorInset
+      end
+
     end
 
   end
