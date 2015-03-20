@@ -48,6 +48,23 @@ describe 'stylers/ui_button' do
       view.isSelected.should == true
     end
 
+    rmq(view).style do |st|
+      st.text.should == 'foo'
+      st.attributed_text.should == NSAttributedString.alloc.initWithString("RMQ")
+      st.font.should == rmq.font.system(12)
+      st.color.should == rmq.color.red
+      st.color_highlighted.should == rmq.color.blue
+      st.image.should == rmq.image.resource('logo')
+      st.image_highlighted.should == rmq.image.resource('Icon')
+      st.background_image_normal.should == rmq.image.resource('Default')
+      st.background_image_highlighted.should == rmq.image.resource('logo')
+      st.background_image_selected.should == rmq.image.resource('Icon')
+      st.text_highlighted.should == 'bar'
+      st.attributed_text_highlighted.should == NSAttributedString.alloc.initWithString("RMQ Highlighted")
+      st.adjust_image_when_highlighted.should == true
+      st.selected.should == true
+    end
+
   end
 
   describe "bordered button extensions" do
