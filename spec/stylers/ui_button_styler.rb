@@ -51,14 +51,14 @@ describe 'stylers/ui_button' do
     rmq(view).style do |st|
       st.text.should == 'foo'
       st.attributed_text.should == NSAttributedString.alloc.initWithString("RMQ")
-      st.font.should == rmq.font.system(12)
-      st.color.should == rmq.color.red
-      st.color_highlighted.should == rmq.color.blue
-      st.image.should == rmq.image.resource('logo')
-      st.image_highlighted.should == rmq.image.resource('Icon')
-      st.background_image_normal.should == rmq.image.resource('Default')
-      st.background_image_highlighted.should == rmq.image.resource('logo')
-      st.background_image_selected.should == rmq.image.resource('Icon')
+      st.font.should == @vc.rmq.font.system(12)
+      st.color.should == @vc.rmq.color.red
+      st.color_highlighted.should == @vc.rmq.color.blue
+      st.image.should == @vc.rmq.image.resource('logo')
+      st.image_highlighted.should == @vc.rmq.image.resource('Icon')
+      st.background_image_normal.should == @vc.rmq.image.resource('Default')
+      st.background_image_highlighted.should == @vc.rmq.image.resource('logo')
+      st.background_image_selected.should == @vc.rmq.image.resource('Icon')
       st.text_highlighted.should == 'bar'
       st.attributed_text_highlighted.should == NSAttributedString.alloc.initWithString("RMQ Highlighted")
       st.adjust_image_when_highlighted.should == true
@@ -73,7 +73,7 @@ describe 'stylers/ui_button' do
     describe "border width" do
       before{ @view.style{|st| st.border_width = 2} }
 
-      it 'should be able to add a border to a button' do
+      it "should be able to add a border to a button" do
         @view.get.layer.borderWidth.should == 2
       end
 
