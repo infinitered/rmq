@@ -62,6 +62,8 @@ module RubyMotionQuery
       def background_image_normal
         @view.backgroundImageForState(UIControlStateNormal)
       end
+      alias :background_image :background_image_normal
+      alias :background_image= :background_image_normal=
 
       def background_image_highlighted=(value)
         @view.setBackgroundImage(value, forState: UIControlStateHighlighted)

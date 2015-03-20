@@ -70,6 +70,25 @@ describe 'stylers/ui_button' do
   describe "bordered button extensions" do
     before { @view = @vc.rmq.append(@view_klass, :ui_button_kitchen_sink) }
 
+    describe "aliases" do
+      before do
+        @view.style do |st|
+          st.image = rmq.image.resource('Default')
+          st.background_image = rmq.image.resource('Icon')
+        end
+      end
+
+      it "should get and set image_normal with alias" do
+        @view.get.imageForState(UIControlStateNormal).should == @vc.rmq.image.resource('Default')
+        @view.style{|st| st.image.should == @vc.rmq.image.resource('Default') }
+      end
+
+      it "should get and set background_image_normal with alias" do
+        @view.get.backgroundImageForState(UIControlStateNormal).should == @vc.rmq.image.resource('Icon')
+        @view.style{|st| st.background_image.should == @vc.rmq.image.resource('Icon') }
+      end
+    end
+
     describe "border width" do
       before{ @view.style{|st| st.border_width = 2} }
 
