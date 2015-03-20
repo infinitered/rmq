@@ -37,6 +37,7 @@ module RubyMotionQuery
           when UITextField          then view.text = new_data
           #when UINavigationBar      then
           #when UIScrollView         then
+          when UIProgressView       then view.setProgress(new_data, animated: true)
 
           # TODO, finish
           end
@@ -63,6 +64,7 @@ module RubyMotionQuery
           when UITextField          then view.text
           #when UINavigationBar      then
           #when UIScrollView         then
+          when UIProgressView       then view.progress
 
           # TODO, finish
           end
