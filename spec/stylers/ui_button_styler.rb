@@ -2,6 +2,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_button_kitchen_sink(st)
     st.text = 'foo'
+    st.attributed_text = NSAttributedString.alloc.initWithString("RMQ")
     st.font = font.system(12)
     st.color = color.red
     st.color_highlighted = color.blue
@@ -11,6 +12,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.background_image_highlighted = image.resource('logo')
     st.background_image_selected = image.resource('Icon')
     st.text_highlighted = 'bar'
+    st.attributed_text_highlighted = NSAttributedString.alloc.initWithString("RMQ Highlighted")
     st.adjust_image_when_highlighted = true
     st.selected = true
   end
@@ -32,6 +34,8 @@ describe 'stylers/ui_button' do
     view.tap do |v|
       view.titleForState(UIControlStateNormal).should == "foo"
       view.titleForState(UIControlStateHighlighted).should == 'bar'
+      view.attributedTitleForState(UIControlStateNormal).should == NSAttributedString.alloc.initWithString("RMQ")
+      view.attributedTitleForState(UIControlStateHighlighted).should == NSAttributedString.alloc.initWithString("RMQ Highlighted")
       view.titleLabel.font.should == UIFont.systemFontOfSize(12)
       view.titleColorForState(UIControlStateNormal).should == UIColor.redColor
       view.titleColorForState(UIControlStateHighlighted).should == UIColor.blueColor

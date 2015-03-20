@@ -9,6 +9,13 @@ module RubyMotionQuery
         @view.title
       end
 
+      def attributed_text=(value)
+        @view.setAttributedTitle(value, forState: UIControlStateNormal)
+      end
+      def attributed_text
+        @view.attributedTitleForState(UIControlStateNormal)
+      end
+
       def font=(value) ; @view.titleLabel.font = value ; end
       def font ; @view.titleLabel.font ; end
 
@@ -104,6 +111,13 @@ module RubyMotionQuery
 
       def text_highlighted= value
         @view.setTitle(value, forState:UIControlStateHighlighted)
+      end
+
+      def attributed_text_highlighted=(value)
+        @view.setAttributedTitle(value, forState: UIControlStateHighlighted)
+      end
+      def attributed_text_highlighted
+        @view.attributedTitleForState(UIControlStateHighlighted)
       end
 
     end
