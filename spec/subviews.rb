@@ -15,7 +15,7 @@ describe 'subviews' do
     @vc.view.subviews.first.should == view
   end
 
-  it 'should addend to the end of the subviews' do
+  it 'should append to the end of the subviews' do
     view = @vc.rmq.append(UIView).get
     @vc.view.subviews[@vc.view.subviews.length - 1].should == view
   end
@@ -138,6 +138,25 @@ describe 'subviews' do
     #TODO
   end
 
+  it 'should insert then yield to a block with the rmq object' do
+    block_called = false
+    @vc.rmq.append(UILabel) do |view|
+      view.should.be.kind_of(RubyMotionQuery::RMQ)
+      view.get.should.be.kind_of(UILabel)
+      block_called = true
+    end
+    block_called.should == true
+  end
+
+  it 'should insert then yield to a block with the created view' do
+    block_called = false
+    @vc.rmq.append!(UILabel) do |view|
+      view.should.be.kind_of(UILabel)
+      block_called = true
+    end
+    block_called.should == true
+  end
+
   describe 'create' do
     it 'should allow you to create a view using rmq, without appending it to the view tree' do
       test_view_wrapped = @vc.rmq.create(SubviewTestView)
@@ -203,6 +222,26 @@ describe 'subviews' do
       table_sub.class.should == SubTableTest
       table_sub.style.should == UITableViewStyleGrouped
     end
+
+    it 'should create then yield to a block with the rmq object' do
+      block_called = false
+      @vc.rmq.create(UILabel) do |view|
+        view.should.be.kind_of(RubyMotionQuery::RMQ)
+        view.get.should.be.kind_of(UILabel)
+        block_called = true
+      end
+      block_called.should == true
+    end
+
+    it 'should create then yield to a block with the created view' do
+      block_called = false
+      @vc.rmq.create!(UILabel) do |view|
+        view.should.be.kind_of(UILabel)
+        block_called = true
+      end
+      block_called.should == true
+    end
+
   end
 
   describe 'build' do
@@ -272,6 +311,27 @@ describe 'subviews' do
 
       @vc.rmq.append(view)
       view.number_of_builds.should == 1
+    end
+
+    it 'should build an existing view then yield to a block with the rmq wrapped view' do
+      existing_view = UIView.new
+      block_called = false
+      @vc.rmq.build(existing_view) do |view|
+        view.should.be.kind_of(RubyMotionQuery::RMQ)
+        view.get.should == existing_view
+        block_called = true
+      end
+      block_called.should == true
+    end
+
+    it 'should build an existing view then yield to a block with the existing view' do
+      existing_view = UIView.new
+      block_called = false
+      @vc.rmq.build!(existing_view) do |view|
+        view.should == existing_view
+        block_called = true
+      end
+      block_called.should == true
     end
   end
 end
