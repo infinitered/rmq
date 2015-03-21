@@ -50,6 +50,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.background_color = color.red
     st.tint_color = color.blue
     st.corner_radius = 5
+    st.user_interaction_enabled = false
 
     # Shadows
     st.shadow_color = color.gray
@@ -334,6 +335,18 @@ describe 'ui_view_styler' do
     rmq(view).style { |st| @value = st.enabled }
 
     @value.should.be.false
+  end
+
+  it "should set user interaction enabled and disabled" do
+    view = @vc.rmq.append(@view_klass, :ui_view_kitchen_sink).get
+
+    view.isUserInteractionEnabled.should == false
+
+    rmq(view).style do |st|
+      st.user_interaction_enabled.should == false
+      st.user_interaction_enabled = true
+      st.user_interaction_enabled.should == true
+    end
   end
 
   it "should set shadow values" do
