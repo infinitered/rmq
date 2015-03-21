@@ -14,6 +14,11 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.row_height = 20
   end
 
+  def ui_table_view_background_image(st)
+    ui_table_view_kitchen_sink(st)
+    st.background_image = rmq.image.resource("Default")
+  end
+
 end
 
 describe 'stylers/ui_table_view' do
@@ -47,5 +52,17 @@ describe 'stylers/ui_table_view' do
       st.background_image = background
       st.background_image.should == background
     end
+  end
+
+  it 'should allow setting a background color when there is a background image' do
+    view = @vc.rmq.append(@view_klass, :ui_table_view_background_image)
+
+    view.style do |st|
+      st.background_image.should == rmq.image.resource("Default")
+      st.background_color = rmq.color.red
+      st.background_image.should == nil
+      st.background_color.should == rmq.color.red
+    end
+
   end
 end
