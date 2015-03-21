@@ -2,6 +2,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_button_kitchen_sink(st)
     st.text = 'foo'
+    st.attributed_text = NSAttributedString.alloc.initWithString("RMQ")
     st.font = font.system(12)
     st.color = color.red
     st.color_highlighted = color.blue
@@ -11,6 +12,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.background_image_highlighted = image.resource('logo')
     st.background_image_selected = image.resource('Icon')
     st.text_highlighted = 'bar'
+    st.attributed_text_highlighted = NSAttributedString.alloc.initWithString("RMQ Highlighted")
     st.adjust_image_when_highlighted = true
     st.selected = true
   end
@@ -32,6 +34,8 @@ describe 'stylers/ui_button' do
     view.tap do |v|
       view.titleForState(UIControlStateNormal).should == "foo"
       view.titleForState(UIControlStateHighlighted).should == 'bar'
+      view.attributedTitleForState(UIControlStateNormal).should == NSAttributedString.alloc.initWithString("RMQ")
+      view.attributedTitleForState(UIControlStateHighlighted).should == NSAttributedString.alloc.initWithString("RMQ Highlighted")
       view.titleLabel.font.should == UIFont.systemFontOfSize(12)
       view.titleColorForState(UIControlStateNormal).should == UIColor.redColor
       view.titleColorForState(UIControlStateHighlighted).should == UIColor.blueColor
@@ -44,15 +48,51 @@ describe 'stylers/ui_button' do
       view.isSelected.should == true
     end
 
+    rmq(view).style do |st|
+      st.text.should == 'foo'
+      st.attributed_text.should == NSAttributedString.alloc.initWithString("RMQ")
+      st.font.should == @vc.rmq.font.system(12)
+      st.color.should == @vc.rmq.color.red
+      st.color_highlighted.should == @vc.rmq.color.blue
+      st.image.should == @vc.rmq.image.resource('logo')
+      st.image_highlighted.should == @vc.rmq.image.resource('Icon')
+      st.background_image_normal.should == @vc.rmq.image.resource('Default')
+      st.background_image_highlighted.should == @vc.rmq.image.resource('logo')
+      st.background_image_selected.should == @vc.rmq.image.resource('Icon')
+      st.text_highlighted.should == 'bar'
+      st.attributed_text_highlighted.should == NSAttributedString.alloc.initWithString("RMQ Highlighted")
+      st.adjust_image_when_highlighted.should == true
+      st.selected.should == true
+    end
+
   end
 
   describe "bordered button extensions" do
     before { @view = @vc.rmq.append(@view_klass, :ui_button_kitchen_sink) }
 
+    describe "aliases" do
+      before do
+        @view.style do |st|
+          st.image = rmq.image.resource('Default')
+          st.background_image = rmq.image.resource('Icon')
+        end
+      end
+
+      it "should get and set image_normal with alias" do
+        @view.get.imageForState(UIControlStateNormal).should == @vc.rmq.image.resource('Default')
+        @view.style{|st| st.image.should == @vc.rmq.image.resource('Default') }
+      end
+
+      it "should get and set background_image_normal with alias" do
+        @view.get.backgroundImageForState(UIControlStateNormal).should == @vc.rmq.image.resource('Icon')
+        @view.style{|st| st.background_image.should == @vc.rmq.image.resource('Icon') }
+      end
+    end
+
     describe "border width" do
       before{ @view.style{|st| st.border_width = 2} }
 
-      it 'should be able to add a border to a button' do
+      it "should be able to add a border to a button" do
         @view.get.layer.borderWidth.should == 2
       end
 

@@ -6,7 +6,14 @@ module RubyMotionQuery
         @view.setTitle(value, forState: UIControlStateNormal)
       end
       def text
-        @view.title
+        @view.titleForState(UIControlStateNormal)
+      end
+
+      def attributed_text=(value)
+        @view.setAttributedTitle(value, forState: UIControlStateNormal)
+      end
+      def attributed_text
+        @view.attributedTitleForState(UIControlStateNormal)
       end
 
       def font=(value) ; @view.titleLabel.font = value ; end
@@ -16,14 +23,14 @@ module RubyMotionQuery
         @view.setTitleColor(value, forState: UIControlStateNormal)
       end
       def color
-        @view.titleColor
+        @view.titleColorForState(UIControlStateNormal)
       end
 
       def color_highlighted=(value)
         @view.setTitleColor(value, forState: UIControlStateHighlighted)
       end
       def color_highlighted
-        @view.titleColorforState(UIControlStateHighlighted)
+        @view.titleColorForState(UIControlStateHighlighted)
       end
 
       def tint_color=(value)
@@ -33,27 +40,43 @@ module RubyMotionQuery
         @view.tintColor
       end
 
-      def image=(value)
-        self.image_normal = value
-      end
       def image_normal=(value)
         @view.setImage value, forState: UIControlStateNormal
       end
+      def image_normal
+        @view.imageForState(UIControlStateNormal)
+      end
+      alias :image :image_normal
+      alias :image= :image_normal=
 
       def image_highlighted=(value)
-        @view.setImage value, forState: UIControlStateHighlighted
+        @view.setImage(value, forState: UIControlStateHighlighted)
+      end
+      def image_highlighted
+        @view.imageForState(UIControlStateHighlighted)
       end
 
       def background_image_normal=(value)
-        @view.setBackgroundImage value, forState: UIControlStateNormal
+        @view.setBackgroundImage(value, forState: UIControlStateNormal)
       end
+      def background_image_normal
+        @view.backgroundImageForState(UIControlStateNormal)
+      end
+      alias :background_image :background_image_normal
+      alias :background_image= :background_image_normal=
 
       def background_image_highlighted=(value)
-        @view.setBackgroundImage value, forState: UIControlStateHighlighted
+        @view.setBackgroundImage(value, forState: UIControlStateHighlighted)
+      end
+      def background_image_highlighted
+        @view.backgroundImageForState(UIControlStateHighlighted)
       end
 
       def background_image_selected=(value)
-        @view.setBackgroundImage value, forState: UIControlStateSelected
+        @view.setBackgroundImage(value, forState: UIControlStateSelected)
+      end
+      def background_image_selected
+        @view.backgroundImageForState(UIControlStateSelected)
       end
 
       def adjust_image_when_highlighted=(value)
@@ -98,12 +121,18 @@ module RubyMotionQuery
         @view.imageEdgeInsets
       end
 
-      def text_highlighted value
+      def text_highlighted=(value)
         @view.setTitle(value, forState:UIControlStateHighlighted)
       end
+      def text_highlighted
+        @view.titleForState(UIControlStateHighlighted)
+      end
 
-      def text_highlighted= value
-        @view.setTitle(value, forState:UIControlStateHighlighted)
+      def attributed_text_highlighted=(value)
+        @view.setAttributedTitle(value, forState: UIControlStateHighlighted)
+      end
+      def attributed_text_highlighted
+        @view.attributedTitleForState(UIControlStateHighlighted)
       end
 
     end
