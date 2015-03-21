@@ -111,6 +111,34 @@ module RubyMotionQuery
       append(view_or_constant, style, opts).get
     end
 
+    # Same as append, but will look for a view with the same name and reapply styles
+    # to it if it finds one. If it doesn't, it'll append as normal.
+    #
+    # @example
+    #   @my_button = rmq.find_or_append(UIButton, :my_button)
+    #   @my_button = rmq.find_or_append(UIButton, :my_button) # Only one created
+    def find_or_append(view_or_constant, style=nil, opts = {}, &block)
+      if style && (q = self.find(style)) && q.length > 0
+        q.reapply_styles
+        block.call q if block
+        q
+      else
+        append(view_or_constant, style, opts, &block)
+      end
+    end
+
+    # Same as append!, but will look for a view with the same name and reapply styles
+    # to it if it finds one. If it doesn't, it'll append! as normal.
+    #
+    # @example
+    #   @my_button = rmq.find_or_append!(UIButton, :my_button)
+    #   @my_button = rmq.find_or_append!(UIButton, :my_button) # Only one created
+    def find_or_append!(view_or_constant, style=nil, opts = {}, &block)
+      find_or_append(view_or_constant, style, opts).get.tap do |q|
+        block.call q
+      end
+    end
+
     # Just like append, but inserts the view at index 0 of the subview array
     #
     # @return [RMQ]

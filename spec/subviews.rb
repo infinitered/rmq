@@ -334,6 +334,44 @@ describe 'subviews' do
       block_called.should == true
     end
   end
+
+  describe 'find_or_append' do
+    it 'appends if none existing' do
+      @vc.view.subviews.length.should == 0
+      view = @vc.rmq.find_or_append(UIView).get
+      @vc.view.subviews.length.should == 1
+      @vc.view.subviews.first.should == view
+    end
+
+    it 'finds if existing' do
+      @vc.rmq.stylesheet = StyleSheetForSubviewsTests
+      @vc.view.subviews.length.should == 0
+      existing_view = @vc.rmq.append(UIView, :my_style).get
+      @vc.view.subviews.length.should == 1
+      found_view = @vc.rmq.find_or_append(UIView, :my_style).get
+      @vc.view.subviews.length.should == 1
+      found_view.should == existing_view
+    end
+  end
+
+  describe 'find_or_append!' do
+    it 'appends if none existing' do
+      @vc.view.subviews.length.should == 0
+      view = @vc.rmq.find_or_append!(UIView)
+      @vc.view.subviews.length.should == 1
+      @vc.view.subviews.first.should == view
+    end
+
+    it 'finds if existing' do
+      @vc.rmq.stylesheet = StyleSheetForSubviewsTests
+      @vc.view.subviews.length.should == 0
+      existing_view = @vc.rmq.append!(UIView, :my_style)
+      @vc.view.subviews.length.should == 1
+      found_view = @vc.rmq.find_or_append!(UIView, :my_style)
+      @vc.view.subviews.length.should == 1
+      found_view.should == existing_view
+    end
+  end
 end
 
 class StyleSheetForSubviewsTests < RubyMotionQuery::Stylesheet

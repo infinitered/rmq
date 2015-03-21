@@ -1,4 +1,4 @@
-describe 'transversing' do
+describe 'traversing' do
   before do
     @vc = UIViewController.alloc.init
     @root_view = @vc.view
