@@ -18,6 +18,16 @@ module RubyMotionQuery
         end
       end
 
+      # Converts any string to a friendly symbol version.
+      # Example:  RubyMotionQuery::RMQ.symbolize("This is a TEST!")
+      # #=> :this_is_a_test
+      #
+      # @param [String]
+      # @return [Symbol]
+      def symbolize(s)
+        s.to_s.gsub(/\s+/,"_").downcase.to_sym
+      end
+
       # @param view
       # @return [UIViewController] The controller the view it is sitting in, or nil if it's not sitting anywhere in particular
       def controller_for_view(view)
