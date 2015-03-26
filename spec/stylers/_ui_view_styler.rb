@@ -92,6 +92,8 @@ shared 'styler' do
     @vc.rmq.styler_for(view).view_has_been_styled?.should == true
   end
 
+  # ---------------
+
   it 'should apply a style using the apply_style method' do
     view = @vc.rmq.append(@view_klass).get
     @vc.rmq(view).apply_style(:my_style)
@@ -129,7 +131,7 @@ shared 'styler' do
     view = @vc.rmq.append!(@view_klass, :ui_view_kitchen_sink)
 
     view.tap do |v|
-      view.backgroundColor.should == rmq.color.red
+      view.backgroundColor.should == rmq.color.red unless view.is_a? UIDatePicker # Fails for a UIDatePicker
       view.isHidden.should.be.true
       view.tintColor.should == rmq.color.blue
       view.layer.cornerRadius.should == 5

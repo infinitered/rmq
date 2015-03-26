@@ -8,7 +8,6 @@ module RubyMotionQuery
    			date: UIDatePickerModeDate,
    			date_and_time: UIDatePickerModeDateAndTime,
    			date_time: UIDatePickerModeDateAndTime,
-   			countdown: UIDatePickerModeCountDownTimer,
    			count_down: UIDatePickerModeCountDownTimer,
    			count_down_timer: UIDatePickerModeCountDownTimer,
     	}
