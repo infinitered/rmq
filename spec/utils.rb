@@ -19,7 +19,7 @@ describe 'utils' do
   end
 
   it 'should return false if module is passed to is_class?' do
-    @rmq.is_class?(TestIsClassModule).should == false 
+    @rmq.is_class?(TestIsClassModule).should == false
   end
 
   it 'should return false if non class is passed to is_class?' do
@@ -50,6 +50,12 @@ describe 'utils' do
   it 'should return true if empty hash is passed to is_blank?' do
     @rmq.is_blank?({}).should == true
     @rmq.is_blank?({not_emtpy: true}).should == false
+  end
+
+  it 'should return a usable snake_cased symbol' do
+    @rmq.symbolize("Help").should == :help
+    @rmq.symbolize("This is a test").should == :this_is_a_test
+    @rmq.symbolize("This Works Great!!!").should == :this_works_great
   end
 
   it 'should return a string of a view' do
