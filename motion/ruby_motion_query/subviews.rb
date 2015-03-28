@@ -19,7 +19,6 @@ module RubyMotionQuery
     # @return [RMQ]
     def add_subview(view_or_constant, opts={})
       subviews_added = []
-      style = opts[:style]
 
       selected.each do |selected_view|
         created = false
@@ -63,11 +62,14 @@ module RubyMotionQuery
         new_view.rmq_appended if appended
 
         if self.stylesheet
-          apply_style_to_view(new_view, style) if style
+          apply_style_to_view(new_view, opts[:style]) if opts[:style]
         end
       end
 
-      RMQ.create_with_array_and_selectors(subviews_added, selectors, @context, self)
+      view = RMQ.create_with_array_and_selectors(subviews_added, selectors, @context, self)
+      opts[:block].call view if opts[:block]
+      opts[:raw_block].call view.get if opts[:raw_block]
+      view
     end
     alias :insert :add_subview
 
@@ -93,8 +95,9 @@ module RubyMotionQuery
     #   rmq.append(UIImageView)
     #
     # @return [RMQ]
-    def append(view_or_constant, style=nil, opts = {})
+    def append(view_or_constant, style=nil, opts = {}, &block)
       opts[:style] = style
+      opts[:block] = block if block
       add_subview(view_or_constant, opts)
     end
 
@@ -103,16 +106,42 @@ module RubyMotionQuery
     # @example
     #   @my_button = rmq.append! UIButton
     #   @my_label = rmq.append!(UILabel, :my_label)
-    def append!(view_or_constant, style=nil, opts = {})
+    def append!(view_or_constant, style=nil, opts = {}, &block)
+      opts[:raw_block] = block if block
       append(view_or_constant, style, opts).get
+    end
+
+    # Same as append, but will look for a view with the same name and reapply styles
+    # to it if it finds one. If it doesn't, it'll append as normal.
+    #
+    # @example
+    #   @my_button = rmq.find_or_append(UIButton, :my_button)
+    #   @my_button = rmq.find_or_append(UIButton, :my_button) # Only one created
+    def find_or_append(view_or_constant, style=nil, opts = {}, &block)
+      if style && (q = self.find(style)) && q.length > 0
+        view_or_constant = q.get
+      end
+
+      append(view_or_constant, style, opts, &block)
+    end
+
+    # Same as append!, but will look for a view with the same name and reapply styles
+    # to it if it finds one. If it doesn't, it'll append! as normal.
+    #
+    # @example
+    #   @my_button = rmq.find_or_append!(UIButton, :my_button)
+    #   @my_button = rmq.find_or_append!(UIButton, :my_button) # Only one created
+    def find_or_append!(view_or_constant, style=nil, opts = {}, &block)
+      find_or_append(view_or_constant, style, opts, &block).get
     end
 
     # Just like append, but inserts the view at index 0 of the subview array
     #
     # @return [RMQ]
-    def unshift(view_or_constant, style=nil, opts = {})
+    def unshift(view_or_constant, style=nil, opts = {}, &block)
       opts[:at_index] = 0
       opts[:style] = style
+      opts[:block] = block if block
       add_subview view_or_constant, opts
     end
     alias :prepend :unshift
@@ -122,7 +151,8 @@ module RubyMotionQuery
     # @example
     #   @my_button = rmq.prepend! UIButton
     #   @my_label = rmq.prepend!(UILabel, :my_label)
-    def unshift!(view_or_constant, style=nil, opts = {})
+    def unshift!(view_or_constant, style=nil, opts = {}, &block)
+      opts[:raw_block] = block if block
       unshift(view_or_constant, style, opts).get
     end
     alias :prepend! :unshift!
@@ -147,10 +177,11 @@ module RubyMotionQuery
     #     end
     #   end
     #
-    def create(view_or_constant, style = nil, opts = {})
+    def create(view_or_constant, style = nil, opts = {}, &block)
       # TODO, refactor so that add_subview uses create, not backwards like it is now
       opts[:do_not_add] = true
       opts[:style] = style
+      opts[:block] = block if block
       add_subview view_or_constant, opts
     end
 
@@ -158,7 +189,8 @@ module RubyMotionQuery
     #
     # @example
     #   @my_button = rmq.create! UIButton
-    def create!(view_or_constant, style=nil, opts = {})
+    def create!(view_or_constant, style=nil, opts = {}, &block)
+      opts[:raw_block] = block if block
       create(view_or_constant, style, opts).get
     end
 
@@ -174,9 +206,10 @@ module RubyMotionQuery
     # def rmq_build
     #   rmq.append(UIView, :foo)
     # end
-    def build(view, style = nil, opts = {})
+    def build(view, style = nil, opts = {}, &block)
       opts[:do_not_add] = true
       opts[:style] = style
+      opts[:block] = block if block
       add_subview view, opts
     end
 
@@ -184,7 +217,8 @@ module RubyMotionQuery
     #
     # @example
     #   @my_cell = rmq.build! cell
-    def build!(view, style = nil, opts = {})
+    def build!(view, style = nil, opts = {}, &block)
+      opts[:raw_block] = block if block
       build(view, style, opts).get
     end
 

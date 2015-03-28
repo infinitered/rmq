@@ -102,7 +102,7 @@ class MainController < UIViewController
 
   def init_popup_section
 
-    rmq.append(UIView, :popup_section).tap do |q|
+    rmq.append(UIView, :popup_section) do |q|
 
       @title_label = q.append!(UILabel, :title_label)
       q.append(UIButton, :open_popup).on(:touch_down) do |sender|
@@ -116,7 +116,7 @@ class MainController < UIViewController
 
       end.on(:touch_up) do |sender|
 
-        rmq.append(UILabel, :popup_wrapper).tap do |o|
+        rmq.append(UILabel, :popup_wrapper) do |o|
           o.animations.fade_in
           o.append(UILabel, :popup_text_label)
         end
@@ -132,7 +132,7 @@ class MainController < UIViewController
   def init_validation_section
 
     # let's lay this out using the grid!
-    rmq.append(UIView, :validation_section).tap do |q|
+    rmq.append(UIView, :validation_section) do |q|
       q.append(UILabel, :validation_title)
       @digits_only = q.append(UITextField, :only_digits).validates(:digits).on(:change) do |sender|
         rmq(sender).valid?

@@ -145,7 +145,7 @@ module RubyMotionQuery
         view.rmq_style_applied
       rescue NoMethodError => e
         if e.message =~ /.*#{style_name.to_s}.*/
-          puts "\n[RMQ ERROR]  style_name :#{style_name} doesn't exist for a #{view.class.name}. Add 'def #{style_name}(st)' to #{stylesheet.class.name} class\n\n"
+          $stderr.puts "\n[RMQ ERROR]  style_name :#{style_name} doesn't exist for a #{view.class.name}. Add 'def #{style_name}(st)' to #{stylesheet.class.name} class\n\n"
         else
           raise e
         end
