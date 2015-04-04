@@ -2,8 +2,6 @@ describe "MainController" do
   tests MainController
 
   DELAY = 0.2
-  # This line is needed if this test is ever run independently
-  UIView.setAnimationsEnabled false
 
   it 'starts with no keyboard shown' do 
     controller.keyboard_visible.nil?.should == true
@@ -11,6 +9,8 @@ describe "MainController" do
   end
 
   it 'can hide the keyboard with rmq.app.hide_keyboard' do
+    UIView.setAnimationsEnabled false
+
     # force keyboard to show
     controller.rmq(:only_digits).get.becomeFirstResponder
     wait DELAY do
