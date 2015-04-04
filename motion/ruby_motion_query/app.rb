@@ -38,6 +38,7 @@ module RubyMotionQuery
       end
 
       # Returns boolean of success of hiding
+      # Tested in the example app!
       # @return [Boolean]
       def hide_keyboard
         self.get.sendAction(:resignFirstResponder, to:nil, from:nil, forEvent:nil)
