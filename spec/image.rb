@@ -1,13 +1,24 @@
 class RubyMotionQuery::Device
   class << self
-    def fake_four_inch(value)
-      @_four_inch = value
+    def fake_height(value)
+      @_three_point_five_inch = nil
+      @_four_inch = nil
+      @_four_point_seven_inch = nil
+      @_five_point_five_inch = nil
+      s = size_a
+      @_size_a[1] = value
     end
-    def reset_fake_four_inch
-      @_four_inch = (RubyMotionQuery::Device.height == 568.0)
+
+    def reset_fake_caches
+      @_three_point_five_inch = nil
+      @_four_inch = nil
+      @_four_point_seven_inch = nil
+      @_five_point_five_inch = nil
+      @_size_a = nil
     end
   end
 end
+
 describe 'image' do
   before do
     @rmq = RubyMotionQuery::RMQ
@@ -29,20 +40,36 @@ describe 'image' do
   end
 
   describe "resource_for_device" do
-    it "should return the requested file as is if we arent on a 4 inch" do
-      @rmq.device.fake_four_inch(false)
+    it "should get the correct image size for a three point five inch device" do
+      @rmq.device.fake_height(480)
       image = @rmq.image.resource_for_device('Default')
-      @rmq.device.reset_fake_four_inch
+      @rmq.device.reset_fake_caches
       image.is_a?(UIImage).should.be.true
       image.size.height.should == 480
     end
 
     it "should get the -568h image on a four inch" do
-      @rmq.device.fake_four_inch(true)
+      @rmq.device.fake_height(568)
       image = @rmq.image.resource_for_device('Default')
-      @rmq.device.reset_fake_four_inch
+      @rmq.device.reset_fake_caches
       image.is_a?(UIImage).should.be.true
       image.size.height.should == 568
+    end
+
+    it "should get the -667h image on a four point seven inch" do
+      @rmq.device.fake_height(667)
+      image = @rmq.image.resource_for_device('Default')
+      @rmq.device.reset_fake_caches
+      image.is_a?(UIImage).should.be.true
+      image.size.height.should == 667
+    end
+
+    it "should get the -736h image on a five point five inch" do
+      @rmq.device.fake_height(736)
+      image = @rmq.image.resource_for_device('Default')
+      @rmq.device.reset_fake_caches
+      image.is_a?(UIImage).should.be.true
+      image.size.height.should == 736
     end
   end
 
