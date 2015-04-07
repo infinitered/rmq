@@ -98,6 +98,10 @@ class MainController < UIViewController
     rmq.append(UIButton, :present_button).on(:touch_up) do
       rmq.view_controller.presentModalViewController(PresentedController.new, animated:true)
     end
+
+    rmq.append(UIButton, :debounce_button).on(:tap, debounce: 1) do 
+      puts "I can only be pressed every second."
+    end
   end
 
   def init_popup_section

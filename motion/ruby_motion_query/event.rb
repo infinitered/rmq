@@ -47,6 +47,11 @@ module RubyMotionQuery
     end
 
     def set_options(opts)
+      if opts[:debounce]
+        @debounce_length = opts[:debounce]
+        @debounce_stamp = Time.now
+      end    
+        
       if gesture?
         @recognizer.tap do |o|
           o.cancelsTouchesInView = opts[:cancels_touches_in_view] if opts.include?(:cancels_touches_in_view)
@@ -73,13 +78,8 @@ module RubyMotionQuery
             opts[:init].call(@recognizer)
           end
         end
-      else
-        if opts[:debounce]
-          @debounce_length = opts[:debounce]
-          @debounce_stamp = Time.now
-        end
       end
-    end
+    end #set_options
 
     def gesture?
       @gesture
