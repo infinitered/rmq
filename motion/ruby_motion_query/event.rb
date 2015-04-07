@@ -29,6 +29,13 @@ module RubyMotionQuery
     end
 
     def handle_gesture_or_event
+      # Handle debounce logic
+      if @debounce_length
+        return if (@debounce_stamp + @debounce_length > Time.now)
+        # update timestamp
+        @debounce_stamp = Time.now
+      end
+
       case @block.arity
       when 2
         @block.call(@sender, self)
@@ -65,6 +72,11 @@ module RubyMotionQuery
           if opts.include?(:init)
             opts[:init].call(@recognizer)
           end
+        end
+      else
+        if opts[:debounce]
+          @debounce_length = opts[:debounce]
+          @debounce_stamp = Time.now
         end
       end
     end
