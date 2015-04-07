@@ -17,7 +17,14 @@ module RubyMotionQuery
 
       # @return [UIImage]
       def resource_for_device(file_base_name, opts = {})
-        resource( RMQ.device.four_inch? ? "#{file_base_name}-568h" : file_base_name, opts)
+        ext = if RMQ.device.five_point_five_inch?
+          "-736h"
+        elsif RMQ.device.four_point_seven_inch?
+          "-667h"
+        elsif RMQ.device.four_inch?
+          "-568h"
+        end
+        resource("#{file_base_name}#{ext}")
       end
 
       # @return [UIImage]
