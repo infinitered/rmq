@@ -65,7 +65,16 @@ describe 'event' do
     @control.allTargets.count.should == 0
   end
 
-  it 'should set various options on a event if it\s a gesture' do
+  it 'should have the option to debounce events' do 
+    event = RubyMotionQuery::Event.new(@control, :tap, lambda {|sender| ;}) 
+    event.gesture?.should == true 
+    event.set_options debounce: 5
+
+    event.instance_variable_get('@debounce_length').should == 5
+    event.instance_variable_get('@debounce_stamp').should.not == nil
+  end
+
+  it 'should set various options on a event if it\'s a gesture' do
     event = RubyMotionQuery::Event.new(@control, :tap, lambda {|sender| ;}) 
     event.gesture?.should == true
     event.set_options cancels_touches_in_view: true, taps_required: 2, fingers_required: 3
