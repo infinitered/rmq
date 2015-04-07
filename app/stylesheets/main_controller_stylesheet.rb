@@ -62,7 +62,14 @@ class MainControllerStylesheet < ApplicationStylesheet
     button_set_button st
     st.background_color = color.purple
     st.font = font.small
-    st.text = 'Present controller'
+    st.text = 'Present Controller'
+  end
+
+  def debounce_button(st)
+    button_set_button st
+    st.background_color = color.battleship_gray
+    st.font = font.small
+    st.text = "Debounce Button"
   end
 
   def section(st)

@@ -29,6 +29,13 @@ module RubyMotionQuery
     end
 
     def handle_gesture_or_event
+      # Handle debounce logic
+      if @debounce_length
+        return if (@debounce_stamp + @debounce_length > Time.now)
+        # update timestamp
+        @debounce_stamp = Time.now
+      end
+
       case @block.arity
       when 2
         @block.call(@sender, self)
@@ -40,6 +47,11 @@ module RubyMotionQuery
     end
 
     def set_options(opts)
+      if opts[:debounce]
+        @debounce_length = opts[:debounce]
+        @debounce_stamp = Time.now
+      end    
+        
       if gesture?
         @recognizer.tap do |o|
           o.cancelsTouchesInView = opts[:cancels_touches_in_view] if opts.include?(:cancels_touches_in_view)
@@ -67,7 +79,7 @@ module RubyMotionQuery
           end
         end
       end
-    end
+    end #set_options
 
     def gesture?
       @gesture
