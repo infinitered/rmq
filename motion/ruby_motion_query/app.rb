@@ -32,6 +32,20 @@ module RubyMotionQuery
         UIApplication.sharedApplication.delegate
       end
 
+      # @return [UIApplication]
+      def get
+        UIApplication.sharedApplication
+      end
+
+      # Returns boolean of success of hiding
+      # Tested in the example app!
+      # @return [Boolean]
+      def hide_keyboard
+        self.get.sendAction(:resignFirstResponder, to:nil, from:nil, forEvent:nil)
+      end
+      alias :resign_responders :hide_keyboard
+      alias :end_editing :hide_keyboard
+
       # @return [Symbol] Environment the app is running it
       def environment
         @_environment ||= RUBYMOTION_ENV.to_sym

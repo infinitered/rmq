@@ -1,4 +1,11 @@
 class MainController < UIViewController
+  attr_accessor :keyboard_visible
+  
+  def viewWillAppear(animated)
+    # Adding these for tests
+    NSNotificationCenter.defaultCenter.addObserver(self, selector:'handleKeyboardDidShow:', name:UIKeyboardDidShowNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(self, selector:'handleKeyboardWillHide:', name:UIKeyboardWillHideNotification, object:nil)
+  end
 
   def viewDidLoad
     super
@@ -171,5 +178,13 @@ class MainController < UIViewController
   def textFieldShouldReturn(sender)
     sender.resignFirstResponder
     true
+  end
+
+  def handleKeyboardDidShow(notification)
+    @keyboard_visible = true
+  end
+
+  def handleKeyboardWillHide(notification)
+    @keyboard_visible = false
   end
 end
