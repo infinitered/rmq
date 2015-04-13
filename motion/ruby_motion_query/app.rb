@@ -118,7 +118,7 @@ module RubyMotionQuery
         if root_view_controller || ((window = RMQ.app.window) && (root_view_controller = window.rootViewController))
           case root_view_controller
           when UINavigationController
-            root_view_controller.visibleViewController
+            current_view_controller(root_view_controller.visibleViewController)
           when UITabBarController
             current_view_controller(root_view_controller.selectedViewController)
           else
