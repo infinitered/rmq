@@ -53,3 +53,54 @@ class UIViewController
     @_rmq_data ||= RubyMotionQuery::ControllerData.new
   end
 end
+
+if RUBYMOTION_ENV == "development"
+  module Kernel
+    def rmq_live_stylesheets(interval = 0.5, debug=false)
+      @live_reload_debug = debug
+      if interval == false
+        @live_reload_timer.invalidate if @live_reload_timer
+        @live_reload_timer = nil
+        "Live reloading of RMQ stylesheets is now off."
+      else
+        enable_rmq_live_stylesheets(interval)
+      end
+    end
+
+    private
+
+    def enable_rmq_live_stylesheets(interval)
+      # Get list of stylesheet files
+      root_path = File.dirname(__FILE__).gsub(/motion$/,"")
+      path_query = "#{root_path}app/stylesheets/*.rb"
+      stylesheet_file_paths = Dir.glob(path_query)
+      stylesheet_file_paths.delete_if{|stylesheet| stylesheet =~ /application_stylesheet\.rb$/}
+
+      stylesheets = stylesheet_file_paths.inject({}) do |out, stylesheet_path_file|
+        klassname = File.basename(stylesheet_path_file, '.rb')
+        klassname.gsub!("_", " ").gsub!(/\b(?<!['’`])[a-z]/){ $&.capitalize }.gsub!(/\s/, "")
+        out[klassname] = {
+          path: stylesheet_path_file,
+          modified: File.mtime(stylesheet_path_file)
+        }
+        out
+      end
+
+      @live_reload_timer = RubyMotionQuery::App.every(interval) do
+        vc_rmq = rmq.view_controller.rmq
+        klass_name = vc_rmq.stylesheet.class.name
+        if stylesheet = stylesheets[klass_name]
+          if File.mtime(stylesheet[:path]) > stylesheet[:modified]
+            code = File.read(stylesheet[:path])
+            puts "Reloaded #{klass_name}." if @live_reload_debug
+            eval(code)
+            vc_rmq.all.reapply_styles
+            stylesheets[klass_name][:modified] = File.mtime(stylesheet[:path])
+          end
+        end
+      end
+
+      "Live reloading of RMQ stylesheets is now on."
+    end
+  end
+end
