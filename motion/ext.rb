@@ -71,8 +71,9 @@ if RUBYMOTION_ENV == "development"
 
     def enable_rmq_live_stylesheets(interval)
       # Get list of stylesheet files
-      root_path = File.dirname(__FILE__).gsub(/motion$/,"")
-      path_query = "#{root_path}app/stylesheets/*.rb"
+      root_path = RubyMotionQuery::RMQ.project_path
+      path_query = "#{root_path}/app/stylesheets/*.rb"
+      puts path_query if @live_reload_debug
       stylesheet_file_paths = Dir.glob(path_query)
       stylesheet_file_paths.delete_if{|stylesheet| stylesheet =~ /application_stylesheet\.rb$/}
 

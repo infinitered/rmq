@@ -100,6 +100,14 @@ module RubyMotionQuery
         out << "    SUBVIEWS   count: #{view.subviews.length}\n"
         out
       end
+
+      # To use this, put this in your Rakefile:
+      #   app.development do
+      #     app.info_plist["ProjectRootPath"] = File.dirname(__FILE__)
+      #   end
+      def project_path
+        NSBundle.mainBundle.infoDictionary["ProjectRootPath"]
+      end
     end
 
   end
