@@ -96,7 +96,7 @@ if RUBYMOTION_ENV == "development"
             code = File.read(stylesheet[:path])
             puts "Reloaded #{klass_name}." if @live_reload_debug
             eval(code)
-            vc_rmq.all.reapply_styles
+            vc_rmq.all.and_self.reapply_styles
             stylesheets[klass_name][:modified] = File.mtime(stylesheet[:path])
           end
         end
