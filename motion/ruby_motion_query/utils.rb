@@ -101,12 +101,23 @@ module RubyMotionQuery
         out
       end
 
-      # To use this, put this in your Rakefile:
-      #   app.development do
-      #     app.info_plist["ProjectRootPath"] = File.dirname(__FILE__)
-      #   end
-      def project_path
-        NSBundle.mainBundle.infoDictionary["ProjectRootPath"]
+      if RUBYMOTION_ENV == "development"
+        # To use this, put this in your Rakefile:
+        #   app.development do
+        #     app.info_plist["ProjectRootPath"] = File.dirname(__FILE__)
+        #   end
+        def project_path
+          if ppath = NSBundle.mainBundle.infoDictionary["ProjectRootPath"]
+          else
+            puts %(
+[RMQ Warning] The project_path method requires that this code is in your RakeFile:
+app.development do
+  app.info_plist["ProjectRootPath"] = File.dirname(__FILE__)
+end)
+          end
+
+          ppath
+        end
       end
     end
 
