@@ -202,35 +202,28 @@ module RubyMotionQuery
         params_t = params[:t] || params[:top] || params[:y]
         params_w = params[:w] || params[:width]
         params_h = params[:h] || params[:height]
+        params_r = params[:r] || params[:right]
+        params_b = params[:b] || params[:bottom]
 
         below_prev = params[:below_prev] || params[:bp] || params[:below_previous]
         above_prev = params[:above_prev] || params[:ap]  || params[:above_previous]
         right_of_prev = params[:right_of_prev] || params[:rop] || params[:right_of_previous]
         left_of_prev = params[:left_of_prev] || params[:lop] || params[:left_of_previous]
 
-        width_height_symbols = {full: 1, half: 0.5, quarter: 0.25}
-        if params_w.is_a?(Symbol) && sv
-          if width_height_symbols.keys.include?(params_w)
-            params_w = sv.frame.size.width * width_height_symbols[params_w]
-          else
-            puts "\n[RMQ ERROR] width symbol #{params_w} can't be parsed.\n\n"
-          end
-        end
-        if params_h.is_a?(Symbol) && sv
-          if width_height_symbols.keys.include?(params_h)
-            params_h = sv.frame.size.height * width_height_symbols[params_h]
-          else
-            puts "\n[RMQ ERROR] height symbol #{params_h} can't be parsed.\n\n"
-          end
-        end
+        params_l = value_from_symbol(params_l, sv.frame.size.width) if params_l.is_a?(Symbol) && sv
+        params_t = value_from_symbol(params_t, sv.frame.size.height) if params_t.is_a?(Symbol) && sv
+        params_w = value_from_symbol(params_w, sv.frame.size.width) if params_w.is_a?(Symbol) && sv
+        params_h = value_from_symbol(params_h, sv.frame.size.height) if params_h.is_a?(Symbol) && sv
+        params_r = value_from_symbol(params_r, sv.frame.size.width) if params_r.is_a?(Symbol) && sv
+        params_b = value_from_symbol(params_b, sv.frame.size.height) if params_b.is_a?(Symbol) && sv
 
         l = params_l || existing_rect.origin.x
         t = params_t || existing_rect.origin.y
         w = params_w || existing_rect.size.width
         h = params_h || existing_rect.size.height
 
-        r = params[:r] || params[:right]
-        b = params[:b] || params[:bottom]
+        r = params_r
+        b = params_b
 
         fr = params[:from_right] || params[:fr]
         fb = params[:from_bottom] || params[:fb]
@@ -374,6 +367,15 @@ module RubyMotionQuery
         end
 
         [l,t,w,h]
+      end
+
+      def value_from_symbol(size_symbol, max_value)
+        width_height_symbols = {full: 1, half: 0.5, quarter: 0.25}
+        if width_height_symbols.keys.include?(size_symbol)
+          return max_value * width_height_symbols[size_symbol]
+        else
+          puts "\n[RMQ ERROR] width symbol #{size_symbol} can't be parsed.\n\n"
+        end
       end
 
     end # << self
