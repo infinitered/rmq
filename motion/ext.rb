@@ -77,10 +77,11 @@ if RUBYMOTION_ENV == "development"
       puts path_query if @live_reload_debug
       stylesheet_file_paths = Dir.glob(path_query)
       stylesheet_file_paths.delete_if{|stylesheet| stylesheet =~ /application_stylesheet\.rb$/}
+      puts stylesheet_file_paths if @live_reload_debug
 
       stylesheets = stylesheet_file_paths.inject({}) do |out, stylesheet_path_file|
         klassname = File.basename(stylesheet_path_file, '.rb')
-        klassname.gsub!("_", " ").gsub!(/\b(?<!['’`])[a-z]/){ $&.capitalize }.gsub!(/\s/, "")
+        klassname = klassname.gsub("_", " ").gsub(/\b(?<!['’`])[a-z]/){ $&.capitalize }.gsub(/\s/, "")
         out[klassname] = {
           path: stylesheet_path_file,
           modified: File.mtime(stylesheet_path_file)
