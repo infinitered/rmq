@@ -80,7 +80,7 @@ if RUBYMOTION_ENV == "development"
       puts stylesheet_file_paths if @live_reload_debug
 
       stylesheets = stylesheet_file_paths.inject({}) do |out, stylesheet_path_file|
-        out[stylesheet_path_file] = File.mtime(stylesheet_path_file)
+        out[stylesheet_path_file] = RubyMotionQuery::RMQ.build_time
         out
       end
 

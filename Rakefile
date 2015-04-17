@@ -18,5 +18,6 @@ Motion::Project::App.setup do |app|
 
   app.development do
     app.info_plist["ProjectRootPath"] = File.dirname(__FILE__)
+    app.info_plist["ProjectBuildTime"] = Time.now
   end
 end
