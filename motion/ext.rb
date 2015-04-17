@@ -80,26 +80,24 @@ if RUBYMOTION_ENV == "development"
       puts stylesheet_file_paths if @live_reload_debug
 
       stylesheets = stylesheet_file_paths.inject({}) do |out, stylesheet_path_file|
-        klassname = File.basename(stylesheet_path_file, '.rb')
-        klassname = klassname.gsub("_", " ").gsub(/\b(?<!['’`])[a-z]/){ $&.capitalize }.gsub(/\s/, "")
-        out[klassname] = {
-          path: stylesheet_path_file,
-          modified: File.mtime(stylesheet_path_file)
-        }
+        out[stylesheet_path_file] = File.mtime(stylesheet_path_file)
         out
       end
 
       @live_reload_timer = RubyMotionQuery::App.every(interval) do
-        vc_rmq = rmq.view_controller.rmq
-        klass_name = vc_rmq.stylesheet.class.name
-        if stylesheet = stylesheets[klass_name]
-          if File.mtime(stylesheet[:path]) > stylesheet[:modified]
-            code = File.read(stylesheet[:path])
-            puts "Reloaded #{klass_name}." if @live_reload_debug
+        style_changed = false
+        stylesheets.each do |stylesheet, modified_date|
+          if File.mtime(stylesheet) > modified_date
+            code = File.read(stylesheet)
+            puts "Reloaded #{stylesheet}." if @live_reload_debug
             eval(code)
-            vc_rmq.all.and_self.reapply_styles
-            stylesheets[klass_name][:modified] = File.mtime(stylesheet[:path])
+            stylesheets[stylesheet] = File.mtime(stylesheet)
+            style_changed = true
           end
+        end
+        if style_changed
+          vc_rmq = rmq.view_controller.rmq
+          vc_rmq.all.and_self.reapply_styles
         end
       end
 
