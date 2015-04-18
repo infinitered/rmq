@@ -139,14 +139,19 @@ module RubyMotionQuery
       styler_constants_names.unshift(:UIViewStyler)
 
       object_methods = Object.public_instance_methods
-      ui_view_styler_methods = Stylers::UIViewStyler.public_instance_methods - object_methods
+      ui_view_styler_methods = (Stylers::UIViewStyler.public_instance_methods - object_methods).sort
+
+      # remove deprecated methods, sorry for this hack
+      deprecated = [:"left", :"left=:", :"x", :"x=:", :"top", :"top=:", :"y", :"y=:", :"from_right", :"from_right=:",
+                    :"width", :"width=:", :"height", :"height=:", :"bottom", :"bottom=:", :"from_bottom", :"from_bottom=:"]
+
 
       styler_constants_names.each do |constant_name|
         constant_name = constant_name.gsub(/^:/, '')
         styler_constant = RubyMotionQuery::Stylers.const_get(constant_name)
 
         methods = if constant_name == "UIViewStyler"
-          ui_view_styler_methods
+          (ui_view_styler_methods - deprecated).sort
         else
           (styler_constant.public_instance_methods - ui_view_styler_methods - object_methods).sort
         end
