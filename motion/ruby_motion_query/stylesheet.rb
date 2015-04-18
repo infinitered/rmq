@@ -132,6 +132,36 @@ module RubyMotionQuery
       end
     end
 
+    def log_stylers(markdown = false)
+      styler_constants_names = Stylers.constants.grep(/.*Styler$/).sort
+      $s = styler_constants_names
+      styler_constants_names.delete(:UIViewStyler)
+      styler_constants_names.unshift(:UIViewStyler)
+
+      object_methods = Object.public_instance_methods
+      ui_view_styler_methods = Stylers::UIViewStyler.public_instance_methods - object_methods
+
+      styler_constants_names.each do |constant_name|
+        constant_name = constant_name.gsub(/^:/, '')
+        styler_constant = RubyMotionQuery::Stylers.const_get(constant_name)
+
+        methods = if constant_name == "UIViewStyler"
+          ui_view_styler_methods
+        else
+          (styler_constant.public_instance_methods - ui_view_styler_methods - object_methods).sort
+        end
+        methods = methods.map do |method|
+          method = method.gsub(/:$/, '')
+          method << "(value)" if method.end_with?("=")
+          method
+        end
+
+        puts "#{'## ' if markdown}#{constant_name}\n\n"
+        puts "* #{methods.join("\n* ")}"
+        puts "\n\n"
+      end
+    end
+
     protected
 
     # Override to set your own stylers, or just open up the styler classes
