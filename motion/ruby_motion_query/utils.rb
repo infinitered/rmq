@@ -118,6 +118,22 @@ end)
 
           ppath
         end
+
+        # To use this, put this in your Rakefile:
+        #   app.development do
+        #     app.info_plist["ProjectBuildTime"] = Time.now
+        #   end
+        def build_time
+          if btime = NSBundle.mainBundle.infoDictionary["ProjectBuildTime"]
+          else
+            puts %(
+[RMQ Warning] The build_time method requires that this code is in your RakeFile:
+app.development do
+  app.info_plist["ProjectBuildTime"] = Time.now
+end)
+          end
+          btime
+        end
       end
     end
 
