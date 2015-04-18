@@ -15,8 +15,4 @@ Motion::Project::App.setup do |app|
   app.prerendered_icon = true
   app.interface_orientations = [:portrait, :landscape_left, :landscape_right, :portrait_upside_down]
   app.frameworks += %w(QuartzCore CoreGraphics)
-
-  app.development do
-    app.info_plist["ProjectRootPath"] = File.dirname(__FILE__)
-  end
 end
