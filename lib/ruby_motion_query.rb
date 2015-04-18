@@ -13,5 +13,6 @@ Motion::Project::App.setup do |app|
   app.files.unshift files
   app.development do
     app.info_plist["ProjectBuildTime"] = Time.now
+    app.info_plist["ProjectRootPath"] = File.absolute_path(app.project_dir)
   end
 end
