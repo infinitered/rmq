@@ -11,9 +11,4 @@ Motion::Project::App.setup do |app|
   files << Dir.glob(File.join(parent, "motion/**/*.rb"))
   files.flatten!.uniq!
   app.files.unshift files
-
-  app.development do
-    app.info_plist["ProjectRootPath"] = File.dirname(__FILE__)
-    app.info_plist["ProjectBuildTime"] = Time.now
-  end
 end
