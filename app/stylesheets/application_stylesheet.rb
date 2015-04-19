@@ -1,6 +1,4 @@
 class ApplicationStylesheet < RubyMotionQuery::Stylesheet
-  PADDING = 10
-
   def application_setup
     font_family = 'Helvetica Neue'
     font.add_named :large,    font_family, 36

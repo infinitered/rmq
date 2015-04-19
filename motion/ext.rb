@@ -70,35 +70,46 @@ if RUBYMOTION_ENV == "development"
     private
 
     def enable_rmq_live_stylesheets(interval)
-      # Get list of stylesheet files
       return unless root_path = RubyMotionQuery::RMQ.project_path
 
+      # Get list of stylesheet files
       path_query = "#{root_path}/app/stylesheets/*.rb"
-      puts path_query if @live_reload_debug
       stylesheet_file_paths = Dir.glob(path_query)
-      stylesheet_file_paths.delete_if{|stylesheet| stylesheet =~ /application_stylesheet\.rb$/}
-      puts stylesheet_file_paths if @live_reload_debug
 
       stylesheets = stylesheet_file_paths.inject({}) do |out, stylesheet_path_file|
-        out[stylesheet_path_file] = RubyMotionQuery::RMQ.build_time
+        klass_name = File.basename(stylesheet_path_file, '.rb')
+        klass_name = klass_name.gsub("_", " ").gsub(/\b(?<!['’`])[a-z]/){ $&.capitalize }.gsub(/\s/, "")
+        out[klass_name] = {
+          class_name: klass_name,
+          path: stylesheet_path_file,
+          modified: File.mtime(stylesheet_path_file),
+        }
         out
       end
 
+      if @live_reload_debug
+        puts "path_query: #{path_query}\n"
+        puts stylesheet_file_paths
+        #puts stylesheets.to_s
+      end
+
+      # Check if any stylesheets have been modified
       @live_reload_timer = RubyMotionQuery::App.every(interval) do
         style_changed = false
-        stylesheets.each do |stylesheet, modified_date|
-          if File.mtime(stylesheet) > modified_date
-            code = File.read(stylesheet)
-            puts "Reloaded #{stylesheet}." if @live_reload_debug
+        stylesheets.each do |key, stylesheet|
+
+          modified_at = File.mtime(stylesheet[:path])
+          if modified_at > stylesheet[:modified]
+            code = File.read(stylesheet[:path])
+            puts "Reloaded #{stylesheet[:class_name]}" if @live_reload_debug
             eval(code)
-            stylesheets[stylesheet] = File.mtime(stylesheet)
+            stylesheet[:modified] = modified_at
             style_changed = true
           end
+
         end
-        if style_changed
-          vc_rmq = rmq.view_controller.rmq
-          vc_rmq.all.and_self.reapply_styles
-        end
+
+        rmq.view_controller.rmq.all.and_self.reapply_styles if style_changed
       end
 
       "Live reloading of RMQ stylesheets is now on."
