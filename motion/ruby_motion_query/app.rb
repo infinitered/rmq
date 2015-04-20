@@ -128,9 +128,9 @@ module RubyMotionQuery
               current_view_controller(root_view_controller.topViewController)
             elsif root_view_controller.respond_to?(:frontViewController)
               current_view_controller(root_view_controller.frontViewController)
-            elsif root_view_controller.respond_to?(:center)
+            elsif root_view_controller.respond_to?(:center) && (center = root_view_controller.center) && center.is_a?(UIViewController)
               current_view_controller(root_view_controller.center)
-            elsif root_view_controller.childViewControllers.count > 0
+            elsif root_view_controller.respond_to?(:childViewControllers) && root_view_controller.childViewControllers.count > 0
               current_view_controller(root_view_controller.childViewControllers.first)
             else
               root_view_controller

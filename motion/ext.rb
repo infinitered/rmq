@@ -56,7 +56,7 @@ end
 
 if RUBYMOTION_ENV == "development"
   module Kernel
-    def rmq_live_stylesheets(interval = 0.5, debug=false)
+    def rmq_live_stylesheets(interval = 1.0, debug=false)
       @live_reload_debug = debug
       if interval == false
         @live_reload_timer.invalidate if @live_reload_timer
