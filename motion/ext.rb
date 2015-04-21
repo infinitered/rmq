@@ -120,7 +120,6 @@ if RUBYMOTION_ENV == "development"
     module Stylers
       class UIViewStyler
         def method_missing method, *args
-          puts
           puts "Sorry, #{method} is not implemented on #{self.class}. This will produce a crash when not in debug mode."
         end
       end
