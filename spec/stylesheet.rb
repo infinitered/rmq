@@ -253,6 +253,13 @@ describe 'stylesheet' do
       view.origin.x.should == 1
     end
 
+    it 'should allow you to remove a style from a view' do
+      q = @vc.rmq.append(UIView, :style_one)
+      q.apply_style(:style_two)
+      q.remove_style(:style_one)
+      q.styles.should == [:style_two]
+    end
+
     it 'should return a styler for various types of views' do
       @vc.rmq.tap do |q|
         q.styler_for(UIView.alloc.init).is_a?(RubyMotionQuery::Stylers::UIViewStyler).should == true
