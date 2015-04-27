@@ -20,7 +20,7 @@ describe 'stylers/ui_switch' do
     view = @vc.rmq.append(@view_klass, :ui_switch_kitchen_sink).get
 
     view.tap do |v|
-      v.isOn.should == true 
+      v.isOn.should == true
     end
   end
 end

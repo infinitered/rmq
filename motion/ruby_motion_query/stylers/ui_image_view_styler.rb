@@ -1,7 +1,7 @@
 module RubyMotionQuery
   module Stylers
 
-    class UIImageViewStyler < UIViewStyler 
+    class UIImageViewStyler < UIViewStyler
       def image=(value)
         @view.image = value
       end

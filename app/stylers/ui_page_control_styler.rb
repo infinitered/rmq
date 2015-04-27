@@ -1,6 +1,6 @@
 module RubyMotionQuery
   module Stylers
-    class UIPageControlStyler < UIControlStyler 
+    class UIPageControlStyler < UIControlStyler
 
       # Your custom styler methods here
 

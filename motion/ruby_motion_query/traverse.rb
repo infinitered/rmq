@@ -1,13 +1,13 @@
-module RubyMotionQuery 
+module RubyMotionQuery
   class RMQ
 
     # Most everything uses filter to do its work. This is mostly used internally
     # but you can use it too. Just pass a block that returns views, it will be
     # called for every view that is *selected*
     #
-    # @param return_array returns array not rmq: return_array: true 
-    # @param uniq removes duplicate views: uniq: true 
-    # @param limit limits the number of views *per selected view*: limit: true 
+    # @param return_array returns array not rmq: return_array: true
+    # @param uniq removes duplicate views: uniq: true
+    # @param limit limits the number of views *per selected view*: limit: true
     #
     # @return [RMQ]
     def filter(opts = {}, &block)
@@ -17,7 +17,7 @@ module RubyMotionQuery
       selected.each do |view|
         results = yield(view)
         unless RMQ.is_blank?(results)
-          out << results 
+          out << results
           break if limit && (out.length >= limit)
         end
       end
@@ -85,7 +85,7 @@ module RubyMotionQuery
       end
     end
     alias :add_self :and_self
-    
+
     # @return [RMQ] The parent rmq instance. This is useful when you want to go down
     # into the tree, then move back up to do more work. Like jQuery's "end"
     #
@@ -104,7 +104,7 @@ module RubyMotionQuery
     end
     alias :superview :parent
 
-    # @return [RMQ] Instance selecting the parents, grandparents, etc, all the way up the tree 
+    # @return [RMQ] Instance selecting the parents, grandparents, etc, all the way up the tree
     # of the selected view(s)
     #
     # @param selectors
@@ -232,7 +232,7 @@ module RubyMotionQuery
       end
     end
 
-    # For each selected view, get the first view that matches the selector(s) by testing the view's parent and 
+    # For each selected view, get the first view that matches the selector(s) by testing the view's parent and
     # traversing up through its ancestors in the tree
     #
     # @return [RMQ] Instance selecting the first parent or grandparent or ancestor up the tree of the selected view(s)
@@ -253,15 +253,15 @@ module RubyMotionQuery
     # Be mindful of that.
     #
     # When you call rmq within a controller or view, a new instance of RMQ is created with the selectors you may or may
-    # not have supplied. That instance will determine what view_controller it should use for stuff like traversing, 
+    # not have supplied. That instance will determine what view_controller it should use for stuff like traversing,
     # stylesheet, etc.
     #
     # * rmq method called in a controller: that controller is used
     #
-    # * rmq method called in a view and that view is within the subview tree of a controller: that controller is used 
+    # * rmq method called in a view and that view is within the subview tree of a controller: that controller is used
     #
     #
-    # * rmq method called in a view and that view is NOT within any subview tree of any controller (common in a UITableViewCell 
+    # * rmq method called in a view and that view is NOT within any subview tree of any controller (common in a UITableViewCell
     #   for example). In this case it will use the view's controller or the "current controller". Generally
     #   that is what is desired, however there are some situations where another controller should be used. In that
     #   situation create your own rmq instance and assign the controller you'd rather use
@@ -291,9 +291,9 @@ module RubyMotionQuery
 
           #debug.assert(vc.is_a?(UIViewController), 'Invalid controller in weak_view_controller') do
             #{
-              #vc: vc, 
-              #context: @context, 
-              #parent_rmq: self.parent_rmq, 
+              #vc: vc,
+              #context: @context,
+              #parent_rmq: self.parent_rmq,
               #current_view_controller: RMQ.app.current_view_controller
             #}
           #end
@@ -333,7 +333,7 @@ module RubyMotionQuery
       self.root_view.window
     end
 
-    protected 
+    protected
 
     def closest_view(view, working_selectors)
       if nr = view.nextResponder
@@ -344,7 +344,7 @@ module RubyMotionQuery
         end
       else
         nil
-      end     
+      end
     end
 
   end

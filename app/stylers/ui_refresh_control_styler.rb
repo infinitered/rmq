@@ -1,6 +1,6 @@
 module RubyMotionQuery
   module Stylers
-    class UIRefreshControlStyler < UIControlStyler 
+    class UIRefreshControlStyler < UIControlStyler
 
       # Your custom styler methods here
 

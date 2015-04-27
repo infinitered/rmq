@@ -7,7 +7,6 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.detail_text_color = rmq.color.green
     st.detail_font = rmq.font.system(11)
     st.separator_inset = UIEdgeInsetsMake(0, 10, 0, -20)
-
   end
 end
 

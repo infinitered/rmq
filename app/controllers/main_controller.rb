@@ -1,6 +1,6 @@
 class MainController < UIViewController
   attr_accessor :keyboard_visible
-  
+
   def viewWillAppear(animated)
     # Adding these for tests
     NSNotificationCenter.defaultCenter.addObserver(self, selector:'handleKeyboardDidShow:', name:UIKeyboardDidShowNotification, object:nil)
@@ -106,7 +106,7 @@ class MainController < UIViewController
       rmq.view_controller.presentModalViewController(PresentedController.new, animated:true)
     end
 
-    rmq.append(UIButton, :debounce_button).on(:tap, debounce: 1) do 
+    rmq.append(UIButton, :debounce_button).on(:tap, debounce: 1) do
       puts "I can only be pressed every second."
     end
   end

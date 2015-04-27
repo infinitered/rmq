@@ -1,9 +1,9 @@
 class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_activity_indicator_view_kitchen_sink(st)
-      st.hides_when_stopped = true
-      st.activity_indicator_style = :gray
-      st.color = color.blue
+    st.hides_when_stopped = true
+    st.activity_indicator_style = :gray
+    st.color = color.blue
   end
 
 end

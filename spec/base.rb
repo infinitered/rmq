@@ -1,6 +1,6 @@
 # Used throughout the specs
 def hash_to_subviews(view, hash, new_hash = {}, view_name = nil)
-  return unless view && hash.length > 0 
+  return unless view && hash.length > 0
 
   hash.each do |k,v|
     if k == :klass
@@ -22,11 +22,11 @@ def hash_to_subviews(view, hash, new_hash = {}, view_name = nil)
 end
 
 describe 'base' do
-  
+
   it 'should create simplest' do
     RubyMotionQuery::RMQ.new.should.not == nil
   end
-  
+
   it 'set context and get context' do
     rmq = RubyMotionQuery::RMQ.new
     view_controller = UIViewController.alloc.init
@@ -130,16 +130,16 @@ describe 'base' do
 
   it 'should match all views with selector' do
     views_hash = {
-      v_0: { 
+      v_0: {
         klass: UIView,
         subs: {
-          v_0: { 
+          v_0: {
             klass: UIView,
             subs: {
               v_0: { klass: UIImageView, subs: { } },
               v_1: { klass: UIImageView, subs: { } },
               v_2: { klass: UIView, subs: { } }
-            } 
+            }
           }
         }
       }
@@ -154,19 +154,19 @@ describe 'base' do
   it 'should extract views from selectors, then match all views in controller that matches selectors' do
     # TODO, break this into multiple tests
     views_hash = {
-      v_0: { 
+      v_0: {
         klass: UIView,
         subs: {
-          v_0: { 
+          v_0: {
             klass: UIView,
             subs: {
               v_0: { klass: UIView, subs: { } },
               v_1: { klass: UIImageView, subs: { } },
               v_2: { klass: UIView, subs: { } }
-            } 
+            }
           },
           v_1: { klass: UILabel, subs: { } },
-          v_2: { klass: UIView, subs: { } } 
+          v_2: { klass: UIView, subs: { } }
         }
       },
       v_1: { klass: UILabel, subs: { } }
@@ -186,7 +186,7 @@ describe 'base' do
     rmq.selectors.should == [view_b, UIImageView]
     a.length.should == 2
     a[0].should == view_b
-    a[1].should == view_a 
+    a[1].should == view_a
 
     rmq = view_controller.rmq(view_b, UIView)
     a = rmq.to_a
