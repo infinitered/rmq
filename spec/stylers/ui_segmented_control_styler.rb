@@ -1,6 +1,7 @@
 class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
 
   def ui_segment_kitchen_sink(st)
+    st.init_with_segments = ['Four','Five']
     st.prepend_segments = 'Three'
     st.prepend_segments = ['One', 'Two']
   end
@@ -23,6 +24,8 @@ describe 'stylers/ui_segmented_control' do
       v.titleForSegmentAtIndex(0).should == "One"
       v.titleForSegmentAtIndex(1).should == "Two"
       v.titleForSegmentAtIndex(2).should == "Three"
+      v.titleForSegmentAtIndex(3).should == "Four"
+      v.titleForSegmentAtIndex(4).should == "Five"
     end
   end
 end
