@@ -32,4 +32,8 @@ class PresentedController < UIViewController
     # Called after rotation
   end
 
+  def dealloc
+    puts "Deallocing: #{self.class.name} - #{self.object_id}"
+    super
+  end
 end

@@ -1,6 +1,32 @@
+class EventsTestController < UIViewController
+  def add_event
+    rmq.append(UIButton).on(:touch) do
+      puts 'touched'
+    end
+  end
+
+  def dealloc
+    $events_test_controller_deallocated = true
+    super
+  end
+end
+
 describe 'events on views' do
   before do
     @vc = UIViewController.alloc.init
+  end
+
+  it 'should deallocate when a controller is destroyed which containted an event' do
+    $events_test_controller_deallocated.should == nil
+
+    autorelease_pool do
+      controller = EventsTestController.new
+      controller.add_event
+      $events_test_controller_deallocated.should == nil
+      controller = nil
+    end
+
+    $events_test_controller_deallocated.should == true
   end
 
   it 'should add event on a view' do
@@ -92,7 +118,7 @@ describe 'events on views' do
       control.allTargets.count.should == 2
     end
 
-    @vc.rmq.all.off 
+    @vc.rmq.all.off
     @vc.rmq(UIButton).each do |control|
       control.allTargets.count.should == 0
     end
@@ -129,10 +155,10 @@ describe 'events' do
     # TODO, finish
     1.should == 1
   end
-  
+
   it 'should raise exception when adding the same event twice' do
     @events.on(@view, :tap) {|o|;}
-    should.raise(RuntimeError) do 
+    should.raise(RuntimeError) do
       @events.on(@view, :tap) {|o|;}
     end
   end

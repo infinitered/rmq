@@ -3,6 +3,8 @@ module RubyMotionQuery
     attr_accessor :block, :recognizer, :event, :sdk_event_or_recognizer, :gesture, :sender
 
     def initialize(sender, event, block)
+      block = block.respond_to?('weak!') ? block.weak! : block
+
       if CONTROL_EVENTS[event] == ValidationEvent
         return ValidationEvent.new(block)
       elsif @sdk_event_or_recognizer = VIEW_GESTURES[event]
@@ -50,8 +52,8 @@ module RubyMotionQuery
       if opts[:debounce]
         @debounce_length = opts[:debounce]
         @debounce_stamp = Time.now
-      end    
-        
+      end
+
       if gesture?
         @recognizer.tap do |o|
           o.cancelsTouchesInView = opts[:cancels_touches_in_view] if opts.include?(:cancels_touches_in_view)
@@ -87,7 +89,7 @@ module RubyMotionQuery
 
     def location
       if gesture?
-        @recognizer.locationInView(@sender) 
+        @recognizer.locationInView(@sender)
       else
         @sender.convertRect(@sender.bounds, toView: nil).origin
       end
@@ -95,7 +97,7 @@ module RubyMotionQuery
 
     def location_in(view)
       if gesture?
-        @recognizer.locationInView(view) 
+        @recognizer.locationInView(view)
       else
         @sender.convertRect(@sender.bounds, toView: view).origin
       end
@@ -111,7 +113,7 @@ module RubyMotionQuery
       end
     end
 
-    CONTROL_EVENTS = { 
+    CONTROL_EVENTS = {
       touch: UIControlEventTouchUpInside,
       touch_up: UIControlEventTouchUpInside,
       touch_down: UIControlEventTouchDown,
