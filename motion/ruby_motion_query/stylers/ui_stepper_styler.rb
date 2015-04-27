@@ -1,7 +1,7 @@
 module RubyMotionQuery
   module Stylers
 
-    class UIStepperStyler < UIControlStyler 
+    class UIStepperStyler < UIControlStyler
     end
 
   end

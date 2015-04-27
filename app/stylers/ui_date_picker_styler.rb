@@ -1,6 +1,6 @@
 module RubyMotionQuery
   module Stylers
-    class UIDatePickerStyler < UIControlStyler 
+    class UIDatePickerStyler < UIControlStyler
 
       # Your custom styler methods here
 

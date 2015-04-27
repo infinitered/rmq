@@ -1,8 +1,8 @@
 class CollectionController < UICollectionViewController
   COLLECTION_CELL_ID = "CollectionCell"
-  
+
   def self.new(args = {})
-    # Set layout 
+    # Set layout
     layout = UICollectionViewFlowLayout.alloc.init
     self.alloc.initWithCollectionViewLayout(layout)
   end
@@ -37,11 +37,11 @@ class CollectionController < UICollectionViewController
   def numberOfSectionsInCollectionView(view)
     1
   end
- 
+
   def collectionView(view, numberOfItemsInSection: section)
-    200 
+    200
   end
-    
+
   def collectionView(view, cellForItemAtIndexPath: index_path)
     view.dequeueReusableCellWithReuseIdentifier(COLLECTION_CELL_ID, forIndexPath: index_path).tap do |cell|
       rmq.build(cell) unless cell.reused

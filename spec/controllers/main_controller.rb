@@ -3,7 +3,7 @@ describe "MainController" do
 
   DELAY = 0.2
 
-  it 'starts with no keyboard shown' do 
+  it 'starts with no keyboard shown' do
     controller.keyboard_visible.nil?.should == true
     controller.rmq.app.hide_keyboard.should == false
   end
@@ -18,9 +18,9 @@ describe "MainController" do
     end
 
     # hide keyboard (have to wait for first delay to finish)
-    wait DELAY * 2 do 
+    wait DELAY * 2 do
       controller.rmq.app.hide_keyboard.should == true
-      wait DELAY do 
+      wait DELAY do
         controller.keyboard_visible.should == false
       end
     end

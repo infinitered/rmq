@@ -1,7 +1,7 @@
 module RubyMotionQuery
   module Stylers
 
-    class UITabBarStyler < UIViewStyler 
+    class UITabBarStyler < UIViewStyler
     end
 
   end

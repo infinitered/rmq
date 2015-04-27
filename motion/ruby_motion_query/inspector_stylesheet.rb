@@ -18,7 +18,7 @@ module RubyMotionQuery
       st.hidden = true
       st.frame = :full
       st.background_color = color.clear
-      st.z_position = 999 
+      st.z_position = 999
       #st.scale = @view_scale
     end
 

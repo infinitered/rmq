@@ -4,25 +4,25 @@ describe 'selectors' do
     @root_view = @vc.view
 
     @views_hash = {
-      v_0: { 
+      v_0: {
         klass: UIView,
         subs: {
-          v_0: { 
+          v_0: {
             klass: UIView,
             subs: {
               v_0: { klass: UIView, subs: { } },
               v_1: { klass: UIImageView, subs: { } },
               v_2: { klass: UILabel, subs: { } },
               v_3: { klass: UIView, subs: { } }
-            } 
+            }
           },
           v_1: { klass: UILabel, subs: { } },
-          v_2: { klass: UIImageView, subs: { } } 
+          v_2: { klass: UIImageView, subs: { } }
         }
       },
       v_1: { klass: UILabel, subs: { } },
       v_2: { klass: UILabel, subs: { } },
-      v_3: { 
+      v_3: {
         klass: UIView,
         subs: {
           v_0: { klass: UIButton, subs: { } },
@@ -37,7 +37,7 @@ describe 'selectors' do
                   v_2: { klass: UIImageView, subs: { } },
                   v_3: { klass: UILabel, subs: { } },
                   v_4: { klass: UIView, subs: { } }
-                } 
+                }
               }
             }
           }
@@ -82,7 +82,7 @@ describe 'selectors' do
       end
     end
   end
-  
+
   describe 'symbol' do
     before do
       @vc.rmq.stylesheet = StyleSheetForSelectorTests

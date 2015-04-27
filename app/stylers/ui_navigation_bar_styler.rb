@@ -1,6 +1,6 @@
 module RubyMotionQuery
   module Stylers
-    class UINavigationBarStyler < UIViewStyler 
+    class UINavigationBarStyler < UIViewStyler
 
       # Your custom styler methods here
 

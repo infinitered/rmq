@@ -18,7 +18,7 @@ module RubyMotionQuery
       def init_with_segments=(value)
         self.prepend_segments = value unless view_has_been_styled?
       end
-      
+
     end
   end
 end

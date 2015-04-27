@@ -1,4 +1,4 @@
-class CollectionCell < UICollectionViewCell 
+class CollectionCell < UICollectionViewCell
   attr_reader :reused
 
   def rmq_build
