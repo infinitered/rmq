@@ -1,4 +1,6 @@
-![RMQ logo](https://raw.github.com/infinitered/rmq/master/resources/logo@2x.png?raw=true)
+->![RMQ logo](https://raw.github.com/infinitered/rmq/master/resources/logo@2x.png?raw=true)<-
+
+<br />
 
 # RMQ - RubyMotion Front-end Library
 
@@ -15,7 +17,17 @@ One of RMQ's goals is to have the best [documentation][1] of any RubyMotion UI l
 
 ----------
 
-## Read the [RMQ Documentation][1] here
+<br />
+<br />
+
+->[![image](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/19/2015/04/rmq_docs1.png)](http://rubymotionquery.com)<-
+
+->**Read the [RMQ Documentation][1] here**<-
+
+->**If you like RMQ, check out [RedPotion](http://redpotion.org), the ultimate gem for RubyMotion.**<-
+
+<br />
+<br />
 
 ----------
 
@@ -94,10 +106,8 @@ RMQ is available under the MIT license. See the [LICENSE](https://github.com/inf
 
 <br />
 
-----------
 
 ## Read the [RMQ Documentation][1] here
 
-----------
 
   [1]: http://rubymotionquery.com
