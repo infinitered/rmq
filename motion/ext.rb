@@ -82,7 +82,8 @@ if RUBYMOTION_ENV == "development"
         out[klass_name] = {
           class_name: klass_name,
           path: stylesheet_path_file,
-          modified: File.mtime(stylesheet_path_file),
+          modified: File.mtime(stylesheet_path_file)
+          # TODO, for each stylehsheet find every view_controller that uses it and sub stylesheets
         }
         out
       end
@@ -109,10 +110,31 @@ if RUBYMOTION_ENV == "development"
 
         end
 
-        rmq.view_controller.rmq.all.and_self.reapply_styles if style_changed
+        if style_changed
+          rmq_live_current_view_controllers.each do |vc|
+            vc.rmq.all.and_self.reapply_styles
+          end
+        end
       end
 
       "Live reloading of RMQ stylesheets is now on."
+    end
+
+    def rmq_live_current_view_controllers(vc = nil)
+      vc = rmq.window.rootViewController unless vc
+      vcs = []
+
+      if vc.rmq.stylesheet
+        vcs << vc
+      end
+
+      if children_vcs = vc.childViewControllers
+        children_vcs.each do |child_vc|
+          vcs << rmq_live_current_view_controllers(child_vc)
+        end
+      end
+
+      vcs.flatten
     end
   end
 
