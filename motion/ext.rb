@@ -73,7 +73,7 @@ if RUBYMOTION_ENV == "development"
       return unless root_path = RubyMotionQuery::RMQ.project_path
 
       # Get list of stylesheet files
-      path_query = "#{root_path}/app/stylesheets/*.rb"
+      path_query = "#{root_path}/app/stylesheets/**/*.rb"
       stylesheet_file_paths = Dir.glob(path_query)
 
       stylesheets = stylesheet_file_paths.inject({}) do |out, stylesheet_path_file|
