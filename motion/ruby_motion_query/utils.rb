@@ -107,7 +107,7 @@ module RubyMotionQuery
         #     app.info_plist["ProjectRootPath"] = File.dirname(__FILE__)
         #   end
         def project_path
-          if ppath = NSBundle.mainBundle.infoDictionary["ProjectRootPath"]
+          if ppath = app.info_plist["ProjectRootPath"]
           else
             puts %(
 [RMQ Warning] The project_path method requires that this code is in your RakeFile:
@@ -124,7 +124,7 @@ end)
         #     app.info_plist["ProjectBuildTime"] = Time.now
         #   end
         def build_time
-          if btime = NSBundle.mainBundle.infoDictionary["ProjectBuildTime"]
+          if btime = app.info_plist["ProjectBuildTime"]
           else
             puts %(
 [RMQ Warning] The build_time method requires that this code is in your RakeFile:
@@ -139,4 +139,3 @@ end)
 
   end
 end
-
