@@ -32,6 +32,11 @@ describe 'app' do
     @app.name.should == NSBundle.mainBundle.objectForInfoDictionaryKey('CFBundleDisplayName')
   end
 
+  it 'should return info_plist items correctly' do
+    @app.info_plist['CFBundleVersion'].should == NSBundle.mainBundle.infoDictionary['CFBundleVersion']
+    @app.info_plist['test_thing'].should == ["a", "b", "c"]
+  end
+
   it 'should return app identifier' do
     @app.identifier.should == NSBundle.mainBundle.bundleIdentifier
   end

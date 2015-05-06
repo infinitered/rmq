@@ -15,4 +15,7 @@ Motion::Project::App.setup do |app|
   app.prerendered_icon = true
   app.interface_orientations = [:portrait, :landscape_left, :landscape_right, :portrait_upside_down]
   app.frameworks += %w(QuartzCore CoreGraphics)
+
+  # Needed for tests
+  app.info_plist['test_thing'] = ["a", "b", "c"]
 end
