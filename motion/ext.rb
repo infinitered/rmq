@@ -113,6 +113,13 @@ if RUBYMOTION_ENV == "development"
         if style_changed
           rmq_live_current_view_controllers.each do |vc|
             vc.rmq.all.and_self.reapply_styles
+            if vc.is_a? UITableViewController
+              if vc.respond_to?(:update_table_data)
+                vc.update_table_data # ProMotion-based
+              else
+                vc.tableView.reloadData # straight-up UITableView
+              end
+            end
           end
         end
       end
