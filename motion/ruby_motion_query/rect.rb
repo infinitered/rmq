@@ -210,12 +210,14 @@ module RubyMotionQuery
         right_of_prev = params[:right_of_prev] || params[:rop] || params[:right_of_previous]
         left_of_prev = params[:left_of_prev] || params[:lop] || params[:left_of_previous]
 
-        params_l = value_from_symbol(params_l, sv.frame.size.width) if params_l.is_a?(Symbol) && sv
-        params_t = value_from_symbol(params_t, sv.frame.size.height) if params_t.is_a?(Symbol) && sv
-        params_w = value_from_symbol(params_w, sv.frame.size.width) if params_w.is_a?(Symbol) && sv
-        params_h = value_from_symbol(params_h, sv.frame.size.height) if params_h.is_a?(Symbol) && sv
-        params_r = value_from_symbol(params_r, sv.frame.size.width) if params_r.is_a?(Symbol) && sv
-        params_b = value_from_symbol(params_b, sv.frame.size.height) if params_b.is_a?(Symbol) && sv
+        if sv
+          params_l = value_from_symbol(params_l, sv.frame.size.width) if params_l.is_a?(Symbol)
+          params_t = value_from_symbol(params_t, sv.frame.size.height) if params_t.is_a?(Symbol)
+          params_w = value_from_symbol(params_w, sv.frame.size.width) if params_w.is_a?(Symbol)
+          params_h = value_from_symbol(params_h, sv.frame.size.height) if params_h.is_a?(Symbol)
+          params_r = value_from_symbol(params_r, sv.frame.size.width) if params_r.is_a?(Symbol)
+          params_b = value_from_symbol(params_b, sv.frame.size.height) if params_b.is_a?(Symbol)
+        end
 
         l = params_l || existing_rect.origin.x
         t = params_t || existing_rect.origin.y
@@ -370,9 +372,13 @@ module RubyMotionQuery
       end
 
       def value_from_symbol(size_symbol, max_value)
-        width_height_symbols = {full: 1, half: 0.5, quarter: 0.25}
-        if width_height_symbols.keys.include?(size_symbol)
-          return max_value * width_height_symbols[size_symbol]
+        case size_symbol
+        when :full
+          max_value
+        when :half
+          max_value * 0.5
+        when :quarter
+          max_value * 0.25
         else
           puts "\n[RMQ ERROR] width symbol #{size_symbol} can't be parsed.\n\n"
         end
