@@ -69,12 +69,16 @@ module RubyMotionQuery
 
       # @return [String] Version
       def version
-        NSBundle.mainBundle.infoDictionary['CFBundleVersion']
+        info_plist['CFBundleVersion']
       end
 
       # @return [String] Short version
       def short_version
-        NSBundle.mainBundle.infoDictionary['CFBundleShortVersionString']
+        info_plist['CFBundleShortVersionString']
+      end
+
+      def info_plist
+        NSBundle.mainBundle.infoDictionary
       end
 
       # @return [String] Name of app

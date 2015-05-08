@@ -73,7 +73,7 @@ if RUBYMOTION_ENV == "development"
       return unless root_path = RubyMotionQuery::RMQ.project_path
 
       # Get list of stylesheet files
-      path_query = "#{root_path}/app/stylesheets/*.rb"
+      path_query = "#{root_path}/app/stylesheets/**/*.rb"
       stylesheet_file_paths = Dir.glob(path_query)
 
       stylesheets = stylesheet_file_paths.inject({}) do |out, stylesheet_path_file|
@@ -113,6 +113,13 @@ if RUBYMOTION_ENV == "development"
         if style_changed
           rmq_live_current_view_controllers.each do |vc|
             vc.rmq.all.and_self.reapply_styles
+            if vc.is_a? UITableViewController
+              if vc.respond_to?(:update_table_data)
+                vc.update_table_data # ProMotion-based
+              else
+                vc.tableView.reloadData # straight-up UITableView
+              end
+            end
           end
         end
       end
