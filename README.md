@@ -22,9 +22,9 @@ One of RMQ's goals is to have the best [documentation][1] of any RubyMotion UI l
 
 [![image](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/19/2015/04/rmq_docs1.png)](http://rubymotionquery.com)
 
-**Read the [RMQ Documentation][1] here**<-
+**Read the [RMQ Documentation][1] here**
 
-**If you like RMQ, check out [RedPotion](http://redpotion.org), the ultimate gem for RubyMotion.**<-
+**If you like RMQ, check out [RedPotion](http://redpotion.org), the ultimate gem for RubyMotion.**
 
 <br />
 <br />
