@@ -87,6 +87,18 @@ module RubyMotionQuery
         end
       end
 
+      # TODO, make  rmq.format.date work with strings as well as templates
+      def formatter_from_string(s)
+        @_date_formatters ||= {}
+
+        # Caching here is very important for performance
+        @_date_formatters[s] ||= begin
+          date_formatter = NSDateFormatter.alloc.init
+          date_formatter.setDateFormat(s)
+          date_formatter
+        end
+      end
+
       def formatter_from_format(format)
         @_date_formatters ||= {}
 
@@ -112,7 +124,6 @@ module RubyMotionQuery
         @_date_formatters[styles.to_s] ||= begin
           date_formatter = NSDateFormatter.alloc.init
 
-          date_formatter.setDateStyle(NSDateFormatterNoStyle)
           date_formatter.setDateStyle(NSDateFormatterNoStyle)
 
           styles.each do |style|

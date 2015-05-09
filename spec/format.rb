@@ -82,4 +82,13 @@ describe 'format' do
     rmq.format.date(date, :mon_year).should == 'Jan 2013'
   end
 
+  it "should create formatter with iso 8601 format, and parse a date" do
+    s = "2015-05-07T22:46:55Z"
+
+    formatter = RubyMotionQuery::Format::Date.formatter_from_string("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    d = formatter.dateFromString(s)
+    d.year.should == 2015
+    d.month.should == 5
+    d.day.should == 7
+  end
 end
