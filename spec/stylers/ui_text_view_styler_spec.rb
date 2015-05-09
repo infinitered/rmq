@@ -6,6 +6,12 @@ describe 'stylers/ui_text_view' do
       st.font = font.system(12)
       st.text_alignment = :center
       st.text_color = color.red
+      st.autocapitalization_type = :words
+      st.autocorrection_type = :no
+      st.keyboard_type = :default
+      st.keyboard_appearance = :dark
+      st.return_key_type = :done
+      st.spell_checking_type = :yes
       st.editable = true
       st.selectable = true
       st.data_detector_types = :all

@@ -1,6 +1,7 @@
 module RubyMotionQuery
   module Stylers
     class UITextViewStyler < UIScrollViewStyler
+      include Protocols::UITextInputTraits
 
       def text ; view.text ; end
       def text=(v) ; view.text = v ; end
