@@ -277,6 +277,90 @@ describe 'rect' do
       @view.frame.should == @view.superview.bounds
     end
 
+    it 'should set width to :full' do
+      @view.frame.size.width.should != @view.superview.frame.size.width
+      apply_frame w: :full
+      @view.frame.size.width.should == @view.superview.frame.size.width
+    end
+
+    it 'should set width to :half' do
+      apply_frame w: :half
+      @view.frame.size.width.should == @view.superview.frame.size.width * (1.0/2.0)
+    end
+
+    it 'should set width to :quarter' do
+      apply_frame w: :quarter
+      @view.frame.size.width.should == @view.superview.frame.size.width * (1.0/4.0)
+    end
+
+    it 'should set left to position of :full' do
+      apply_frame l: :full
+      @view.frame.origin.x.should == @view.superview.frame.size.width
+    end
+
+    it 'should set left to position of :half' do
+      apply_frame l: :half
+      @view.frame.origin.x.should == @view.superview.frame.size.width * (1.0/2.0)
+    end
+
+    it 'should set left to position of :quarter' do
+      apply_frame l: :quarter
+      @view.frame.origin.x.should == @view.superview.frame.size.width * (1.0/4.0)
+    end
+
+    it 'should set right to position of :full' do
+      apply_frame r: :full
+      @view.frame.origin.x.should == @view.superview.frame.size.width
+    end
+
+    it 'should set right to position of :half' do
+      apply_frame r: :half
+      @view.frame.origin.x.should == @view.superview.frame.size.width * (1.0/2.0)
+    end
+
+    it 'should set right to position of :quarter' do
+      apply_frame r: :quarter
+      @view.frame.origin.x.should == @view.superview.frame.size.width * (1.0/4.0)
+    end
+
+    it 'should set bottom to position of :full' do
+      apply_frame b: :full
+      @view.frame.origin.y.should == @view.superview.frame.size.height
+    end
+
+    it 'should set bottom to position of :half' do
+      apply_frame b: :half
+      @view.frame.origin.y.should == @view.superview.frame.size.height * (1.0/2.0)
+    end
+
+    it 'should set bottom to position of :quarter' do
+      apply_frame b: :quarter
+      @view.frame.origin.y.should == @view.superview.frame.size.height * (1.0/4.0)
+    end
+
+    it 'should set height to :full' do
+      @view.frame.size.height.should != @view.superview.frame.size.height
+      apply_frame h: :full
+      @view.frame.size.height.should == @view.superview.frame.size.height
+    end
+
+    it 'should set height to :half' do
+      apply_frame h: :half
+      @view.frame.size.height.should == @view.superview.frame.size.height * (1.0/2.0)
+    end
+
+    it 'should set height to :quarter' do
+      apply_frame h: :quarter
+      @view.frame.size.height.should == @view.superview.frame.size.height * (1.0/4.0)
+    end
+
+    it 'should set a width to :full with padding' do
+      padding = 5
+      apply_frame w: :full, padding: padding
+
+      @view.frame.size.width.should == @view.superview.frame.size.width - (padding * 2)
+    end
+
     it 'should set left when centering horizontally' do
       apply_frame l: 140 , t: 142, w: 143, h: 144, centered: :horizontal
 
