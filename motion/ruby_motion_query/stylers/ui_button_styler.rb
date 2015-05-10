@@ -33,6 +33,13 @@ module RubyMotionQuery
         @view.titleColorForState(UIControlStateHighlighted)
       end
 
+      def color_disabled=(value)
+        @view.setTitleColor(value, forState: UIControlStateDisabled)
+      end
+      def color_disabled
+        @view.titleColorForState(UIControlStateDisabled)
+      end
+
       def tint_color=(value)
         @view.tintColor = value
       end
@@ -54,6 +61,13 @@ module RubyMotionQuery
       end
       def image_highlighted
         @view.imageForState(UIControlStateHighlighted)
+      end
+
+      def image_disabled=(value)
+        @view.setImage(value, forState: UIControlStateDisabled)
+      end
+      def image_disabled
+        @view.imageForState(UIControlStateDisabled)
       end
 
       def background_image_normal=(value)
@@ -79,12 +93,27 @@ module RubyMotionQuery
         @view.backgroundImageForState(UIControlStateSelected)
       end
 
+      def background_image_disabled=(value)
+        @view.setBackgroundImage(value, forState: UIControlStateDisabled)
+      end
+      def background_image_disabled
+        @view.backgroundImageForState(UIControlStateDisabled)
+      end
+
       def adjust_image_when_highlighted=(value)
         @view.adjustsImageWhenHighlighted = value
       end
 
       def adjust_image_when_highlighted
         @view.adjustsImageWhenHighlighted
+      end
+
+      def adjust_image_when_disabled=(value)
+        @view.adjustsImageWhenDisabled = value
+      end
+
+      def adjust_image_when_disabled
+        @view.adjustsImageWhenDisabled
       end
 
       def selected=(value)
@@ -133,6 +162,20 @@ module RubyMotionQuery
       end
       def attributed_text_highlighted
         @view.attributedTitleForState(UIControlStateHighlighted)
+      end
+
+      def text_disabled=(value)
+        @view.setTitle(value, forState:UIControlStateDisabled)
+      end
+      def text_disabled
+        @view.titleForState(UIControlStateDisabled)
+      end
+
+      def attributed_text_disabled=(value)
+        @view.setAttributedTitle(value, forState: UIControlStateDisabled)
+      end
+      def attributed_text_disabled
+        @view.attributedTitleForState(UIControlStateDisabled)
       end
 
     end

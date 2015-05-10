@@ -6,14 +6,20 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.font = font.system(12)
     st.color = color.red
     st.color_highlighted = color.blue
+    st.color_disabled = color.black
     st.image_normal = image.resource('logo')
     st.image_highlighted = image.resource('Icon')
+    st.image_disabled = image.resource('Default')
     st.background_image_normal = image.resource('Default')
     st.background_image_highlighted = image.resource('logo')
     st.background_image_selected = image.resource('Icon')
+    st.background_image_disabled = image.resource('logo')
     st.text_highlighted = 'bar'
     st.attributed_text_highlighted = NSAttributedString.alloc.initWithString("RMQ Highlighted")
+    st.text_disabled = 'baz'
+    st.attributed_text_disabled = NSAttributedString.alloc.initWithString("RMQ Disabled")
     st.adjust_image_when_highlighted = true
+    st.adjust_image_when_disabled = true
     st.selected = true
   end
 
@@ -34,17 +40,23 @@ describe 'stylers/ui_button' do
     view.tap do |v|
       view.titleForState(UIControlStateNormal).should == "foo"
       view.titleForState(UIControlStateHighlighted).should == 'bar'
+      view.titleForState(UIControlStateDisabled).should == 'baz'
       view.attributedTitleForState(UIControlStateNormal).should == NSAttributedString.alloc.initWithString("RMQ")
       view.attributedTitleForState(UIControlStateHighlighted).should == NSAttributedString.alloc.initWithString("RMQ Highlighted")
+      view.attributedTitleForState(UIControlStateDisabled).should == NSAttributedString.alloc.initWithString("RMQ Disabled")
       view.titleLabel.font.should == UIFont.systemFontOfSize(12)
       view.titleColorForState(UIControlStateNormal).should == UIColor.redColor
       view.titleColorForState(UIControlStateHighlighted).should == UIColor.blueColor
+      view.titleColorForState(UIControlStateDisabled).should == UIColor.blackColor
       view.imageForState(UIControlStateNormal).should == @vc.rmq.image.resource('logo')
       view.imageForState(UIControlStateHighlighted).should == @vc.rmq.image.resource('Icon')
+      view.imageForState(UIControlStateDisabled).should == @vc.rmq.image.resource('Default')
       view.backgroundImageForState(UIControlStateNormal).should == @vc.rmq.image.resource('Default')
       view.backgroundImageForState(UIControlStateHighlighted).should == @vc.rmq.image.resource('logo')
       view.backgroundImageForState(UIControlStateSelected).should == @vc.rmq.image.resource('Icon')
+      view.backgroundImageForState(UIControlStateDisabled).should == @vc.rmq.image.resource('logo')
       view.adjustsImageWhenHighlighted.should == true
+      view.adjustsImageWhenDisabled.should == true
       view.isSelected.should == true
     end
 
@@ -63,6 +75,11 @@ describe 'stylers/ui_button' do
       st.attributed_text_highlighted.should == NSAttributedString.alloc.initWithString("RMQ Highlighted")
       st.adjust_image_when_highlighted.should == true
       st.selected.should == true
+      st.text_disabled.should == 'baz'
+      st.attributed_text_disabled.should == NSAttributedString.alloc.initWithString("RMQ Disabled")
+      st.adjust_image_when_disabled.should == true
+      st.image_disabled.should == @vc.rmq.image.resource('Default')
+      st.background_image_disabled.should == @vc.rmq.image.resource('logo')
     end
 
   end
