@@ -32,7 +32,7 @@ module RubyMotionQuery
 
     def handle_gesture_or_event(gesture)
       # Don't fire :long_press events twice.
-      return if @sdk_event_or_recognizer == :long_press && gesture.state == UIGestureRecognizerStateBegan
+      return if @sdk_event_or_recognizer == VIEW_GESTURES[:long_press] && gesture.state == UIGestureRecognizerStateBegan
 
       # Handle debounce logic
       if @debounce_length
