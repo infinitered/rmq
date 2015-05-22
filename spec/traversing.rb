@@ -104,7 +104,6 @@ describe 'traversing' do
     q.length.should == @total_views - 4 # top level views
   end
 
-
   it 'select all subview children, grandchildren, etc for controller and view' do
     rmq = @vc.rmq
     rmq.should.not == nil
@@ -382,4 +381,18 @@ describe 'traversing' do
     end
   end
 
+  describe "#find!" do
+    it "should return the actual view if there is one match" do
+      btn = @vc.rmq.append!(UIButton)
+      @vc.rmq.append(UILabel)
+      @vc.rmq.find!(UIButton).should.equal(btn)
+    end
+
+    it "should return an array of views if there is multiple matches" do
+      btn = @vc.rmq.append!(UIButton)
+      @vc.rmq.append(UILabel)
+      btn2 = @vc.rmq.append!(UIButton)
+      @vc.rmq.find!(UIButton).should.equal([btn, btn2])
+    end
+  end
 end
