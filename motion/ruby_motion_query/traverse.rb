@@ -154,6 +154,17 @@ module RubyMotionQuery
       end
     end
 
+
+    # Same as find, but instantly returns the view, or array of views without using .get
+    #
+    # @param selectors
+    #
+    # @example
+    #   rmq(my_view).find!(UIButton)
+    def find!(*working_selectors)
+      find(*working_selectors).get
+    end
+
     # @return [RMQ] Instance selecting the children of the selected view(s)
     #
     # @param selectors
