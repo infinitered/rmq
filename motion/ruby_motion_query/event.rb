@@ -20,17 +20,20 @@ module RubyMotionQuery
         @block = block
 
         if @gesture
-          @recognizer = @sdk_event_or_recognizer.alloc.initWithTarget(self, action: :handle_gesture_or_event)
+          @recognizer = @sdk_event_or_recognizer.alloc.initWithTarget(self, action: "handle_gesture_or_event:")
           @sender.addGestureRecognizer(@recognizer)
         else
-          @sender.addTarget(self, action: :handle_gesture_or_event, forControlEvents: @sdk_event_or_recognizer)
+          @sender.addTarget(self, action: "handle_gesture_or_event:", forControlEvents: @sdk_event_or_recognizer)
         end
       else
         raise "[RMQ Error]  Invalid event or gesture or invalid sender (#{event}). Example of use: button.on(:touch) { my_code }"
       end
     end
 
-    def handle_gesture_or_event
+    def handle_gesture_or_event(gesture)
+      # Don't fire :long_press events twice.
+      return if @sdk_event_or_recognizer == VIEW_GESTURES[:long_press] && gesture.state == UIGestureRecognizerStateEnded
+
       # Handle debounce logic
       if @debounce_length
         return if (@debounce_stamp + @debounce_length > Time.now)
@@ -108,7 +111,7 @@ module RubyMotionQuery
         if self.gesture?
           @sender.removeGestureRecognizer(@recognizer)
         else
-          @sender.removeTarget(self, action: :handle_gesture_or_event, forControlEvents: @sdk_event_or_recognizer)
+          @sender.removeTarget(self, action: "handle_gesture_or_event:", forControlEvents: @sdk_event_or_recognizer)
         end
       end
     end
