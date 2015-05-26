@@ -57,7 +57,7 @@ class RmqCommandLine
     def create_app(app_name)
       puts '     Creating app'
 
-      `motion create --template=git@github.com:infinitered/rmq-template.git #{app_name}`
+      `motion create --template=https://github.com/infinitered/rmq-template.git #{app_name}`
 
       puts %{
       Complete. Things you should do:
@@ -89,7 +89,7 @@ class RmqCommandLine
     # TODO Disabling for now, this needs to get latest template
     def ensure_template_dir
       return if Dir.exists?(template_dir)
-      `git clone git@github.com:infinitered/rmq-template.git #{template_dir}`
+      `git clone https://github.com/infinitered/rmq-template.git #{template_dir}`
     end
 
     def template_path(template_name)
