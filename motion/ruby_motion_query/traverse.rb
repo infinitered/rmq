@@ -35,8 +35,13 @@ module RubyMotionQuery
     #
     # @example
     #   rmq.all.log
+    #   rmq(:container).all
     def all
-      self.weak_view_controller.rmq.find
+      if self.root?
+        self.weak_view_controller.rmq.find
+      else
+        self.find
+      end
     end
 
     # @return [RMQ] A new rmq instance reducing selected views to those that match selectors provided
