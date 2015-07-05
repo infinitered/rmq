@@ -44,13 +44,17 @@ module RubyMotionQuery
           nil
         end
 
-        UIView.animateWithDuration(
-          opts[:duration] || 0.3,
-          delay: opts[:delay] || 0.0,
-          options: opts[:options] || UIViewAnimationOptionCurveEaseInOut,
-          animations: animations_lambda,
-          completion: after_lambda
-        )
+        if accessibility.voiceover_running?
+          after_lambda.call(true)
+        else
+          UIView.animateWithDuration(
+            opts[:duration] || 0.3,
+            delay: opts[:delay] || 0.0,
+            options: opts[:options] || UIViewAnimationOptionCurveEaseInOut,
+            animations: animations_lambda,
+            completion: after_lambda
+          )
+        end
       end
 
       self
