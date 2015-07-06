@@ -262,12 +262,25 @@ module RubyMotionQuery
     def iphone?
       device.iphone?
     end
+
     def ipad?
       device.ipad?
     end
 
+    def three_point_five_inch?
+      device.three_point_five_inch?
+    end
+
     def four_inch?
       device.four_inch?
+    end
+
+    def four_point_seven_inch?
+      device.four_point_seven_inch?
+    end
+
+    def five_point_five_inch?
+      device.five_point_five_inch?
     end
 
     def retina?

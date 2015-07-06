@@ -35,6 +35,21 @@ describe 'stylesheet' do
     @vc.rmq.stylesheet.font.should == RubyMotionQuery::Font
   end
 
+  it 'should return various device objects in a stylesheet instance' do
+    ss = @vc.rmq.stylesheet
+    device = ss.device
+
+    ss.landscape?.should == device.landscape?
+    ss.portrait?.should == device.portrait?
+    ss.iphone?.should == device.iphone?
+    ss.ipad?.should == device.ipad?
+    ss.three_point_five_inch?.should == device.three_point_five_inch?
+    ss.four_inch?.should == device.four_inch?
+    ss.four_point_seven_inch?.should == device.four_point_seven_inch?
+    ss.five_point_five_inch?.should == device.five_point_five_inch?
+    ss.retina?.should == device.retina?
+  end
+
   it 'should allow application setup, that should only be called once' do
     RubyMotionQuery::Stylesheet.application_was_setup = nil
 
