@@ -133,4 +133,23 @@ describe 'animations' do
     q = @vc.rmq.animations.stop_spinner
     q.first.get.is_a?(UIActivityIndicatorView).should == true
   end
+
+  it 'should still invoke the callback if accessibility is on' do
+    class RubyMotionQuery::Accessibility
+      def self.voiceover_running?
+        true
+      end
+    end
+
+    @vc.rmq.animate(
+    duration: 0.0,
+    animations: -> (rmq) {
+      # we shouldnt be running this proc as we have voiceover...
+      # we put a failing exception here, which should not be processed
+      1.should.equal("i ran animations and I shouldnt have!")
+    },
+    completion: -> (did_finish, rmq) {
+      RubyMotionQuery::RMQ.is_blank?(rmq).should == false
+    })
+  end
 end
