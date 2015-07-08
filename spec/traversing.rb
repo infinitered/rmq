@@ -104,7 +104,7 @@ describe 'traversing' do
     q.length.should == @total_views - 4 # top level views
   end
 
-  it 'select all subview children, grandchildren, etc for controller and view' do
+  it 'selects all subview children, grandchildren, etc for controller and view' do
     rmq = @vc.rmq
     rmq.should.not == nil
 
@@ -120,6 +120,11 @@ describe 'traversing' do
 
     all.last.should == @last_image
     @last_image.is_a?(UIImageView).should == true
+  end
+
+  it 'should only select the views contained on the view if in a subselection' do
+    @vc.rmq.all.count.should.equal(18)
+    @vc.rmq(@v0).all.count.should.equal(7)
   end
 
   it 'get closest super view, searching for constant' do

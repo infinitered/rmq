@@ -264,7 +264,7 @@ describe 'stylesheet' do
       view.origin.x.should == 1
       view.frame = [[5,0],[5,5]]
       view.origin.x.should == 5
-      q.all.reapply_styles
+      q.reapply_styles
       view.origin.x.should == 1
     end
 

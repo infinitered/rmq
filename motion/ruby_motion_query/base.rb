@@ -156,9 +156,9 @@ module RubyMotionQuery
     # Which means it only has 1 selected view, and that view
     # is the view you called rmq in. Which is a tad confusing, but if you call *just* rmq inside a
     # view, then only that view will be *selected* and this rmq will be *root*. If you call rmq
-    # inside a controller, only controller.view will be selected and the rma instance will be a root.
+    # inside a controller, only controller.view will be selected and the rmq instance will be a root.
     def root?
-      (selected.length == 1) && (selected.first == @context)
+      (selected.length == 1) && (selected.first == context_or_context_view)
     end
 
     # The context is where rmq was created (not the selectors).
