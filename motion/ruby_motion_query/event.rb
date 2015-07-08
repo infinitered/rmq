@@ -14,19 +14,17 @@ module RubyMotionQuery
         @sdk_event_or_recognizer = CONTROL_EVENTS[event]
       end
 
-      if @sdk_event_or_recognizer
-        @sender = sender
-        @event = event
-        @block = block
+      @sender = sender
+      @event = event
+      @block = block
 
+      if @sdk_event_or_recognizer
         if @gesture
           @recognizer = @sdk_event_or_recognizer.alloc.initWithTarget(self, action: "handle_gesture_or_event:")
           @sender.addGestureRecognizer(@recognizer)
         else
           @sender.addTarget(self, action: "handle_gesture_or_event:", forControlEvents: @sdk_event_or_recognizer)
         end
-      else
-        raise "[RMQ Error]  Invalid event or gesture or invalid sender (#{event}). Example of use: button.on(:touch) { my_code }"
       end
     end
 

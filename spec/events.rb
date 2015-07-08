@@ -134,6 +134,23 @@ describe 'events on views' do
 
     label.isUserInteractionEnabled.should == true
   end
+
+  it 'should allow a custom event' do
+    view = UIView.new
+    @vc.rmq.append(view)
+
+    should.not.raise { @vc.rmq(view).on(:custom) {|o| ;} }
+  end
+
+  it 'should trigger the event' do
+    view = UIView.new
+    @vc.rmq.append(view)
+
+    some_value = false
+    @vc.rmq(view).on(:custom) {|o| some_value = true }
+    @vc.rmq(view).trigger(:custom)
+    some_value.should == true
+  end
 end
 
 describe 'events' do
