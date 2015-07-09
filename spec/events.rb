@@ -142,14 +142,43 @@ describe 'events on views' do
     should.not.raise { @vc.rmq(view).on(:custom) {|o| ;} }
   end
 
-  it 'should trigger the event' do
+  it 'should trigger the custom event' do
     view = UIView.new
     @vc.rmq.append(view)
 
     some_value = false
-    @vc.rmq(view).on(:custom) {|o| some_value = true }
+    @vc.rmq(view).on(:custom) do |sender|
+      sender.get.should == view
+      sender.is_a?(RubyMotionQuery::RMQ).should == true
+      some_value = true
+    end
+
     @vc.rmq(view).trigger(:custom)
     some_value.should == true
+  end
+
+  it 'should be able to add custom events and trigger them on multiple views' do
+    view_1 = @vc.rmq.append!(UIView)
+    view_2 = @vc.rmq.append!(UIView)
+
+    view_1_triggerd = false
+    view_2_triggerd = false
+
+    @vc.rmq(view_1, view_2).on(:foo) do |sender|
+      sender.is_a?(RubyMotionQuery::RMQ).should == true
+      view = sender.get
+      if view == view_1
+        view.should == view_1
+        view_1_triggerd = true
+      else
+        view.should == view_2
+        view_2_triggerd = true
+      end
+    end
+
+    @vc.rmq(view_1, view_2).trigger(:foo)
+    view_1_triggerd.should == true
+    view_2_triggerd.should == true
   end
 end
 
