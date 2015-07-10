@@ -21,6 +21,10 @@ class MainController < UIViewController
     init_popup_section
     init_validation_section
 
+    rmq(UIView).on(:custom_event) do |sender|
+      puts sender.get.class.name
+    end
+
     rmq.append Section
   end
 
@@ -36,6 +40,7 @@ class MainController < UIViewController
   end
 
   def nav_left_button
+    rmq.all.trigger(:custom_event)
     puts 'Left button'
   end
 

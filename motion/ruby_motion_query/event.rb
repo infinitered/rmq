@@ -9,9 +9,14 @@ module RubyMotionQuery
         return ValidationEvent.new(block)
       elsif @sdk_event_or_recognizer = VIEW_GESTURES[event]
         @gesture = true
-      elsif sender.is_a?(UIControl)
+        @custom_event = false
+      elsif sender.is_a?(UIControl) && (@sdk_event_or_recognizer = CONTROL_EVENTS[event])
         @gesture = false
-        @sdk_event_or_recognizer = CONTROL_EVENTS[event]
+        @custom_event = false
+      else
+        @gesture = false
+        @sdk_event_or_recognizer = nil
+        @custom_event = true
       end
 
       @sender = sender
@@ -76,7 +81,6 @@ module RubyMotionQuery
             when :swipe_right then o.direction = UISwipeGestureRecognizerDirectionRight
           end
 
-
           if opts.include?(:init)
             opts[:init].call(@recognizer)
           end
@@ -86,6 +90,14 @@ module RubyMotionQuery
 
     def gesture?
       @gesture
+    end
+
+    def sdk_event?
+      !@custom_event && !@gesture
+    end
+
+    def custom_event?
+      @custom_event
     end
 
     def location

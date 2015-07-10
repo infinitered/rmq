@@ -35,6 +35,9 @@ describe 'events on views' do
       q.on(:touch) do |sender, event|
         sender.should == q
         event.is_a?(RubyMotionQuery::Event).should == true
+        event.gesture?.should == false
+        event.sdk_event?.should == true
+        event.custom_event?.should == false
       end
       q.get.allTargets.count.should == 1
       # TODO fire the event
@@ -55,8 +58,13 @@ describe 'events on views' do
   end
 
   it 'should add gesture on a view' do
-    # TODO dup the events above and do gestures, minor test
-    1.should == 1
+    view = @vc.rmq.append!(UILabel)
+    view.rmq.on(:tap) do |sender_q, rmq_event|
+      sender_q.should == view.rmq
+      rmq_event.gesture?.should == true
+      rmq_event.sdk_event?.should == false
+      rmq_event.custom_event?.should == false
+    end
   end
 
   it 'should add gesture on multiple views' do
@@ -142,6 +150,15 @@ describe 'events on views' do
     should.not.raise { @vc.rmq(view).on(:custom) {|o| ;} }
   end
 
+  it 'should not be a gesture or sdk_event, but be custom_event when adding a custom event' do
+    @vc.rmq.append(UILabel).on(:foo) do |sender_q, rmq_event|
+      rmq_event.gesture?.should == false
+      rmq_event.sdk_event?.should == false
+      rmq_event.custom_event?.should == true
+      sender_q.get.allTargets.count.should == 0
+    end
+  end
+
   it 'should trigger the custom event' do
     view = UIView.new
     @vc.rmq.append(view)
@@ -176,9 +193,17 @@ describe 'events on views' do
       end
     end
 
-    @vc.rmq(view_1, view_2).trigger(:foo)
+    @vc.rmq.all.trigger(:foo)
     view_1_triggerd.should == true
     view_2_triggerd.should == true
+  end
+
+  it 'should not enable user interaction when adding a custom event' do
+    view_1 = @vc.rmq.append!(UILabel)
+
+    view_1.userInteractionEnabled?.should == false
+    @vc.rmq(view_1).on(:foo){|sender| ; }
+    view_1.userInteractionEnabled?.should == false
   end
 end
 
