@@ -352,7 +352,7 @@ module RubyMotionQuery
     protected
 
     def closest_view(view, working_selectors)
-      if nr = view.nextResponder
+      if (nr = view.nextResponder) && nr.is_a?(UIView)
         if match(nr, working_selectors)
           nr
         else

@@ -128,8 +128,14 @@ describe 'traversing' do
   end
 
   it 'get closest super view, searching for constant' do
-    @vc.rmq(@views_hash[:v_0][:subs][:v_1][:view]).closest(UIViewController).get.should == @vc
+    #@vc.rmq(@views_hash[:v_0][:subs][:v_1][:view]).closest(UIViewController).get.should == @vc
+    # This makes no sense ^, I have no idea why I added this. Commenting out and fixing closest not to return the controller
+
     @vc.rmq(@views_hash[:v_0][:subs][:v_0][:subs][:v_1][:view]).closest(UIView).get.should == @views_hash[:v_0][:subs][:v_0][:view]
+  end
+
+  it 'should not error when getting closest with a nonexistent tag/stylename' do
+    @vc.rmq(@views_hash[:v_0][:subs][:v_1][:view]).closest(:does_not_exist).length.should == 0
   end
 
   it 'get closest super view, searching for constant, with multiple selected' do
