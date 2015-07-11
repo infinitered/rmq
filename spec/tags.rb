@@ -74,4 +74,22 @@ describe 'tags' do
     end
   end
 
+  it 'should return the tags for the selection' do
+    @vc.rmq.append(UIView).tag(data: "some-data")
+    @vc.rmq.append(UIView).tag(other_data: "other-data")
+    @vc.rmq.all.tags.should == { data: "some-data", other_data: "other-data" }
+  end
+
+  it 'should be able to return tag data' do
+    @vc.rmq.append(UIView).tag(data: "some-data").tap do |q|
+      q.tags(:data).should == "some-data"
+    end
+  end
+
+  it 'should return an array of data if there are duplicate tags in the selection' do
+    @vc.rmq.append(UIView).tag(data: "some-data")
+    @vc.rmq.append(UIView).tag(data: "other-data")
+    @vc.rmq.all.tags(:data).should == ["some-data", "other-data"]
+  end
+
 end
