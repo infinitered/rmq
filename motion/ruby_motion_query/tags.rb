@@ -49,6 +49,26 @@ module RubyMotionQuery
       false # tag doesn't exist if we got here
     end
 
+    def tags(key=nil)
+      tags = {}
+      selected.each do |view|
+        view.rmq_data.tags.each do |tag, data|
+          tags[tag] ||= []
+          tags[tag] << data
+        end
+      end
+      tags = tags.inject({}) do |hash,(k,v)|
+        hash[k] = v.length == 1 ? v.first : v
+        hash
+      end
+
+      if key
+        tags[key]
+      else
+        tags
+      end
+    end
+
     # See /motion/data.rb for the rest of the tag stuff
 
   end
