@@ -59,6 +59,7 @@ module RubyMotionQuery
       selected.each do |view|
         view.rmq_data.styles = nil
       end
+      self
     end
 
     # Pass a block to apply styles, an inline way of applynig a style
