@@ -64,10 +64,10 @@ module RubyMotionQuery
       styles[0] = value
     end
 
-    # view.rmq_data.styles = :something
+    # view.rmq_data.styles = [:something]
     # Convenience method for setting the entire styles variable
     def styles=(s)
-      @_styles = s
+      @_styles = Array(s)
     end
 
     #view.rmq_data.styles
