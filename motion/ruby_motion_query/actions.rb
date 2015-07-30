@@ -51,7 +51,7 @@ module RubyMotionQuery
           when UIButton             then view.titleForState(UIControlStateNormal)
           when UIImageView          then view.image
           #when UITableView          then
-          #when UISwitch             then
+          when UISwitch             then view.on?
           #when UIDatePicker         then
           #when UISegmentedControl   then
           #when UIRefreshControl     then
