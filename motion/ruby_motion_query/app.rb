@@ -121,7 +121,7 @@ module RubyMotionQuery
       def current_view_controller(root_view_controller = nil)
         if root_view_controller || ((window = RMQ.app.window) && (root_view_controller = window.rootViewController))
           case root_view_controller
-          when UIMoreNavigationController # This must be above UINavigationController becuase it's a subclass
+          when UIMoreNavigationController # This must be above UINavigationController because it's a subclass
             root_view_controller.visibleViewController
           when UINavigationController
             current_view_controller(root_view_controller.visibleViewController)
