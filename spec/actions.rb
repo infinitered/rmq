@@ -161,8 +161,11 @@ describe 'actions' do
   it 'reads and sets data for UISwitch' do
     switchy = rmq.create(UISwitch).data(true)
     switchy.get.isOn.should == true
+    switchy.data.should == true
+    # change it
     switchy.data(false)
     switchy.get.isOn.should == false
+    switchy.data.should == false
   end
 
   it 'reads and sets data for UIProgressView' do
