@@ -275,6 +275,20 @@ describe 'stylesheet' do
       q.styles.should == [:style_two]
     end
 
+    it 'should allow you to remove all styles from a view' do
+      q = @vc.rmq.append(UIView, :style_one)
+      q.styles.should == [:style_one]
+      q.apply_style(:style_two)
+      q.styles.should == [:style_one, :style_two]
+      q.remove_all_styles
+      q.styles.should == []
+    end
+
+    it 'should return the RMQ object after removing all styles' do
+      q = @vc.rmq.append(UIView, :style_one)
+      q.remove_all_styles.class.should == RubyMotionQuery::RMQ
+    end
+
     it 'should return a styler for various types of views' do
       @vc.rmq.tap do |q|
         q.styler_for(UIView.alloc.init).is_a?(RubyMotionQuery::Stylers::UIViewStyler).should == true

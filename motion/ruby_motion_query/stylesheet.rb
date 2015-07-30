@@ -55,6 +55,13 @@ module RubyMotionQuery
     end
     alias :remove_styles :remove_style
 
+    def remove_all_styles
+      selected.each do |view|
+        view.rmq_data.styles = nil
+      end
+      self
+    end
+
     # Pass a block to apply styles, an inline way of applynig a style
     # @example
     #   rmq(view).style{|st| st.background_color = rmq.color.blue}
