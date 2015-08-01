@@ -134,6 +134,88 @@ describe 'app' do
       rmq.app.window.rootViewController = old_root
     end
 
+    it 'should return current_view_controller when root controller is UITabController with multiple controllers and a more tab' do
+      tabbar = UITabBarController.alloc.init
+
+      new_controller_0 = UIViewController.new
+      new_controller_1 = UIViewController.new
+      new_controller_2 = UIViewController.new
+      new_controller_3 = UIViewController.new
+      new_controller_4 = UIViewController.new
+      new_controller_5 = UIViewController.new
+      new_controller_6 = UIViewController.new
+      tabbar.viewControllers = [
+        new_controller_0,
+        new_controller_1,
+        UINavigationController.alloc.initWithRootViewController(new_controller_2),
+        new_controller_3,
+        new_controller_4,
+        new_controller_5,
+        UINavigationController.alloc.initWithRootViewController(new_controller_6)
+      ]
+
+      old_root = rmq.app.window.rootViewController
+      rmq.app.window.rootViewController = tabbar
+
+      # Test regular tab indexes
+      tabbar.setSelectedIndex(0)
+      rmq.app.current_view_controller.should == new_controller_0
+      tabbar.setSelectedIndex(2)
+      rmq.app.current_view_controller.should == new_controller_2
+
+      # Test a view controller in the more nav controller
+      tabbar.setSelectedIndex(5)
+      rmq.app.current_view_controller.should == new_controller_5
+
+      # Test a view controller inside a nav controller in the more nav controller
+      tabbar.setSelectedIndex(6)
+      rmq.app.current_view_controller.should == new_controller_6
+
+      rmq.app.window.rootViewController = old_root
+    end
+
+    it 'should return current_view_controller when root controller is UITabController with multiple controllers contained inside a UINavigationController' do
+      tabbar = UITabBarController.alloc.init
+
+      new_controller_0 = UIViewController.new
+      new_controller_1 = UIViewController.new
+      new_controller_2 = UIViewController.new
+      new_controller_3 = UIViewController.new
+      new_controller_4 = UIViewController.new
+      new_controller_5 = UIViewController.new
+      new_controller_6 = UIViewController.new
+      tabbar.viewControllers = [
+        new_controller_0,
+        new_controller_1,
+        UINavigationController.alloc.initWithRootViewController(new_controller_2),
+        new_controller_3,
+        new_controller_4,
+        new_controller_5,
+        UINavigationController.alloc.initWithRootViewController(new_controller_6)
+      ]
+      nav_controller = UINavigationController.alloc.initWithRootViewController(tabbar)
+      nav_controller.setNavigationBarHidden(true)
+
+      old_root = rmq.app.window.rootViewController
+      rmq.app.window.rootViewController = nav_controller
+
+      # Test regular tab indexes
+      tabbar.setSelectedIndex(0)
+      rmq.app.current_view_controller.should == new_controller_0
+      tabbar.setSelectedIndex(2)
+      rmq.app.current_view_controller.should == new_controller_2
+
+      # Test a view controller in the more nav controller
+      tabbar.setSelectedIndex(5)
+      rmq.app.current_view_controller.should == new_controller_5
+
+      # Test a view controller inside a nav controller in the more nav controller
+      tabbar.setSelectedIndex(6)
+      rmq.app.current_view_controller.should == new_controller_6
+
+      rmq.app.window.rootViewController = old_root
+    end
+
     it 'should return current_view_controller when root controller is container controller with a topViewController method' do
       controller = MyTopViewController.alloc.init
       new_controller = UIViewController.new

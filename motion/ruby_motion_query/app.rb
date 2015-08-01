@@ -121,10 +121,16 @@ module RubyMotionQuery
       def current_view_controller(root_view_controller = nil)
         if root_view_controller || ((window = RMQ.app.window) && (root_view_controller = window.rootViewController))
           case root_view_controller
+          when UIMoreNavigationController # This must be above UINavigationController because it's a subclass
+            root_view_controller.visibleViewController
           when UINavigationController
             current_view_controller(root_view_controller.visibleViewController)
           when UITabBarController
-            current_view_controller(root_view_controller.selectedViewController)
+            if root_view_controller.viewControllers.count > 5 && root_view_controller.selectedIndex >= 4
+              current_view_controller(root_view_controller.moreNavigationController)
+            else
+              current_view_controller(root_view_controller.selectedViewController)
+            end
           else
             if root_view_controller.respond_to?(:visibleViewController)
               current_view_controller(root_view_controller.visibleViewController)
