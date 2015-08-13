@@ -164,9 +164,9 @@ describe 'events on views' do
     @vc.rmq.append(view)
 
     some_value = false
-    @vc.rmq(view).on(:custom) do |sender|
-      sender.get.should == view
-      sender.is_a?(RubyMotionQuery::RMQ).should == true
+    @vc.rmq(view).on(:custom) do |sender, event|
+      sender.should == view
+      event.is_a?(RubyMotionQuery::Event).should == true
       some_value = true
     end
 
@@ -182,8 +182,7 @@ describe 'events on views' do
     view_2_triggerd = false
 
     @vc.rmq(view_1, view_2).on(:foo) do |sender|
-      sender.is_a?(RubyMotionQuery::RMQ).should == true
-      view = sender.get
+      view = sender
       if view == view_1
         view.should == view_1
         view_1_triggerd = true
