@@ -237,7 +237,6 @@ module RubyMotionQuery
           start_frame
         },
         animations: ->(aq, return_var) {
-          $r = return_var
           aq.frame = return_var
         }
       }.merge(opts)
