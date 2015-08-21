@@ -220,7 +220,8 @@ module RubyMotionQuery
         duration: 0.5,
         options: UIViewAnimationOptionCurveEaseIn,
         before: ->(bq) {
-          start_frame = bq.get.frame
+          bq.hide
+          start_frame = bq.get.frame.dup
 
           case from_direction
           when :right
@@ -232,9 +233,11 @@ module RubyMotionQuery
           else :bottom
             bq.move(t: rmq.device.height)
           end
+          bq.show
           start_frame
         },
         animations: ->(aq, return_var) {
+          $r = return_var
           aq.frame = return_var
         }
       }.merge(opts)
