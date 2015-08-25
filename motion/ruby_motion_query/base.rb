@@ -271,6 +271,10 @@ module RubyMotionQuery
       puts out
     end
 
+    def log_tree
+      self.log :tree
+    end
+
     def tree_to_s(selected_views, depth = 0)
       out = ""
 
