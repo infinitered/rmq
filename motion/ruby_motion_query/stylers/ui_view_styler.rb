@@ -387,6 +387,11 @@ module RubyMotionQuery
       end
       def shadow_opacity ; @view.layer.shadowOpacity ; end
 
+      def shadow_radius=(radius)
+        @view.layer.shadowRadius = radius
+      end
+      def shadow_radius ; @view.layer.shadowRadius ; end
+
       def shadow_path=(path)
         @view.layer.shadowPath = path
       end

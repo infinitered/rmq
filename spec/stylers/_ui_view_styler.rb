@@ -55,6 +55,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     # Shadows
     st.shadow_color = color.gray
     st.shadow_offset = CGSizeMake(0, 5)
+    st.shadow_radius = 1.5
     st.shadow_opacity = 0.5
     st.shadow_path = UIBezierPath.bezierPathWithRect(st.view.bounds).CGPath
   end
@@ -356,6 +357,7 @@ describe 'ui_view_styler' do
 
     view.layer.shadowColor.should == rmq.color.gray.CGColor
     view.layer.shadowOffset.should == CGSizeMake(0.0, 5.0)
+    view.layer.shadowRadius.should == 1.5
     view.layer.shadowOpacity.should == 0.5
     view.layer.shadowPath.should == UIBezierPath.bezierPathWithRect(view.bounds).CGPath
   end
