@@ -90,7 +90,7 @@ module RubyMotionQuery
       end
 
       def simulator?
-        @_simulator = !(UIDevice.currentDevice.model =~ /simulator/i).nil? if @_simulator.nil?
+        @_simulator = !(NSBundle.mainBundle.bundlePath.start_with? '/var/') if @_simulator.nil?
         @_simulator
       end
 
