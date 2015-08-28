@@ -67,7 +67,7 @@ module RubyMotionQuery
 
       # managing overlay views
       def clear_button_mode ; view.clearButtonMode ; end
-      def clear_button_mode=(v) ; view.clearButtonMode = v ; end
+      def clear_button_mode=(v) ; view.clearButtonMode = TEXT_FIELD_MODES[v] || v ; end
 
       def left_view ; view.leftView ; end
       def left_view=(v) ; view.leftView = v ; end
