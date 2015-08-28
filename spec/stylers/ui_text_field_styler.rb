@@ -14,6 +14,7 @@ describe 'stylers/ui_text_field' do
       st.spell_checking_type = UITextSpellCheckingTypeYes
       st.right_view_mode = :always
       st.adjusts_font_size_to_fit_width = true
+      st.clear_button_mode = UITextFieldViewModeNever
     end
 
     def ui_text_field_color(st)
@@ -47,6 +48,10 @@ describe 'stylers/ui_text_field' do
     def ui_text_field_left_mode(st)
       st.left_view_mode = :while_editing
     end
+
+    def ui_text_field_clear_always(st)
+      st.clear_button_mode = :always
+    end
   end
 
   before do
@@ -74,6 +79,7 @@ describe 'stylers/ui_text_field' do
       v.spellCheckingType.should == UITextSpellCheckingTypeYes
       v.rightViewMode.should == UITextFieldViewModeAlways
       v.adjustsFontSizeToFitWidth.should == true
+      v.clearButtonMode.should == UITextFieldViewModeNever
     end
   end
 
@@ -124,5 +130,10 @@ describe 'stylers/ui_text_field' do
     view1.rightViewMode.should == UITextFieldViewModeUnlessEditing
     view2 = @vc.rmq.append(@view_klass, :ui_text_field_left_mode).get
     view2.leftViewMode.should == UITextFieldViewModeWhileEditing
+  end
+
+  it 'allows setting the clear button mode with symbols' do
+    view = @vc.rmq.append(@view_klass, :ui_text_field_clear_always).get
+    view.clearButtonMode.should == UITextFieldViewModeAlways
   end
 end
