@@ -67,6 +67,10 @@ describe 'animations' do
     @viewq.animations.fade_in(duration: 0.0).is_a?(RubyMotionQuery::RMQ).should == true
   end
 
+  it 'should sink' do
+    @viewq.animations.sink.is_a?(RubyMotionQuery::RMQ).should == true    
+  end
+
   it 'should throb' do
     @viewq.animations.throb.is_a?(RubyMotionQuery::RMQ).should == true
   end

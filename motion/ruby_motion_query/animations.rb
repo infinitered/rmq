@@ -129,6 +129,29 @@ module RubyMotionQuery
     end
 
     # @return [RMQ]
+    def sink(opts = {})
+      opts = {
+        duration: 0.4,
+        animations: ->(cq) {
+          cq.style {|st| st.scale = 1.0}
+        }
+      }.merge(opts)
+
+      out = @rmq.animate(
+        duration: opts[:duration_out] || 0.1,
+        animations: ->(q) {
+          q.style {|st| st.scale = 0.9}
+        },
+        completion: ->(did_finish, completion_rmq) {
+          if did_finish
+            completion_rmq.animate(opts)
+          end
+        }
+      )
+      out
+    end
+
+    # @return [RMQ]
     def sink_and_throb(opts = {})
       opts = {
         duration: 0.3,
