@@ -106,9 +106,20 @@ module RubyMotionQuery
       self
     end
 
-    def trigger(event)
+    def trigger(event_name)
       selected.each do |view|
-        events(view)[event].block.call(view.rmq) if events(view)[event]
+        event = events(view)[event_name]
+
+        if event
+          case event.block.arity
+          when 2
+            event.block.call(view, event)
+          when 1
+            event.block.call(view)
+          else
+            event.block.call
+          end
+        end
       end
 
       self
