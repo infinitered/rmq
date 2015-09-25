@@ -368,6 +368,10 @@ module RubyMotionQuery
           t = root_view_point.y
         end
 
+        if app.development? && (w <= 0 || h <= 0)
+          mp "#{view.rmq_data.style_name}: One or more values in your frame is a negative or zero. If this is unexpected, check your styles.\nFrame values: {l: #{l}, t: #{t}, w: #{w}, h: #{h}}"
+        end
+
         [l,t,w,h]
       end
 
