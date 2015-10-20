@@ -1,10 +1,7 @@
 class RubyMotionQuery::Device
   class << self
     def fake_height(value)
-      @_three_point_five_inch = nil
-      @_four_inch = nil
-      @_four_point_seven_inch = nil
-      @_five_point_five_inch = nil
+      reset_fake_caches
       s = size_a
       @_size_a[1] = value
     end
@@ -15,6 +12,8 @@ class RubyMotionQuery::Device
       @_four_point_seven_inch = nil
       @_five_point_five_inch = nil
       @_size_a = nil
+      @_ipad = nil
+      @_iphone = nil
     end
   end
 end

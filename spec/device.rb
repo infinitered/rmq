@@ -1,10 +1,7 @@
 class RubyMotionQuery::Device
   class << self
     def fake_height(value)
-      @_three_point_five_inch = nil
-      @_four_inch = nil
-      @_four_point_seven_inch = nil
-      @_five_point_five_inch = nil
+      reset_fake_caches
       s = size_a
       @_size_a[1] = value
     end
@@ -15,6 +12,7 @@ class RubyMotionQuery::Device
       @_four_point_seven_inch = nil
       @_five_point_five_inch = nil
       @_size_a = nil
+      @_simulator = nil
     end
   end
 end
@@ -89,9 +87,10 @@ describe 'device' do
     @rmq.device.iphone?.should == false
   end
 
-  if !(UIDevice.currentDevice.model =~ /simulator/i).nil?
+  if !(NSBundle.mainBundle.bundlePath.start_with? '/var/')
     context "when run on simulator" do
       it 'should return the right value for simulator?' do
+        @rmq.device.reset_fake_caches
         @rmq.device.simulator?.should == true
 
         class RubyMotionQuery::Device
@@ -105,6 +104,7 @@ describe 'device' do
   else
     context "when run on the device" do
       it 'should return the right value for simulator?' do
+        @rmq.device.reset_fake_caches
         @rmq.device.simulator?.should == false
 
         class RubyMotionQuery::Device
