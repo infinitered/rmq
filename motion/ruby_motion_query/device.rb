@@ -90,8 +90,12 @@ module RubyMotionQuery
       end
 
       def simulator?
-        @_simulator = !(NSBundle.mainBundle.bundlePath.start_with? '/var/') if @_simulator.nil?
-        @_simulator
+        @_simulator ||= begin
+          if ios_at_least(9.0)
+            !NSBundle.mainBundle.bundlePath.start_with?('/var/')
+          else
+            !(UIDevice.currentDevice.model =~ /simulator/i).nil?
+        end
       end
 
       def three_point_five_inch?
