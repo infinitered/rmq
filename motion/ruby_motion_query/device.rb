@@ -80,11 +80,13 @@ module RubyMotionQuery
       end
 
       def ipad?
-        @_ipad ||= (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        @_ipad = (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) if @_ipad.nil?
+        @_ipad
       end
 
       def iphone?
-        @_iphone ||= (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+        @_iphone = (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone) if @_iphone.nil?
+        @_iphone
       end
 
       def simulator?
@@ -97,26 +99,32 @@ module RubyMotionQuery
       end
 
       def three_point_five_inch?
-        @_three_point_five_inch ||= (Device.height == 480.0)
+        @_three_point_five_inch = (Device.height == 480.0) if @_three_point_five_inch.nil?
+        @_three_point_five_inch
       end
 
       def four_inch?
-        @_four_inch ||= (Device.height == 568.0)
+        @_four_inch = (Device.height == 568.0) if @_four_inch.nil?
+        @_four_inch
       end
 
       def four_point_seven_inch?
-        @_four_point_seven_inch ||= (Device.height == 667.0)
+        @_four_point_seven_inch = (Device.height == 667.0) if @_four_point_seven_inch.nil?
+        @_four_point_seven_inch
       end
 
       def five_point_five_inch?
-        @_five_point_five_inch ||= (Device.height == 736.0)
+        @_five_point_five_inch = (Device.height == 736.0) if @_five_point_five_inch.nil?
+        @_five_point_five_inch
       end
 
       def retina?
-        @_retina ||= begin
+        if @_retina.nil?
           main_screen = Device.screen
-          !!(main_screen.respondsToSelector('displayLinkWithTarget:selector:') && main_screen.scale == 2.0)
+          @_retina = !!(main_screen.respondsToSelector('displayLinkWithTarget:selector:') && main_screen.scale == 2.0)
         end
+
+        @_retina
       end
 
       # @return :unknown or from ORIENTATIONS
