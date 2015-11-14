@@ -25,10 +25,10 @@ module RubyMotionQuery
       #
       #
       #   # Another way is to add named fonts:
-      #   RubyMotionQuery::Font.add_named_font :large,  STANDARD_FONT, 44
+      #   RubyMotionQuery::Font.add_named :large,  STANDARD_FONT, 44
       #
       #   # In a stylesheet you can just do
-      #   font.add_named_font :large,  STANDARD_FONT, 44
+      #   font.add_named :large,  STANDARD_FONT, 44
       #
       #   # The use like so in your stylesheet:
       #   font = font.large
