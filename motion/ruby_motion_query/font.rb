@@ -75,7 +75,7 @@ module RubyMotionQuery
       #
       # @example
       #   font = rmq.font.system(18)
-      def system(size = nil)
+      def system(size = UIFont.systemFontSize)
         UIFont.systemFontOfSize(size)
       end
 
