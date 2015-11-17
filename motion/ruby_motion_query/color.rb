@@ -161,13 +161,9 @@ module RubyMotionQuery
 
     def self.from_base_color(values)
       base = values[:base] || values[:color]
-      begin
-        r, g, b, a = Pointer.new('d'), Pointer.new('d'), Pointer.new('d'), Pointer.new('d')
-        base.getRed(r, green: g, blue: b, alpha: a)
-      rescue
-        r, g, b, a = Pointer.new('f'), Pointer.new('f'), Pointer.new('f'), Pointer.new('f')
-        base.getRed(r, green: g, blue: b, alpha: a)
-      end
+      type = CGSize.type[/(f|d)/]
+      r, g, b, a = Pointer.new(type), Pointer.new(type), Pointer.new(type), Pointer.new(type)
+      base.getRed(r, green: g, blue: b, alpha: a)
 
       r = values[:r] || values[:red] || r.value
       g = values[:g] || values[:green] || g.value
