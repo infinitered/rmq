@@ -22,6 +22,10 @@ describe 'font' do
     @rmq.font.system(11).is_a?(UIFont).should == true
   end
 
+  it 'should return a system font with system default font size' do
+    @rmq.font.system.pointSize.should == UIFont.systemFontSize
+  end
+
   it 'should return font with name' do
     @rmq.font.with_name('American Typewriter', 11).is_a?(UIFont).should == true
   end
