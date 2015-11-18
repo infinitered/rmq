@@ -11,6 +11,7 @@ class RubyMotionQuery::Device
       @_four_inch = nil
       @_four_point_seven_inch = nil
       @_five_point_five_inch = nil
+      @_twelve_point_nine_inch = nil
       @_size_a = nil
       @_simulator = nil
     end
@@ -87,7 +88,7 @@ describe 'device' do
     @rmq.device.iphone?.should == false
   end
 
-  if !(NSBundle.mainBundle.bundlePath.start_with? '/var/')
+  if !(NSBundle.mainBundle.bundlePath =~ /Library\/Developer/i).nil?
     context "when run on simulator" do
       it 'should return the right value for simulator?' do
         @rmq.device.reset_fake_caches
@@ -150,6 +151,15 @@ describe 'device' do
 
     @rmq.device.fake_height(10)
     @rmq.device.five_point_five_inch?.should == false
+    @rmq.device.reset_fake_caches
+  end
+
+  it 'should return the right value for twelve_point_nine_inch?' do
+    @rmq.device.fake_height(1366)
+    @rmq.device.twelve_point_nine_inch?.should == true
+
+    @rmq.device.fake_height(10)
+    @rmq.device.twelve_point_nine_inch?.should == false
     @rmq.device.reset_fake_caches
   end
 

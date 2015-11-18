@@ -11,6 +11,7 @@ class RubyMotionQuery::Device
       @_four_inch = nil
       @_four_point_seven_inch = nil
       @_five_point_five_inch = nil
+      @_twelve_point_nine_inch = nil
       @_size_a = nil
       @_ipad = nil
       @_iphone = nil
