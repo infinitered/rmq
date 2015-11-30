@@ -91,7 +91,7 @@ module RubyMotionQuery
 
       def simulator?
         if @_simulator.nil?
-          @_simulator = UIDevice.currentDevice.name.downcase =~ /simulator/
+          @_simulator = !(UIDevice.currentDevice.name.downcase =~ /simulator/).nil?
         end
         @_simulator
       end
