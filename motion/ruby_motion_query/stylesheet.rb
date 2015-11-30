@@ -290,6 +290,10 @@ module RubyMotionQuery
       device.five_point_five_inch?
     end
 
+    def twelve_point_nine_inch?
+      device.twelve_point_nine_inch?
+    end
+
     def retina?
       device.retina?
     end

@@ -91,11 +91,7 @@ module RubyMotionQuery
 
       def simulator?
         if @_simulator.nil?
-          @_simulator = if ios_at_least?(9.0)
-            !NSBundle.mainBundle.bundlePath.start_with?('/var/')
-          else
-            !(UIDevice.currentDevice.model =~ /simulator/i).nil?
-          end
+          @_simulator = !(UIDevice.currentDevice.name.downcase =~ /simulator/).nil?
         end
         @_simulator
       end
@@ -118,6 +114,11 @@ module RubyMotionQuery
       def five_point_five_inch?
         @_five_point_five_inch = (Device.height == 736.0) if @_five_point_five_inch.nil?
         @_five_point_five_inch
+      end
+
+      def twelve_point_nine_inch?
+        @_twelve_point_nine_inch = (Device.height == 1366.0) if @_twelve_point_nine_inch.nil?
+        @_twelve_point_nine_inch
       end
 
       def retina?
@@ -196,6 +197,8 @@ module RubyMotionQuery
           puts "screen size: 4\""
         elsif three_point_five_inch?
           puts "screen size: 3.5\""
+        elsif twelve_point_nine_inch?
+          puts "screen size: 12.9\""
         end
       end
 

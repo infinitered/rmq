@@ -47,6 +47,7 @@ describe 'stylesheet' do
     ss.four_inch?.should == device.four_inch?
     ss.four_point_seven_inch?.should == device.four_point_seven_inch?
     ss.five_point_five_inch?.should == device.five_point_five_inch?
+    ss.twelve_point_nine_inch?.should == device.twelve_point_nine_inch?
     ss.retina?.should == device.retina?
   end
 
