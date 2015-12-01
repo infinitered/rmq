@@ -166,7 +166,7 @@ module RubyMotionQuery
 
       def portrait?
         orientated = orientation
-        orientated == :portrait || orientated == :unknown
+        orientated == :portrait || orientated == :unknown || orientated == :portrait_upside_down
       end
 
       def orientations
