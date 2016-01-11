@@ -17,6 +17,7 @@ module RubyMotionQuery
 
       # @return [UIImage]
       def resource_for_device(file_base_name, opts = {})
+        file_base_name = file_base_name.gsub(/.png\z/, "")
         ext = if RMQ.device.five_point_five_inch? || RMQ.device.ipad?
           "-736h"
         elsif RMQ.device.four_point_seven_inch?
@@ -32,6 +33,7 @@ module RubyMotionQuery
         ext = opts[:ext] || DEFAULT_IMAGE_EXT
         cached = opts[:cached]
         cached = true if cached.nil?
+        file_base_name = file_base_name.gsub(/.png\z/, "")
 
         if cached
           UIImage.imageNamed("#{file_base_name}.#{ext}")
