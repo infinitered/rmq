@@ -13,7 +13,7 @@ A fast, non-polluting, chaining, front-end library. It’s like jQuery for [Ruby
 
 One of RMQ's goals is to have the best [documentation][1] of any RubyMotion UI library.
 
-RMQ is maintained by Infinite Red, a web and mobile development company based in Portland, OR and San Francisco, CA.
+RMQ is maintained by ![Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
 
 <br />
 
