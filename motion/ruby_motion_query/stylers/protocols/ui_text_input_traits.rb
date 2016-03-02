@@ -19,9 +19,6 @@ module RubyMotionQuery
         def keyboard_type ; view.keyboardType ; end
         def keyboard_type=(v) ; view.setKeyboardType(KEYBOARD_TYPES[v] || v) ; end
 
-        def minimum_font_size ; view.minimumFontSize ; end
-        def minimum_font_size=(v) ; view.minimumFontSize = v ; end
-
         def return_key_type ; view.returnKeyType ; end
         def return_key_type=(v) ; view.setReturnKeyType(RETURN_KEY_TYPES[v] || v) ; end
 
