@@ -10,6 +10,7 @@ class StyleSheetForUIViewStylerTests < RubyMotionQuery::Stylesheet
     st.resize_to_fit_text
     st.size_to_fit
     st.line_break_mode = :word_wrapping
+    st.minimum_font_size = 8
   end
 
   def ui_label_color(st)
@@ -52,6 +53,7 @@ describe 'stylers/ui_label' do
       v.size.width.should > 0
       v.numberOfLines.should == 0
       v.lineBreakMode.should == NSLineBreakByWordWrapping
+      v.minimumFontSize.should == 8
     end
 
   end
@@ -165,4 +167,3 @@ describe 'stylers/ui_label' do
     size.height.should > 0
   end
 end
-
