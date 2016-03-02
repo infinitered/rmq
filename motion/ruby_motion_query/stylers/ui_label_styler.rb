@@ -44,9 +44,6 @@ module RubyMotionQuery
       alias :text_align= :text_alignment=
       alias :text_align :text_alignment
 
-      def minimum_font_size ; view.minimumFontSize ; end
-      def minimum_font_size=(v) ; view.minimumFontSize = v ; end
-
       def resize_to_fit_text
         @view.sizeToFit
       end

@@ -39,9 +39,6 @@ module RubyMotionQuery
       alias :adjusts_font_size= :adjusts_font_size_to_fit_width=
       alias :adjusts_font_size :adjusts_font_size_to_fit_width
 
-      def minimum_font_size ; view.minimumFontSize ; end
-      def minimum_font_size=(v) ; view.minimumFontSize = v ; end
-
       # Managing the Eiting Behavior
       def editing ; view.editing ; end
       def editing=(v) ; view.editing = v ; end
