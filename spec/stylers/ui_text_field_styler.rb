@@ -15,6 +15,7 @@ describe 'stylers/ui_text_field' do
       st.right_view_mode = :always
       st.adjusts_font_size_to_fit_width = true
       st.clear_button_mode = UITextFieldViewModeNever
+      st.minimum_font_size = 8
     end
 
     def ui_text_field_color(st)
@@ -80,6 +81,7 @@ describe 'stylers/ui_text_field' do
       v.rightViewMode.should == UITextFieldViewModeAlways
       v.adjustsFontSizeToFitWidth.should == true
       v.clearButtonMode.should == UITextFieldViewModeNever
+      v.minimumFontSize.should == 8
     end
   end
 
