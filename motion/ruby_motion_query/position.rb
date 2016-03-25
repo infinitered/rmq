@@ -106,6 +106,41 @@ module RubyMotionQuery
       self
     end
 
+    def center(type = :vertical, params = {})
+      return 0 if selected.length == 0
+
+      if Array(selected.rmq.superview.get).uniq.count > 1
+        puts "Sorry, center can only be used on selected views with the same superview."
+        return 0
+      end
+
+      if type == :vertical ||  type == :vertically
+        total_height = selected.first.superview.rmq.frame.height
+        top = selected.map{|view| view.rmq.frame.t }.min
+        bottom = selected.map{|view| view.rmq.frame.b }.max
+        elements_height = bottom - top
+
+        add = (total_height / 2) - (elements_height / 2)
+
+        selected.each do |view|
+          view.rmq.nudge(down: add)
+        end
+      else
+        total_width = selected.first.superview.rmq.frame.width
+        left = selected.map{|view| view.rmq.frame.l }.min
+        right = selected.map{|view| view.rmq.frame.r }.max
+        elements_width = right - left
+
+        add = (total_width / 2) - (elements_width / 2)
+
+        selected.each do |view|
+          view.rmq.nudge(right: add)
+        end
+      end
+
+      self
+    end
+
     def resize_frame_to_fit_subviews(args = {})
       selected.each do |view|
         view.rmq.layout(subviews_bottom_right(view, args))
