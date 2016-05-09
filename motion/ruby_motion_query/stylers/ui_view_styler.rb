@@ -404,6 +404,10 @@ module RubyMotionQuery
         @view.isUserInteractionEnabled
       end
 
+      def size_to_fit
+        @view.sizeToFit
+      end
+
       # @deprecated - use frame hashs
       def left=(value)
         Deprecation.warn(:left=, "Set `left` with the frame hash.")
