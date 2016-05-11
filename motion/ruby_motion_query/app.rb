@@ -5,9 +5,19 @@ module RubyMotionQuery
       App
     end
 
+    # @return [UIApplication]
+    def app!
+      App.get
+    end
+
     # @return [App]
     def self.app
       App
+    end
+
+    # @return [UIApplication]
+    def self.app!
+      App.get
     end
   end
 
