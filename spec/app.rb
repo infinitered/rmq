@@ -12,6 +12,15 @@ describe 'app' do
     RubyMotionQuery::RMQ.app.should == @app
   end
 
+  it 'should return UIApplication with rmq#app!' do
+    rmq = RubyMotionQuery::RMQ.new
+    rmq.app!.should == UIApplication.sharedApplication
+  end
+
+  it 'should return UIApplication with RMQ.app!' do
+    RubyMotionQuery::RMQ.app!.should == UIApplication.sharedApplication
+  end
+
   it 'should return app window' do
     @app.window.should == UIApplication.sharedApplication.keyWindow
   end
