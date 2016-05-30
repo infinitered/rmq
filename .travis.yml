@@ -1,4 +1,5 @@
 language: objective-c
+osx_image: xcode7.2
 before_install:
   - (ruby --version)
   - sudo chown -R travis ~/Library/RubyMotion
@@ -8,9 +9,9 @@ before_install:
 gemfile:
   - Gemfile
 script:
-  - /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/simctl create five com.apple.CoreSimulator.SimDeviceType.iPhone-5 com.apple.CoreSimulator.SimRuntime.iOS-8-1
+  # - /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/simctl create five com.apple.CoreSimulator.SimDeviceType.iPhone-5 com.apple.CoreSimulator.SimRuntime.iOS-8-1
 
   - bundle install
   - bundle exec rake clean
   - bundle exec rake spec
-  - bundle exec rake spec device_name=five
+  # - bundle exec rake spec device_name=five
