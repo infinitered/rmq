@@ -88,7 +88,7 @@ describe 'device' do
     @rmq.device.iphone?.should == false
   end
 
-  if !(UIDevice.currentDevice.name.downcase =~ /simulator/).nil?
+  if !NSBundle.mainBundle.bundlePath.start_with?('/var/')
     context "when run on simulator" do
       it 'should return the right value for simulator?' do
         @rmq.device.reset_fake_caches
