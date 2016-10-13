@@ -129,32 +129,34 @@ module RubyMotionQuery
       #
       # @return [UIViewController]
       def current_view_controller(root_view_controller = nil)
-        if root_view_controller || ((window = RMQ.app.window) && (root_view_controller = window.rootViewController))
-          case root_view_controller
-          when UIMoreNavigationController # This must be above UINavigationController because it's a subclass
-            root_view_controller.visibleViewController
-          when UINavigationController
-            current_view_controller(root_view_controller.visibleViewController)
-          when UITabBarController
-            if root_view_controller.viewControllers.count > 5 && root_view_controller.selectedIndex >= 4
-              current_view_controller(root_view_controller.moreNavigationController)
-            else
-              current_view_controller(root_view_controller.selectedViewController)
-            end
+        root_view_controller ||= RMQ.app.window.rootViewController
+        presentedViewController = root_view_controller.presentedViewController if root_view_controller
+        return root_view_controller unless presentedViewController
+
+        case presentedViewController
+        when UIMoreNavigationController # This must be above UINavigationController because it's a subclass
+          root_view_controller.visibleViewController
+        when UINavigationController
+          current_view_controller(presentedViewController)
+        when UITabBarController
+          if root_view_controller.viewControllers.count > 5 && root_view_controller.selectedIndex >= 4
+            current_view_controller(root_view_controller.moreNavigationController)
           else
-            if root_view_controller.respond_to?(:visibleViewController)
-              current_view_controller(root_view_controller.visibleViewController)
-            elsif root_view_controller.respond_to?(:topViewController)
-              current_view_controller(root_view_controller.topViewController)
-            elsif root_view_controller.respond_to?(:frontViewController)
-              current_view_controller(root_view_controller.frontViewController)
-            elsif root_view_controller.respond_to?(:center) && (center = root_view_controller.center) && center.is_a?(UIViewController)
-              current_view_controller(root_view_controller.center)
-            elsif root_view_controller.respond_to?(:childViewControllers) && root_view_controller.childViewControllers.count > 0
-              current_view_controller(root_view_controller.childViewControllers.first)
-            else
-              root_view_controller
-            end
+            current_view_controller(root_view_controller.selectedViewController)
+          end
+        else
+          if root_view_controller.respond_to?(:visibleViewController)
+            current_view_controller(root_view_controller.visibleViewController)
+          elsif root_view_controller.respond_to?(:topViewController)
+            current_view_controller(root_view_controller.topViewController)
+          elsif root_view_controller.respond_to?(:frontViewController)
+            current_view_controller(root_view_controller.frontViewController)
+          elsif root_view_controller.respond_to?(:center) && (center = root_view_controller.center) && center.is_a?(UIViewController)
+            current_view_controller(root_view_controller.center)
+          elsif root_view_controller.respond_to?(:childViewControllers) && root_view_controller.childViewControllers.count > 0
+            current_view_controller(root_view_controller.childViewControllers.first)
+          else
+            root_view_controller
           end
         end
       end
