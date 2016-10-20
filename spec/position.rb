@@ -271,4 +271,89 @@ describe 'position' do
 
     @vc.rmq(view, view_2).location_in_root_view.should == [CGPoint.new(10, 20),CGPoint.new(20, 40)]
   end
+
+  it 'should return 0 when trying to center views without a common superview' do
+    view = @vc.rmq.append(UIView).layout(:full)
+    view_1 = view.append(UIView)
+    view_2 = @vc.rmq.append(UIView)
+
+    @vc.rmq(view_1, view_2).center(:vertical).should == 0
+  end
+
+  it "should center multiple views vertically" do
+    view = @vc.rmq.append(UIView).layout(:full)
+    view_1 = view.append(UIView).layout(t:0, l:0, w: 10, h: 10).get
+    view_2 = view.append(UIView).layout(t:10, l:0, w: 10, h: 10).get
+    view_3 = view.append(UIView).layout(t:20, l:0, w: 10, h: 10).get
+
+    view_1.rmq.frame.t.should == 0
+    view_2.rmq.frame.t.should == 10
+    view_3.rmq.frame.t.should == 20
+
+    @vc.rmq(view_1, view_2, view_3).center(:vertical)
+
+    center = (view.rmq.frame.height / 2) - (30 / 2)
+
+    view_1.rmq.frame.top.should == center
+    view_2.rmq.frame.top.should == center + 10
+    view_3.rmq.frame.top.should == center + 20
+  end
+
+  it "should center multiple views horizontally" do
+    view = @vc.rmq.append(UIView).layout(:full)
+    view_1 = view.append(UIView).layout(t:0, l:0, w: 10, h: 10).get
+    view_2 = view.append(UIView).layout(t:0, l:10, w: 10, h: 10).get
+    view_3 = view.append(UIView).layout(t:0, l:20, w: 10, h: 10).get
+
+    view_1.rmq.frame.l.should == 0
+    view_2.rmq.frame.l.should == 10
+    view_3.rmq.frame.l.should == 20
+
+    @vc.rmq(view_1, view_2, view_3).center(:horizontal)
+
+    center = (view.rmq.frame.width / 2) - (30 / 2)
+
+    view_1.rmq.frame.left.should == center
+    view_2.rmq.frame.left.should == center + 10
+    view_3.rmq.frame.left.should == center + 20
+  end
+
+  it "should center multiple views vertically when they have spacing" do
+    view = @vc.rmq.append(UIView).layout(:full)
+    view_1 = view.append(UIView).layout(t:0, l:0, w: 10, h: 10).get
+    view_2 = view.append(UIView).layout(t:40, l:0, w: 10, h: 10).get
+    view_3 = view.append(UIView).layout(t:90, l:0, w: 10, h: 10).get
+
+    view_1.rmq.frame.t.should == 0
+    view_2.rmq.frame.t.should == 40
+    view_3.rmq.frame.t.should == 90
+
+    @vc.rmq(view_1, view_2, view_3).center(:vertical)
+
+    center = (view.rmq.frame.height / 2) - (100 / 2)
+
+    view_1.rmq.frame.top.should == center
+    view_2.rmq.frame.top.should == center + 40
+    view_3.rmq.frame.top.should == center + 90
+  end
+
+  it "should center multiple views horizontally" do
+    view = @vc.rmq.append(UIView).layout(:full)
+    view_1 = view.append(UIView).layout(t:0, l:0, w: 10, h: 10).get
+    view_2 = view.append(UIView).layout(t:0, l:70, w: 10, h: 10).get
+    view_3 = view.append(UIView).layout(t:0, l:123, w: 10, h: 10).get
+
+    view_1.rmq.frame.l.should == 0
+    view_2.rmq.frame.l.should == 70
+    view_3.rmq.frame.l.should == 123
+
+    @vc.rmq(view_1, view_2, view_3).center(:horizontal)
+
+    center = (view.rmq.frame.width / 2) - (133.0 / 2.0)
+
+    view_1.rmq.frame.left.should == center
+    view_2.rmq.frame.left.should == center + 70
+    view_3.rmq.frame.left.should == center + 123
+  end
+
 end
