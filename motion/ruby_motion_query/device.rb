@@ -91,7 +91,11 @@ module RubyMotionQuery
 
       def simulator?
         if @_simulator.nil?
-          @_simulator = !(UIDevice.currentDevice.name.downcase =~ /simulator/).nil?
+          @_simulator = if ios_version.to_i >= 9
+            !NSBundle.mainBundle.bundlePath.start_with?('/var/')
+          else
+            !(UIDevice.currentDevice.model =~ /simulator/i).nil?
+          end
         end
         @_simulator
       end
