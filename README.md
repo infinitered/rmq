@@ -113,3 +113,9 @@ RMQ is available under the MIT license. See the [LICENSE](https://github.com/inf
 
 
   [1]: http://rubymotionquery.com
+
+<br />
+
+## Premium Support
+
+[RMQ](https://github.com/infinitered/rmq), as an open source project, is free to use and always will be. [Infinite Red](https://infinite.red/) offers premium RMQ support and general mobile app design/development services. Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
