@@ -161,6 +161,17 @@ module RubyMotionQuery
         end
       end
 
+      # Creates and shows an alert message using the UIAlertView class.
+      # The first two arguments (title and message) are required.
+      # @example
+      #   rmq.app.alert('Disconnected!', 'Please check your internet connection')
+      #   rmq.app.alert('Great!', 'You are connected again', cancel_button = 'Cool')
+      def alert(title, message, delegate = nil, cancel_button = 'OK', other_buttons = nil)
+        # TODO add support to UIAlertController since UIAlertView is deprecated in iOS 8.
+        alert_view = UIAlertView.alloc.initWithTitle(title, message: message, delegate: delegate, cancelButtonTitle: cancel_button, otherButtonTitles: other_buttons)
+        alert_view.show
+      end
+
     end
   end
 end
