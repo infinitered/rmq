@@ -67,6 +67,29 @@ if RUBYMOTION_ENV == "development"
       end
     end
 
+    def rmq_reload_all(debug=false)
+      return unless root_path = RubyMotionQuery::RMQ.project_path
+
+      path_query = "#{root_path}/**/*.rb"
+      puts path_query if debug
+
+      @files_modified_date ||= {}
+      Dir.glob(path_query).each do |file_path|
+        modified_date = @files_modified_date[file_path]
+        modified_date = RubyMotionQuery::RMQ.build_time if modified_date == nil
+        if File.mtime(file_path) > modified_date
+          eval(File.read(file_path)) 
+          puts "Reloaded #{file_path}" if debug
+          @files_modified_date[file_path] = File.mtime(file_path)
+        end
+      end
+
+      cvc = rmq.view_controller
+      cvc.send(:on_code_reload) if cvc.respond_to?(:on_code_reload)
+
+      "Reloaded"
+    end
+
     private
 
     def enable_rmq_live_stylesheets(interval)
