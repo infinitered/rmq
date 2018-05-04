@@ -125,6 +125,11 @@ module RubyMotionQuery
         @_twelve_point_nine_inch
       end
 
+      def iphone_x?
+        @_iphone_x = (Device.height == 812.0) if @_iphone_x.nil?
+        @_iphone_x
+      end
+
       def retina?
         if @_retina.nil?
           main_screen = Device.screen

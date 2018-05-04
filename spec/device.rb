@@ -163,7 +163,16 @@ describe 'device' do
     @rmq.device.reset_fake_caches
   end
 
-  it 'detects if the device  is retina' do
+  it 'should return the right value for iphone_x?' do
+    @rmq.device.fake_height(812)
+    @rmq.device.iphone_x?.should == true
+
+    @rmq.device.fake_height(10)
+    @rmq.device.iphone_x?.should == false
+    @rmq.device.reset_fake_caches
+  end
+
+  it 'detects if the device is retina' do
     (@rmq.device.screen.scale == 2).should == @rmq.device.retina?
   end
 
