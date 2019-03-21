@@ -47,6 +47,11 @@ module RubyMotionQuery
         UIApplication.sharedApplication
       end
 
+      def open_url(url)
+        url = NSURL.URLWithString(url) if url.kind_of? String
+        get.openURL(url)
+      end
+
       # Returns boolean of success of hiding
       # Tested in the example app!
       # @return [Boolean]
