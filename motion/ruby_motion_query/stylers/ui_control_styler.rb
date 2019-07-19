@@ -3,7 +3,7 @@ module RubyMotionQuery
 
     class UIControlStyler < UIViewStyler
       def content_vertical_alignment=(value)
-        @view.contentVerticalAlignment = value
+        @view.contentVerticalAlignment = CONTENT_VERTICAL_ALIGNMENTS[value] || value
       end
 
       def content_vertical_alignment
@@ -11,7 +11,7 @@ module RubyMotionQuery
       end
 
       def content_horizontal_alignment=(value)
-        @view.contentHorizontalAlignment = value
+        @view.contentHorizontalAlignment = CONTENT_HORIZONTAL_ALIGNMENTS[value] || value
       end
 
       def content_horizontal_alignment
