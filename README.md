@@ -4,16 +4,12 @@
 
 # RMQ - RubyMotion Front-end Library
 
-[![Dependency Status](https://gemnasium.com/infinitered/rmq.png)](https://gemnasium.com/infinitered/rmq)
-[![Build Status](https://travis-ci.org/infinitered/rmq.png?branch=master)](https://travis-ci.org/infinitered/rmq)
 [![Gem Version](https://badge.fury.io/rb/ruby_motion_query.png)](http://badge.fury.io/rb/ruby_motion_query)
 [![Crusher.io optimized](http://www.crusher.io/repo/infinitered/rmq/badge)](http://www.crusher.io/repo/infinitered/rmq)
 
 A fast, non-polluting, chaining, front-end library. It’s like jQuery for [RubyMotion](http://rubymotion.com) plus templates, stylesheets, events, animations, etc.
 
-One of RMQ's goals is to have the best [documentation][1] of any RubyMotion UI library.
-
-RMQ is maintained by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
+Originally developed by [Infinite Red](https://infinite.red), a U.S.-based web and mobile development company.
 
 <br />
 
@@ -21,10 +17,6 @@ RMQ is maintained by [Infinite Red](http://infinite.red), a web and mobile devel
 
 <br />
 <br />
-
-[![image](http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/19/2015/04/rmq_docs1.png)](http://rubymotionquery.com)
-
-**Read the [RMQ Documentation][1] here**
 
 **If you like RMQ, check out [RedPotion](http://redpotion.org), the ultimate gem for RubyMotion.**
 
@@ -107,15 +99,3 @@ RMQ is available under the MIT license. See the [LICENSE](https://github.com/inf
 5. Create new Pull Request
 
 <br />
-
-
-## Read the [RMQ Documentation][1] here
-
-
-  [1]: http://rubymotionquery.com
-
-<br />
-
-## Premium Support
-
-[RMQ](https://github.com/infinitered/rmq), as an open source project, is free to use and always will be. [Infinite Red](https://infinite.red/) offers premium RMQ support and general mobile app design/development services. Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
